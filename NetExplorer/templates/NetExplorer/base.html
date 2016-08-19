@@ -1,16 +1,36 @@
 <html>
-<meta charset="utf-8">
-{% load staticfiles %}
+    <meta charset="utf-8">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <head>
+        <title>PlaNET</title>
+    </head>
 
-<head>
-    <title>PlaNET</title>
-</head>
+    <body>
+        <div id="logo-container">
+            <a href="/"> <img id="logoheader" src="{% static 'Images/prevlogo.png' %}"/> </a>
+        </div>
 
-<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="#">Tutorial</a></li>
+                <li><a href="#">Downloads</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    {% block content %}
-    <!-- This will be filled by index.html template -->
-    {% endblock %}
 
-</body>
+        <div id="body-wrapper">
+            {% block content %}
+            <!-- This will be filled by index.html template -->
+            {% endblock %}
+        </div>
+
+    </body>
 </html>

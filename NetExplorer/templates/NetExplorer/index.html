@@ -1,9 +1,39 @@
 {% extends 'NetExplorer/base.html' %}
-{% load staticfiles %}
-
+{% load static %}
 {% block content %}
 
-    If you want to go to gene_searcher, <a href="{% url gene_searcher %}">click here </a>
-    {{ msg }}
+
+    <div id="panel-container">
+        <div class="panel-group">
+            <div class="panel panel-info" id="gf-container">
+                <div class="panel-heading">Gene Finder</div>
+                <a class="btn btn-info app-button" href="{% url gene_searcher %}">Search</a>
+                <div class="panel-body app-panel" >
+                    Text-based search of genes and domains.
+                    <img class="app-icon" src="{% static 'Images/app-icon.png' %}"/>
+                </div>
+            </div>
+
+            <div class="panel panel-success" id="ne-container">
+                <div class="panel-heading">Network Explorer</div>
+                <a class="btn btn-success app-button" href="{% url net_explorer %}">Explore</a>
+                <div class="panel-body app-panel">
+                    Explore the predicted protein-protein interactions network.
+                    <img class="app-icon" src="{% static 'Images/app-icon.png' %}"/>
+                </div>
+            </div>
+
+            <div class="panel panel-warning" id="pa-container">
+                <div class="panel-heading">Pathway Finder</div>
+                <a class="btn btn-warning app-button" href="#">Find</a>
+                <div class="panel-body app-panel">
+                    Look for specific pathways in the different interaction networks.
+                    <img class="app-icon" src="{% static 'Images/app-icon.png' %}"/>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 {% endblock content %}

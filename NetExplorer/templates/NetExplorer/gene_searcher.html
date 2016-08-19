@@ -1,18 +1,27 @@
 {% extends 'NetExplorer/base.html' %}
-{% load staticfiles %}
 
 {% block content %}
 
+    <h1>Gene Finder</h1>
     <form method="GET">
-        Find Gene:<br>
-        <input type="text" name="genesymbol"><br>
-        <select name="database">
-            <option value="Human">Human</option>
-            <option value="Cthulhu">Cthulhu</option>
-            <option value="Consolidated">Consolidated</option>
-            <option value="PFAM">PFAM</option>
-        </select>
-        <input type="submit"  value="Search">
+        {% csrf_token %}
+
+        <div id="search-wrapper">
+            <div class="form-group">
+                <label for="genesymbol">Gene Symbol:</label>
+                <input type="text" class="form-control" name="genesymbol">
+
+                <label for="database">Select Database:</label>
+                    <select name="database" class="form-control">
+                        <option value="Human">Human</option>
+                        <option value="Cthulhu">Cthulhu</option>
+                        <option value="Consolidated">Consolidated</option>
+                        <option value="PFAM">PFAM</option>
+                    </select>
+                <br>
+                <button type="submit" value=" Send" class="btn btn-info" id="submit">Search</button>
+            </div>
+        </div>
 
     {{ msg }}
 

@@ -2,6 +2,11 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from py2neo import Graph, Path
+import tempfile
+
+
+def get_text_results(database):
+    pass
 
 # -----------------------
 # VIEWS
@@ -32,7 +37,13 @@ def gene_searcher(request):
         symbols = list()
 
         if genesymbol:
-            results = graph.run("MATCH (n:%s) WHERE n.symbol = '%s' RETURN n.symbol AS symbol LIMIT 1" % (database, genesymbol))
+            query = """
+                MATCH (n:%s)
+                WHERE  n.symbol = {symbol}
+                RETURN n.symbol AS symbol LIMIT 1
+            """ % database
+
+            results = graph.run(query, symbol = genesymbol)
             for row in results:
                 symbols.append(row['symbol'])
             msg = msg + genesymbol + " in %s" % database
@@ -49,7 +60,9 @@ def gene_searcher(request):
     else:
         return render(request, 'NetExplorer/gene_searcher.html', {'msg': "HELLO WORLD"} )
 
+
 def net_explorer(request):
     '''
     This is the cytoscape graph-based search function.
     '''
+    return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
