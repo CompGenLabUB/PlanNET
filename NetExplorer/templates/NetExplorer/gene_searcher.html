@@ -16,4 +16,15 @@
 
     {{ msg }}
 
+    <br><br>
+    {% if res %}
+        {% for sym in res %}
+            {{ sym }}
+        {% endfor %}
+    {% endif %}
+
+    {% if search_error %}
+        NO RESULTS FOR YOUR QUERY :(
+    {% endif %}
+
 {% endblock content %}
