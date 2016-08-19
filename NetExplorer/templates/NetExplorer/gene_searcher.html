@@ -1,0 +1,19 @@
+{% extends 'NetExplorer/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <form method="GET">
+        Find Gene:<br>
+        <input type="text" name="genesymbol"><br>
+        <select name="database">
+            <option value="Human">Human</option>
+            <option value="Cthulhu">Cthulhu</option>
+            <option value="Consolidated">Consolidated</option>
+            <option value="PFAM">PFAM</option>
+        </select>
+        <input type="submit"  value="Search">
+
+    {{ msg }}
+
+{% endblock content %}
