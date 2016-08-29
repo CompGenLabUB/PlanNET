@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from py2neo import Graph, Path
+from NetExplorer.models import PredictedNode, HumanNode, graph
 import tempfile
 
 
@@ -30,35 +31,28 @@ def gene_searcher(request):
     if request.method == "GET" and "genesymbol" in request.GET:
         graph = Graph("http://localhost:7474/db/data/")
 
-        genesymbol = request.GET['genesymbol']
-        database   = request.GET['database']
+        genesymbol   = request.GET['genesymbol']
+        database     = request.GET['database']
+        nodes        = list()
+        search_error = False
 
-        msg     = "You searched for "
-        symbols = list()
+        if genesymbol: # If there is a search term
+            try:
+                if database == "Human":
+                    search_node = HumanNode(genesymbol, database)
+                else:
+                    search_node = PredictedNode(genesymbol, database)
+                nodes.append(search_node)
+            except Exception as e:
+                search_error = True
+                print("NOOOPE" + str(e))
 
-        if genesymbol:
-            query = """
-                MATCH (n:%s)
-                WHERE  n.symbol = {symbol}
-                RETURN n.symbol AS symbol LIMIT 1
-            """ % database
-
-            results = graph.run(query, symbol = genesymbol)
-            for row in results:
-                symbols.append(row['symbol'])
-            msg = msg + genesymbol + " in %s" % database
-
-            if symbols:
-                return render(request, 'NetExplorer/gene_searcher.html', {'msg': msg, 'res': symbols } )
-            else:
-                return render(request, 'NetExplorer/gene_searcher.html', {'msg': msg, 'res': symbols, 'search_error': 1 } )
-        else:
-            msg = msg + "nothing"
+            return render(request, 'NetExplorer/gene_searcher.html', {'res': nodes, 'search_error': search_error } )
 
         # Render when user enters the page
-        return render(request, 'NetExplorer/gene_searcher.html', {'msg': msg } )
+        return render(request, 'NetExplorer/gene_searcher.html' )
     else:
-        return render(request, 'NetExplorer/gene_searcher.html', {'msg': "HELLO WORLD"} )
+        return render(request, 'NetExplorer/gene_searcher.html')
 
 
 def net_explorer(request):

@@ -2,7 +2,10 @@
 
 {% block content %}
 
-    <h1>Gene Finder</h1>
+
+
+
+    <h1>Net Explorer</h1>
     <form method="GET">
         {% csrf_token %}
 
@@ -16,25 +19,14 @@
                         <option value="Human">Human</option>
                         <option value="Cthulhu">Cthulhu</option>
                         <option value="Consolidated">Consolidated</option>
-                        <option value="PFAM">PFAM</option>
                     </select>
                 <br>
-                <button type="submit" value=" Send" class="btn btn-info" id="submit">Search</button>
+                <button type="submit" value=" Send" class="btn btn-success" id="submit">Explore</button>
             </div>
         </div>
 
-    <br><br>
-    {% if res %}
-        You searched for
-        {% for node in res %}
-            NODE SYMBOL:   {{ node.symbol }} <br>
-            NODE SEQUENCE: {{ node.sequence }} <br>
-            NODE ORF:      {{ node.orf }} <br>
-        {% endfor %}
-    {% endif %}
+        {{hola}}
 
-    {% if search_error %}
-        NO RESULTS FOR YOUR QUERY :(
-    {% endif %}
+
 
 {% endblock content %}
