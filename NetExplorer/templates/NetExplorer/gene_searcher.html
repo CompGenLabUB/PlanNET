@@ -1,40 +1,82 @@
 {% extends 'NetExplorer/base.html' %}
+{% load static %}
+
 
 {% block content %}
 
-    <h1>Gene Finder</h1>
-    <form method="GET">
-        {% csrf_token %}
 
+<!-- FORM -->
+
+    <div class="panel panel-info" >
+        <div class="panel-heading"><h2>Gene Finder</h2></div>
         <div id="search-wrapper">
-            <div class="form-group">
-                <label for="genesymbol">Gene Symbol:</label>
-                <input type="text" class="form-control" name="genesymbol">
+            <img class="app-icon-inside" src="{% static 'Images/gene-finder-icon.png' %}"/>
+            <div class="panel-body app-panel">
+                <form class= "form-inline" method="GET">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
 
-                <label for="database">Select Database:</label>
-                    <select name="database" class="form-control">
-                        <option value="Human">Human</option>
-                        <option value="Cthulhu">Cthulhu</option>
-                        <option value="Consolidated">Consolidated</option>
-                        <option value="PFAM">PFAM</option>
-                    </select>
-                <br>
-                <button type="submit" value=" Send" class="btn btn-info" id="submit">Search</button>
+                        <select name="database" class="form-control">
+                            <option value="" selected disabled>Select Database</option>
+                            <option value="Human">Human</option>
+                            <option value="Cthulhu">Cthulhu</option>
+                            <option value="Consolidated">Consolidated</option>
+                            <option value="PFAM">PFAM</option>
+                        </select>
+                        <button type="submit" value=" Send" class="btn btn-info" id="submit">Search</button>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
 
-    <br><br>
+
+    <br>
+    <br>
+
+    <!-- SEARCH RESULTS -->
     {% if res %}
-        You searched for
+
+        <h2>Results:</h2>
+
         {% for node in res %}
-            NODE SYMBOL:   {{ node.symbol }} <br>
-            NODE SEQUENCE: {{ node.sequence }} <br>
-            NODE ORF:      {{ node.orf }} <br>
+            <div id="{{ node.symbol }}"
+                 class="panel panel-info small-searchpanel"
+                 title="Click to view info card"
+                 target="{{ node.symbol }}"
+                 targetDB="{{ node.database }}">
+
+                <div class="panel-heading">{{ node.symbol }}</div>
+                <div class="panel-body app-panel">
+                    <p>Database: {{ node.database }}</p>
+                </div>
+            </div>
+
+            <!-- This will be filled by the JS code in base.html with an onclick
+                 event triggered by small-searchpanel -->
+            <div class="close-overlay" title="Close card">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </div>
+            <div id="{{ node.symbol }}_card" class="card-overlay">
+                    <div class="card-title">
+                        <h1>{{ node.symbol }}</h1>
+                    </div>
+           </div>
+
         {% endfor %}
+
+    {% else %}
+        <!-- NO RESULTS, LOOK FOR ERROR -->
+        {% if search_error == 1 %}
+            <h2>No results for your query</h2>
+        {% elif search_error == 2 %}
+            <h2> Please, select a database</h2>
+        {% elif search_error %}
+            <h2>Internal Server Error</h2>
+        {% endif %}
     {% endif %}
 
-    {% if search_error %}
-        NO RESULTS FOR YOUR QUERY :(
-    {% endif %}
+    <a href="#0" class="cd-top">Top</a>
 
 {% endblock content %}

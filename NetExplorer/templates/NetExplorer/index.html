@@ -1,15 +1,16 @@
 {% extends 'NetExplorer/base.html' %}
 {% load static %}
+
+
+
 {% block content %}
-
-
     <div id="panel-container">
         <div class="panel-group">
             <div class="panel panel-info" id="gf-container">
                 <div class="panel-heading">Gene Finder</div>
                 <a class="btn btn-info app-button" href="{% url gene_searcher %}">Search</a>
                 <div class="panel-body app-panel" >
-                    Text-based search of genes and domains.
+                    <p>Text-based search of genes and domains.</p>
                     <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
                 </div>
             </div>
@@ -18,7 +19,7 @@
                 <div class="panel-heading">Network Explorer</div>
                 <a class="btn btn-success app-button" href="{% url net_explorer %}">Explore</a>
                 <div class="panel-body app-panel">
-                    Explore the predicted protein-protein interactions network.
+                    <p>Explore the predicted protein-protein interactions network.</p>
                     <img class="app-icon" src="{% static 'Images/network-icon.png' %}"/>
                 </div>
             </div>
@@ -27,7 +28,7 @@
                 <div class="panel-heading">Pathway Finder</div>
                 <a class="btn btn-warning app-button" href="#">Find</a>
                 <div class="panel-body app-panel">
-                    Look for specific pathways in the different interaction networks.
+                    <p>Look for specific pathways in the different interaction networks.</p>
                     <img class="app-icon" src="{% static 'Images/pathway-icon.png' %}"/>
                 </div>
             </div>

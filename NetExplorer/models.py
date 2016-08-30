@@ -81,9 +81,12 @@ class PredictedNode(Node):
 
     def __init__(self, symbol, database):
         super(PredictedNode, self).__init__(symbol, database)
-        self.sequence = None
-        self.orf      = None
-        self.length   = None
+        self.sequence      = None
+        self.orf           = None
+        self.length        = None
+        self.gccont        = None
+        self.n_homologs    = None
+        self.n_interactors = None
         self.__query_node()
 
     def __query_node(self):
@@ -104,6 +107,16 @@ class PredictedNode(Node):
                 self.orf      = row["orf"]
         else:
             raise NodeNotFound(self)
+
+    def get_summary(self):
+        '''
+        Fills attribute values that are not mandatory, with a summary of several
+        features of the node
+        '''
+        self.length = len(self.sequence)
+        self.gccont = ( self.sequence.count("G") + self.sequence.count("C") ) / self.length
+
+
 
 
 

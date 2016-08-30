@@ -8,6 +8,23 @@ import textwrap
 from django.http import HttpResponse
 
 # -----------------------
+# FUNCTIONS
+# -----------------------
+
+def query_node(symbol, database):
+    '''
+    This simple function takes a symbol and a database and tries to get it from
+    the DB
+    '''
+    node = None
+    if database == "Human":
+        node = HumanNode(symbol, database)
+    else:
+        node = PredictedNode(symbol, database)
+
+    return node
+
+# -----------------------
 # VIEWS
 # -----------------------
 
@@ -38,10 +55,7 @@ def get_fasta(request):
 
     node = None
     try:
-        if database == "Human":
-            node = HumanNode(genesymbol, database)
-        else:
-            node = PredictedNode(genesymbol, database)
+        node = query_node(genesymbol, database)
     except:
         pass # server error!
 
@@ -64,13 +78,15 @@ def get_card(request):
         symbol    = request.GET['target']
         database  = request.GET['targetDB']
         current   = None
-        print("DENTRO")
+
         if "current" in request.GET:
             # We are already in a gene-card save it and send to template to create
             # a back button
             current    = request.GET['current']
             current_db = request.GET['currentDB']
             if current == symbol:
+                # This means the user has been exploring through the cards, but he
+                # ended up returning to the first node
                 current    = None
                 current_db = None
 
@@ -79,10 +95,7 @@ def get_card(request):
         graph = Graph("http://localhost:7474/db/data/")
 
         try:
-            if database == "Human":
-                card_node = HumanNode(symbol, database)
-            else:
-                card_node = PredictedNode(symbol, database)
+            card_node = query_node(symbol, database)
         except Exception as e:
             pass # 404 -> Card node ID not found... :(
 
@@ -120,10 +133,7 @@ def gene_searcher(request):
 
             for genesymbol in symbols:
                 try:
-                    if database == "Human":
-                        search_node = HumanNode(genesymbol, database)
-                    else:
-                        search_node = PredictedNode(genesymbol, database)
+                    search_node = query_node(genesymbol, database)
                     nodes.append(search_node)
                 except Exception as e:
                     # No search results...

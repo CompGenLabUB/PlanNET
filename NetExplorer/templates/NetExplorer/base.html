@@ -2,6 +2,7 @@
     <meta charset="utf-8">
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -10,27 +11,91 @@
     </head>
 
     <body>
-        <div id="logo-container">
-            <a href="/"> <img id="logoheader" src="{% static 'Images/prevlogo.png' %}"/> </a>
+        <div id="page-container">
+            <div id="content">
+                <div id="logo-container">
+                    <a href="/"> <img id="logoheader" src="{% static 'Images/prevlogo.png' %}"/> </a>
+                </div>
+
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="#">Tutorial</a></li>
+                            <li><a href="#">Downloads</a></li>
+                            <li><a href="#">About</a></li>
+                        </ul>
+                    </div>
+                </nav>
+
+
+                <div id="body-wrapper">
+                    {% block content %}
+                    <!-- This will be filled by index.html template -->
+                    {% endblock %}
+                </div>
+
         </div>
 
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Home</a></li>
-                <li><a href="#">Tutorial</a></li>
-                <li><a href="#">Downloads</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
-        </div>
-    </nav>
+        <footer class="footer-distributed">
+
+			<div class="footer-right">
+				<a href="https://www.facebook.com/Computational-Genomics-Lab-at-Genetics-Dep-UB-267633036589772/" target="_blank">
+                    <img src="{% static 'Images/facebook.png' %}" class="social-icon"/>
+                </a>
+				<a href="#" target="_blank"><img src="{% static 'Images/twitter.png' %}" class="social-icon"></></a>
+				<a href="https://compgen.bio.ub.edu/gitlab/" target="_blank"><img src="{% static 'Images/gitlab.png' %}" class="social-icon"></></a>
+
+			</div>
+
+            <a href="https://compgen.bio.ub.edu/Home"> <img id="compgen-logo" src="{% static 'Images/compgen-logo.png' %}"/> </a>
+			<div class="footer-left">
+
+				<p class="footer-links">
+                    <a href="https://compgen.bio.ub.edu/Home" target="_blank">Home</a>
+                    ·
+                    <a href="https://compgen.bio.ub.edu/Research" target="_blank">Research</a>
+                    .
+                    <a href="https://compgen.bio.ub.edu/Acknowledgements" target="_blank">Acknowledgments</a>
+                    ·
+                    <a href="https://compgen.bio.ub.edu/contact" target="_blank">Contact</a>
+				</p>
+
+				<p class="lab">Computational Genomics Lab &copy; 2016</p>
+			</div>
+
+		</footer>
 
 
-        <div id="body-wrapper">
-            {% block content %}
-            <!-- This will be filled by index.html template -->
-            {% endblock %}
-        </div>
+    </div>
+
+
+
+        <script src="{% static 'js/backtotop.js' %}"></script>
+        <script src="{% static 'js/overlay.js' %}"></script>
+
+        <!-- This function registers a "click event" on a small-searchpanel and
+             sends to Django's view "get_card" the variables "symbol" and "database".
+          -->
+
+        <script>
+
+            $(function() {
+                $('.small-searchpanel').click(function() {
+                    var card_data = {
+                        target  : $(this).attr("target"),
+                        targetDB: $(this).attr("targetDB"),
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    }
+                    elementID = card_data["target"] + "_card";
+                    $("#" + elementID).load("{% url get_card %}?target=" + card_data["target"] + "&targetDB=" + card_data["targetDB"]);
+                    //$(this).nextAll(".card-overlay").load("/");
+                    //$(this).closest('.card-overlay').load("/");
+                });
+            });
+
+
+        </script>
 
     </body>
 </html>

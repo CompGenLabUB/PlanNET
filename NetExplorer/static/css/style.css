@@ -1,5 +1,26 @@
 /* Header + LOGO FORMATTING */
 
+#page-container {
+    position: absolute;
+    background-color: #E7E7E7;
+    height: auto;
+    min-height: 100%;
+    min-width: 100%;
+    display:block;
+    overflow:auto;
+}
+
+#content {
+    background-color: white;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 12%;
+}
+
+
 #logo-container {
     margin-left: 5%;
     margin-top: 2%;
@@ -26,7 +47,6 @@
 }
 
 #panel-container {
-    position: absolute;
     margin: auto;
     right: 0;
     left: 0;
@@ -85,8 +105,8 @@
     cursor: pointer;
     width: 70%;
     margin: 5%;
-    padding-bottom: 2%;
 }
+
 
 .small-searchpanel:hover {
     opacity: 0.8;
@@ -101,6 +121,22 @@
 
 
 
+/* SOME FOOTER THINGS */
+#compgen-logo {
+    width: 100px;
+    margin-right: 20px;
+}
+
+.social-icon {
+    width: 35px;
+    height: 35px;
+}
+
+.social-icon:hover {
+    opacity: 0.7;
+}
+
+
 
 /* OVERLAY THINGS */
 .card-overlay {
@@ -110,7 +146,7 @@
     position: fixed;
     top: 30px;
     right: 18%;
-    z-index: 9999;
+    z-index: 80;
     background: white;
     padding-left: 5%;
     padding-top: 5%;
@@ -142,6 +178,7 @@
     top: 30px;
     left: 18%;
     padding-left: 2%;
+    z-index: 100;
 }
 
 
@@ -150,7 +187,7 @@
     background-color: #D9EDF7;
     width: 100%;
     height: 8%;
-    display: table; 
+    display: table;
 }
 
 .card-title h1 {
@@ -179,3 +216,88 @@
 .download-fasta-wrapper:hover {
     opacity: 0.8;
 }
+
+
+
+
+.card-link {
+    cursor: pointer;
+}
+
+.glyphicon-remove {
+    color: #777777;
+}
+
+.glyphicon-remove:hover {
+    opacity: 0.2;
+    color: #A8A8A8;
+}
+
+.glyphicon-remove:active{
+  color:black;
+}
+
+
+/* BACK TO TOP THINGS */
+.cd-top.cd-is-visible {
+  /* the button becomes visible */
+  visibility: visible;
+  opacity: 1;
+}
+.cd-top.cd-fade-out {
+  /* if the user keeps scrolling down, the button is out of focus and becomes less visible */
+  opacity: .5;
+}
+
+.cd-top {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  position: fixed;
+  bottom: 100px;
+  right: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  /* image replacement properties */
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+  background: url(../Images/back_to_top.png) no-repeat center 50%;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+  -moz-transition: opacity .3s 0s, visibility 0s .3s;
+  transition: opacity .3s 0s, visibility 0s .3s;
+}
+.cd-top.cd-is-visible, .cd-top.cd-fade-out, .no-touch .cd-top:hover {
+  -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+  -moz-transition: opacity .3s 0s, visibility 0s 0s;
+  transition: opacity .3s 0s, visibility 0s 0s;
+}
+.cd-top.cd-is-visible {
+  /* the button becomes visible */
+  visibility: visible;
+  opacity: 1;
+}
+.cd-top.cd-fade-out {
+  /* if the user keeps scrolling down, the button is out of focus and becomes less visible */
+  opacity: .5;
+}
+.no-touch .cd-top:hover {
+  background-color: #e86256;
+  opacity: 1;
+}
+@media only screen and (min-width: 768px) {
+  .cd-top {
+    right: 20px;
+    bottom: 60px;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .cd-top {
+    height: 60px;
+    width: 60px;
+    right: 30px;
+    bottom: 65px;
+  }
+}
+/* END OF BACK TO TOP */
