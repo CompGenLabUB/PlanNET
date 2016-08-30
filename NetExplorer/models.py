@@ -11,7 +11,9 @@ graph = Graph("http://localhost:7474/db/data/")
 
 # ------------------------------------------------------------------------------
 class Node(object):
-    """docstring for Node"""
+    """
+    Base class for all the nodes in the database.
+    """
 
     def __init__(self, symbol, database):
         super(Node, self).__init__()
@@ -21,12 +23,30 @@ class Node(object):
             raise IncorrectDatabase(self.database)
 
     def __query_node(self):
-        print("I'm in parent")
+        """
+        This method will be overriden by HumanNode or PredictedNode.
+        It will query the Neo4j database and it will get the required node.
+        """
 
+    def get_neighbours(self):
+        """
+        Method to get the adjacent nodes in the graph.
+        """
+        pass
+
+    def path_to_node(self, target):
+        """
+        Given a target node, this method finds all the shortest paths to that node,
+        if there aren't any, it returns None.
+        """
+        pass
 
 # ------------------------------------------------------------------------------
 class HumanNode(Node):
-    """Human node class definition"""
+    """
+    Human node class definition.
+    """
+
     allowed_databases = set(["Human"])
 
     def __init__(self, symbol, database):
@@ -53,7 +73,10 @@ class HumanNode(Node):
 
 # ------------------------------------------------------------------------------
 class PredictedNode(Node):
-    """Class for planarian nodes."""
+    """
+    Class for planarian nodes.
+    """
+
     allowed_databases = set(["Cthulhu", "Consolidated"])
 
     def __init__(self, symbol, database):

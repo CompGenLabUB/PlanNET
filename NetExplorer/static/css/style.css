@@ -7,7 +7,7 @@
 }
 
 #logoheader {
-    width: 500px;
+    width: 400px;
 }
 
 #logoheader:hover {
@@ -21,7 +21,8 @@
 }
 
 #search-wrapper {
-    width: 30%;
+    margin-bottom: 2%;
+    text-align: center;
 }
 
 #panel-container {
@@ -67,4 +68,114 @@
 .app-icon {
     margin-top: 10%;
     width: 180;
+}
+
+.app-icon-inside {
+    margin-top: 4%;
+    width: 180;
+}
+
+
+
+/* GENE/DOMAIN CARDS */
+
+.small-searchpanel {
+    height: 10%;
+    overflow: hidden;
+    cursor: pointer;
+    width: 70%;
+    margin: 5%;
+    padding-bottom: 2%;
+}
+
+.small-searchpanel:hover {
+    opacity: 0.8;
+}
+
+.big-searchpanel {
+    height: auto;
+    cursor: pointer;
+    width: 70%;
+
+}
+
+
+
+
+/* OVERLAY THINGS */
+.card-overlay {
+    display: none;
+    height: 90%;
+    width: 64%;
+    position: fixed;
+    top: 30px;
+    right: 18%;
+    z-index: 9999;
+    background: white;
+    padding-left: 5%;
+    padding-top: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    overflow: scroll;
+    overflow-y: scroll;
+    -webkit-box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
+    color: #777777;
+}
+
+.close-overlay, #click {
+    cursor:
+    pointer;
+}
+
+.close-overlay:hover {
+    opacity: 0.2;
+}
+
+.close-overlay {
+    font-size:16px;
+    font-weight: bold;
+    padding:20px;
+    color: black;
+    position: fixed;
+    top: 30px;
+    left: 18%;
+    padding-left: 2%;
+}
+
+
+.card-title {
+    text-align: center;
+    background-color: #D9EDF7;
+    width: 100%;
+    height: 8%;
+    display: table; 
+}
+
+.card-title h1 {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+.panel-body p {
+    color: #777777;
+}
+
+.sequence-container {
+    word-wrap: break-word;
+    background-color: #F7F7F7;
+    padding: 5%;
+    overflow-y: scroll;
+    max-height: 20%;
+}
+
+.download-fasta {
+    width: 50px;
+}
+
+.download-fasta-wrapper:hover {
+    opacity: 0.8;
 }
