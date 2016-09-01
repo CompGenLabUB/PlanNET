@@ -179,7 +179,7 @@
 }
 
 .close-overlay:hover .glyphicon-remove:hover {
-    color: #F7F7F7;
+    color: #d1d1d1;
 }
 
 .card-title {
@@ -304,14 +304,25 @@
 
 
 .int-table-container {
-    font-size: 8px;
+    color: #777777;
+    font-size: 12px;
     text-align: center;
     width: 90%;
     margin-left: 5%;
     overflow-x: scroll;
 }
 
-.int-table {
+.int-table-class {
     font-size: 12px;
     color: #777777;
+}
+
+.dataTables_filter label {
+    color: #777777;
+    font-weight: bold;
+}
+
+.dataTables_length label {
+    color: #777777;
+    font-weight: bold;
 }

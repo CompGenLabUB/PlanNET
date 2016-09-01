@@ -6,11 +6,11 @@ $('.small-searchpanel').click(function(){
     $('.card-overlay').hide(250);
     $('.close-overlay').hide();
     var card_data = {
-        target  : $(this).attr("target"),
-        targetDB: $(this).attr("targetDB"),
+        target  : $(this).attr('target'),
+        targetDB: $(this).attr('targetDB'),
     }
     elementID = card_data["target"] + "_card";
-    $("#" + elementID).slideToggle(450);
+    $('[id="' + elementID + '"]').slideToggle(450);
     $('.close-overlay').slideToggle(450);
     return false;
 });

@@ -1,9 +1,9 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
 <html>
 
@@ -72,7 +72,7 @@
                     <hr>
                     {% if node.neighbours %}
                     <div class="int-table-container">
-                        <table class="table table-hover int-table">
+                        <table id="int-table" class="table table-hover int-table-class">
                             <thead>
                                 <tr>
                                 <th>Symbol</th>
@@ -84,8 +84,8 @@
                                 <th>Domain Interaction Score</th>
                                 </tr>
                             </thead>
-                        {% for int in node.neighbours %}
                             <tbody>
+                        {% for int in node.neighbours %}
                             <tr>
                                 <td><a
                                     class="card-link"
@@ -101,9 +101,9 @@
                                 <td>{{ int.parameters.bioproc_nto }}</td>
                                 <td>{{ int.parameters.dom_int_sc }}</td>
                             </tr>
-                            </tbody>
 
                         {% endfor %}
+                            </tbody>
                         </table>
                     </div>
                     {% else %}
@@ -113,6 +113,11 @@
 
                 {% endif %}
     </body>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
     <script>
         $('.card-link').click(function() {
@@ -125,7 +130,7 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
 
-            //history.pushState(card_data, null, "/gene_card/" + card_data['target_db'] + "/" + card_data['target']);
+            // history.pushState(card_data, null, "/gene_card/" + card_data['target_db'] + "/" + card_data['target']);
             // Load Get request html on current card-overlay
             $.ajax({
                 type: "GET",
@@ -141,6 +146,9 @@
                 },
                 success : function(data) {
                     $(this).closest('.card-overlay').html(data)
+                    $(document).ready(function(){
+                        $('.int-table-class').DataTable();
+                    });
                 }
             });
 
