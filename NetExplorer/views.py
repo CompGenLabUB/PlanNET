@@ -43,8 +43,6 @@ def get_fasta(request):
     '''
     This function will serve FASTA files
     '''
-    if request.method == "GET" and "genesymbol" in request.GET:
-        graph = Graph("http://localhost:7474/db/data/")
 
     genesymbol   = request.GET['genesymbol']
     typeseq      = request.GET['type']
@@ -93,8 +91,6 @@ def get_card(request):
                 current_db = None
 
         card_node = None
-        print("%s and %s" %(symbol, database))
-        graph = Graph("http://localhost:7474/db/data/")
 
         try:
             card_node = query_node(symbol, database)
@@ -117,7 +113,6 @@ def gene_searcher(request):
     This is the text-based database search function.
     '''
     if request.method == "GET" and "genesymbol" in request.GET:
-        graph = Graph("http://localhost:7474/db/data/")
 
         # Get Form input
         symbols      = request.GET['genesymbol']

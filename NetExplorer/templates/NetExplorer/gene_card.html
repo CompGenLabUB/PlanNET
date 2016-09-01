@@ -142,6 +142,10 @@
         });
 
 
+
+        // This will check if the user is pressing the "back" button on his/her
+        // browser. If that's the case, it will update the content of the "visible"
+        // card-div.
         window.onpopstate = function(event) {
             if (event.state != null){
                 console.log("AJAX!");
@@ -166,22 +170,4 @@
         };
 
     </script>
-
-<!--
-    <script>
-        window.addEventListener("popstate", function(e) {
-
-        	// URL location
-        	var location = document.location;
-
-        	// state
-        	var state = e.state;
-
-
-
-        	alert("PEPE")
-
-        });
-    </script>
--->
 </html>

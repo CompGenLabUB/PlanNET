@@ -12,7 +12,7 @@
         <div id="search-wrapper">
             <img class="app-icon-inside" src="{% static 'Images/gene-finder-icon.png' %}"/>
             <div class="panel-body app-panel">
-                <form class= "form-inline" method="GET">
+                <form class= "form-inline" method="GET" action="{% url gene_searcher %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
