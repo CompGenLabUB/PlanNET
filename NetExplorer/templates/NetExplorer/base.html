@@ -90,7 +90,7 @@
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     }
 
-                    //history.pushState(card_data, null, "/gene_card/" + card_data['targetDB'] + "/" + card_data['target']);
+                    history.pushState(card_data, null, "/gene_card/" + card_data['targetDB'] + "/" + card_data['target']);
                     elementID = card_data["target"] + "_card";
                     $.ajax({
                         type: "GET",

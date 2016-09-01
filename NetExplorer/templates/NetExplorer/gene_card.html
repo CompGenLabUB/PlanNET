@@ -13,20 +13,6 @@
                     <h1>{{ node.symbol }}</h1>
                 </div>
 
-                {% if previous %}
-
-                    <a class="card-link"
-                       current="{{ previous }}"
-                       target="{{ previous }}"
-                       currentDB="{{ previous }}"
-                       targetDB="{{ previousDB }}">
-                       <button type="button" class="btn btn-default navbar-btn">
-                           <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-                             &nbsp Back</button>
-                    </a>
-
-                {% endif %}
-
                 {% if node.database == "Human" %}
                 <!--HUMAN CARD -->
                     <h2>Show xrefs here :)</h2>
@@ -124,13 +110,13 @@
             var card_data = {
                 div_id    : $(this).closest('.card-overlay').attr("id"),
                 current   : $(this).attr("current"),
-                current_db: $(this).attr("currentDB"),
+                currentDB: $(this).attr("currentDB"),
                 target    : $(this).attr("target"),
-                target_db : $(this).attr("targetDB"),
+                targetDB : $(this).attr("targetDB"),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
 
-            // history.pushState(card_data, null, "/gene_card/" + card_data['target_db'] + "/" + card_data['target']);
+            history.pushState(card_data, null, "/gene_card/" + card_data['targetDB'] + "/" + card_data['target']);
             // Load Get request html on current card-overlay
             $.ajax({
                 type: "GET",
@@ -140,8 +126,8 @@
                 data: {
                     'target'    : card_data['target'],
                     'current'   : card_data['current'],
-                    'targetDB'  : card_data['target_db'],
-                    'currentDB' : card_data['current_db'],
+                    'targetDB'  : card_data['targetDB'],
+                    'currentDB' : card_data['currentDB'],
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success : function(data) {
@@ -154,6 +140,31 @@
 
 
         });
+
+
+        window.onpopstate = function(event) {
+            if (event.state != null){
+                console.log("AJAX!");
+                $.ajax({
+                    type: "GET",
+                    context: this, //this makes the this variable visible inside the success
+                    url: "{% url get_card %}",
+                    cache: true,
+                    data: {
+                        'target'    : event.state['target'],
+                        'targetDB'  : event.state['targetDB'],
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success : function(data) {
+                        $('.card-overlay:visible').html(data)
+                        $(document).ready(function(){
+                            $('.int-table-class').DataTable();
+                        });
+                    }
+                });
+            }
+        };
+
     </script>
 
 <!--
