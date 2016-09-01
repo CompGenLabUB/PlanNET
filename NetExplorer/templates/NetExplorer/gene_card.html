@@ -1,4 +1,9 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/footer.css' %}">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <html>
 
@@ -63,6 +68,48 @@
                         target="UBC"
                         targetDB="Human">link</a>
 
+                    <h2>Interactions</h2>
+                    <hr>
+                    {% if node.neighbours %}
+                    <div class="int-table-container">
+                        <table class="table table-hover int-table">
+                            <thead>
+                                <tr>
+                                <th>Symbol</th>
+                                <th>Probability</th>
+                                <th>Path Length</th>
+                                <th>Cellular Component NTO</th>
+                                <th>Molecular Function NTO</th>
+                                <th>Biological Process NTO</th>
+                                <th>Domain Interaction Score</th>
+                                </tr>
+                            </thead>
+                        {% for int in node.neighbours %}
+                            <tbody>
+                            <tr>
+                                <td><a
+                                    class="card-link"
+                                    current="{{ node.symbol }}"
+                                    currentDB="{{ node.database }}"
+                                    target="{{ int.target.symbol }}"
+                                    targetDB="{{ int.target.database }}">{{ int.target.symbol }}</a>
+                                </td>
+                                <td>{{ int.parameters.int_prob }}</td>
+                                <td>{{ int.parameters.path_length }}</td>
+                                <td>{{ int.parameters.cellcom_nto }}</td>
+                                <td>{{ int.parameters.molfun_nto }}</td>
+                                <td>{{ int.parameters.bioproc_nto }}</td>
+                                <td>{{ int.parameters.dom_int_sc }}</td>
+                            </tr>
+                            </tbody>
+
+                        {% endfor %}
+                        </table>
+                    </div>
+                    {% else %}
+                        <h3>No interactions</h3>
+                    {% endif %}
+
 
                 {% endif %}
     </body>
@@ -70,6 +117,7 @@
     <script>
         $('.card-link').click(function() {
             var card_data = {
+                div_id    : $(this).closest('.card-overlay').attr("id"),
                 current   : $(this).attr("current"),
                 current_db: $(this).attr("currentDB"),
                 target    : $(this).attr("target"),
@@ -77,15 +125,44 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
 
-            elementID = card_data["current"] + "_card";
-            $("#" + elementID).load(
-                "{% url get_card %}?target=" + card_data["target"] +
-                "&targetDB="  + card_data["target_db"] +
-                "&current="   + card_data["current"]  +
-                "&currentDB=" + card_data["current_db"]
-            );
+            //history.pushState(card_data, null, "/gene_card/" + card_data['target_db'] + "/" + card_data['target']);
+            // Load Get request html on current card-overlay
+            $.ajax({
+                type: "GET",
+                context: this, //this makes the this variable visible inside the success
+                url: "{% url get_card %}",
+                cache: true,
+                data: {
+                    'target'    : card_data['target'],
+                    'current'   : card_data['current'],
+                    'targetDB'  : card_data['target_db'],
+                    'currentDB' : card_data['current_db'],
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success : function(data) {
+                    $(this).closest('.card-overlay').html(data)
+                }
+            });
+
 
         });
     </script>
 
+<!--
+    <script>
+        window.addEventListener("popstate", function(e) {
+
+        	// URL location
+        	var location = document.location;
+
+        	// state
+        	var state = e.state;
+
+
+
+        	alert("PEPE")
+
+        });
+    </script>
+-->
 </html>

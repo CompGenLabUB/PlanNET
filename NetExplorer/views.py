@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from py2neo import Graph, Path
-from NetExplorer.models import PredictedNode, HumanNode, graph
+from NetExplorer.models import PredictedNode, HumanNode, graph, PredInteraction
 import tempfile
 import textwrap
 from django.http import HttpResponse
@@ -96,13 +96,13 @@ def get_card(request):
 
         try:
             card_node = query_node(symbol, database)
+            card_node.get_neighbours()
         except Exception as e:
             pass # 404 -> Card node ID not found... :(
 
         if current is None:
-            return render(request, 'NetExplorer/gene_card.html', { 'node': card_node} )
+            return render(request, 'NetExplorer/gene_card.html', { 'node': card_node })
         else:
-            print("P: %s and %s" % (current, current_db))
             return render(request, 'NetExplorer/gene_card.html', { 'node': card_node, 'previous': current, 'previousDB': current_db } )
     else:
         # Error 404

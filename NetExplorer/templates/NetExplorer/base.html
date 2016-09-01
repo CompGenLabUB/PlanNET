@@ -88,8 +88,21 @@
                         targetDB: $(this).attr("targetDB"),
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     }
+
+                    //history.pushState(card_data, null, "/gene_card/" + card_data['targetDB'] + "/" + card_data['target']);
                     elementID = card_data["target"] + "_card";
-                    $("#" + elementID).load("{% url get_card %}?target=" + card_data["target"] + "&targetDB=" + card_data["targetDB"]);
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url get_card %}",
+                        data: {
+                            'target'    : card_data['target'],
+                            'targetDB'  : card_data['targetDB'],
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success : function(data) {
+                            $("#" + elementID).html(data)
+                        }
+                    });
                     //$(this).nextAll(".card-overlay").load("/");
                     //$(this).closest('.card-overlay').load("/");
                 });
