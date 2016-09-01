@@ -1,0 +1,91 @@
+{% load static %}
+
+<html>
+
+    <body>
+
+                <div class="card-title">
+                    <h1>{{ node.symbol }}</h1>
+                </div>
+
+                {% if previous %}
+
+                    <a class="card-link"
+                       current="{{ previous }}"
+                       target="{{ previous }}"
+                       currentDB="{{ previous }}"
+                       targetDB="{{ previousDB }}">
+                       <button type="button" class="btn btn-default navbar-btn">
+                           <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                             &nbsp Back</button>
+                    </a>
+
+                {% endif %}
+
+                {% if node.database == "Human" %}
+                <!--HUMAN CARD -->
+                    <h2>Show xrefs here :)</h2>
+
+                {% else %}
+                <!--PREDICTED NODE CARD -->
+                    <h2>Sequence information</h2>
+                    <hr>
+
+                    <h3>Read sequence:</h3>
+                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=sequence">
+                        <div class="download-fasta-wrapper" title="Download FASTA file">
+                            <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
+                            Download FASTA
+                        </div>
+                    </a>
+                    <div class="sequence-container">
+                        <p>{{ node.sequence }}</p>
+                    </div>
+
+                    <h3>Longest Orf sequence:</h3>
+                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=orf">
+                        <div class="download-fasta-wrapper" title="Download FASTA file">
+                            <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
+                            Download FASTA
+                        </div>
+                    </a>
+                    <div class="sequence-container">
+                        <p>{{ node.orf }}</p>
+                    </div>
+
+
+                    <h2>Example of text and Link</h2>
+                    <hr>
+                    <p> So this is an example of a <a
+                        class="card-link"
+                        current="{{ node.symbol }}"
+                        currentDB="{{ node.database }}"
+                        target="UBC"
+                        targetDB="Human">link</a>
+
+
+                {% endif %}
+    </body>
+
+    <script>
+        $('.card-link').click(function() {
+            var card_data = {
+                current   : $(this).attr("current"),
+                current_db: $(this).attr("currentDB"),
+                target    : $(this).attr("target"),
+                target_db : $(this).attr("targetDB"),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+
+            elementID = card_data["current"] + "_card";
+            $("#" + elementID).load(
+                "{% url get_card %}?target=" + card_data["target"] +
+                "&targetDB="  + card_data["target_db"] +
+                "&current="   + card_data["current"]  +
+                "&currentDB=" + card_data["current_db"]
+            );
+
+        });
+    </script>
+
+</html>
