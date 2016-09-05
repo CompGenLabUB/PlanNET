@@ -1,0 +1,109 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/footer.css' %}">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+<html>
+
+    <body>
+            <div id="content">
+
+                <div class="card-title">
+                    <h1>{{ node.symbol }}</h1>
+                </div>
+
+                {% if node.database == "Human" %}
+                <!--HUMAN CARD -->
+                    <h2>Show xrefs here :)</h2>
+
+                {% else %}
+                <!--PREDICTED NODE CARD -->
+                    <h2>Sequence information</h2>
+                    <hr>
+
+                    <h3>Read sequence:</h3>
+                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=sequence">
+                        <div class="download-fasta-wrapper" title="Download FASTA file">
+                            <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
+                            Download FASTA
+                        </div>
+                    </a>
+                    <div class="sequence-container">
+                        <p>{{ node.sequence }}</p>
+                    </div>
+
+                    <h3>Longest Orf sequence:</h3>
+                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=orf">
+                        <div class="download-fasta-wrapper" title="Download FASTA file">
+                            <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
+                            Download FASTA
+                        </div>
+                    </a>
+                    <div class="sequence-container">
+                        <p>{{ node.orf }}</p>
+                    </div>
+
+
+                    <h2>Example of text and Link</h2>
+                    <hr>
+                    <p> So this is an example of a <a href="/gene_card/{{ node.database}}/{{ node.symbol }}">link</a>
+
+                    <h2>Interactions</h2>
+                    <hr>
+                    {% if node.neighbours %}
+                    <div class="int-table-container">
+                        <table id="int-table" class="table table-hover int-table-class">
+                            <thead>
+                                <tr>
+                                <th>Symbol</th>
+                                <th>Probability</th>
+                                <th>Path Length</th>
+                                <th>Cellular Component NTO</th>
+                                <th>Molecular Function NTO</th>
+                                <th>Biological Process NTO</th>
+                                <th>Domain Interaction Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        {% for int in node.neighbours %}
+                            <tr>
+                                <td><a href="/gene_card/{{ int.target.database }}/{{ int.target.symbol }}">{{ int.target.symbol }}</a>
+                                </td>
+                                <td>{{ int.parameters.int_prob }}</td>
+                                <td>{{ int.parameters.path_length }}</td>
+                                <td>{{ int.parameters.cellcom_nto }}</td>
+                                <td>{{ int.parameters.molfun_nto }}</td>
+                                <td>{{ int.parameters.bioproc_nto }}</td>
+                                <td>{{ int.parameters.dom_int_sc }}</td>
+                            </tr>
+
+                        {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <h3>No interactions</h3>
+                    {% endif %}
+
+
+                {% endif %}
+        </div>
+    </body>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+    <script>
+
+    $(document).ready(function(){
+        $('#int-table').DataTable({
+            "order": [[ 1, "desc" ]]
+        });
+    });
+
+    </script>
+</html>
