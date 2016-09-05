@@ -106,7 +106,9 @@
                         success : function(data) {
                             $('[id="' + elementID + '"]').html(data);
                             $(document).ready(function(){
-                                $('.int-table-class').DataTable();
+                                $('.int-table-class').DataTable({
+                                    "order": [[ 1, "desc" ]]
+                                });
                             });
                         }
                     });

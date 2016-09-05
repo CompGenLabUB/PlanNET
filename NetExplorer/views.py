@@ -73,38 +73,24 @@ def get_fasta(request):
 
 
 # ------------------------------------------------------------------------------
-def get_card(request):
-    if request.method == 'GET':
+def get_card(request, symbol=None, database=None):
+    if request.method == 'GET' and request.is_ajax():
         symbol    = request.GET['target']
         database  = request.GET['targetDB']
-        current   = None
 
-        if "current" in request.GET:
-            # We are already in a gene-card save it and send to template to create
-            # a back button
-            current    = request.GET['current']
-            current_db = request.GET['currentDB']
-            if current == symbol:
-                # This means the user has been exploring through the cards, but he
-                # ended up returning to the first node
-                current    = None
-                current_db = None
 
-        card_node = None
+    card_node = None
 
-        try:
-            card_node = query_node(symbol, database)
-            card_node.get_neighbours()
-        except Exception as e:
-            pass # 404 -> Card node ID not found... :(
+    try:
+        card_node = query_node(symbol, database)
+        card_node.get_neighbours()
+    except Exception as e:
+        pass # 404 -> Card node ID not found... :(
 
-        if current is None:
-            return render(request, 'NetExplorer/gene_card.html', { 'node': card_node })
-        else:
-            return render(request, 'NetExplorer/gene_card.html', { 'node': card_node, 'previous': current, 'previousDB': current_db } )
+    if request.is_ajax():
+        return render(request, 'NetExplorer/gene_card.html', { 'node': card_node })
     else:
-        # Error 404
-        pass
+        return render(request, 'NetExplorer/gene_card_fullscreen.html', { 'node': card_node })
 
 
 # ------------------------------------------------------------------------------

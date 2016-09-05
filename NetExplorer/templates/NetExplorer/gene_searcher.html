@@ -55,8 +55,13 @@
 
             <!-- This will be filled by the JS code in base.html with an onclick
                  event triggered by small-searchpanel -->
-            <div class="close-overlay" title="Close card">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            <div id="button-container">
+                <div class="close-overlay" title="Close card">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </div>
+                <div class="full-screen-card" title="Open in new window">
+                    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                </div>
             </div>
             <div id="{{ node.symbol }}_card" class="card-overlay">
                     <div class="card-title">

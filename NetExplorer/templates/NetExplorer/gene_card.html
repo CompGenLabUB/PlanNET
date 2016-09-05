@@ -133,7 +133,9 @@
                 success : function(data) {
                     $(this).closest('.card-overlay').html(data)
                     $(document).ready(function(){
-                        $('.int-table-class').DataTable();
+                        $('.int-table-class').DataTable({
+                            "order": [[ 1, "desc" ]]
+                        });
                     });
                 }
             });
@@ -162,7 +164,9 @@
                     success : function(data) {
                         $('.card-overlay:visible').html(data)
                         $(document).ready(function(){
-                            $('.int-table-class').DataTable();
+                            $('.int-table-class').DataTable({
+                                "order": [[ 1, "desc" ]]
+                            });
                         });
                     }
                 });
