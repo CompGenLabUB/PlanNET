@@ -45,11 +45,64 @@
                         <p>{{ node.orf }}</p>
                     </div>
 
+                    {% if node.homolog %}
+                        <h2>Homolog</h2>
+                        <hr>
+                        <h4><strong>Symbol:</strong> {{ node.homolog.human.symbol }}</h4>
 
-                    <h2>Example of text and Link</h2>
-                    <hr>
-                    <p> So this is an example of a <a href="/gene_card/{{ node.database}}/{{ node.symbol }}">link</a>
+                            <ul>
+                                <li>
+                                    <a target="_blank" title="Search on HGNC" href="http://www.genenames.org/cgi-bin/gene_search?search={{ node.homolog.human.symbol }}&submit=Submit">
+                                        Search on HGNC
+                                    </a>
+                                </li>
 
+                                <li>
+                                    <a target="_blank" title="Search on Uniprot" href="http://www.uniprot.org/uniprot/?query=gene%3A{{ node.homolog.human.symbol }}+AND+organism%3Ahuman&sort=score">
+                                        Search on Uniprot
+                                    </a>
+                                </li>
+                            </ul>
+
+                        <br>
+                        <h4><strong>EggNOG alignment</strong></h4>
+                            {% if node.homolog.nog_eval == "10" %}
+                                No best hit.
+                                <br>
+                            {% else %}
+                                <table class="table table-hover homology-table">
+                                    <tr> <td class="homology-table-header">EggNOG e-value</td> <td>{{ node.homolog.nog_eval }}</td> </tr>
+                                    <tr> <td class="homology-table-header">EggNog BRH</td>     <td>{{ node.homolog.nog_brh }} </td> </tr>
+                                </table>
+                            {% endif %}
+
+                        <h4><strong>BLAST</strong></h4>
+                            {% if node.homolog.blast_eval == "10" %}
+                                No best hit.
+                                <br>
+                            {% else %}
+                                <table class="table table-hover homology-table">
+                                    <tr><td class="homology-table-header">BLAST e-value</td>         <td>{{ node.homolog.blast_eval }}</td> </tr>
+                                    <tr><td class="homology-table-header">BLAST query coverage</td>  <td>{{ node.homolog.blast_cov }} </td> </tr>
+                                    <tr><td class="homology-table-header">BLAST BRH</td>             <td>{{ node.homolog.blast_brh }} </td> </tr>
+                                </table>
+                            {% endif %}
+
+
+                        <h4><strong>PFAM meta-alignment</strong></h4>
+                            {% if node.homolog.pfam_sc == "0" %}
+                                No best hit.
+                                <br>
+                            {% else %}
+                                <table class="table table-hover homology-table">
+                                        <tr> <td class="homology-table-header">M.A. Score</td> <td>{{ node.homolog.pfam_sc }}</td>   </tr>
+                                        <tr> <td class="homology-table-header">M.A. BRH</td>   <td>{{ node.homolog.pfam_brh }}</td>  </tr>
+                                </table>
+                            {% endif %}
+
+                    {% endif %}
+
+                    <br>
                     <h2>Interactions</h2>
                     <hr>
                     {% if node.neighbours %}

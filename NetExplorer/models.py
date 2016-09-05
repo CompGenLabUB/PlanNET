@@ -83,6 +83,22 @@ class Node(object):
         """
         pass
 
+# ------------------------------------------------------------------------------
+class Homology(object):
+    """
+    Class for homology relationships between a PredictedNode and a HumanNode.
+    """
+    def __init__(self, prednode, human, blast_cov, blast_eval, nog_brh,  pfam_sc, nog_eval, blast_brh, pfam_brh):
+        self.prednode   = prednode
+        self.human      = human
+        self.blast_cov  = blast_cov
+        self.blast_eval = blast_eval
+        self.nog_brh    = nog_brh
+        self.pfam_sc    = pfam_sc
+        self.nog_eval   = nog_eval
+        self.blast_brh  = blast_brh
+        self.pfam_brh   = pfam_brh
+
 
 # ------------------------------------------------------------------------------
 class PredInteraction(object):
@@ -171,6 +187,7 @@ class PredictedNode(Node):
         self.orf           = None
         self.length        = None
         self.gccont        = None
+        self.homolog       = None
         self.n_homologs    = None
         self.n_interactors = None
         self.__query_node()
@@ -202,8 +219,46 @@ class PredictedNode(Node):
         self.length = len(self.sequence)
         self.gccont = ( self.sequence.count("G") + self.sequence.count("C") ) / self.length
 
+    def get_homolog(self):
+        '''
+        Gets human homolog with all its information and saves it as an "homology" object
+        in the attribute self.homolog.
+        '''
+        query = """
+            MATCH (n:%s)-[r:HOMOLOG_OF]-(m:Human)
+            WHERE  n.symbol = "%s"
+            RETURN m.symbol AS human,
+                   r.blast_cov AS blast_cov,
+                   r.blast_eval AS blast_eval,
+                   r.nog_brh AS nog_brh,
+                   r.pfam_sc AS pfam_sc,
+                   r.nog_eval AS nog_eval,
+                   r.blast_brh AS blast_brh,
+                   r.pfam_brh AS pfam_brh
+        """ % (self.database, self.symbol)
 
+        results = graph.run(query)
+        results = results.data()
+        
+        if results:
+            for row in results:
+                human_node = HumanNode(row['human'], "Human")
+                self.homolog = Homology(
+                    prednode   = self,
+                    human      = human_node,
+                    blast_cov  = row['blast_cov'],
+                    blast_eval = row['blast_eval'],
+                    nog_brh    = row['nog_brh'],
+                    pfam_sc    = row['pfam_sc'],
+                    nog_eval   = row['nog_eval'],
+                    blast_brh  = row['blast_brh'],
+                    pfam_brh   = row['pfam_brh']
+                )
 
+                return self.homolog
+
+        else:
+            return None
 
 
 # EXCEPTIONS

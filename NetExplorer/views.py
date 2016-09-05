@@ -21,6 +21,7 @@ def query_node(symbol, database):
         node = HumanNode(symbol, database)
     else:
         node = PredictedNode(symbol, database)
+        node.get_summary()
 
     return node
 
@@ -84,6 +85,7 @@ def get_card(request, symbol=None, database=None):
     try:
         card_node = query_node(symbol, database)
         card_node.get_neighbours()
+        card_node.get_homolog()
     except Exception as e:
         pass # 404 -> Card node ID not found... :(
 
