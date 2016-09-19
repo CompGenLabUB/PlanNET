@@ -171,7 +171,9 @@
     left: 18%;
     z-index: 100;
     background-color: #D9EDF7;
-
+    -webkit-box-shadow: 10px 0px 27px 0px rgba(0,0,0,0.15);
+    -moz-box-shadow: 10px 0px 27px 0px rgba(0,0,0,0.15);
+    box-shadow: 10px 0px 27px 0px rgba(0,0,0,0.15);
 }
 
 .close-overlay {
@@ -351,6 +353,11 @@
     width: 90%;
     margin-left: 5%;
     overflow-x: scroll;
+}
+
+.domain-table {
+    font-size: 12px;
+    color: #777777;
 }
 
 .int-table-class {

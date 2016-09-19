@@ -86,6 +86,7 @@ def get_card(request, symbol=None, database=None):
         card_node = query_node(symbol, database)
         card_node.get_neighbours()
         card_node.get_homolog()
+        card_node.get_domains()
     except Exception as e:
         pass # 404 -> Card node ID not found... :(
 

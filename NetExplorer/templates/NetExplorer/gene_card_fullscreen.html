@@ -48,7 +48,9 @@
                     {% if node.homolog %}
                         <h2>Homolog</h2>
                         <hr>
-                        <h4><strong>Symbol:</strong> {{ node.homolog.human.symbol }}</h4>
+                        <h4><strong>Symbol:</strong>
+                            <a href="/gene_card/Human/{{ node.homolog.human.symbol }}">{{ node.homolog.human.symbol }}</a>
+                        </h4>
 
                             <ul>
                                 <li>

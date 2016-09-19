@@ -47,7 +47,15 @@
                     {% if node.homolog %}
                         <h2>Homolog</h2>
                         <hr>
-                        <h4><strong>Symbol:</strong> {{ node.homolog.human.symbol }}</h4>
+                        <h4>
+                            <strong>Symbol:</strong> <a
+                            class="card-link"
+                            current="{{ node.symbol }}"
+                            currentDB="{{ node.database }}"
+                            target="{{ node.homolog.human.symbol }}"
+                            targetDB="Human">{{ node.homolog.human.symbol }}</a>
+
+                        </h4>
 
                             <ul>
                                 <li>
@@ -100,6 +108,42 @@
                             {% endif %}
 
                     {% endif %}
+
+                    <br>
+                    <h2>Domains</h2>
+                    <hr>
+                    {% if node.domains == None %}
+                        No domains.
+                    {% else %}
+                        <table class="table table-hover domain-table">
+                            <thead>
+                                <tr>
+                                    <th>Accession</th>
+                                    <th>Identifier</th>
+                                    <th>Sequence Start</th>
+                                    <th>Sequence End</th>
+                                    <th>Pfam Start</th>
+                                    <th>Pfam End</th>
+                                    <th>% of Domain</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        {% for dom in node.domains %}
+                            <tr>
+                                <td>{{ dom.domain.accession }}</td>
+                                <td>{{ dom.domain.identifier }}</td>
+                                <td>{{ dom.s_start }}</td>
+                                <td>{{ dom.s_end }}</td>
+                                <td>{{ dom.p_start }}</td>
+                                <td>{{ dom.p_end }}</td>
+                                <td>{{ dom.perc }}</td>
+                            </tr>
+
+                        {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+
 
                     <br>
                     <h2>Interactions</h2>

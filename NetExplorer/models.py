@@ -20,6 +20,7 @@ class Node(object):
         self.symbol     = symbol
         self.database   = database.capitalize()
         self.neighbours = list()
+        self.domains    = list()
         if self.database not in self.allowed_databases:
             raise IncorrectDatabase(self.database)
 
@@ -46,7 +47,6 @@ class Node(object):
                    r.dom_int_sc  AS dom_int_sc
         """ % (self.database, self.database, self.symbol)
 
-        print(query)
         results = graph.run(query)
         results = results.data()
 
@@ -83,6 +83,57 @@ class Node(object):
         """
         pass
 
+
+    def get_domains(self):
+        """
+        This will return a list of Has_domain objects or, if the sequence has no Pfam domains,
+        a None object.
+        """
+        query = """
+                MATCH (n:%s)-[r]->(dom:Pfam)
+                WHERE n.symbol = '%s'
+                RETURN dom.accession   AS accession,
+                       dom.description AS description,
+                       dom.identifier  AS identifier,
+                       dom.mlength     AS mlength,
+                       r.pfam_start    AS p_start,
+                       r.pfam_end      AS p_end,
+                       r.s_start       AS s_start,
+                       r.s_end         AS s_end,
+                       r.perc          AS perc
+                """ % (self.database, self.symbol)
+
+        results = graph.run(query)
+        results = results.data()
+
+        if results:
+            annotated_domains = list()
+            for row in results:
+                domain = Domain(
+                    accession   = row['accession'],
+                    description = row['description'],
+                    identifier  = row['identifier'],
+                    mlength     = row['mlength']
+                )
+                domain_annotation = Has_domain(
+                    node    = self,
+                    domain  = domain,
+                    p_start = row['p_start'],
+                    p_end   = row['p_end'],
+                    s_start = row['s_start'],
+                    s_end   = row['s_end'],
+                    perc    = row['perc']
+                )
+                annotated_domains.append(domain_annotation)
+            print(annotated_domains)
+            annotated_domains.sort(key=lambda x: x.s_start)
+            self.domains = annotated_domains
+            print(annotated_domains)
+            return self.domains
+        else:
+            self.domains = None
+            return self.domains
+
 # ------------------------------------------------------------------------------
 class Homology(object):
     """
@@ -99,6 +150,31 @@ class Homology(object):
         self.blast_brh  = blast_brh
         self.pfam_brh   = pfam_brh
 
+
+# ------------------------------------------------------------------------------
+class Domain(object):
+    """
+    Class for Pfam domains.
+    """
+    def __init__(self, accession, description, identifier, mlength):
+        self.accession   = accession
+        self.description = description
+        self.identifier  = identifier
+        self.mlength     = mlength
+
+# ------------------------------------------------------------------------------
+class Has_domain(object):
+    """
+    Class for relationships between a node and a Pfam domain annotated on the sequence.
+    """
+    def __init__(self, domain, node, p_start, p_end, s_start, s_end, perc):
+        self.domain  = domain
+        self.node    = node
+        self.p_start = int(p_start)
+        self.p_end   = int(p_end)
+        self.s_start = int(s_start)
+        self.s_end   = int(s_end)
+        self.perc    = perc
 
 # ------------------------------------------------------------------------------
 class PredInteraction(object):
@@ -239,7 +315,7 @@ class PredictedNode(Node):
 
         results = graph.run(query)
         results = results.data()
-        
+
         if results:
             for row in results:
                 human_node = HumanNode(row['human'], "Human")
