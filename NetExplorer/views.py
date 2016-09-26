@@ -1,11 +1,12 @@
-from django.shortcuts import render
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
-from py2neo import Graph, Path
+from django.shortcuts   import render
+from django.shortcuts   import render_to_response
+from django.http        import HttpResponse, HttpResponseRedirect, Http404
+from django.template    import RequestContext
+from py2neo             import Graph, Path
 from NetExplorer.models import PredictedNode, HumanNode, graph, PredInteraction
 import tempfile
 import textwrap
-from django.http import HttpResponse
+
 
 # -----------------------
 # FUNCTIONS
@@ -79,7 +80,6 @@ def get_card(request, symbol=None, database=None):
         symbol    = request.GET['target']
         database  = request.GET['targetDB']
 
-
     card_node = None
 
     try:
@@ -88,7 +88,7 @@ def get_card(request, symbol=None, database=None):
         card_node.get_homolog()
         card_node.get_domains()
     except Exception as e:
-        pass # 404 -> Card node ID not found... :(
+        return render(request, 'NetExplorer/404.html')
 
     if request.is_ajax():
         return render(request, 'NetExplorer/gene_card.html', { 'node': card_node })
@@ -139,3 +139,19 @@ def net_explorer(request):
     This is the cytoscape graph-based search function.
     '''
     return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+
+
+# ------------------------------------------------------------------------------
+def handler404(request):
+    response = render_to_response('NetExplorer/404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+# ------------------------------------------------------------------------------
+def handler500(request):
+    response = render_to_response('NetExplorer/500.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response

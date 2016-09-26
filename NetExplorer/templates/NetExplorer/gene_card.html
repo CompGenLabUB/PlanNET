@@ -130,7 +130,11 @@
                             <tbody>
                         {% for dom in node.domains %}
                             <tr>
-                                <td>{{ dom.domain.accession }}</td>
+                                <td>
+                                    <a href="http://pfam.xfam.org/family/{{ dom.domain.accession }}" target="_blank" title="Open on PFAM site">
+                                        {{ dom.domain.accession }}
+                                    </a>
+                                </td>
                                 <td>{{ dom.domain.identifier }}</td>
                                 <td>{{ dom.s_start }}</td>
                                 <td>{{ dom.s_end }}</td>
