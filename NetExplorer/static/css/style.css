@@ -449,3 +449,9 @@
     position: relative;
     display: block;
 }
+
+#save-image-container {
+    top: 5%;
+    position: relative;
+    display: block;
+}

@@ -92,3 +92,12 @@ $("#center-to-graph").on("click", function(){
 $(".btn").mouseup(function(){
     $(this).blur();
 })
+
+
+
+// SAVE TO png
+
+$("#save-image").on("click", function() {
+    var graph_png = cy.png()
+    $('#image-download').attr('href', graph_png);
+});

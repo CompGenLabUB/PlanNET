@@ -33,10 +33,10 @@
 
         <div id="cyt-controls">
             <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
-
             <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
-                <h3>Select Layout:</h3>
+                <hr>
+                <h3>Select Layout</h3>
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Cose
                     <span class="caret"></span>
                 </button>
@@ -53,15 +53,15 @@
 
             <!--- "On click" Behaviour -->
             <div id="on-click-container">
-                <h3>On click behaviour:</h3>
+                <h3>On click behaviour</h3>
                 <input
                     class="click-behaviour"
                     checked type="checkbox"
                     data-toggle="toggle"
                     data-on="Show card"
                     data-off="Expand"
-                    data-onstyle="success"
-                    data-offstyle="info"
+                    data-onstyle="info"
+                    data-offstyle="success"
                 >
                 <hr>
             </div>
@@ -69,10 +69,23 @@
             <!--- "Camera" Controls -->
 
             <div id="center-to-graph-container">
-                <h3>Controls:</h3>
+                <h3>Controls</h3>
                 <button class="btn btn-default" id="center-to-graph" type="button">
                     Center to Graph
                 </button>
+                <hr>
+            </div>
+
+            <!--- Save Image -->
+
+            <div id="save-image-container">
+                <h3>Save Image</h3>
+                <a download="graph" id="image-download">
+                    <button class="btn btn-default" id="save-image" type="button">
+                        Save to png
+                    </button>
+                </a>
+                <hr>
             </div>
 
 
