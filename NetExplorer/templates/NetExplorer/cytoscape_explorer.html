@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <head>
         <title>PlaNET - Net Explorer</title>
@@ -46,16 +47,29 @@
                         <li><a href="#">Circle</a></li>
                         <li><a href="#">Random</a></li>
                     </ul>
+                <hr>
             </div>
 
 
-
-
+            <!--- "On click" Behaviour -->
+            <div id="on-click-container">
+                <h3>On click behaviour:</h3>
+                <input
+                    class="click-behaviour"
+                    checked type="checkbox"
+                    data-toggle="toggle"
+                    data-on="Show card"
+                    data-off="Expand"
+                    data-onstyle="success"
+                    data-offstyle="info"
+                >
+                <hr>
+            </div>
 
             <!--- "Camera" Controls -->
 
             <div id="center-to-graph-container">
-                <h3>Controls</h3>
+                <h3>Controls:</h3>
                 <button class="btn btn-default" id="center-to-graph" type="button">
                     Center to Graph
                 </button>
@@ -81,6 +95,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <script src="{% static 'js/overlay.js' %}"></script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
         <script src="{% static 'js/cyto-netexplorer.js' %}"></script>

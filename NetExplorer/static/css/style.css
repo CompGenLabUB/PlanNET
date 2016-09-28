@@ -443,3 +443,9 @@
     display: block;
     position: relative;
 }
+
+#on-click-container {
+    top: 5%;
+    position: relative;
+    display: block;
+}

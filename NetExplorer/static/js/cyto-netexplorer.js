@@ -45,7 +45,7 @@ $(".dropdown-menu li a").click(function(){
 
 
 
-// Info card on click
+// Info card/expand on click
 cy.nodes().on("click", function(){
     var card_data = {
         target  : this.data("name"),
@@ -53,24 +53,32 @@ cy.nodes().on("click", function(){
         csrfmiddlewaretoken: '{{ csrf_token }}'
     }
 
+    var behaviour = $('.click-behaviour:checked').val();
 
-    // Get the ID of the div to update
-    elementID = "card-overlay";
-    $.ajax({
-        type: "GET",
-        url: "/info_card",
-        data: {
-            'target'    : card_data['target'],
-            'targetDB'  : card_data['targetDB'],
-            'csrfmiddlewaretoken': '{{ csrf_token }}'
-        },
-        success : function(data) {
-            $('[id="' + elementID + '"]').html(data);
-            $('[id="card-overlay"]').slideToggle(450);
-            $('.close-overlay').slideToggle(450);
-            $('.full-screen-card').slideToggle(450);
-        }
-    });
+    if (behaviour == "on") { // True: card, False: expand
+        // Get the ID of the div to update
+        elementID = "card-overlay";
+        $.ajax({
+            type: "GET",
+            url: "/info_card",
+            data: {
+                'target'    : card_data['target'],
+                'targetDB'  : card_data['targetDB'],
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success : function(data) {
+                $('[id="' + elementID + '"]').html(data);
+                $('[id="card-overlay"]').slideToggle(450);
+                $('.close-overlay').slideToggle(450);
+                $('.full-screen-card').slideToggle(450);
+            }
+        });
+    } else {
+        alert("EXPAND");
+    }
+
+
+
 });
 
 
