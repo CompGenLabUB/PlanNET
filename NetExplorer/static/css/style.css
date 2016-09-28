@@ -434,5 +434,12 @@
 
 #select-layout-container {
     top: 5%;
+    display: block;
+    position: relative;
+}
 
+#center-to-graph-container {
+    top: 5%;
+    display: block;
+    position: relative;
 }

@@ -1,14 +1,14 @@
-
 // Cytoscape style definition
 var stylesheet = cytoscape.stylesheet()
     .selector('node')
         .css({
             'content': 'data(name)',
             'text-valign': 'center',
-            'color': 'white',
-            'background-color': 'data(colorNODE)',
-            'text-outline-width': 2,
-            'text-outline-color': 'data(colorNODE)'
+            'color': '#F8F8F8',
+            'background-color': '#404040',
+            'text-outline-width': 0.3,
+            "font-size": 8,
+            "text-outline-color": "#404040",
         })
     .selector('edge')
         .css({
@@ -32,7 +32,7 @@ var cy = cytoscape({
 cy.load(graphelements);
 
 
-// Change layout control
+// CHANGE LAYOUT CONTROLS
 $('#select-layout li').on('click', function(){
     var newlayout = $(this).text().toLowerCase();
     cy.layout( { name: newlayout } )
@@ -71,6 +71,16 @@ cy.nodes().on("click", function(){
             $('.full-screen-card').slideToggle(450);
         }
     });
-
-
 });
+
+
+
+// CENTER TO CONTROLS
+
+$("#center-to-graph").on("click", function(){
+    cy.center();
+});
+
+$(".btn").mouseup(function(){
+    $(this).blur();
+})
