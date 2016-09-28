@@ -138,7 +138,10 @@ def net_explorer(request):
     '''
     This is the cytoscape graph-based search function.
     '''
-    return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+    if request.method == "GET" and "genesymbol" in request.GET:
+        return render(request, 'NetExplorer/cytoscape_explorer.html', {'hola': "hello"})
+    else:
+        return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
 
 
 # ------------------------------------------------------------------------------

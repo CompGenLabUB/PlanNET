@@ -405,3 +405,26 @@
     font-weight: bold;
     width: 30%;
 }
+
+
+
+/* CYTOSCAPE */
+
+#cyt {
+    height: 100%;
+    width: 75%;
+    float: left;
+}
+
+#cyt-controls {
+    height: 100%;
+    width: 25%;
+    background-color: yellow;
+    float: left;
+    text-align: center;
+}
+
+#cyt-explorer-icon {
+    display: inline-block;
+    margin-top: 20%;
+}

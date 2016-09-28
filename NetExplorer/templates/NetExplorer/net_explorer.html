@@ -1,29 +1,37 @@
 {% extends 'NetExplorer/base.html' %}
+{% load static %}
 
 {% block content %}
 
 
 
+<!-- FORM -->
 
-    <h1>Net Explorer</h1>
-    <form method="GET">
-        {% csrf_token %}
-
+    <div class="panel panel-success" >
+        <div class="panel-heading"><h2>Net Explorer</h2></div>
         <div id="search-wrapper">
-            <div class="form-group">
-                <label for="genesymbol">Gene Symbol:</label>
-                <input type="text" class="form-control" name="genesymbol">
+            <img class="app-icon-inside" src="{% static 'Images/network-icon.png' %}"/>
+            <div class="panel-body app-panel">
+                <form class= "form-inline" method="GET" action="{% url net_explorer %}" target="_blank">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
 
-                <label for="database">Select Database:</label>
-                    <select name="database" class="form-control">
-                        <option value="Human">Human</option>
-                        <option value="Cthulhu">Cthulhu</option>
-                        <option value="Consolidated">Consolidated</option>
-                    </select>
-                <br>
-                <button type="submit" value=" Send" class="btn btn-success" id="submit">Explore</button>
+                        <select name="database" class="form-control">
+                            <option value="" selected disabled>Select Database</option>
+                            <option value="Human">Human</option>
+                            <option value="Cthulhu">Cthulhu</option>
+                            <option value="Consolidated">Consolidated</option>
+                        </select>
+                        <button type="submit" value=" Send" class="btn btn-success" id="submit" >Explore</button>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
+
+
+
 
         {{hola}}
 

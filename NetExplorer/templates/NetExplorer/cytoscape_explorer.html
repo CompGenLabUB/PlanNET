@@ -1,0 +1,66 @@
+{% load static %}
+{% load staticfiles %}
+
+
+
+<html>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
+    <head>
+        <title>PlaNET - Net Explorer</title>
+        <script>
+            var graphelements = {
+                nodes: [
+	                   { data: { id: 'COMO', name: 'COMO', colorNODE: '#CA6347'}},
+	                      { data: { id: 'HOLA', name: 'HOLA', colorNODE: '#CA6347'}},
+	                         { data: { id: 'ESTAS', name: 'ESTAS', colorNODE: '#CA6347'}},
+                         ],
+                edges: [
+	                    { data: { id: 'HOLA-COMO', source: 'HOLA', target: 'COMO', colorEDGE: '#CA6347' }},
+                        ]
+
+            };
+        </script>
+    </head>
+
+    <body>
+
+        <div id="cyt"></div>
+
+        <div id="cyt-controls">
+            <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
+
+            <!-- Layout Selection-->
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Change Layout
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu" id="select-layout">
+                            <li><a href="#">grid</a></li>
+                            <li><a href="#">cose</a></li>
+                        </select>
+                    </ul>
+            </div>
+
+            
+
+            <div id="change-layout" class="btn btn-default">
+                Change Layout
+            </div>
+        </div>
+
+        <script>
+        </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+        <script src="{% static 'js/cytoscape.js' %}"></script>
+        <script src="{% static 'js/cyto-netexplorer.js' %}"></script>
+    </body>
+
+
+</html>
