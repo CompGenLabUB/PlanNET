@@ -419,12 +419,20 @@
 #cyt-controls {
     height: 100%;
     width: 25%;
-    background-color: yellow;
     float: left;
     text-align: center;
+    border-width: 5px;
+    background-color: #F8F8F8;
+    border-color: #777777;
+    border-width: 4px;
 }
 
 #cyt-explorer-icon {
     display: inline-block;
     margin-top: 20%;
+}
+
+#select-layout-container {
+    top: 5%;
+
 }

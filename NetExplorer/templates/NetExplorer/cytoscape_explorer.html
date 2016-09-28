@@ -2,25 +2,22 @@
 {% load staticfiles %}
 
 
-
 <html>
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 
     <head>
         <title>PlaNET - Net Explorer</title>
         <script>
             var graphelements = {
                 nodes: [
-	                   { data: { id: 'COMO', name: 'COMO', colorNODE: '#CA6347'}},
-	                      { data: { id: 'HOLA', name: 'HOLA', colorNODE: '#CA6347'}},
-	                         { data: { id: 'ESTAS', name: 'ESTAS', colorNODE: '#CA6347'}},
-                         ],
+	                   { data: { id: 'cth1_Trc_comp948_c0_seq1', name: 'cth1_Trc_comp948_c0_seq1', colorNODE: '#CA6347', database: "Cthulhu"}},
+	                      { data: { id: 'cth1_Trc_comp12511_c0_seq1', name: 'cth1_Trc_comp12511_c0_seq1', colorNODE: '#CA6347', database: "Cthulhu"}},
+	                    ],
                 edges: [
-	                    { data: { id: 'HOLA-COMO', source: 'HOLA', target: 'COMO', colorEDGE: '#CA6347' }},
+	                    { data: { id: 'cth1_Trc_comp12511_c0_seq1-cth1_Trc_comp948_c0_seq1', source: 'cth1_Trc_comp12511_c0_seq1', target: 'cth1_Trc_comp948_c0_seq1', colorEDGE: '#CA6347' }},
                         ]
 
             };
@@ -29,35 +26,48 @@
 
     <body>
 
+
+
         <div id="cyt"></div>
 
         <div id="cyt-controls">
             <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
 
             <!-- Layout Selection-->
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Change Layout
+            <div class="dropdown" id="select-layout-container">
+                <h3>Select Layout:</h3>
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Cose
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu" id="select-layout">
-                            <li><a href="#">grid</a></li>
-                            <li><a href="#">cose</a></li>
-                        </select>
+                        <li><a href="#">Cose</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Grid</a></li>
+                        <li><a href="#">Circle</a></li>
+                        <li><a href="#">Random</a></li>
                     </ul>
             </div>
 
-            
 
-            <div id="change-layout" class="btn btn-default">
-                Change Layout
+
+        </div> <!--cyt-controls-->
+
+
+        <!-- Get info Card on click -->
+        <!-- Gene Card -->
+        <div id="button-container">
+            <div class="close-overlay" title="Close card">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </div>
+            <div class="full-screen-card" title="Open in new window">
+                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
             </div>
         </div>
+        <div class="card-overlay" id="card-overlay"></div>
 
-        <script>
-        </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+        <script src="{% static 'js/overlay.js' %}"></script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
         <script src="{% static 'js/cyto-netexplorer.js' %}"></script>
     </body>
