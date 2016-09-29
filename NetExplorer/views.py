@@ -28,7 +28,7 @@ def query_node(symbol, database):
     return node
 
 # ------------------------------------------------------------------------------
-def node_to_jsondict(node):
+def node_to_jsondict(node, query):
     '''
     This function takes a node object and returns a dictionary with the necessary
     structure to convert it to json and be read by cytoscape.js
@@ -38,6 +38,10 @@ def node_to_jsondict(node):
     element['data']['id']       = node.symbol
     element['data']['name']     = node.symbol
     element['data']['database'] = node.database
+    if query:
+        element['data']['colorNODE'] = "#449D44"
+    else:
+        element['data']['colorNODE'] = "#404040"
     return element
 
 # ------------------------------------------------------------------------------
@@ -193,11 +197,13 @@ def net_explorer(request):
                     search_node.get_neighbours()
 
                      # Add search node
-                    graphelements['nodes'].append( node_to_jsondict(search_node) )
+                    graphelements['nodes'].append( node_to_jsondict(search_node, True) )
                     added_elements.add(search_node.symbol)
 
                     for interaction in search_node.neighbours:
-                        graphelements['nodes'].append( node_to_jsondict(interaction.target) )
+                        if interaction.target.symbol not in added_elements and interaction.target.symbol not in symbols:
+                            graphelements['nodes'].append( node_to_jsondict(interaction.target, False) )
+                            added_elements.add(interaction.target.symbol)
                         added_elements.add((search_node.symbol, interaction.target.symbol))
                         if (interaction.target.symbol, search_node.symbol) not in added_elements:
                             graphelements['edges'].append( edge_to_jsondict(interaction) )
@@ -210,6 +216,7 @@ def net_explorer(request):
             return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
         else:
             json_data = json.dumps(graphelements)
+            print(json_data)
             return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_data': json_data})
     else:
         return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
