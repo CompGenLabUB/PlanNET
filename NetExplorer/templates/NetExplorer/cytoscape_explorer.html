@@ -88,6 +88,7 @@
                         <li class="divider"></li>
                         <li><a href="#">Grid</a></li>
                         <li><a href="#">Circle</a></li>
+                        <li><a href="#">Dagre</a></li>
                         <li><a href="#">Random</a></li>
                     </ul>
                 <hr>
@@ -142,6 +143,7 @@
                         data-slider-min="0.6"
                         data-slider-max="0.95"
                         data-slider-step="0.05"
+                        data-slider-selection="after"
                     >
                     <h5><strong>Filter interactions</strong><br>by probability</h5>
                     <hr>
@@ -173,9 +175,25 @@
         <script src="{% static 'js/cytoscape.js' %}"></script>
         <script src="{% static 'js/bootstrap-slider.js' %}"></script>
         <script src="{% static 'js/cyto-netexplorer.js' %}"></script>
+        <script src="{% static 'js/dagre.js' %}"></script>
+        <script src="{% static 'js/cytoscape-dagre.js' %}"></script>
         <script>
         // Initialize slider to filter edges. Function to filter them is in cyto-netexplorer.js
             $('#sl1').slider();
+            var RGBChange = function() {
+                $('#RGB').css('background', 'rgb('+r.getValue()+','+g.getValue()+','+b.getValue()+')')
+            };
+
+            var r = $('#R').slider()
+                    .on('slide', RGBChange)
+                    .data('slider');
+                    var g = $('#G').slider()
+                    .on('slide', RGBChange)
+                    .data('slider');
+                    var b = $('#B').slider()
+                    .on('slide', RGBChange)
+                    .data('slider');
+
         </script>
     </body>
 
