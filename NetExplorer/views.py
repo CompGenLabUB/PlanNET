@@ -6,6 +6,7 @@ from py2neo             import Graph, Path
 from NetExplorer.models import PredictedNode, HumanNode, graph, PredInteraction
 import tempfile
 import textwrap
+import json
 
 
 # -----------------------
@@ -25,6 +26,41 @@ def query_node(symbol, database):
         node.get_summary()
 
     return node
+
+# ------------------------------------------------------------------------------
+def node_to_jsondict(node):
+    '''
+    This function takes a node object and returns a dictionary with the necessary
+    structure to convert it to json and be read by cytoscape.js
+    '''
+    element                     = dict()
+    element['data']             = dict()
+    element['data']['id']       = node.symbol
+    element['data']['name']     = node.symbol
+    element['data']['database'] = node.database
+    return element
+
+# ------------------------------------------------------------------------------
+def edge_to_jsondict(edge):
+    '''
+    This function takes a PredInteraction object and returns a dictionary with the necessary
+    structure to convert it to json and be read by cytoscape.js
+    '''
+    element         = dict()
+    element['data'] = dict()
+    element['data']['id']          = "%s-%s" %(edge.source_symbol, edge.target.symbol)
+    element['data']['source']      = edge.source_symbol
+    element['data']['target']      = edge.target.symbol
+    element['data']['pathlength']  = edge.parameters['path_length']
+    element['data']['probability'] = edge.parameters['int_prob']
+
+    if edge.parameters['path_length'] == 1:
+        element['data']['colorEDGE']   = "#72a555"
+    else:
+        element['data']['colorEDGE']   = "#CA6347"
+
+    return element
+
 
 # -----------------------
 # VIEWS
@@ -139,7 +175,42 @@ def net_explorer(request):
     This is the cytoscape graph-based search function.
     '''
     if request.method == "GET" and "genesymbol" in request.GET:
-        return render(request, 'NetExplorer/cytoscape_explorer.html', {'hola': "hello"})
+        symbols  = request.GET['genesymbol']
+        symbols  = symbols.split(",")
+        database = None
+        if "database" in request.GET:
+            database = request.GET['database']
+        graphelements = {'nodes': list(), 'edges': list()}
+        added_elements   = set()
+        if database is None:
+            # No database
+            return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+        else:
+            for symbol in symbols:
+
+                try:
+                    search_node = query_node(symbol, database)
+                    search_node.get_neighbours()
+
+                     # Add search node
+                    graphelements['nodes'].append( node_to_jsondict(search_node) )
+                    added_elements.add(search_node.symbol)
+
+                    for interaction in search_node.neighbours:
+                        graphelements['nodes'].append( node_to_jsondict(interaction.target) )
+                        added_elements.add((search_node.symbol, interaction.target.symbol))
+                        if (interaction.target.symbol, search_node.symbol) not in added_elements:
+                            graphelements['edges'].append( edge_to_jsondict(interaction) )
+                except:
+                    print(database)
+                    print("node not found")
+
+        if not added_elements:
+            # No results
+            return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+        else:
+            json_data = json.dumps(graphelements)
+            return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_data': json_data})
     else:
         return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
 

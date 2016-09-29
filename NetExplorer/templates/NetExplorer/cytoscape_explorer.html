@@ -14,57 +14,7 @@
     <head>
         <title>PlaNET - Net Explorer</title>
         <script>
-            var graphelements = {
-                nodes: [
-	                   { data:
-                           {
-                               id: 'cth1_Trc_comp948_c0_seq1',
-                               name: 'cth1_Trc_comp948_c0_seq1',
-                               colorNODE: '#CA6347',
-                               database: "Cthulhu"
-                           }
-                       },
-	                   { data:
-                           {
-                               id: 'cth1_Trc_comp12511_c0_seq1',
-                               name: 'cth1_Trc_comp12511_c0_seq1',
-                               colorNODE: '#CA6347',
-                               database: "Cthulhu"
-                           }
-                       },
-                       { data:
-                           {
-                               id: 'cth1_Trc_CULO',
-                               name: 'cth1_Trc_CULO',
-                               colorNODE: '#CA6347',
-                               database: "Cthulhu"
-                           }
-                       },
-	               ],
-                edges: [
-	                    { data:
-                            {
-                                id: 'cth1_Trc_comp12511_c0_seq1-cth1_Trc_comp948_c0_seq1',
-                                source: 'cth1_Trc_comp12511_c0_seq1',
-                                target: 'cth1_Trc_comp948_c0_seq1',
-                                colorEDGE: '#70A845',
-                                probability: '0.9',
-                                pathlength: '1',
-                            }
-                        },
-                        { data:
-                            {
-                                id: 'cth1_Trc_comp12511_c0_seq1-cth1_Trc_CULO',
-                                source: 'cth1_Trc_comp12511_c0_seq1',
-                                target: 'cth1_Trc_CULO',
-                                colorEDGE: '#CC5366',
-                                probability: '0.65',
-                                pathlength: '2',
-                            }
-                        },
-                ]
-
-            };
+            var graphelements = {{ json_data|safe }};
         </script>
     </head>
 
