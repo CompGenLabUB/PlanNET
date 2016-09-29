@@ -6,20 +6,61 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slider.css' %}">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 
     <head>
         <title>PlaNET - Net Explorer</title>
         <script>
             var graphelements = {
                 nodes: [
-	                   { data: { id: 'cth1_Trc_comp948_c0_seq1', name: 'cth1_Trc_comp948_c0_seq1', colorNODE: '#CA6347', database: "Cthulhu"}},
-	                      { data: { id: 'cth1_Trc_comp12511_c0_seq1', name: 'cth1_Trc_comp12511_c0_seq1', colorNODE: '#CA6347', database: "Cthulhu"}},
-	                    ],
+	                   { data:
+                           {
+                               id: 'cth1_Trc_comp948_c0_seq1',
+                               name: 'cth1_Trc_comp948_c0_seq1',
+                               colorNODE: '#CA6347',
+                               database: "Cthulhu"
+                           }
+                       },
+	                   { data:
+                           {
+                               id: 'cth1_Trc_comp12511_c0_seq1',
+                               name: 'cth1_Trc_comp12511_c0_seq1',
+                               colorNODE: '#CA6347',
+                               database: "Cthulhu"
+                           }
+                       },
+                       { data:
+                           {
+                               id: 'cth1_Trc_CULO',
+                               name: 'cth1_Trc_CULO',
+                               colorNODE: '#CA6347',
+                               database: "Cthulhu"
+                           }
+                       },
+	               ],
                 edges: [
-	                    { data: { id: 'cth1_Trc_comp12511_c0_seq1-cth1_Trc_comp948_c0_seq1', source: 'cth1_Trc_comp12511_c0_seq1', target: 'cth1_Trc_comp948_c0_seq1', colorEDGE: '#CA6347', probability: '0.9' }},
-                        ]
+	                    { data:
+                            {
+                                id: 'cth1_Trc_comp12511_c0_seq1-cth1_Trc_comp948_c0_seq1',
+                                source: 'cth1_Trc_comp12511_c0_seq1',
+                                target: 'cth1_Trc_comp948_c0_seq1',
+                                colorEDGE: '#CA6347',
+                                probability: '0.9'
+                            }
+                        },
+                        { data:
+                            {
+                                id: 'cth1_Trc_comp12511_c0_seq1-cth1_Trc_CULO',
+                                source: 'cth1_Trc_comp12511_c0_seq1',
+                                target: 'cth1_Trc_CULO',
+                                colorEDGE: '#CA6347',
+                                probability: '0.65'
+                            }
+                        },
+                ]
 
             };
         </script>
@@ -66,26 +107,35 @@
                 <hr>
             </div>
 
-            <!--- "Camera" Controls -->
+            <div id="controls-container">
 
-            <div id="center-to-graph-container">
                 <h3>Controls</h3>
-                <button class="btn btn-default" id="center-to-graph" type="button">
-                    Center to Graph
-                </button>
-                <hr>
-            </div>
+
+                <!--- "Camera" Controls -->
+
+                <div id="center-to-graph-container">
+                    <button class="btn btn-default" id="center-to-graph" type="button">
+                        <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                    </button>
+                    <h5>Center</h5>
+                    <hr>
+                </div>
 
             <!--- Save Image -->
 
-            <div id="save-image-container">
-                <h3>Save Image</h3>
-                <a download="graph" id="image-download">
-                    <button class="btn btn-default" id="save-image" type="button">
-                        Save to png
-                    </button>
-                </a>
-                <hr>
+                <div id="save-image-container">
+                    <a download="graph-export" id="image-download" title="Save graph as a png image">
+                        <button class="btn btn-default" id="save-image" type="button">
+                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                        </button>
+                    </a>
+                    <h5>Save Image</h5>
+                    <hr>
+                </div>
+
+                <br>
+                    <input type="text" class="span2" id="sl1" data-slider-value="0.6" data-slider-min="0.6" data-slider-max="0.95" data-slider-step="0.05">
+                    <h5>Filter by probability</h5>
             </div>
 
 
@@ -108,10 +158,16 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
         <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <script src="{% static 'js/overlay.js' %}"></script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
+        <script src="{% static 'js/bootstrap-slider.js' %}"></script>
         <script src="{% static 'js/cyto-netexplorer.js' %}"></script>
+        <script>
+        // Initialize slider to filter edges. Function to filter them is in cyto-netexplorer.js
+            $('#sl1').slider();
+        </script>
     </body>
 
 

@@ -438,11 +438,6 @@
     position: relative;
 }
 
-#center-to-graph-container {
-    top: 5%;
-    display: block;
-    position: relative;
-}
 
 #on-click-container {
     top: 5%;
@@ -450,8 +445,33 @@
     display: block;
 }
 
-#save-image-container {
+#controls-container {
     top: 5%;
     position: relative;
-    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+
+#center-to-graph-container {
+    position: relative;
+    margin: 0 auto;
+    float: left;
+    padding-left: 25%;
+
+}
+
+#save-image-container {
+    position: relative;
+    margin: 0 auto;
+    float: left;
+    padding-left: 20%;
+}
+
+.glyphicon-picture {
+    font-size: 26;
+}
+
+.glyphicon-resize-small {
+    font-size: 26;
 }

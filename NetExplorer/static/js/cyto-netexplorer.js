@@ -12,7 +12,10 @@ var stylesheet = cytoscape.stylesheet()
         })
     .selector('edge')
         .css({
+            'content': 'data(probability)',
+            'font-size': 6,
             'width': 1,
+            'color': "#404040",
             'line-color': 'data(colorEDGE)',
             'target-arrow-color': 'data(colorEDGE)'
         });
@@ -71,6 +74,11 @@ cy.nodes().on("click", function(){
                 $('[id="card-overlay"]').slideToggle(450);
                 $('.close-overlay').slideToggle(450);
                 $('.full-screen-card').slideToggle(450);
+                $(document).ready(function(){
+                    $('.int-table-class').DataTable({
+                        "order": [[ 1, "desc" ]]
+                    });
+                });
             }
         });
     } else {
@@ -87,6 +95,7 @@ cy.nodes().on("click", function(){
 
 $("#center-to-graph").on("click", function(){
     cy.center();
+    cy.fit();
 });
 
 $(".btn").mouseup(function(){
@@ -94,10 +103,27 @@ $(".btn").mouseup(function(){
 })
 
 
-
 // SAVE TO png
 
-$("#save-image").on("click", function() {
-    var graph_png = cy.png()
+$("#image-download").on("click", function() {
+    var graph_png = cy.png();
     $('#image-download').attr('href', graph_png);
+});
+
+
+// FILTER edges with probability below threshold
+$('#sl1').slider().on('slideStop', function(ev){
+    //var value = $('#sl1').slider('getValue');
+    var value = $('#sl1').val();
+    cy.filter(function(i, element){
+        if ( element.isEdge() ) {
+            if( element.data("probability") >= value ){
+                element.show();
+                return true;
+            }
+            element.hide()
+        }
+        // Not an edge
+    });
+
 });
