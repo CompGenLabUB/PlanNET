@@ -39,6 +39,7 @@ def node_to_jsondict(node, query):
     element['data']['id']       = node.symbol
     element['data']['name']     = node.symbol
     element['data']['database'] = node.database
+    element['data']['homolog']  = node.homolog_symbol
     if query:
         element['data']['colorNODE'] = "#449D44"
     else:

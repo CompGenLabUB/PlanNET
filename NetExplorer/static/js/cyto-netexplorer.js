@@ -172,3 +172,14 @@ $('#sl1').slider().on('slideStop', function(ev){
 
 
 });
+
+
+$('#change-label-id').change(function(){
+        alert("CLICK")
+        var behaviour = $('#change-label-id:checked').val();
+        if (behaviour == "on") {
+            cy.selector('node').data("content", "data(homolog)")
+        } else {
+            alert("OFF")
+        }
+});

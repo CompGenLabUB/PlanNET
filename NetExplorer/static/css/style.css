@@ -433,7 +433,7 @@
 }
 
 #select-layout-container {
-    top: 2%;
+    top: 1%;
     display: block;
     text-align: left;
     padding-left: 30%;
@@ -446,7 +446,7 @@
 }
 
 #on-click-container {
-    top: 2%;
+    top: 1%;
     position: relative;
     display: block;
 }
@@ -474,7 +474,7 @@
 }
 
 #slider-container {
-    padding-top: 5%;
+    padding-top: 1%;
 }
 
 .glyphicon-picture {
@@ -508,4 +508,9 @@
     text-align: center;
     font-weight: bold;
     margin-right: 20%;
+}
+
+#change-labels-container {
+    top: 1%;
+    position: relative;
 }
