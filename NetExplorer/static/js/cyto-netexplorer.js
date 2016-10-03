@@ -60,9 +60,9 @@ cy.on( 'click', 'node', function() {
         csrfmiddlewaretoken: '{{ csrf_token }}'
     }
 
-    var behaviour = $('.click-behaviour:checked').val();
+    var behaviour = $('input[name=behaviour]:checked', '#behaviour-form').val()
 
-    if (behaviour == "on") { // True: card, False: expand
+    if (behaviour == "card") {
         // Get the ID of the div to update
         elementID = "card-overlay";
         $.ajax({
@@ -85,7 +85,7 @@ cy.on( 'click', 'node', function() {
                 });
             }
         });
-    } else {
+    } else if (behaviour == "expand") {
         $.ajax({
             type: "GET",
             url: "/net_explorer",
@@ -106,8 +106,23 @@ cy.on( 'click', 'node', function() {
                     padding: 40
                 });
                 console.log(cy.nodes());
+
+                // Show only edges above slider threshold
+                var value = $('#sl1').val();
+                cy.filter(function(i, element){
+                    if ( element.isEdge() ) {
+                        if( element.data("probability") >= value ){
+                            element.show();
+                            return true;
+                        }
+                        element.hide()
+                    }
+                    // Not an edge
+                });
             }
         });
+    } else if (behaviour == "delete") {
+        alert("DELETE");
     }
 
 
@@ -150,5 +165,6 @@ $('#sl1').slider().on('slideStop', function(ev){
         }
         // Not an edge
     });
+
 
 });

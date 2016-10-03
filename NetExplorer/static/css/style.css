@@ -478,3 +478,8 @@
 .glyphicon-resize-small {
     font-size: 26;
 }
+
+.behaviour-div {
+    width: 80%;
+    left: 10%;
+}

@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/slider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toggle-switch.css' %}">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
 
     <head>
         <title>PlaNET - Net Explorer</title>
@@ -51,7 +53,23 @@
             <!--- "On click" Behaviour -->
             <div id="on-click-container">
                 <h3>On click behaviour</h3>
-                <input
+
+                <fieldset>
+                    <legend>View</legend>
+                    <div class="switch-toggle switch-candy behaviour-div">
+                        <form action="" id="behaviour-form">
+                            <input id="radio-card" name="behaviour" type="radio" value="card" checked>
+                            <label for="radio-card" onclick="">Card</label>
+                            <input id="radio-expand" value="expand" name="behaviour" type="radio">
+                            <label for="radio-expand" onclick="">Expand</label>
+                            <input id="radio-delete" value="delete" name="behaviour" type="radio">
+                            <label for="radio-delete" onclick="">Delete</label>
+                            <a></a>
+                        </form>
+                    </div>
+                </fieldset>
+
+                <!--<input
                     class="click-behaviour"
                     checked type="checkbox"
                     data-toggle="toggle"
@@ -59,7 +77,7 @@
                     data-off="Expand"
                     data-onstyle="info"
                     data-offstyle="success"
-                >
+                > -->
                 <hr>
             </div>
 
