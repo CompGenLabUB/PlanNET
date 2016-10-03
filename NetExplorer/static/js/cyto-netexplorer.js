@@ -54,6 +54,8 @@ $(".dropdown-menu li a").click(function(){
 // Info card/expand on click
 
 cy.on( 'click', 'node', function() {
+    this.data("colorNODE", '#449D44'); // Change color of clicked node
+    
     var card_data = {
         target  : this.data("name"),
         targetDB: this.data("database"),
@@ -98,6 +100,7 @@ cy.on( 'click', 'node', function() {
             success : function(data) {
                 var layout_name = $('#select-layout li').text().toLowerCase();
                 var newelements = cy.add(data);
+
                 cy.layout({
                     name: 'cola',
                     maxSimulationTime: 5000,

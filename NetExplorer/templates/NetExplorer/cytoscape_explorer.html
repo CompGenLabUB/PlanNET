@@ -52,10 +52,9 @@
 
             <!--- "On click" Behaviour -->
             <div id="on-click-container">
-                <h3>On click behaviour</h3>
+                <h3>On Click</h3>
 
                 <fieldset>
-                    <legend>View</legend>
                     <div class="switch-toggle switch-candy behaviour-div">
                         <form action="" id="behaviour-form">
                             <input id="radio-card" name="behaviour" type="radio" value="card" checked>
@@ -78,6 +77,22 @@
                     data-onstyle="info"
                     data-offstyle="success"
                 > -->
+                <hr>
+            </div>
+
+            <div id="slider-container">
+                <h3>Filter interactions</h3>
+                <h5>by probability</h5>
+                -<input
+                    type="text"
+                    class="span2"
+                    id="sl1"
+                    data-slider-value="0.6"
+                    data-slider-min="0.6"
+                    data-slider-max="0.95"
+                    data-slider-step="0.05"
+                    data-slider-selection="after"
+                >+
                 <hr>
             </div>
 
@@ -106,20 +121,6 @@
                 </div>
 
                 <br>
-                <div id="slider-container">
-                    <input
-                        type="text"
-                        class="span2"
-                        id="sl1"
-                        data-slider-value="0.6"
-                        data-slider-min="0.6"
-                        data-slider-max="0.95"
-                        data-slider-step="0.05"
-                        data-slider-selection="after"
-                    >
-                    <h5><strong>Filter interactions</strong><br>by probability</h5>
-                    <hr>
-                </div>
             </div>
 
 

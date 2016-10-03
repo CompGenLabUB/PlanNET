@@ -468,7 +468,7 @@
 }
 
 #slider-container {
-    padding-top: 15%;
+    padding-top: 5%;
 }
 
 .glyphicon-picture {
@@ -482,4 +482,5 @@
 .behaviour-div {
     width: 80%;
     left: 10%;
+    font-weight: normal;
 }
