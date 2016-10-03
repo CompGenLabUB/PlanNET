@@ -54,7 +54,7 @@ $(".dropdown-menu li a").click(function(){
 // Info card/expand on click
 
 cy.on( 'click', 'node', function() {
-    this.data("colorNODE", '#449D44'); // Change color of clicked node
+     // Change color of clicked node
     node = this
     var card_data = {
         target  : this.data("name"),
@@ -88,6 +88,7 @@ cy.on( 'click', 'node', function() {
             }
         });
     } else if (behaviour == "expand") {
+        node.data("colorNODE", '#449D44');
         $.ajax({
             type: "GET",
             url: "/net_explorer",

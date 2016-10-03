@@ -74,7 +74,7 @@ def get_graph_elements(symbols, database, graphelements, added_elements):
     """
     if database is None:
         # No database
-        return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+        return None
     else:
         for symbol in symbols:
             try:
@@ -230,12 +230,12 @@ def net_explorer(request):
             # Search result
             if not added_elements:
                 # No results
-                return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+                return render(request, 'NetExplorer/net_explorer.html', {'hola': "not found"})
             else:
                 # There are results
                 return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_data': json_data})
     else:
-        return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+        return render(request, 'NetExplorer/net_explorer.html', {'hola': ""})
 
 
 # ------------------------------------------------------------------------------
