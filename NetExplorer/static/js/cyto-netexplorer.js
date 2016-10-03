@@ -55,7 +55,7 @@ $(".dropdown-menu li a").click(function(){
 
 cy.on( 'click', 'node', function() {
     this.data("colorNODE", '#449D44'); // Change color of clicked node
-    
+    node = this
     var card_data = {
         target  : this.data("name"),
         targetDB: this.data("database"),
@@ -125,7 +125,7 @@ cy.on( 'click', 'node', function() {
             }
         });
     } else if (behaviour == "delete") {
-        alert("DELETE");
+        node.remove()
     }
 
 
