@@ -435,9 +435,15 @@
 #select-layout-container {
     top: 2%;
     display: block;
+    text-align: left;
+    padding-left: 30%;
     position: relative;
 }
 
+#select-layout-container h3 {
+    display: inline-block;
+    padding-right: 10%;
+}
 
 #on-click-container {
     top: 2%;
@@ -483,4 +489,23 @@
     width: 80%;
     left: 10%;
     font-weight: normal;
+}
+
+#slider {
+    display:inline-block;
+}
+
+.slider-symbol-minus{
+    display: inline-block;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 20%;
+}
+.slider-symbol-plus{
+    display: inline-block;
+    float: right;
+    text-align: center;
+    font-weight: bold;
+    margin-right: 20%;
 }

@@ -28,12 +28,12 @@
 
         <div id="cyt-controls">
             <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
-            <h2>Net Explorer</h2>
+            <a href="{% url net_explorer %}"><h2>Net Explorer</h2></a>
             <a href="/">Back to PlaNet</a>
             <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
                 <hr>
-                <h3>Select Layout</h3>
+                <h3>Layout</h3>
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Cose
                     <span class="caret"></span>
                 </button>
@@ -46,6 +46,7 @@
                         <li><a href="#">Dagre</a></li>
                         <li><a href="#">Random</a></li>
                     </ul>
+
                 <hr>
             </div>
 
@@ -83,16 +84,20 @@
             <div id="slider-container">
                 <h3>Filter interactions</h3>
                 <h5>by probability</h5>
-                -<input
-                    type="text"
-                    class="span2"
-                    id="sl1"
-                    data-slider-value="0.6"
-                    data-slider-min="0.6"
-                    data-slider-max="0.95"
-                    data-slider-step="0.05"
-                    data-slider-selection="after"
-                >+
+                <div class="slider-symbol-minus">-</div>
+                <div id="slider">
+                    <input
+                        type="text"
+                        class="span2"
+                        id="sl1"
+                        data-slider-value="0.6"
+                        data-slider-min="0.6"
+                        data-slider-max="0.95"
+                        data-slider-step="0.05"
+                        data-slider-selection="after"
+                    >
+                </div>
+                <div class="slider-symbol-plus">+</div>
                 <hr>
             </div>
 

@@ -53,7 +53,7 @@ def edge_to_jsondict(edge):
     '''
     element         = dict()
     element['data'] = dict()
-    element['data']['id']          = "%s-%s" %(edge.source_symbol, edge.target.symbol)
+    element['data']['id']          = "-".join(sorted((edge.source_symbol, edge.target.symbol)))
     element['data']['source']      = edge.source_symbol
     element['data']['target']      = edge.target.symbol
     element['data']['pathlength']  = edge.parameters['path_length']
