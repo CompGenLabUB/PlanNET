@@ -52,7 +52,8 @@ $(".dropdown-menu li a").click(function(){
 
 
 // Info card/expand on click
-cy.nodes().on("click", function(){
+
+cy.on( 'click', 'node', function() {
     var card_data = {
         target  : this.data("name"),
         targetDB: this.data("database"),
@@ -85,7 +86,28 @@ cy.nodes().on("click", function(){
             }
         });
     } else {
-        alert("EXPAND");
+        $.ajax({
+            type: "GET",
+            url: "/net_explorer",
+            cache: true,
+            data: {
+                'genesymbol': card_data['target'],
+                'database'  : card_data['targetDB'],
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success : function(data) {
+                var layout_name = $('#select-layout li').text().toLowerCase();
+                var newelements = cy.add(data);
+                cy.layout({
+                    name: 'cola',
+                    maxSimulationTime: 5000,
+                    fit: true,
+                    directed: false,
+                    padding: 40
+                });
+                console.log(cy.nodes());
+            }
+        });
     }
 
 

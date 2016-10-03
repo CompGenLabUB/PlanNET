@@ -433,20 +433,20 @@
 }
 
 #select-layout-container {
-    top: 5%;
+    top: 2%;
     display: block;
     position: relative;
 }
 
 
 #on-click-container {
-    top: 5%;
+    top: 2%;
     position: relative;
     display: block;
 }
 
 #controls-container {
-    top: 5%;
+    top: 2%;
     position: relative;
     margin: auto;
     text-align: center;
@@ -457,15 +457,18 @@
     position: relative;
     margin: 0 auto;
     float: left;
-    padding-left: 25%;
-
+    padding-left: 30%;
 }
 
 #save-image-container {
     position: relative;
     margin: 0 auto;
     float: left;
-    padding-left: 20%;
+    padding-left: 10%;
+}
+
+#slider-container {
+    padding-top: 15%;
 }
 
 .glyphicon-picture {

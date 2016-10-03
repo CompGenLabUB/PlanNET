@@ -26,6 +26,8 @@
 
         <div id="cyt-controls">
             <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
+            <h2>Net Explorer</h2>
+            <a href="/">Back to PlaNet</a>
             <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
                 <hr>
@@ -37,6 +39,7 @@
                         <li><a href="#">Cose</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Grid</a></li>
+                        <li><a href="#">Cola</a></li>
                         <li><a href="#">Circle</a></li>
                         <li><a href="#">Dagre</a></li>
                         <li><a href="#">Random</a></li>
@@ -85,6 +88,7 @@
                 </div>
 
                 <br>
+                <div id="slider-container">
                     <input
                         type="text"
                         class="span2"
@@ -97,6 +101,7 @@
                     >
                     <h5><strong>Filter interactions</strong><br>by probability</h5>
                     <hr>
+                </div>
             </div>
 
 
@@ -127,6 +132,8 @@
         <script src="{% static 'js/cyto-netexplorer.js' %}"></script>
         <script src="{% static 'js/dagre.js' %}"></script>
         <script src="{% static 'js/cytoscape-dagre.js' %}"></script>
+        <script src="{% static 'js/cytoscape-cola.js' %}"></script>
+        <script src="{% static 'js/cytoscape-cola-min.js' %}"></script>
         <script>
         // Initialize slider to filter edges. Function to filter them is in cyto-netexplorer.js
             $('#sl1').slider();

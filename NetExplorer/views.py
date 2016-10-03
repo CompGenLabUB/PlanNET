@@ -18,7 +18,8 @@ def query_node(symbol, database):
     This simple function takes a symbol and a database and tries to get it from
     the DB
     '''
-    node = None
+    node   = None
+    symbol = symbol.replace(" ", "")
     if database == "Human":
         node = HumanNode(symbol, database)
     else:
@@ -64,6 +65,36 @@ def edge_to_jsondict(edge):
         element['data']['colorEDGE']   = "#CA6347"
 
     return element
+
+# ------------------------------------------------------------------------------
+def get_graph_elements(symbols, database, graphelements, added_elements):
+    """
+    This function takes the list of symbols from the net_explorer form and
+    fills a dictionary with the elements to add to the graph.
+    """
+    if database is None:
+        # No database
+        return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+    else:
+        for symbol in symbols:
+            try:
+                search_node = query_node(symbol, database)
+                search_node.get_neighbours()
+
+                 # Add search node
+                graphelements['nodes'].append( node_to_jsondict(search_node, True) )
+                added_elements.add(search_node.symbol)
+
+                for interaction in search_node.neighbours:
+                    if interaction.target.symbol not in added_elements and interaction.target.symbol not in symbols:
+                        graphelements['nodes'].append( node_to_jsondict(interaction.target, False) )
+                        added_elements.add(interaction.target.symbol)
+                    added_elements.add((search_node.symbol, interaction.target.symbol))
+                    if (interaction.target.symbol, search_node.symbol) not in added_elements:
+                        graphelements['edges'].append( edge_to_jsondict(interaction) )
+            except:
+                print("node not found")
+    return
 
 
 # -----------------------
@@ -182,42 +213,27 @@ def net_explorer(request):
         symbols  = request.GET['genesymbol']
         symbols  = symbols.split(",")
         database = None
+
         if "database" in request.GET:
-            database = request.GET['database']
-        graphelements = {'nodes': list(), 'edges': list()}
+            database     = request.GET['database']
+        graphelements    = {'nodes': list(), 'edges': list()}
         added_elements   = set()
-        if database is None:
-            # No database
-            return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
-        else:
-            for symbol in symbols:
 
-                try:
-                    search_node = query_node(symbol, database)
-                    search_node.get_neighbours()
+        get_graph_elements(symbols, database, graphelements, added_elements)
+        json_data = json.dumps(graphelements)
 
-                     # Add search node
-                    graphelements['nodes'].append( node_to_jsondict(search_node, True) )
-                    added_elements.add(search_node.symbol)
-
-                    for interaction in search_node.neighbours:
-                        if interaction.target.symbol not in added_elements and interaction.target.symbol not in symbols:
-                            graphelements['nodes'].append( node_to_jsondict(interaction.target, False) )
-                            added_elements.add(interaction.target.symbol)
-                        added_elements.add((search_node.symbol, interaction.target.symbol))
-                        if (interaction.target.symbol, search_node.symbol) not in added_elements:
-                            graphelements['edges'].append( edge_to_jsondict(interaction) )
-                except:
-                    print(database)
-                    print("node not found")
-
-        if not added_elements:
-            # No results
-            return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
-        else:
-            json_data = json.dumps(graphelements)
+        if request.is_ajax():
+            # Expand graph on click
             print(json_data)
-            return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_data': json_data})
+            return HttpResponse(json_data, content_type="application/json")
+        else:
+            # Search result
+            if not added_elements:
+                # No results
+                return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
+            else:
+                # There are results
+                return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_data': json_data})
     else:
         return render(request, 'NetExplorer/net_explorer.html', {'hola': "hello"})
 
