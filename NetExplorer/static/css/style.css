@@ -417,6 +417,7 @@
 }
 
 #cyt-controls {
+    overflow: scroll;
     height: 100%;
     width: 25%;
     float: left;
@@ -529,4 +530,28 @@
 
 #add-node-container .glyphicon-plus {
     padding-right: 2%;
+}
+
+.glyphicon-info-sign {
+    font-size: 15px;
+    cursor: pointer;
+
+}
+
+
+h3 .tooltip-inner {
+    text-align: left !important;
+    color: #777777 !important;
+    font-size: 14 !important;
+    background-color: white  !important;
+     max-width: 500px !important ;
+    /* If max-width does not work, try using width instead */
+    width: 300px !important;
+    padding: 10% !important;
+    opacity: 1 !important;
+    white-space: pre-line;
+}
+
+h3 .tooltip.in {
+  opacity: 1 !important;
 }

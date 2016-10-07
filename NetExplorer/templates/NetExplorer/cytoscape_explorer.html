@@ -28,7 +28,7 @@
 
         <div id="cyt-controls">
             <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
-            <a href="{% url net_explorer %}"><h2>Net Explorer</h2></a>
+            <h2>Net Explorer</h2>
             <a href="/">Back to PlaNet</a>
             <br>
 
@@ -76,7 +76,16 @@
 
             <!--- "On click" Behaviour -->
             <div id="on-click-container">
-                <h3>On Click</h3>
+                <h3>On Click <span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+                title="
+                    This option will determine what happens when you click on a node.
+
+                    - Card: An information card for the node will appear.
+
+                    - Expand: All the elements interacting with the node will be added to the graph.
+
+                    - Delete: The node and all its interactions will be removed from the graph.
+                "></span></h3>
 
                 <fieldset>
                     <div class="switch-toggle switch-candy behaviour-div">
@@ -106,7 +115,10 @@
 
             <!-- Filter interactions -->
             <div id="slider-container">
-                <h3>Filter interactions</h3>
+                <h3>Filter interactions <span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="
+                    With this slider you can filter the interactions depending on the probability. This probability is the proportion of votes reported by a Random Forest classifier, see: 'link to article'
+                    ">
+                </h3>
                 <h5>by probability</h5>
                 <div class="slider-symbol-minus">-</div>
                 <div id="slider">
@@ -185,12 +197,15 @@
         <div class="card-overlay" id="card-overlay"></div>
 
 
+
+        <!-- SCRIPTS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
         <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-        <script src="{% static 'js/overlay.js' %}"></script>
+        <script>$('[data-toggle="tooltip"]').tooltip();</script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
+        <script src="{% static 'js/overlay.js' %}"></script>
         <script src="{% static 'js/bootstrap-slider.js' %}"></script>
         <script src="{% static 'js/cyto-netexplorer.js' %}"></script>
         <script src="{% static 'js/dagre.js' %}"></script>
@@ -215,6 +230,9 @@
                     .data('slider');
 
         </script>
+
+
+
     </body>
 
 
