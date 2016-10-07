@@ -514,3 +514,19 @@
     top: 1%;
     position: relative;
 }
+
+
+#add-node-container {
+    width: 60%;
+    margin-top: 5%;
+    margin-left: 20%;
+}
+
+#submit_add_node {
+    width: 80%;
+    margin-top: 1%;
+}
+
+#add-node-container .glyphicon-plus {
+    padding-right: 2%;
+}

@@ -271,9 +271,9 @@ class PredictedNode(Node):
     def __query_node(self):
         "Gets node from neo4j and fills sequence, orf and length attributes."
         query = """
-            MATCH (n:%s)
+            MATCH (n:%s)-[r:HOMOLOG_OF]-(m:Human)
             WHERE  n.symbol = "%s"
-            RETURN n.symbol AS symbol, n.sequence AS sequence, n.orf AS orf LIMIT 1
+            RETURN n.symbol AS symbol, n.sequence AS sequence, n.orf AS orf, m.symbol AS homolog LIMIT 1
         """ % (self.database, self.symbol)
 
         results = graph.run(query)
@@ -281,9 +281,10 @@ class PredictedNode(Node):
 
         if results:
             for row in results:
-                self.symbol   = row["symbol"]
-                self.sequence = row['sequence']
-                self.orf      = row["orf"]
+                self.symbol         = row["symbol"]
+                self.sequence       = row['sequence']
+                self.orf            = row["orf"]
+                self.homolog_symbol = row['homolog']
         else:
             raise NodeNotFound(self)
 

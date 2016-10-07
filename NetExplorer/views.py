@@ -210,7 +210,11 @@ def net_explorer(request):
     '''
     This is the cytoscape graph-based search function.
     '''
+    if not request.is_ajax():
+        return render(request, 'NetExplorer/cytoscape_explorer.html')
+
     if request.method == "GET" and "genesymbol" in request.GET:
+        print("HOLA")
         symbols  = request.GET['genesymbol']
         symbols  = symbols.split(",")
         database = None
@@ -223,18 +227,9 @@ def net_explorer(request):
         get_graph_elements(symbols, database, graphelements, added_elements)
         json_data = json.dumps(graphelements)
 
-        if request.is_ajax():
-            # Expand graph on click
-            print(json_data)
-            return HttpResponse(json_data, content_type="application/json")
-        else:
-            # Search result
-            if not added_elements:
-                # No results
-                return render(request, 'NetExplorer/net_explorer.html', {'hola': "not found"})
-            else:
-                # There are results
-                return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_data': json_data})
+        # Expand graph on click
+        print(json_data)
+        return HttpResponse(json_data, content_type="application/json")
     else:
         return render(request, 'NetExplorer/net_explorer.html', {'hola': ""})
 

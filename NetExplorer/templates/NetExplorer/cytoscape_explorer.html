@@ -16,7 +16,7 @@
     <head>
         <title>PlaNET - Net Explorer</title>
         <script>
-            var graphelements = {{ json_data|safe }};
+            var graphelements = "";
         </script>
     </head>
 
@@ -30,7 +30,30 @@
             <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
             <a href="{% url net_explorer %}"><h2>Net Explorer</h2></a>
             <a href="/">Back to PlaNet</a>
-            <!-- Layout Selection-->
+            <br>
+
+
+            <!-- Add Node Form-->
+            <div id="add-node-container">
+            <form id="add_node" class= "form" method="GET" action="{% url net_explorer %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+
+                    <select name="database" class="form-control">
+                        <option value="" selected disabled>Select Database</option>
+                        <option value="Human">Human</option>
+                        <option value="Cthulhu">Cthulhu</option>
+                        <option value="Consolidated">Consolidated</option>
+                    </select>
+                    <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
+                </div>
+            </form>
+        </div>
+
+
+
+        <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
                 <hr>
                 <h3>Layout</h3>
@@ -102,21 +125,20 @@
                 <hr>
             </div>
 
-            <!-- Change labels -->
+            <!-- Change labels
             <div id="change-labels-container">
                 <h3>Labels</h3>
                 <input
-                    checked
                     id="change-label-id"
+                    checked
                     type="checkbox"
-                    data-toggle="toggle"
                     data-on="Contigs"
                     data-off="Homologs"
-                    data-onstyle="info"
-                    data-offstyle="success"
+                    data-onstyle="success"
+                    data-offstyle="info"
                  >
                  <hr>
-            </div>
+            </div> -->
 
             <div id="controls-container">
 

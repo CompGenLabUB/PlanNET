@@ -50,6 +50,60 @@ $(".dropdown-menu li a").click(function(){
 });
 
 
+// Function used to add node
+
+function addNode(symbol, database) {
+    $.ajax({
+        type: "GET",
+        url: "/net_explorer",
+        cache: true,
+        data: {
+            'genesymbol': symbol,
+            'database'  : database,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success : function(data) {
+            var layout_name = $('#select-layout li').text().toLowerCase();
+            var newelements = cy.add(data);
+
+            cy.layout({
+                name: 'cola',
+                maxSimulationTime: 5000,
+                fit: true,
+                directed: false,
+                padding: 40
+            });
+            console.log(cy.nodes());
+
+            // Show only edges above slider threshold
+            var value = $('#sl1').val();
+            cy.filter(function(i, element){
+                if ( element.isEdge() ) {
+                    if( element.data("probability") >= value ){
+                        element.show();
+                        return true;
+                    }
+                    element.hide()
+                }
+                // Not an edge
+            });
+        }
+    });
+}
+
+
+
+$("#add_node").submit(function(e) {
+    var formObj = {};
+    var dataArray = $("#add_node").serializeArray(),
+    dataObj = {};
+    $(dataArray).each(function(i, field){
+        dataObj[field.name] = field.value;
+    });
+    addNode(dataObj['genesymbol'], dataObj['database']);
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+});
+
 
 // Info card/expand on click
 
@@ -89,47 +143,10 @@ cy.on( 'click', 'node', function() {
         });
     } else if (behaviour == "expand") {
         node.data("colorNODE", '#449D44');
-        $.ajax({
-            type: "GET",
-            url: "/net_explorer",
-            cache: true,
-            data: {
-                'genesymbol': card_data['target'],
-                'database'  : card_data['targetDB'],
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success : function(data) {
-                var layout_name = $('#select-layout li').text().toLowerCase();
-                var newelements = cy.add(data);
-
-                cy.layout({
-                    name: 'cola',
-                    maxSimulationTime: 5000,
-                    fit: true,
-                    directed: false,
-                    padding: 40
-                });
-                console.log(cy.nodes());
-
-                // Show only edges above slider threshold
-                var value = $('#sl1').val();
-                cy.filter(function(i, element){
-                    if ( element.isEdge() ) {
-                        if( element.data("probability") >= value ){
-                            element.show();
-                            return true;
-                        }
-                        element.hide()
-                    }
-                    // Not an edge
-                });
-            }
-        });
+        addNode(card_data['target'], card_data['targetDB']);
     } else if (behaviour == "delete") {
         node.remove()
     }
-
-
 
 });
 
@@ -174,12 +191,20 @@ $('#sl1').slider().on('slideStop', function(ev){
 });
 
 
-$('#change-label-id').change(function(){
-        alert("CLICK")
-        var behaviour = $('#change-label-id:checked').val();
-        if (behaviour == "on") {
-            cy.selector('node').data("content", "data(homolog)")
-        } else {
-            alert("OFF")
-        }
-});
+//$('#change-label-id').change(function(){
+//        alert("CLICK")
+//        var behaviour = $('#change-label-id:checked').val();
+//        if (behaviour == "on") {
+//            cy.filter(function(i, element){
+//                if ( element.isNode() ) {
+//                    element.css({"content": element.data("name")})
+//                }
+//            });
+//        } else {
+//            cy.filter(function(i, element){
+//                if ( element.isNode() ) {
+//                    element.css({"content": element.data("homolog")})
+//                }
+//            });
+//        }
+//});
