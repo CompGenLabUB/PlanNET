@@ -27,36 +27,38 @@
         <div id="cyt"></div>
 
         <div id="cyt-controls">
-            <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
-            <h2>Net Explorer</h2>
-            <a href="/">Back to PlaNet</a>
-            <br>
+            <div id="cyt-controls-header">
 
 
-            <!-- Add Node Form-->
-            <div id="add-node-container">
-            <form id="add_node" class= "form" method="GET" action="{% url net_explorer %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
+                <h2>Net Explorer</h2>
+                <a href="/">Back to PlaNet</a>
 
-                    <select name="database" class="form-control">
-                        <option value="" selected disabled>Select Database</option>
-                        <option value="Human">Human</option>
-                        <option value="Cthulhu">Cthulhu</option>
-                        <option value="Consolidated">Consolidated</option>
-                    </select>
-                    <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
+
+
+                <!-- Add Node Form-->
+                <div id="add-node-container">
+                    <form id="add_node" class= "form" method="GET" action="{% url net_explorer %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+
+                            <select name="database" class="form-control">
+                                <option value="" selected disabled>Select Database</option>
+                                <option value="Human">Human</option>
+                                <option value="Cthulhu">Cthulhu</option>
+                                <option value="Consolidated">Consolidated</option>
+                            </select>
+                            <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
+                        </div>
+                    </form>
+                    <div id="node-not-found"><div class="panel panel-danger"><div class="panel-heading">Node not found</div></div></div>
                 </div>
-            </form>
-            <div id="node-not-found"><div class="panel panel-danger"><div class="panel-heading">Node not found</div></div></div>
-        </div>
+            </div>
 
-
-
+            <hr>
         <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
-                <hr>
                 <h3>Layout</h3>
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Cose
                     <span class="caret"></span>
