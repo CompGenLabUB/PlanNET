@@ -158,10 +158,9 @@
                 <h3>Controls</h3>
 
                 <div id="cyto-button-container">
-
-                    <div class="row row-margin first-row">
+                    <div class="row row-margin">
                         <!--- Center to graph -->
-                        <div id="center-to-graph-container" class="col-xs-3">
+                        <div id="center-to-graph-container" class="col-md-3">
                             <button class="btn btn-default" id="center-to-graph" type="button">
                                 <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
                             </button>
@@ -169,21 +168,31 @@
                         </div>
 
                         <!--- Save Image -->
-                        <div id="save-image-container" class="col-xs-3">
+                        <div id="save-image-container" class="col-md-3">
                             <a download="graph-export" id="image-download" title="Save graph as a png image">
                                 <button class="btn btn-default" id="save-image" type="button">
                                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                                 </button>
                             </a>
                                 <h5>Save Image</h5>
-                            </div>
+                        </div>
 
-
+                        <!--- Export TBL -->
+                        <div id="export-tbl-container" class="col-md-3">
+                            <button class="btn btn-default" id="export-tbl" type="button">
+                                <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+                            </button>
+                            </a>
+                                <h5>Export as TBL</h5>
+                        </div>
 
                     </div>
 
+
+
+
                     <div class="row row-margin">
-                        <div id="save-graph-container" class="col-xs-3 ">
+                        <div id="save-graph-container" class="col-md-3 ">
                             <button class="btn btn-default" id="save-graph" type="button">
                                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                             </button>
@@ -191,7 +200,7 @@
 
                         </div>
 
-                        <div id="upload-graph-container" class="col-xs-3 ">
+                        <div id="upload-graph-container" class="col-md-3 ">
                             <button class="btn btn-default" id="upload-graph" type="button">
                                 <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
                             </button>
@@ -200,7 +209,7 @@
                         </div>
 
                         <!--- Delete all -->
-                        <div id="delete-all-container" class="col-xs-3">
+                        <div id="delete-all-container" class="col-md-3">
                             <button class="btn btn-default" id="delete-all" type="button">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                             </button>

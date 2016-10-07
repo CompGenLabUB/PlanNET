@@ -73,7 +73,6 @@ function addNode(symbol, database) {
                 directed: false,
                 padding: 40
             });
-            console.log(cy.nodes());
 
             // Show only edges above slider threshold
             var value = $('#sl1').val();
@@ -159,26 +158,6 @@ cy.on( 'click', 'node', function() {
 
 
 
-// CENTER TO CONTROLS
-
-$("#center-to-graph").on("click", function(){
-    cy.center();
-    cy.fit();
-});
-
-$(".btn").mouseup(function(){
-    $(this).blur();
-})
-
-
-// SAVE TO png
-
-$("#image-download").on("click", function() {
-    var graph_png = cy.png();
-    $('#image-download').attr('href', graph_png);
-});
-
-
 // FILTER edges with probability below threshold
 $('#sl1').slider().on('slideStop', function(ev){
     //var value = $('#sl1').slider('getValue');
@@ -196,6 +175,55 @@ $('#sl1').slider().on('slideStop', function(ev){
 
 
 });
+
+
+
+// CYTOSCAPE CONTROLS
+
+$(".btn").mouseup(function(){
+    $(this).blur();
+})
+
+// Center graph
+$("#center-to-graph").on("click", function(){
+    cy.center();
+    cy.fit();
+});
+
+
+// Save png
+
+$("#image-download").on("click", function() {
+    var graph_png = cy.png();
+    $('#image-download').attr('href', graph_png);
+});
+
+
+// Export TBL
+$("#export-tbl").on("click", function(){
+    alert("Export TBL")
+});
+
+
+// Save Graph
+$("#save-graph").on("click", function(){
+    alert("Save graph")
+});
+
+
+// Upload Graph
+$("#upload-graph").on("click", function(){
+    alert("Upload graph")
+});
+
+
+// Delete All
+$("#delete-all").on("click", function() {
+    cy.nodes().remove()
+});
+
+
+
 
 
 

@@ -479,13 +479,20 @@
     font-size: 26;
 }
 
+.glyphicon-share {
+    font-size: 26;
+}
+
 .row-margin {
     margin-bottom: 5%;
     margin-left: 10%;
 }
 
 .first-row {
-    padding-left: 15.5%;
+    padding-right: 0%;
+    margin-right: 0%;
+    text-align: center;
+    background-color: red;
 }
 
 #slider-container {
