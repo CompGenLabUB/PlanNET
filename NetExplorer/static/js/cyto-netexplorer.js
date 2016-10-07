@@ -87,7 +87,14 @@ function addNode(symbol, database) {
                 }
                 // Not an edge
             });
+        },
+        error : function() {
+            $('#node-not-found').slideToggle(200);
+            setTimeout(function () {
+                $('#node-not-found').hide(200);
+            }, 2000);
         }
+
     });
 }
 
@@ -190,6 +197,9 @@ $('#sl1').slider().on('slideStop', function(ev){
 
 });
 
+
+
+$('#node-not-found').hide();
 
 //$('#change-label-id').change(function(){
 //        alert("CLICK")

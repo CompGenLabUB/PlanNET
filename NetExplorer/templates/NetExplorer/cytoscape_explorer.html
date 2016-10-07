@@ -49,6 +49,7 @@
                     <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
                 </div>
             </form>
+            <div id="node-not-found"><div class="panel panel-danger"><div class="panel-heading">Node not found</div></div></div>
         </div>
 
 
@@ -76,7 +77,7 @@
 
             <!--- "On click" Behaviour -->
             <div id="on-click-container">
-                <h3>On Click <span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+                <h3>On Click <a  data-toggle="tooltip" data-placement="bottom"
                 title="
                     This option will determine what happens when you click on a node.
 
@@ -85,7 +86,7 @@
                     - Expand: All the elements interacting with the node will be added to the graph.
 
                     - Delete: The node and all its interactions will be removed from the graph.
-                "></span></h3>
+                "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a></h3>
 
                 <fieldset>
                     <div class="switch-toggle switch-candy behaviour-div">
@@ -115,9 +116,9 @@
 
             <!-- Filter interactions -->
             <div id="slider-container">
-                <h3>Filter interactions <span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="
+                <h3>Filter interactions <a  data-toggle="tooltip" data-placement="bottom" title="
                     With this slider you can filter the interactions depending on the probability. This probability is the proportion of votes reported by a Random Forest classifier, see: 'link to article'
-                    ">
+                    "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
                 </h3>
                 <h5>by probability</h5>
                 <div class="slider-symbol-minus">-</div>

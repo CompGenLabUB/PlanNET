@@ -417,7 +417,7 @@
 }
 
 #cyt-controls {
-    overflow: scroll;
+    overflow-y: scroll;
     height: 100%;
     width: 25%;
     float: left;
@@ -430,7 +430,7 @@
 
 #cyt-explorer-icon {
     display: inline-block;
-    margin-top: 20%;
+    margin-top: 10%;
 }
 
 #select-layout-container {
@@ -519,7 +519,7 @@
 
 #add-node-container {
     width: 60%;
-    margin-top: 5%;
+    margin-top: 10%;
     margin-left: 20%;
 }
 
@@ -550,6 +550,8 @@ h3 .tooltip-inner {
     padding: 10% !important;
     opacity: 1 !important;
     white-space: pre-line;
+    border-style: solid;
+    border-width: 2px;
 }
 
 h3 .tooltip.in {
