@@ -214,7 +214,6 @@ def net_explorer(request):
         return render(request, 'NetExplorer/cytoscape_explorer.html')
 
     if request.method == "GET" and "genesymbol" in request.GET:
-        print("HOLA")
         symbols  = request.GET['genesymbol']
         symbols  = symbols.split(",")
         database = None
@@ -228,6 +227,10 @@ def net_explorer(request):
         json_data = json.dumps(graphelements)
 
         # Expand graph on click
+        if not graphelements['edges'] and not graphelements['nodes']:
+            # No nodes nor edges!
+            json_data = "";
+
         print(json_data)
         return HttpResponse(json_data, content_type="application/json")
     else:

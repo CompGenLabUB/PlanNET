@@ -456,22 +456,36 @@
     top: 2%;
     position: relative;
     margin: auto;
-    text-align: center;
 }
 
 
-#center-to-graph-container {
+#cyto-button-container {
     position: relative;
-    margin: 0 auto;
-    float: left;
-    padding-left: 30%;
+    margin-left: 24%;
+    max-width: 70%;
+    margin-top: 5%;
 }
 
-#save-image-container {
-    position: relative;
-    margin: 0 auto;
-    float: left;
-    padding-left: 10%;
+
+.glyphicon-trash {
+    font-size: 26;
+}
+
+.glyphicon-save {
+    font-size: 26;
+}
+
+.glyphicon-open {
+    font-size: 26;
+}
+
+.row-margin {
+    margin-bottom: 5%;
+    margin-left: 10%;
+}
+
+.first-row {
+    padding-left: 15.5%;
 }
 
 #slider-container {

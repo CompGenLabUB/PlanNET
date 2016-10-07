@@ -157,32 +157,61 @@
 
                 <h3>Controls</h3>
 
-                <!--- "Camera" Controls -->
+                <div id="cyto-button-container">
 
-                <div id="center-to-graph-container">
-                    <button class="btn btn-default" id="center-to-graph" type="button">
-                        <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-                    </button>
-                    <h5>Center</h5>
+                    <div class="row row-margin first-row">
+                        <!--- Center to graph -->
+                        <div id="center-to-graph-container" class="col-xs-3">
+                            <button class="btn btn-default" id="center-to-graph" type="button">
+                                <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                            </button>
+                            <h5>Center</h5>
+                        </div>
+
+                        <!--- Save Image -->
+                        <div id="save-image-container" class="col-xs-3">
+                            <a download="graph-export" id="image-download" title="Save graph as a png image">
+                                <button class="btn btn-default" id="save-image" type="button">
+                                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                </button>
+                            </a>
+                                <h5>Save Image</h5>
+                            </div>
+
+
+
+                    </div>
+
+                    <div class="row row-margin">
+                        <div id="save-graph-container" class="col-xs-3 ">
+                            <button class="btn btn-default" id="save-graph" type="button">
+                                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                            </button>
+                            <h5>Save Graph</h5>
+
+                        </div>
+
+                        <div id="upload-graph-container" class="col-xs-3 ">
+                            <button class="btn btn-default" id="upload-graph" type="button">
+                                <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                            </button>
+                            <h5>Upload Graph</h5>
+
+                        </div>
+
+                        <!--- Delete all -->
+                        <div id="delete-all-container" class="col-xs-3">
+                            <button class="btn btn-default" id="delete-all" type="button">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </button>
+                            <h5>Delete All</h5>
+
+                        </div>
+                    </div>
+
+
                 </div>
-
-            <!--- Save Image -->
-
-                <div id="save-image-container">
-                    <a download="graph-export" id="image-download" title="Save graph as a png image">
-                        <button class="btn btn-default" id="save-image" type="button">
-                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                        </button>
-                    </a>
-                    <h5>Save Image</h5>
-                </div>
-
-                <br>
-            </div>
-
-
-
-        </div> <!--cyt-controls-->
+            </div> <!--cyt-controls-->
 
 
         <!-- Get info Card on click -->
