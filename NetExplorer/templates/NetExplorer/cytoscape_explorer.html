@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
 
     <head>
         <title>PlaNET - Net Explorer</title>
@@ -224,6 +226,12 @@
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                             </button>
                             <h5>Delete All</h5>
+                            <div id="dialog-confirm" title="Delete Graph?">
+                                <p>
+                                    <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+                                    The graph will be permanently removed, are you sure you want to delete the graph?
+                                </p>
+                            </div>
 
                         </div>
                     </div>
@@ -264,6 +272,7 @@
         <script src="{% static 'js/cytoscape-cola.js' %}"></script>
         <script src="{% static 'js/cytoscape-cola-min.js' %}"></script>
         <script src="{% static 'js/FileSaver.js' %}"></script>
+        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
 
         <script>
         // Initialize slider to filter edges. Function to filter them is in cyto-netexplorer.js

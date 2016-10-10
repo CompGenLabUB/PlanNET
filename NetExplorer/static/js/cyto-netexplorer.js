@@ -235,12 +235,23 @@ $(document).ready(function(){
 
     // Delete All
     $("#delete-all").on("click", function() {
-        cy.nodes().remove()
+        $( "#dialog-confirm" ).dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "Delete graph": function() {
+                    cy.nodes().remove()
+                    $( this ).dialog( "close" );
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+
     });
-
-
-
-
 
 
     $('#node-not-found').hide();
