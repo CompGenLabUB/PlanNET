@@ -477,6 +477,7 @@
 
 .glyphicon-open {
     font-size: 26;
+    padding-right: 2%;
 }
 
 .glyphicon-share {
@@ -505,7 +506,9 @@
     width: 80%;
     left: 10%;
     font-weight: normal;
+    cursor: pointer;
 }
+
 
 #slider {
     display:inline-block;
@@ -585,4 +588,25 @@ h3 .tooltip.in {
 #cyt-controls-header {
     width: 100%;
     height: 380px;
+}
+
+
+
+
+input[type="file"] {
+  display: block;
+  width: 66px;
+  height: 25px;
+  clip: rect(0px 0px 0px 0px);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.btn-default label {
+    width: 120%;
+}
+
+#upload-graph-form {
+    width: 52px;
 }

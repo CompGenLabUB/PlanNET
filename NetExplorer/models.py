@@ -338,6 +338,15 @@ class PredictedNode(Node):
             return None
 
 
+# ------------------------------------------------------------------------------
+class Document(models.Model):
+    """
+    Class for Documents uploaded to the server.
+    """
+    docfile = models.FileField(upload_to='documents/%Y/%m/%d')
+
+
+
 # EXCEPTIONS
 # ------------------------------------------------------------------------------
 class IncorrectDatabase(Exception):

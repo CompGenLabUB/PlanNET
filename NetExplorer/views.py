@@ -3,7 +3,8 @@ from django.shortcuts   import render_to_response
 from django.http        import HttpResponse, HttpResponseRedirect, Http404
 from django.template    import RequestContext
 from py2neo             import Graph, Path
-from NetExplorer.models import PredictedNode, HumanNode, graph, PredInteraction
+from NetExplorer.models import PredictedNode, HumanNode, graph, PredInteraction,Document
+from NetExplorer.forms import DocumentForm
 import tempfile
 import textwrap
 import json
@@ -210,10 +211,8 @@ def net_explorer(request):
     '''
     This is the cytoscape graph-based search function.
     '''
-    if not request.is_ajax():
-        return render(request, 'NetExplorer/cytoscape_explorer.html')
 
-    if request.method == "GET" and "genesymbol" in request.GET:
+    if request.method == "GET" and "genesymbol" in request.GET and request.is_ajax():
         symbols  = request.GET['genesymbol']
         symbols  = symbols.split(",")
         database = None
@@ -233,8 +232,20 @@ def net_explorer(request):
 
         print(json_data)
         return HttpResponse(json_data, content_type="application/json")
+
+    elif request.method == "POST":
+        print("POSTSTTT")
+        graph_content   = request.FILES['myfile'].read()
+        graph_content.replace("\xef\xbb\xbf", "")
+        graph_content.replace("'", '"')
+        return render(request, 'NetExplorer/cytoscape_explorer.html', {'upload_json': graph_content})
+
     else:
-        return render(request, 'NetExplorer/net_explorer.html', {'hola': ""})
+        return render(request, 'NetExplorer/cytoscape_explorer.html')
+
+
+
+
 
 
 # ------------------------------------------------------------------------------

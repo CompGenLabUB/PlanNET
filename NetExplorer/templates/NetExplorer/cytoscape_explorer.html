@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/slider.css' %}">
     <link rel="stylesheet" href="{% static 'css/toggle-switch.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cytoscape.js-panzoom.css' %}">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
@@ -17,7 +18,13 @@
         <title>PlaNET - Net Explorer</title>
         <script>
             var graphelements = "";
+            var upload_json   = "";
         </script>
+        {% if upload_json %}
+            <script>
+                upload_json = {{ upload_json|safe }};
+            </script>
+        {% endif %}
     </head>
 
     <body>
@@ -52,10 +59,9 @@
                             <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
                         </div>
                     </form>
-                    <div id="node-not-found"><div class="panel panel-danger"><div class="panel-heading">Node not found</div></div></div>
                 </div>
             </div>
-
+            <div id="node-not-found"><div class="panel panel-danger"><div class="panel-heading">Node not found</div></div></div>
             <hr>
         <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
@@ -171,12 +177,10 @@
 
                         <!--- Save Image -->
                         <div id="save-image-container" class="col-md-3">
-                            <a download="graph-export" id="image-download" title="Save graph as a png image">
-                                <button class="btn btn-default" id="save-image" type="button">
-                                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                                </button>
-                            </a>
-                                <h5>Save Image</h5>
+                            <button class="btn btn-default" id="save-image" type="button">
+                                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                            </button>
+                            <h5>Save Image</h5>
                         </div>
 
                         <!--- Export TBL -->
@@ -195,17 +199,21 @@
 
                     <div class="row row-margin">
                         <div id="save-graph-container" class="col-md-3 ">
-                            <button class="btn btn-default" id="save-graph" type="button">
-                                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                            </button>
+                            <a download="graph-export.json" id="graph-download" title="Save graph">
+                                <button class="btn btn-default" id="save-graph" type="button">
+                                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                                </button>
+                            </a>
                             <h5>Save Graph</h5>
 
                         </div>
 
                         <div id="upload-graph-container" class="col-md-3 ">
-                            <button class="btn btn-default" id="upload-graph" type="button">
-                                <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
-                            </button>
+                            <form enctype="multipart/form-data" method="post" id="upload-graph-form" action="{% url net_explorer %}">
+                                {% csrf_token %}
+                                <label for="myfile" class="btn btn-default"><span class="glyphicon glyphicon-open" aria-hidden="true"></span></label>
+                                <input type="file" onchange="this.form.submit()" name="myfile" id="myfile" class="upload" style="box-sizing:border-box;">
+                            </form>
                             <h5>Upload Graph</h5>
 
                         </div>
@@ -241,11 +249,13 @@
 
         <!-- SCRIPTS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="{% static 'js/jquery_cookie.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
         <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <script>$('[data-toggle="tooltip"]').tooltip();</script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
+        <script src="{% static 'js/cytoscape-panzoom.js' %}"></script>
         <script src="{% static 'js/overlay.js' %}"></script>
         <script src="{% static 'js/bootstrap-slider.js' %}"></script>
         <script src="{% static 'js/cyto-netexplorer.js' %}"></script>
@@ -253,6 +263,8 @@
         <script src="{% static 'js/cytoscape-dagre.js' %}"></script>
         <script src="{% static 'js/cytoscape-cola.js' %}"></script>
         <script src="{% static 'js/cytoscape-cola-min.js' %}"></script>
+        <script src="{% static 'js/FileSaver.js' %}"></script>
+
         <script>
         // Initialize slider to filter edges. Function to filter them is in cyto-netexplorer.js
             $('#sl1').slider();
