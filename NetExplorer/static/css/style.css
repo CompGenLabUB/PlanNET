@@ -437,7 +437,7 @@
 #select-layout-container {
     display: block;
     text-align: left;
-    padding-left: 30%;
+    padding-left: 20%;
     position: relative;
 }
 
@@ -613,4 +613,29 @@ input[type="file"] {
 
 #dialog-confirm {
     display: none;
+}
+
+
+#show-homologs-container {
+    top: 1%;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+
+
+#show-homologs-container-title {
+    padding-left: 20%;
+    height: 12%;
+}
+
+.show-homologs-label {
+    width: 60%;
+}
+
+#show-homologs-toggle {
+    display:flex;
+    height: 12%;
+    padding-top: 8%;
 }

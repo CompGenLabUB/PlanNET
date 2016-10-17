@@ -234,7 +234,6 @@ def net_explorer(request):
         return HttpResponse(json_data, content_type="application/json")
 
     elif request.method == "POST":
-        print("POSTSTTT")
         graph_content   = request.FILES['myfile'].read()
         graph_content.replace("\xef\xbb\xbf", "")
         graph_content.replace("'", '"')

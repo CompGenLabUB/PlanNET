@@ -22,7 +22,18 @@ $(document).ready(function(){
                 "text-outline-color": "#F8F8F8",
                 'line-color': 'data(colorEDGE)',
                 'target-arrow-color': 'data(colorEDGE)'
-            });
+            })
+        .selector('edge[type = "homology"]')
+            .css({
+                'line-style': 'dashed',
+                'content': '',
+                'opacity': 0.8
+            })
+        .selector('node[database = "Human"]')
+            .css({
+                'shape': 'diamond',
+            })
+
 
 
 
@@ -50,7 +61,48 @@ $(document).ready(function(){
       $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
     });
 
+    // SHOW HOMOLOGS
 
+    // Function to get the Homologs of each node and add them to "cy"
+    function displayHomologs() {
+        var elementsToAdd = {"nodes": [], "edges": []};
+        cy.filter(function(i, element){
+            if ( element.isNode() ) {
+                var nodeId  = element.data("id");
+                var homolog = element.data("homolog");
+                if (homolog) {
+                    var homologElement = { "data" : {id: homolog, database: "Human", name: homolog, colorNODE: "#6785d0" } }
+                    var homologyEdge   = { "data" : { id: homolog + "-" + nodeId, probability: 1, source: homolog, target: nodeId , type: "homology", colorEDGE: "#6785d0"} }
+                    elementsToAdd["nodes"].push(homologElement);
+                    elementsToAdd["edges"].push(homologyEdge);
+                }
+            }
+        });
+        cy.add(elementsToAdd);
+        cy.layout({
+            name: 'cola',
+            maxSimulationTime: 3000,
+            fit: true,
+            directed: false,
+            padding: 40
+        });
+    }
+
+    // Function to check if the toggle "show homologs is On or Off and do whatever needs to be done"
+    function checkHomologs(toggle) {
+        if(toggle.checked) {
+            alert("ON")
+            displayHomologs()
+        } else {
+            alert("OFF")
+            var toRemove = cy.elements('node[database = "Human"]');
+            cy.remove( toRemove );
+        }
+    }
+
+    $('#show-homologs').change(function () {
+        checkHomologs(this);
+    });
 
 
 
@@ -69,10 +121,11 @@ $(document).ready(function(){
             success : function(data) {
                 var layout_name = $('#select-layout li').text().toLowerCase();
                 var newelements = cy.add(data);
+                checkHomologs(document.getElementById( "show-homologs" )); // Show homologs if necessary
 
                 cy.layout({
                     name: 'cola',
-                    maxSimulationTime: 5000,
+                    maxSimulationTime: 3000,
                     fit: true,
                     directed: false,
                     padding: 40
@@ -144,11 +197,8 @@ $(document).ready(function(){
                     $('[id="card-overlay"]').slideToggle(450);
                     $('.close-overlay').slideToggle(450);
                     $('.full-screen-card').slideToggle(450);
-                    $(document).ready(function(){
-                        $('.int-table-class').DataTable({
-                            "order": [[ 1, "desc" ]]
-                        });
-                    });
+
+
                 }
             });
         } else if (behaviour == "expand") {
@@ -197,9 +247,9 @@ $(document).ready(function(){
 
     // Save png
 
-    $("#image-download").on("click", function() {
+    $("#save-image").on("click", function() {
         var graph_png = cy.png();
-        $('#image-download').attr('href', graph_png);
+        $('#save-image-link').attr('href', graph_png);
     });
 
 
