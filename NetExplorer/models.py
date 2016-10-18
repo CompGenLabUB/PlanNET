@@ -248,6 +248,51 @@ class HumanNode(Node):
         else:
             raise NodeNotFound(self)
 
+    def get_homologs(self, database):
+        """
+        Gets all homologs of the specified database. Returns a LIST of Homology objects.
+        """
+        query = """
+            MATCH (n:Human)-[r:HOMOLOG_OF]-(m:%s)
+            WHERE  n.symbol = "%s"
+            RETURN n.symbol AS human,
+                   m.symbol AS homolog,
+                   r.blast_cov AS blast_cov,
+                   r.blast_eval AS blast_eval,
+                   r.nog_brh AS nog_brh,
+                   r.pfam_sc AS pfam_sc,
+                   r.nog_eval AS nog_eval,
+                   r.blast_brh AS blast_brh,
+                   r.pfam_brh AS pfam_brh
+        """ % (database, self.symbol)
+
+        results  = graph.run(query)
+        results  = results.data()
+        homologs = list()
+        if results:
+            for row in results:
+                try:
+                    homolog_node = PredictedNode(row['homolog'], database)
+                except:
+                    continue
+                homolog_rel    = Homology(
+                    prednode   = homolog_node,
+                    human      = self.symbol,
+                    blast_cov  = row['blast_cov'],
+                    blast_eval = row['blast_eval'],
+                    nog_brh    = row['nog_brh'],
+                    pfam_sc    = row['pfam_sc'],
+                    nog_eval   = row['nog_eval'],
+                    blast_brh  = row['blast_brh'],
+                    pfam_brh   = row['pfam_brh']
+                )
+                homologs.append(homolog_rel)
+            return homologs
+        else:
+            print("NO HOMOLOGS")
+            return None
+
+
 
 # ------------------------------------------------------------------------------
 class PredictedNode(Node):

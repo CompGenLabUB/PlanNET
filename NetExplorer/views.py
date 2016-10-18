@@ -8,6 +8,7 @@ from NetExplorer.forms import DocumentForm
 import tempfile
 import textwrap
 import json
+import re
 
 
 # -----------------------
@@ -28,6 +29,39 @@ def query_node(symbol, database):
         node.get_summary()
 
     return node
+
+
+# ------------------------------------------------------------------------------
+def substitute_human_symbols(symbols, database):
+    """
+    This function will get a list of symbols and it will substitute all human symbols by
+    the "homologs" of the specified database. It will return the "new" list of symbols
+    """
+    symbol_regexp = {
+        "Cthulhu":      "cth1_",
+        "Consolidated": "OX_Smed"
+    }
+
+    newsymbols = list()
+    for symbol in symbols:
+        symbol = symbol.replace(" ", "")
+        if re.match(symbol_regexp[database], symbol):
+            newsymbols.append(symbol)
+        else:
+            # Human node!
+            try:
+                human_node = HumanNode(symbol, "Human")
+                homologs   = human_node.get_homologs(database)
+                for hom in homologs:
+                    newsymbols.append(hom.prednode.symbol)
+            except:
+                # Node is not a human node :_(
+                print("Node is not a human node, try next symbol")
+                continue
+
+            print("%s does not match %s" %(symbol, symbol_regexp[database]))
+    return newsymbols
+
 
 # ------------------------------------------------------------------------------
 def node_to_jsondict(node, query):
@@ -219,8 +253,13 @@ def net_explorer(request):
 
         if "database" in request.GET:
             database     = request.GET['database']
+        else:
+            print("NO DATABASE")
+
         graphelements    = {'nodes': list(), 'edges': list()}
         added_elements   = set()
+
+        symbols = substitute_human_symbols(symbols, database)
 
         get_graph_elements(symbols, database, graphelements, added_elements)
         json_data = json.dumps(graphelements)

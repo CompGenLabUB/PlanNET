@@ -91,10 +91,8 @@ $(document).ready(function(){
     // Function to check if the toggle "show homologs is On or Off and do whatever needs to be done"
     function checkHomologs(toggle) {
         if(toggle.checked) {
-            alert("ON")
             displayHomologs()
         } else {
-            alert("OFF")
             var toRemove = cy.elements('node[database = "Human"]');
             cy.remove( toRemove );
         }
