@@ -1,11 +1,8 @@
 from django.shortcuts   import render
 from django.shortcuts   import render_to_response
-from django.http        import HttpResponse, HttpResponseRedirect, Http404
+from django.http        import HttpResponse
 from django.template    import RequestContext
-from py2neo             import Graph, Path
-from NetExplorer.models import PredictedNode, HumanNode, graph, PredInteraction,Document
-from NetExplorer.forms  import DocumentForm
-import tempfile
+from NetExplorer.models import PredictedNode, HumanNode, PredInteraction,Document
 import textwrap
 import json
 import re
@@ -184,6 +181,9 @@ def get_fasta(request):
 
 # ------------------------------------------------------------------------------
 def get_card(request, symbol=None, database=None):
+    """
+    Function that gets a gene id and a database and returns the HTML of the card.
+    """
     if request.method == 'GET' and request.is_ajax():
         symbol    = request.GET['target']
         database  = request.GET['targetDB']
@@ -268,7 +268,7 @@ def net_explorer(request):
         # Expand graph on click
         if not graphelements['edges'] and not graphelements['nodes']:
             # No nodes nor edges!
-            json_data = "";
+            json_data = ""
 
         print(json_data)
         return HttpResponse(json_data, content_type="application/json")
@@ -284,6 +284,9 @@ def net_explorer(request):
 
 # ------------------------------------------------------------------------------
 def handler404(request):
+    """
+    Handler for error 404, doesn't work.
+    """
     response = render_to_response('NetExplorer/404.html', {},
                                   context_instance=RequestContext(request))
     response.status_code = 404
