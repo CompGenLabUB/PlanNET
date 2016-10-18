@@ -4,7 +4,7 @@ from django.http        import HttpResponse, HttpResponseRedirect, Http404
 from django.template    import RequestContext
 from py2neo             import Graph, Path
 from NetExplorer.models import PredictedNode, HumanNode, graph, PredInteraction,Document
-from NetExplorer.forms import DocumentForm
+from NetExplorer.forms  import DocumentForm
 import tempfile
 import textwrap
 import json
@@ -281,11 +281,6 @@ def net_explorer(request):
 
     else:
         return render(request, 'NetExplorer/cytoscape_explorer.html')
-
-
-
-
-
 
 # ------------------------------------------------------------------------------
 def handler404(request):
