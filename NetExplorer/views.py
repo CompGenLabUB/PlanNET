@@ -50,6 +50,7 @@ def substitute_human_symbols(symbols, database):
         else:
             # Human node!
             try:
+                symbol = symbol.upper()
                 human_node = HumanNode(symbol, "Human")
                 homologs   = human_node.get_homologs(database)
                 for hom in homologs:
