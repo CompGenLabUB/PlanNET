@@ -509,6 +509,9 @@
     cursor: pointer;
 }
 
+.behaviour-btn{
+    cursor: pointer;
+}
 
 #slider {
     display:inline-block;
@@ -626,17 +629,41 @@ input[type="file"] {
 
 
 #show-homologs-container-title {
-    padding-left: 20%;
-    padding-top: 1%;
-    height: 10%;
+    height: 100%;
 }
 
 .show-homologs-label {
     width: 60%;
+    height: 70% !important;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-top: 15%;
 }
 
 #show-homologs-toggle {
-    display:flex;
-    height: 10%;
-    padding-top: 6%;
+    display: inline-block;
+    height: 100%;
+
+}
+
+#layout-dropdown {
+    display: inline-block;
+    height: 100%;
+}
+
+.control-row {
+    height: 6%;
+}
+#layout-title {
+    height: 100%;
+}
+
+#layout-toggle-btn {
+    height: 50% !important;
+    vertical-align: middle;
+    margin-top: 10%;
+}
+
+.show-homologs-btn {
+    height: 80% !important;
 }

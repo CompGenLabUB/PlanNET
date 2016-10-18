@@ -67,40 +67,44 @@
             <hr>
         <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
-                <h3>Layout</h3>
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Cose
-                    <span class="caret"></span>
-                </button>
-                    <ul class="dropdown-menu" id="select-layout">
-                        <li><a href="#">Cose</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Grid</a></li>
-                        <li><a href="#">Cola</a></li>
-                        <li><a href="#">Circle</a></li>
-                        <li><a href="#">Dagre</a></li>
-                        <li><a href="#">Random</a></li>
-                    </ul>
-            </div>
+                <div class="row control-row">
+                    <div class="col-sm-6" id="layout-title">
+                        <h3>Layout</h3>
+                    </div>
+                    <div class="col-sm-6" id="layout-dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" id="layout-toggle-btn">Cose
+                            <span class="caret"></span>
+                        </button>
+                            <ul class="dropdown-menu" id="select-layout">
+                                <li><a href="#">Cose</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Grid</a></li>
+                                <li><a href="#">Cola</a></li>
+                                <li><a href="#">Circle</a></li>
+                                <li><a href="#">Dagre</a></li>
+                                <li><a href="#">Random</a></li>
+                            </ul>
+                    </div>
+                </div>
 
-            <div id="show-homologs-container">
-                <div class="row">
+                <div class="row control-row">
                     <div class="col-sm-6" id="show-homologs-container-title">
                         <h3>Homologs</h3>
                     </div>
                     <div class="col-sm-6" id="show-homologs-toggle">
                         <label class="switch-light switch-candy show-homologs-label" onclick="">
                             <input type="checkbox" id="show-homologs">
-                            <span>
-                                <span>Off</span>
-                                <span>On</span>
+                            <span class="show-homolog-btn">
+                                <span class="show-homolog-btn">Off</span>
+                                <span class="show-homolog-btn">On</span>
                                 <a></a>
                             </span>
                         </label>
                     </div>
                 </div>
-
-
             </div>
+
+
             <hr>
 
 
@@ -121,11 +125,11 @@
                     <div class="switch-toggle switch-candy behaviour-div">
                         <form action="" id="behaviour-form">
                             <input id="radio-card" name="behaviour" type="radio" value="card" checked>
-                            <label for="radio-card" onclick="">Card</label>
+                            <label class="behaviour-btn" for="radio-card" onclick="">Card</label>
                             <input id="radio-expand" value="expand" name="behaviour" type="radio">
-                            <label for="radio-expand" onclick="">Expand</label>
+                            <label class="behaviour-btn" for="radio-expand" onclick="">Expand</label>
                             <input id="radio-delete" value="delete" name="behaviour" type="radio">
-                            <label for="radio-delete" onclick="">Delete</label>
+                            <label class="behaviour-btn" for="radio-delete" onclick="">Delete</label>
                             <a></a>
                         </form>
                     </div>
