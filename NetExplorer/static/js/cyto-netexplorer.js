@@ -78,14 +78,19 @@ $(document).ready(function(){
                 }
             }
         });
-        cy.add(elementsToAdd);
-        cy.layout({
-            name: 'cola',
-            maxSimulationTime: 3000,
-            fit: true,
-            directed: false,
-            padding: 40
+        var added = cy.add(elementsToAdd);
+        var layout = added.makeLayout({
+            name: 'grid'
         });
+        layout.run();
+
+        //added.layout({
+        //    name: 'cola',
+        //    maxSimulationTime: 3000,
+        //    fit: true,
+        //    directed: false,
+        //    padding: 40
+        //});
     }
 
     // Function to check if the toggle "show homologs is On or Off and do whatever needs to be done"
