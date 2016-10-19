@@ -18,7 +18,12 @@
 
         -->
             <div class="panel panel-info" id="ne-container">
-                <div class="panel-heading">Gene Finder</div>
+                <div class="panel-heading">
+                    Gene Finder
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    </a>
+                </div>
                 <a class="btn btn-info app-button" href="{% url gene_searcher %}">Search</a>
                 <div class="panel-body app-panel" >
                     <p>Search for genes and reads using identifiers.</p>
@@ -27,7 +32,12 @@
             </div>
 
             <div class="panel panel-danger" id="pa-container">
-                <div class="panel-heading">BLAST Search</div>
+                <div class="panel-heading">
+                    BLAST Search
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    </a>
+                </div>
                 <a class="btn btn-danger app-button" href="{% url blast %}">Blast</a>
                 <div class="panel-body app-panel">
                     <p>BLAST the different planarian transcriptomes.</p>
@@ -35,7 +45,12 @@
                 </div>
             </div>
             <div class="panel panel-success" id="ne-container">
-                <div class="panel-heading">Network Explorer</div>
+                <div class="panel-heading">
+                    Network Explorer
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    </a>
+                </div>
                 <a class="btn btn-success app-button" href="{% url net_explorer %}">Explore</a>
                 <div class="panel-body app-panel">
                     <p>Explore the predicted protein-protein interactions network.</p>
@@ -44,7 +59,13 @@
             </div>
 
             <div class="panel panel-warning" id="pa-container">
-                <div class="panel-heading">Pathway Finder</div>
+                <div class="panel-heading">
+                    Pathway Finder
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    </a>
+                </div>
+
                 <a class="btn btn-warning app-button" href="#">Find</a>
                 <div class="panel-body app-panel">
                     <p>Look for specific pathways in the different interaction networks.</p>
