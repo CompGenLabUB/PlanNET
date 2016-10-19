@@ -334,7 +334,7 @@ $(document).ready(function(){
         width: 400,
         modal: true,
         buttons: {
-            "OK": function() {
+            "Close": function() {
                 $( this ).dialog( "close" );
             }
         }
