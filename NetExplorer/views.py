@@ -282,6 +282,15 @@ def net_explorer(request):
     else:
         return render(request, 'NetExplorer/cytoscape_explorer.html')
 
+
+# ------------------------------------------------------------------------------
+def blast(request):
+    """
+    View for the BLAST form page
+    """
+    return render(request, 'NetExplorer/404.html')
+
+
 # ------------------------------------------------------------------------------
 def handler404(request):
     """

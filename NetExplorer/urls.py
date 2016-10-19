@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from django.contrib import admin
 from . import views
 
 urlpatterns = [
@@ -9,4 +8,5 @@ urlpatterns = [
     url(r'^gene_card/(?P<database>[0-9\w]+)/(?P<symbol>[0-9\w_\.]+)$', views.get_card, name = 'card_fullscreen'),
     url(r'^get_fasta',     views.get_fasta,     name="get_fasta"),
     url(r'^info_card',     views.get_card,      name="get_card"),
+    url(r'^blast',         views.blast,      name="blast"),
 ]

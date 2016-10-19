@@ -6,6 +6,7 @@
 {% block content %}
     <div id="panel-container">
         <div class="panel-group">
+            <!--
             <div class="panel panel-info" id="gf-container">
                 <div class="panel-heading">Gene Finder</div>
                 <a class="btn btn-info app-button" href="{% url gene_searcher %}">Search</a>
@@ -15,6 +16,24 @@
                 </div>
             </div>
 
+        -->
+            <div class="panel panel-info" id="ne-container">
+                <div class="panel-heading">Gene Finder</div>
+                <a class="btn btn-info app-button" href="{% url gene_searcher %}">Search</a>
+                <div class="panel-body app-panel" >
+                    <p>Search for genes and reads using identifiers.</p>
+                    <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
+                </div>
+            </div>
+
+            <div class="panel panel-danger" id="pa-container">
+                <div class="panel-heading">BLAST Search</div>
+                <a class="btn btn-danger app-button" href="{% url blast %}">Blast</a>
+                <div class="panel-body app-panel">
+                    <p>BLAST the different planarian transcriptomes.</p>
+                    <img class="app-icon" src="{% static 'Images/blast-icon.png' %}"/>
+                </div>
+            </div>
             <div class="panel panel-success" id="ne-container">
                 <div class="panel-heading">Network Explorer</div>
                 <a class="btn btn-success app-button" href="{% url net_explorer %}">Explore</a>

@@ -1,5 +1,8 @@
-/* Header + LOGO FORMATTING */
 
+/* BASE HTML */
+/* ----------------------------- */
+
+/* BASE CONTAINERS */
 #page-container {
     position: absolute;
     background-color: #E7E7E7;
@@ -30,6 +33,28 @@
     padding-bottom: 12%;
 }
 
+#body-wrapper {
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+/* SOME FOOTER THINGS */
+#compgen-logo {
+    width: 100px;
+    margin-right: 20px;
+}
+
+.social-icon {
+    width: 35px;
+    height: 35px;
+}
+
+.social-icon:hover {
+    opacity: 0.7;
+}
+
+/* LOGO AND HEADER */
 #logo-container {
     margin-left: 5%;
     margin-top: 2%;
@@ -44,11 +69,7 @@
     opacity: 0.5;
 }
 
-#body-wrapper {
-    margin-top: 5%;
-    margin-left: 5%;
-    margin-right: 5%;
-}
+/* PANELS */
 
 #search-wrapper {
     margin-bottom: 2%;
@@ -106,7 +127,8 @@
 
 
 
-/* GENE/DOMAIN CARDS */
+/* GENE CARDS */
+/* ----------------------------- */
 
 .small-searchpanel {
     height: 10%;
@@ -127,24 +149,6 @@
     width: 70%;
 
 }
-
-
-
-/* SOME FOOTER THINGS */
-#compgen-logo {
-    width: 100px;
-    margin-right: 20px;
-}
-
-.social-icon {
-    width: 35px;
-    height: 35px;
-}
-
-.social-icon:hover {
-    opacity: 0.7;
-}
-
 
 
 /* OVERLAY THINGS */
@@ -287,8 +291,6 @@
 }
 
 
-
-
 /* BACK TO TOP THINGS */
 .cd-top.cd-is-visible {
   /* the button becomes visible */
@@ -356,6 +358,7 @@
 /* END OF BACK TO TOP */
 
 
+/* DATA TABLE */
 .int-table-container {
     color: #777777;
     font-size: 12px;
@@ -409,8 +412,8 @@
 
 
 
-/* CYTOSCAPE */
-
+/* NET EXPLORER CYTOSCAPE */
+/* ----------------------------- */
 #cyt {
     height: 100%;
     width: 75%;
