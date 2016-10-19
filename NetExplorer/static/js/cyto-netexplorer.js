@@ -32,7 +32,7 @@ $(document).ready(function(){
         .selector('node[database = "Human"]')
             .css({
                 'shape': 'diamond',
-            })
+            });
 
 
 
@@ -53,7 +53,7 @@ $(document).ready(function(){
     // CHANGE LAYOUT CONTROLS
     $('#select-layout li').on('click', function(){
         var newlayout = $(this).text().toLowerCase();
-        cy.layout( { name: newlayout } )
+        cy.layout( { name: newlayout } );
     });
 
     $(".dropdown-menu li a").click(function(){
@@ -71,8 +71,8 @@ $(document).ready(function(){
                 var nodeId  = element.data("id");
                 var homolog = element.data("homolog");
                 if (homolog) {
-                    var homologElement = { "data" : {id: homolog, database: "Human", name: homolog, colorNODE: "#6785d0" } }
-                    var homologyEdge   = { "data" : { id: homolog + "-" + nodeId, probability: 1, source: homolog, target: nodeId , type: "homology", colorEDGE: "#6785d0"} }
+                    var homologElement = { "data" : {id: homolog, database: "Human", name: homolog, colorNODE: "#6785d0" } };
+                    var homologyEdge   = { "data" : { id: homolog + "-" + nodeId, probability: 1, source: homolog, target: nodeId , type: "homology", colorEDGE: "#6785d0"} };
                     elementsToAdd["nodes"].push(homologElement);
                     elementsToAdd["edges"].push(homologyEdge);
                 }
@@ -96,7 +96,7 @@ $(document).ready(function(){
     // Function to check if the toggle "show homologs is On or Off and do whatever needs to be done"
     function checkHomologs(toggle) {
         if(toggle.checked) {
-            displayHomologs()
+            displayHomologs();
         } else {
             var toRemove = cy.elements('node[database = "Human"]');
             cy.remove( toRemove );
@@ -142,7 +142,7 @@ $(document).ready(function(){
                             element.show();
                             return true;
                         }
-                        element.hide()
+                        element.hide();
                     }
                     // Not an edge
                 });
@@ -175,14 +175,14 @@ $(document).ready(function(){
 
     cy.on( 'click', 'node', function() {
          // Change color of clicked node
-        node = this
+        node = this;
         var card_data = {
             target  : this.data("name"),
             targetDB: this.data("database"),
             csrfmiddlewaretoken: '{{ csrf_token }}'
-        }
+        };
 
-        var behaviour = $('input[name=behaviour]:checked', '#behaviour-form').val()
+        var behaviour = $('input[name=behaviour]:checked', '#behaviour-form').val();
 
         if (behaviour == "card") {
             // Get the ID of the div to update
@@ -208,7 +208,7 @@ $(document).ready(function(){
             node.data("colorNODE", '#449D44');
             addNode(card_data['target'], card_data['targetDB']);
         } else if (behaviour == "delete") {
-            node.remove()
+            node.remove();
         }
 
     });
@@ -225,7 +225,7 @@ $(document).ready(function(){
                     element.show();
                     return true;
                 }
-                element.hide()
+                element.hide();
             }
             // Not an edge
         });
@@ -239,7 +239,7 @@ $(document).ready(function(){
 
     $(".btn").mouseup(function(){
         $(this).blur();
-    })
+    });
 
     // Center graph
     $("#center-to-graph").on("click", function(){
@@ -313,7 +313,7 @@ $(document).ready(function(){
             modal: true,
             buttons: {
                 "Delete graph": function() {
-                    cy.nodes().remove()
+                    cy.nodes().remove();
                     $( this ).dialog( "close" );
                 },
                 Cancel: function() {
