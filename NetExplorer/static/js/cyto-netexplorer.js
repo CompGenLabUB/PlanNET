@@ -326,4 +326,17 @@ $(document).ready(function(){
 
 
     $('#node-not-found').hide();
+
+
+    $( "#dialog-jsonerr" ).dialog({
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            "OK": function() {
+                $( this ).dialog( "close" );
+            }
+        }
+    });
 });

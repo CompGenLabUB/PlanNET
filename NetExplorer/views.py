@@ -6,8 +6,7 @@ from NetExplorer.models import PredictedNode, HumanNode, PredInteraction,Documen
 import textwrap
 import json
 import re
-
-
+from pprint import pprint
 # -----------------------
 # FUNCTIONS
 # -----------------------
@@ -274,9 +273,23 @@ def net_explorer(request):
         return HttpResponse(json_data, content_type="application/json")
 
     elif request.method == "POST":
+        # JSON with graph uploaded
+
         graph_content   = request.FILES['myfile'].read()
-        graph_content.replace("\xef\xbb\xbf", "")
-        graph_content.replace("'", '"')
+        graph_content   = graph_content.replace("\xef\xbb\xbf", "") # Remove unicode BOM
+        graph_content.replace("'", '"') # Json only allows double quotes
+
+        try: # Check if file is a valid JSON
+            json_graph = json.loads(graph_content)
+            try: # Check if JSON is a graph declaration
+                json_graph[u'nodes']
+            except KeyError:
+                print("Json is not a graph declaration (no nodes)")
+                return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
+        except ValueError as err:
+            print("Not a valid Json File %s\n" % (err))
+            return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
+
         return render(request, 'NetExplorer/cytoscape_explorer.html', {'upload_json': graph_content})
 
     else:

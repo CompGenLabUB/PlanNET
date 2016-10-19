@@ -31,7 +31,14 @@
 
     <body>
 
-
+        {% if json_err %}
+        <div id="dialog-jsonerr" title="Not a valid Graph file">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+                Uploaded file is not a valid cytoscape graph declaration json.
+            </p>
+        </div>
+        {% endif %}
 
         <div id="cyt"></div>
 
