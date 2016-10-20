@@ -79,9 +79,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="-641.35527"
-     inkscape:cy="1592.1958"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="287.50729"
+     inkscape:cy="2193.7294"
      inkscape:document-units="px"
      inkscape:current-layer="g5299"
      showgrid="false"
@@ -129,12 +129,18 @@
            style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.35294119"
            d="m -1356.9618,324.24484 c 161.9275,-96.87363 403.05092,-86.26702 403.05092,-86.26702"
            id="path4322"
-           inkscape:connector-curvature="0" />
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721" />
         <path
            style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.3548387"
            d="m -1109.8279,417.58294 c -110.3087,-55.86144 -217.4354,-58.68986 -217.4354,-58.68986"
            id="path4303"
-           inkscape:connector-curvature="0" />
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721" />
         <ellipse
            style="opacity:1;fill:#ec971f;fill-opacity:0.35294119;stroke:#292c2f;stroke-width:0.95735836;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.54301076"
            id="path4265-3-6-7"
@@ -142,10 +148,16 @@
            cy="-239.39203"
            rx="15.569956"
            ry="16.077673"
-           transform="scale(-1,-1)" />
+           transform="scale(-1,-1)"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721" />
         <g
            id="g4222"
-           transform="translate(-7.0710678,-6.2319116)">
+           transform="translate(-7.0710678,-6.2319116)"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721">
           <g
              id="g4936"
              transform="matrix(-1,0,0,-1,-1586.5984,802.46959)">
@@ -407,7 +419,10 @@
            y="-290.90637"
            id="text4191"
            sodipodi:linespacing="125%"
-           transform="scale(-1,-1)"><tspan
+           transform="scale(-1,-1)"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721"><tspan
              sodipodi:role="line"
              id="tspan4193"
              x="979.79938"
@@ -415,22 +430,25 @@
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:106.25px;font-family:Norwester;-inkscape-font-specification:'Norwester Condensed';fill:#292c2f;fill-opacity:1">Planet</tspan></text>
         <text
            xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:80px;line-height:125%;font-family:Inconsolata;-inkscape-font-specification:'Inconsolata Medium';letter-spacing:0px;word-spacing:0px;fill:#b1b1b1;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:80px;line-height:125%;font-family:Inconsolata;-inkscape-font-specification:'Inconsolata Medium';letter-spacing:0px;word-spacing:0px;fill:#b1b1b1;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            x="983.36188"
            y="-252.11996"
            id="text4195"
            sodipodi:linespacing="125%"
-           transform="scale(-1,-1)"><tspan
+           transform="scale(-1,-1)"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721"><tspan
              sodipodi:role="line"
              id="tspan4197"
              x="983.36188"
              y="-252.11996"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:35px;font-family:Norwester;-inkscape-font-specification:'Norwester Condensed';fill:#b1b1b1;fill-opacity:1;">Schmidtea mediterranea </tspan><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:35px;font-family:Norwester;-inkscape-font-specification:'Norwester Condensed';fill:#b1b1b1;fill-opacity:1">Schmidtea mediterranea </tspan><tspan
              sodipodi:role="line"
              x="983.36188"
              y="-208.36996"
              id="tspan4199"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:35px;font-family:Norwester;-inkscape-font-specification:'Norwester Condensed';fill:#b1b1b1;fill-opacity:1;">protein interaction network</tspan></text>
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:35px;font-family:Norwester;-inkscape-font-specification:'Norwester Condensed';fill:#b1b1b1;fill-opacity:1">protein interactions network</tspan></text>
         <ellipse
            style="opacity:1;fill:#ec971f;fill-opacity:0.54901963;stroke:#292c2f;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.47058824"
            id="path4265"
@@ -438,7 +456,10 @@
            cy="-356.41824"
            transform="scale(-1,-1)"
            rx="32.526913"
-           ry="33.587574" />
+           ry="33.587574"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721" />
         <ellipse
            style="opacity:1;fill:#ec971f;fill-opacity:0.20430106;stroke:#292c2f;stroke-width:1.61156487;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.36559143"
            id="path4265-3"
@@ -446,7 +467,10 @@
            cy="-435.61414"
            rx="26.209616"
            ry="27.064278"
-           transform="scale(-1,-1)" />
+           transform="scale(-1,-1)"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721" />
         <ellipse
            style="opacity:1;fill:#ec971f;fill-opacity:0.20430106;stroke:#292c2f;stroke-width:0.95735836;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.36559143"
            id="path4265-3-6"
@@ -454,13 +478,29 @@
            cy="-463.54486"
            rx="15.569956"
            ry="16.077673"
-           transform="scale(-1,-1)" />
+           transform="scale(-1,-1)"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721" />
         <path
            style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.28494623"
            d="m -1117.6061,442.86201 c -25.9862,19.97576 -68.7661,21.03642 -68.7661,21.03642"
            id="path4301"
-           inkscape:connector-curvature="0" />
-      </g>
+           inkscape:connector-curvature="0"
+           inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
+           inkscape:export-xdpi="199.98721"
+           inkscape:export-ydpi="199.98721" />
+        <flowRoot
+           xml:space="preserve"
+           id="flowRoot4324"
+           style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Inconsolata;font-style:normal;font-weight:500;font-size:80px;line-height:125%;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:Inconsolata Medium;font-stretch:normal;font-variant:normal"><flowRegion
+             id="flowRegion4326"><rect
+               id="rect4328"
+               width="741.04791"
+               height="556.49304"
+               x="-1017.5267"
+               y="-781.8728" /></flowRegion><flowPara
+             id="flowPara4330"></flowPara></flowRoot>      </g>
     </g>
   </g>
 </svg>
