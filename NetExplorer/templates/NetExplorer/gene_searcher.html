@@ -1,6 +1,13 @@
 {% extends 'NetExplorer/base.html' %}
 {% load static %}
 
+{% block title %}
+     - Gene Search
+{% endblock title %}
+
+
+
+
 
 {% block content %}
 
@@ -8,11 +15,11 @@
 <!-- FORM -->
 
     <div class="panel panel-info" >
-        <div class="panel-heading"><h2>Gene Finder</h2></div>
+        <div class="panel-heading"><h2>Gene Search</h2></div>
         <div id="search-wrapper">
             <img class="app-icon-inside" src="{% static 'Images/gene-finder-icon.png' %}"/>
             <div class="panel-body app-panel">
-                <form class= "form-inline" method="GET" action="{% url gene_searcher %}">
+                <form class= "form-inline" method="GET" action="{% url gene_search %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">

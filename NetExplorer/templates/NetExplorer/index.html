@@ -9,7 +9,7 @@
             <!--
             <div class="panel panel-info" id="gf-container">
                 <div class="panel-heading">Gene Finder</div>
-                <a class="btn btn-info app-button" href="{% url gene_searcher %}">Search</a>
+                <a class="btn btn-info app-button" href="#">Search</a>
                 <div class="panel-body app-panel" >
                     <p>Text-based search of genes.</p>
                     <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
@@ -19,12 +19,12 @@
         -->
             <div class="panel panel-info app-container" >
                 <div class="panel-heading">
-                    Gene Finder
+                    Gene Search
                     <a href="#" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                     </a>
                 </div>
-                <a class="btn btn-info app-button" href="{% url gene_searcher %}">Search</a>
+                <a class="btn btn-info app-button" href="{% url gene_search %}">Search</a>
                 <div class="panel-body app-panel" >
                     <p>Search for genes and reads using identifiers.</p>
                     <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
@@ -32,7 +32,7 @@
             </div>
             <div class="panel panel-danger app-container" >
                 <div class="panel-heading">
-                    BLAST Search
+                    BLAST
                     <a href="#" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                     </a>
@@ -64,7 +64,7 @@
                     </a>
                 </div>
 
-                <a class="btn btn-warning app-button" href="#">Find</a>
+                <a class="btn btn-warning app-button" href="{% url path_finder %}">Find</a>
                 <div class="panel-body app-panel">
                     <p>Look for specific pathways in the different interaction networks.</p>
                     <img class="app-icon" src="{% static 'Images/pathway-icon.png' %}"/>

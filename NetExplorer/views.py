@@ -204,7 +204,7 @@ def get_card(request, symbol=None, database=None):
 
 
 # ------------------------------------------------------------------------------
-def gene_searcher(request):
+def gene_search(request):
     '''
     This is the text-based database search function.
     '''
@@ -303,6 +303,12 @@ def blast(request):
     """
     return render(request, 'NetExplorer/404.html')
 
+
+def path_finder(request):
+    """
+    View for the Path Finder
+    """
+    return render(request, 'NetExplorer/404.html')
 
 # ------------------------------------------------------------------------------
 def handler404(request):
