@@ -304,11 +304,12 @@ def blast(request):
     return render(request, 'NetExplorer/404.html')
 
 
+# ------------------------------------------------------------------------------
 def path_finder(request):
     """
-    View for the Path Finder
+    View for the Pathway Finder
     """
-    return render(request, 'NetExplorer/404.html')
+    return render(request, 'NetExplorer/pathway_finder.html')
 
 # ------------------------------------------------------------------------------
 def handler404(request):

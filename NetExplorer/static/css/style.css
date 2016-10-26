@@ -655,3 +655,49 @@ input[type="file"] {
 .show-homologs-btn {
     height: 80% !important;
 }
+
+
+
+/* PATHWAY FINDER */
+/* ----------------------------- */
+
+
+
+#pfind-results {
+    height: 100%;
+    float: left;
+    width: 70%;
+    overflow-y: scroll;
+}
+
+
+/* FORM CONTROLS */
+#pfind-form {
+    position: absolute;
+    height: 100%;
+    width: 30%;
+    background-color: #F8F8F8;
+    right: 0;
+}
+
+#pfind-form-header {
+    margin: 5%;
+    text-align: center
+}
+
+.pfind-form-element {
+    margin: 4%;
+}
+
+.pfind-input-header {
+    height: 4%;
+    padding:0;
+    font-size: 15;
+}
+
+#pfind-btn {
+    margin-left: 15%;
+    font-size: 40px;
+    width: 70%;
+    height: 8%;
+}

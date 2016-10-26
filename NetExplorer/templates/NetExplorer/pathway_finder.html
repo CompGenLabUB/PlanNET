@@ -1,0 +1,94 @@
+{% load static %}
+{% load staticfiles %}
+
+
+<html>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toggle-switch.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cytoscape.js-panzoom.css' %}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
+
+    <head>
+        <title>PlaNet - Pathway Finder</title>
+    </head>
+    <body>
+
+        <!-- RESULTS -->
+        <div id="pfind-results">
+            Results here.
+        </div>
+
+
+
+        <!-- FORM -->
+        <div id="pfind-form">
+            <div id="pfind-form-header">
+                <img src="{% static 'Images/pathway-icon.png' %}" class="app-icon-inside"/>
+                <h2>Pathway Finder</h2>
+                <a href="/">Back to PlaNet</a>
+            </div>
+            <hr>
+            <form method="GET" action="{% url gene_search %}">
+                <!-- START -->
+                <div class="panel panel-warning pfind-form-element">
+                    <div class="panel-heading pfind-input-header">
+                        Starting Node
+                    </div>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                    </div>
+                </div>
+
+                <!-- END -->
+                <div class="panel panel-warning pfind-form-element">
+                    <div class="panel-heading pfind-input-header">
+                        Final Node
+                    </div>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                    </div>
+                </div>
+
+                <!-- INCLUDING -->
+                <div class="panel panel-warning pfind-form-element">
+                    <div class="panel-heading pfind-input-header">
+                        Including
+                    </div>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                    </div>
+                </div>
+
+                <!-- EXCLUDING -->
+                <div class="panel panel-warning pfind-form-element">
+                    <div class="panel-heading pfind-input-header">
+                        Excluding
+                    </div>
+                    <div class="panel-body">
+                            <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                    </div>
+                </div>
+                
+                <button id="pfind-btn" type="submit" class="btn btn-warning">Find</button>
+            </form>
+
+
+
+        </div>
+
+
+
+
+
+
+    </body>
+
+</html>
