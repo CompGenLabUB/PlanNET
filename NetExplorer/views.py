@@ -7,6 +7,7 @@ import textwrap
 import json
 import re
 from pprint import pprint
+
 # -----------------------
 # FUNCTIONS
 # -----------------------
@@ -128,7 +129,6 @@ def get_graph_elements(symbols, database, graphelements, added_elements):
             except:
                 print("node not found")
     return
-
 
 # -----------------------
 # VIEWS
@@ -309,7 +309,32 @@ def path_finder(request):
     """
     View for the Pathway Finder
     """
-    return render(request, 'NetExplorer/pathway_finder.html')
+    if request.method == "GET":
+        if 'start' in request.GET and 'end' in request.GET:
+            # Search
+            if request.GET['start'] and request.GET['end'] and request.GET['database']:
+                # Valid search
+                print(request.GET['database'])
+                startnode = request.GET['start']
+                endnode   = request.GET['end']
+                including = ""
+                excluding = ""
+
+                if request.GET['including']:
+                    including = request.GET['including'].split(",")
+
+                if request.GET['excluding']:
+                    excluding = request.GET['excluding'].split(",")
+
+
+                return render(request, 'NetExplorer/pathway_finder.html')
+            else:
+                # Not valid search
+                return render(request, 'NetExplorer/pathway_finder.html')
+        else:
+            # Not a search
+            return render(request, 'NetExplorer/pathway_finder.html')
+
 
 # ------------------------------------------------------------------------------
 def handler404(request):

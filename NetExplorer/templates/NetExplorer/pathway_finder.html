@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/slider.css' %}">
     <link rel="stylesheet" href="{% static 'css/toggle-switch.css' %}">
-    <link rel="stylesheet" href="{% static 'css/cytoscape.js-panzoom.css' %}">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/bootstrap-switch.min.css' %}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
     <link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
 
     <head>
         <title>PlaNet - Pathway Finder</title>
@@ -36,47 +36,60 @@
                 <a href="/">Back to PlaNet</a>
             </div>
             <hr>
-            <form method="GET" action="{% url gene_search %}">
+
+            <!-- FORM -->
+            <form method="GET" action="{% url path_finder %}">
+
+                <!-- Select Database -->
+                <select name="database" class="selectpicker" title="Select Database">
+                    <option value="Cthulhu">Cthulhu</option>
+                    <option value="Consolidated">Consolidated</option>
+                    <option value="Human">Human</option>
+                </select>
+
+
                 <!-- START -->
                 <div class="panel panel-warning pfind-form-element">
                     <div class="panel-heading pfind-input-header">
-                        Starting Node
+                        <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node
                     </div>
                     <div class="panel-body">
-                        <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                        <input type="text" class="form-control" name="start" placeholder="Enter Symbol">
                     </div>
                 </div>
 
                 <!-- END -->
                 <div class="panel panel-warning pfind-form-element">
                     <div class="panel-heading pfind-input-header">
-                        Final Node
+                        <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node
                     </div>
                     <div class="panel-body">
-                        <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                        <input type="text" class="form-control" name="end" placeholder="Enter Symbol">
                     </div>
                 </div>
 
                 <!-- INCLUDING -->
                 <div class="panel panel-warning pfind-form-element">
                     <div class="panel-heading pfind-input-header">
-                        Including
+                        <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including
                     </div>
                     <div class="panel-body">
-                        <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                        <input type="text" class="form-control" name="including" placeholder="Enter Symbol">
                     </div>
                 </div>
 
                 <!-- EXCLUDING -->
                 <div class="panel panel-warning pfind-form-element">
                     <div class="panel-heading pfind-input-header">
-                        Excluding
+                        <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding
                     </div>
                     <div class="panel-body">
-                            <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                            <input type="text" class="form-control" name="excluding" placeholder="Enter Symbol">
                     </div>
                 </div>
-                
+
+                <br>
+                <br>
                 <button id="pfind-btn" type="submit" class="btn btn-warning">Find</button>
             </form>
 
@@ -88,7 +101,9 @@
 
 
 
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
     </body>
 
 </html>

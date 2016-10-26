@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
     <link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
 
     <head>
         <title>PlaNET - Net Explorer</title>
@@ -59,7 +60,7 @@
                         <div class="form-group">
                             <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
 
-                            <select name="database" class="form-control">
+                            <select name="database" class="selectpicker">
                                 <option value="" selected disabled>Select Database</option>
                                 <option value="Human">Human</option>
                                 <option value="Cthulhu">Cthulhu</option>
@@ -292,6 +293,7 @@
         <script src="{% static 'js/cyto-netexplorer.js' %}"></script>
         <script src="{% static 'js/jquery_cookie.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
         <script>$('[data-toggle="tooltip"]').tooltip();</script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
         <script src="{% static 'js/cytoscape-panzoom.js' %}"></script>
