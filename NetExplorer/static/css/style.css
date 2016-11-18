@@ -708,3 +708,12 @@ input[type="file"] {
     margin-right: 2%;
     vertical-align: middle;
 }
+
+
+
+
+.pathway-container {
+    height: 20%;
+    width: 80%;
+    position: relative;
+}

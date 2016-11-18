@@ -353,15 +353,26 @@ def path_finder(request):
                         continue
 
                 # Get shortest paths
+                graphelements = dict()
+                numpath = 0
                 for snode in startnodes:
                     for enode in endnodes:
                         paths = snode.path_to_node(enode, including, excluding)
-                        for p in paths:
-                            for edge in p['edges']:
-                                print(edge.source_symbol)
-
-
-                return render(request, 'NetExplorer/pathway_finder.html')
+                        if paths is None:
+                            # Return no-path that matches the query_node
+                            return render(request, 'NetExplorer/pathway_finder.html')
+                        else:
+                            for p in paths:
+                                numpath += 1
+                                graphelements[numpath] = {'nodes': list(), 'edges': list()}
+                                for edge in p['edges']:
+                                    graphelements[numpath]['edges'].append(edge_to_jsondict(edge))
+                                for node in p['nodes']:
+                                    node.get_homolog()
+                                    graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
+                                graphelements[numpath] = json.dumps(graphelements[numpath])
+                #print(graphelements)
+                return render(request, 'NetExplorer/pathway_finder.html', {"pathways" : graphelements})
             else:
                 # Not valid search
                 return render(request, 'NetExplorer/pathway_finder.html')

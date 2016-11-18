@@ -23,7 +23,12 @@
 
         <!-- RESULTS -->
         <div id="pfind-results">
-            Results here.
+            {% if pathways %}
+                {% for path in pathways %}
+                    <h3>pathway - {{ path }}</h3>
+                    <div id="pathway{{ path }}" class="pathway-container"></div>
+                {% endfor %}
+            {% endif %}
         </div>
 
 
@@ -98,12 +103,34 @@
         </div>
 
 
-
-
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+        <script src="{% static 'js/cytoscape.js' %}"></script>
+        <script src="{% static 'js/cyto-pathway.js' %}"></script>
+        {% if pathways %}
+            {% for key, value in pathways.items %}
+                <script>
+                    $(document).ready(function(){
+                        var cy = cytoscape({
+                            style: stylesheet,
+                            layout: { name: 'preset' },
+                            container: document.getElementById('pathway{{ key }}'),
+                            ready: function() {}
+                        });
+                        var elements = {{ value|safe }};
+                        cy.load(elements)
+                        cy.layout({
+                            name: 'grid',
+                            maxSimulationTime: 3000,
+                            fit: true,
+                            directed: false,
+                            padding: 40
+                        });
+                    });
+                </script>
+            {% endfor %}
+        {% endif %}
     </body>
 
 </html>

@@ -359,13 +359,14 @@ class PredictedNode(Node):
 
     def __init__(self, symbol, database, sequence=None, length=None, orf=None):
         super(PredictedNode, self).__init__(symbol, database)
-        self.sequence      = None
-        self.orf           = None
-        self.length        = None
-        self.gccont        = None
-        self.homolog       = None
-        self.n_homologs    = None
-        self.n_interactors = None
+        self.sequence       = None
+        self.orf            = None
+        self.length         = None
+        self.gccont         = None
+        self.homolog        = None
+        self.n_homologs     = None
+        self.n_interactors  = None
+        self.homolog_symbol = None
         if sequence is None:
             self.__query_node()
 
@@ -433,7 +434,7 @@ class PredictedNode(Node):
                     blast_brh  = row['blast_brh'],
                     pfam_brh   = row['pfam_brh']
                 )
-
+                self.homolog_symbol = human_node.symbol
                 return self.homolog
 
         else:
