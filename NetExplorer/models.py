@@ -76,13 +76,68 @@ class Node(object):
         self.neighbours = sorted(self.neighbours, key=lambda k: k.parameters['int_prob'], reverse=True)
 
 
-    def path_to_node(self, target):
+    def path_to_node(self, target, including=None, excluding=None):
         """
-        Given a target node, this method finds all the shortest paths to that node,
+        Given a target node object, this method finds all the shortest paths to that node,
         if there aren't any, it returns None.
+        It returns a list of dictionaries, each of them with two keys:
+            'nodes': list of PredictedNode objects in path.
+            'edges': list of PredInteraction objects in path.
         """
-        pass
+        query = """
+            MATCH p=allShortestPaths( (n:%s)-[:INTERACT_WITH*]-(m:%s) )
+            WHERE n.symbol = '%s'
+            AND m.symbol = '%s'
+        """ % (self.database, target.database, self.symbol, target.symbol)
+        if including is not None:
+            for inc in including:
+                query += 'AND ANY(x IN nodes(p) WHERE x.symbol = "%s")\n' % (inc)
+        if excluding is not None:
+            for exc in excluding:
+                query += 'AND NOT ANY(x IN nodes(p) WHERE x.symbol = "%s")\n' % (exc)
 
+        query += "return DISTINCT p"
+        results = graph.run(query).data()
+
+        if results:
+            paths = list()
+
+            for path in results:
+                nodes_obj_in_path = list()
+                rels_obj_in_path  = list()
+                nodes_in_path     = path['p'].nodes()
+                rels_in_path      = path['p'].relationships()
+                rel_properties    = None
+
+                for idx, node in enumerate(nodes_in_path):
+                    symbol   = node.properties['symbol']
+                    sequence = node.properties['sequence']
+                    orf      = node.properties['orf']
+                    length   = node.properties['length']
+                    current_node = PredictedNode(
+                                symbol   = symbol,
+                                database = self.database,
+                                sequence = sequence,
+                                orf      = orf,
+                                length   = length
+                    )
+                    nodes_obj_in_path.append(current_node)
+                    if idx > 0:
+                        # Add relationship between node[idx] and node[idx - 1]
+                        rels_obj_in_path.append(PredInteraction(
+                            source_symbol = nodes_obj_in_path[idx - 1].symbol,
+                            target        = current_node,
+                            database      = self.database,
+                            parameters    = rel_properties
+                        ))
+
+                    if idx < len(rels_in_path):
+                        rel_properties = rels_in_path[idx]
+                paths.append({'nodes': nodes_obj_in_path, 'edges': rels_obj_in_path})
+            return paths
+        else:
+            # No results
+            return None
 
     def get_domains(self):
         """
@@ -302,7 +357,7 @@ class PredictedNode(Node):
 
     allowed_databases = set(["Cthulhu", "Consolidated"])
 
-    def __init__(self, symbol, database):
+    def __init__(self, symbol, database, sequence=None, length=None, orf=None):
         super(PredictedNode, self).__init__(symbol, database)
         self.sequence      = None
         self.orf           = None
@@ -311,7 +366,8 @@ class PredictedNode(Node):
         self.homolog       = None
         self.n_homologs    = None
         self.n_interactors = None
-        self.__query_node()
+        if sequence is None:
+            self.__query_node()
 
     def __query_node(self):
         "Gets node from neo4j and fills sequence, orf and length attributes."
@@ -331,6 +387,7 @@ class PredictedNode(Node):
                 self.orf            = row["orf"]
                 self.homolog_symbol = row['homolog']
         else:
+            print("NOTFOUND")
             raise NodeNotFound(self)
 
     def get_summary(self):
@@ -405,8 +462,5 @@ class IncorrectDatabase(Exception):
 # ------------------------------------------------------------------------------
 class NodeNotFound(Exception):
     """Exception raised when a node is not found on the db"""
-    def __init__(self, pnode):
-        self.pnode = pnode
-
     def __str__(self):
         return "Symbol %s not found in database %s." % (self.pnode.symbol, self.pnode.database)

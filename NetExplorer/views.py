@@ -273,27 +273,36 @@ def net_explorer(request):
         return HttpResponse(json_data, content_type="application/json")
 
     elif request.method == "POST":
-        # JSON with graph uploaded
-
-        graph_content   = request.FILES['myfile'].read()
-        graph_content   = graph_content.replace("\xef\xbb\xbf", "") # Remove unicode BOM
-        graph_content.replace("'", '"') # Json only allows double quotes
-
-        try: # Check if file is a valid JSON
-            json_graph = json.loads(graph_content)
-            try: # Check if JSON is a graph declaration
-                json_graph[u'nodes']
-            except KeyError:
-                print("Json is not a graph declaration (no nodes)")
-                return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
-        except ValueError as err:
-            print("Not a valid Json File %s\n" % (err))
-            return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
-
-        return render(request, 'NetExplorer/cytoscape_explorer.html', {'upload_json': graph_content})
-
+        render_to_return = upload_graph(request)
+        return render_to_return
     else:
         return render(request, 'NetExplorer/cytoscape_explorer.html')
+
+# ------------------------------------------------------------------------------
+def upload_graph(request):
+    """
+    This function will take the request with a JSON file and it will return
+    a template with the graph loaded (it will also handle the errors).
+    It will return a render object to be returned by net_explorer view.
+    """
+    # JSON with graph uploaded
+
+    graph_content   = request.FILES['myfile'].read()
+    graph_content   = graph_content.replace("\xef\xbb\xbf", "") # Remove unicode BOM
+    graph_content.replace("'", '"') # Json only allows double quotes
+
+    try: # Check if file is a valid JSON
+        json_graph = json.loads(graph_content)
+        try: # Check if JSON is a graph declaration
+            json_graph[u'nodes']
+        except KeyError:
+            print("Json is not a graph declaration (no nodes)")
+            return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
+    except ValueError as err:
+        print("Not a valid Json File %s\n" % (err))
+        return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
+
+    return render(request, 'NetExplorer/cytoscape_explorer.html', {'upload_json': graph_content})
 
 
 # ------------------------------------------------------------------------------
@@ -314,17 +323,42 @@ def path_finder(request):
             # Search
             if request.GET['start'] and request.GET['end'] and request.GET['database']:
                 # Valid search
-                print(request.GET['database'])
-                startnode = request.GET['start']
-                endnode   = request.GET['end']
-                including = ""
-                excluding = ""
+                database = request.GET['database']
+                startnodes = list()
+                endnodes   = list()
+                including  = None
+                excluding  = None
 
                 if request.GET['including']:
                     including = request.GET['including'].split(",")
-
                 if request.GET['excluding']:
                     excluding = request.GET['excluding'].split(",")
+
+                start_nodes_symbols = substitute_human_symbols([request.GET['start']], database)
+                end_nodes_symbols   = substitute_human_symbols([request.GET['end']],   database)
+
+                # Query all the nodes and get node objects
+                for symbol in start_nodes_symbols:
+                    try:
+                        node = query_node(symbol, database)
+                        startnodes.append(node)
+                    except:
+                        continue
+
+                for symbol in end_nodes_symbols:
+                    try:
+                        node = query_node(symbol, database)
+                        endnodes.append(node)
+                    except:
+                        continue
+
+                # Get shortest paths
+                for snode in startnodes:
+                    for enode in endnodes:
+                        paths = snode.path_to_node(enode, including, excluding)
+                        for p in paths:
+                            for edge in p['edges']:
+                                print(edge.source_symbol)
 
 
                 return render(request, 'NetExplorer/pathway_finder.html')

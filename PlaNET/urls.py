@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-
 handler500 = "NetExplorer.views.handler500"
 handler404 = "NetExplorer.views.handler404"
 
