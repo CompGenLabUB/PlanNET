@@ -17,7 +17,7 @@ $(document).ready(function(){
 
     // Show homologs toggle
     $('#show-homologs').change(function () {
-        checkHomologs(this);
+        checkHomologs(this, cy);
     });
 
     // Add node text form
@@ -28,7 +28,7 @@ $(document).ready(function(){
         $(dataArray).each(function(i, field){
             dataObj[field.name] = field.value;
         });
-        addNode(dataObj.genesymbol, dataObj.database);
+        addNode(dataObj.genesymbol, dataObj.database, cy);
         e.preventDefault(); // avoid to execute the actual submit of the form.
     });
 
@@ -50,7 +50,7 @@ $(document).ready(function(){
             getCard(card_data);
         } else if (behaviour == "expand") {
             node.data("colorNODE", '#449D44');
-            addNode(card_data['target'], card_data['targetDB']);
+            addNode(card_data.target, card_data.targetDB, cy);
         } else if (behaviour == "delete") {
             node.remove();
         }

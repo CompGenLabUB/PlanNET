@@ -1,9 +1,9 @@
 // FUNCTIONS TO SHOW HOMOLOG NODES IN CYTOSCAPE
 
-function displayHomologs() {
+function displayHomologs(cyobj) {
     // Function to get the Homologs of each node and add them to "cy"
     var elementsToAdd = {"nodes": [], "edges": []};
-    cy.filter(function(i, element){
+    cyobj.filter(function(i, element){
         if ( element.isNode() ) {
             var nodeId  = element.data("id");
             var homolog = element.data("homolog");
@@ -15,7 +15,7 @@ function displayHomologs() {
             }
         }
     });
-    var added = cy.add(elementsToAdd);
+    var added = cyobj.add(elementsToAdd);
     var layout = added.makeLayout({
         name: 'grid'
     });
@@ -31,13 +31,13 @@ function displayHomologs() {
 }
 
 
-function checkHomologs(toggle) {
+function checkHomologs(toggle, cyobj) {
     // This is a checker function to see if the toggle is on or off and call the
     // above function if needed or to remove the homologs.
     if(toggle.checked) {
-        displayHomologs();
+        displayHomologs(cyobj);
     } else {
-        var toRemove = cy.elements('node[database = "Human"]');
-        cy.remove( toRemove );
+        var toRemove = cyobj.elements('node[database = "Human"]');
+        cyobj.remove( toRemove );
     }
 }
