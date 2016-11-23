@@ -23,6 +23,18 @@
 
         <!-- RESULTS -->
         <div id="pfind-results">
+            <!-- CARD DIV -->
+            <div id="button-container">
+                <div class="close-overlay" title="Close card">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </div>
+                <div class="full-screen-card" title="Open in new window">
+                    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="card-overlay" id="card-overlay"></div>
+
+            <!-- PATHWAY RESULTS -->
             {% if pathways %}
                 <h2> Number of pathways: {{ numpath }} </h2>
                 {% for path in pathways %}
@@ -107,7 +119,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+        <script src="{% static 'js/overlay.js' %}"></script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
+        <script src="{% static 'js/cyto-stylesheet-pathway.js' %}"></script>
+        <script src="{% static 'js/getCard.js' %}"></script>
         <script src="{% static 'js/cyto-pathway.js' %}"></script>
         {% if pathways %}
             {% for key, value in pathways.items %}
@@ -127,6 +142,17 @@
                             fit: true,
                             directed: false,
                             padding: 40
+                        });
+
+                        // Behaviour when clicking on node: will display card
+                        cy.on( 'click', 'node', function() {
+                            node = this;
+                            var card_data = {
+                                target  : this.data("name"),
+                                targetDB: this.data("database"),
+                                csrfmiddlewaretoken: '{{ csrf_token }}'
+                            };
+                            getCard(card_data);
                         });
                     });
                 </script>
