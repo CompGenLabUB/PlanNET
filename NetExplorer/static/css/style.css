@@ -709,11 +709,13 @@ input[type="file"] {
     vertical-align: middle;
 }
 
-
-
-
+#pfind-results {
+    padding: 4%;
+}
 .pathway-container {
     height: 20%;
     width: 80%;
     position: relative;
+    border: solid 1px;
+    margin-left: 1%;
 }

@@ -24,8 +24,9 @@
         <!-- RESULTS -->
         <div id="pfind-results">
             {% if pathways %}
+                <h2> Number of pathways: {{ numpath }} </h2>
                 {% for path in pathways %}
-                    <h3>pathway - {{ path }}</h3>
+                    <h3>Pathway #{{ path }}</h3>
                     <div id="pathway{{ path }}" class="pathway-container"></div>
                 {% endfor %}
             {% endif %}

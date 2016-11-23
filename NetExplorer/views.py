@@ -372,7 +372,8 @@ def path_finder(request):
                                     graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
                                 graphelements[numpath] = json.dumps(graphelements[numpath])
                 #print(graphelements)
-                return render(request, 'NetExplorer/pathway_finder.html', {"pathways" : graphelements})
+
+                return render(request, 'NetExplorer/pathway_finder.html', {"pathways" : graphelements, "numpath" : numpath})
             else:
                 # Not valid search
                 return render(request, 'NetExplorer/pathway_finder.html')
