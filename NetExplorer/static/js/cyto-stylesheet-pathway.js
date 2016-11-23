@@ -13,11 +13,11 @@ var stylesheet = cytoscape.stylesheet()
     .selector('edge')
         .css({
             'content': 'data(probability)',
-            'font-size': 6,
-            'width': 1,
+            'font-size': 10,
+            'width': 3,
             'color': "#404040",
             'background-color': '#F8F8F8',
-            'text-outline-width': 2,
+            'text-outline-width': 4,
             "text-outline-color": "#F8F8F8",
             'line-color': 'data(colorEDGE)',
             'target-arrow-color': 'data(colorEDGE)'

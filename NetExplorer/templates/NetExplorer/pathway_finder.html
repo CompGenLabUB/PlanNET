@@ -36,10 +36,36 @@
 
             <!-- PATHWAY RESULTS -->
             {% if pathways %}
-                <h2> Number of pathways: {{ numpath }} </h2>
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h2> Results</h2>
+                </div>
+                <div class="panel-body">
+                    <h4>Search parameters:</h4>
+                    <div id="search-param-pathway">
+                        <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <br>
+                        <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <br>
+                        <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <br>
+                        <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <br>
+                    </div>
+                    <h4>Number of Pathways: {{ numpath }}</h4>
+                    <h4>Path Length:</h4>
+                </div>
+            </div>
+
                 {% for path in pathways %}
-                    <h3>Pathway #{{ path }}</h3>
-                    <div id="pathway{{ path }}" class="pathway-container"></div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+
+                        <h3>Pathway #{{ path }} <a class="netexplorer-mini-ref" href="#"><img class="netexplorer-mini" src="{% static 'Images/netexplorer-mini.png' %}"/> View on NetExplorer</a></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="pathway{{ path }}" class="pathway-container"></div>
+                    </div>
+                </div>
+
+
+
                 {% endfor %}
             {% endif %}
         </div>

@@ -34,6 +34,17 @@ class Node(object):
         """
         Method to get the adjacent nodes in the graph. Attribute neighbours will
         be a list of PredInteraction objects.
+
+            # Query to get all the relationships between neighbour nodes.
+            # Return clause should be changed but it seems to work
+
+            MATCH (n:Cthulhu)-[r:INTERACT_WITH]-(m:Cthulhu)
+            WHERE n.symbol = 'cth1_Trc_comp6878_c0_seq1'
+            WITH collect(m) as neighbours, n as parent, collect(r) as parentrels
+            match (a:Cthulhu)-[l:INTERACT_WITH]-(b:Cthulhu)
+            WHERE a in neighbours and b in neighbours
+            return a.symbol, b.symbol, l, parentrels, neighbours
+
         """
         query = """
             MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)
@@ -97,6 +108,7 @@ class Node(object):
                 query += 'AND NOT ANY(x IN nodes(p) WHERE x.symbol = "%s")\n' % (exc)
 
         query += "return DISTINCT p"
+        print(query)
         results = graph.run(query).data()
 
         if results:
@@ -133,10 +145,13 @@ class Node(object):
 
                     if idx < len(rels_in_path):
                         rel_properties = rels_in_path[idx]
+                        rel_properties['path_length'] = int(rel_properties['path_length'])
                 paths.append({'nodes': nodes_obj_in_path, 'edges': rels_obj_in_path})
+            print(paths)
             return paths
         else:
             # No results
+            print("No paths")
             return None
 
     def get_domains(self):

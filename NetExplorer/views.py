@@ -360,7 +360,7 @@ def path_finder(request):
                         paths = snode.path_to_node(enode, including, excluding)
                         if paths is None:
                             # Return no-path that matches the query_node
-                            return render(request, 'NetExplorer/pathway_finder.html')
+                            continue
                         else:
                             for p in paths:
                                 numpath += 1
@@ -371,9 +371,11 @@ def path_finder(request):
                                     node.get_homolog()
                                     graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
                                 graphelements[numpath] = json.dumps(graphelements[numpath])
-                #print(graphelements)
-
-                return render(request, 'NetExplorer/pathway_finder.html', {"pathways" : graphelements, "numpath" : numpath})
+                if graphelements:
+                    # We have graphelements to display (there are paths)
+                    return render(request, 'NetExplorer/pathway_finder.html', {"pathways" : graphelements, "numpath" : numpath})
+                else:
+                    return render(request, 'NetExplorer/pathway_finder.html')
             else:
                 # Not valid search
                 return render(request, 'NetExplorer/pathway_finder.html')
