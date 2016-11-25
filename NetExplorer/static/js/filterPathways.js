@@ -13,7 +13,10 @@ $("#pathway-filter").submit(function(e){
         return false;
     }
 
-    symbol_list = symbol_list.map(function(x){ return x.toUpperCase(); })
+    // Remove whitespace and make uppercase the user input
+    symbol_list = symbol_list.map(function(x){ x = x.replace(/ /g,''); return x.toUpperCase(); });
+
+
     // Iterate through all the panels
     panel:
     for (var i = 0; i < panels.length; i++) {
