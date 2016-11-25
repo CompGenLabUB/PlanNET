@@ -60,9 +60,11 @@
                 <div id="pathway-filter-div">
                     <form id="pathway-filter" class="form-inline">
                         <input id="pathway-filter-text" type="text" class="form-control" name="start" placeholder="Enter Symbol(s), separated by commas">
-                        <input id="pathway-filter-submit" class="btn btn-default" type="submit" value="Filter">
+                        <input id="pathway-filter-submit" class="btn btn-warning" type="submit" value="Filter">
                     </form>
                 </div>
+
+                <h4>Showing <span id="numfiltered">{{ pathways|length }}</span> of {{ pathways|length }} pathways</h4>
 
                 <!-- PATHWAYS -->
                 {% for key, value in pathways.items %}

@@ -2,12 +2,14 @@ $("#pathway-filter").submit(function(e){
     var symbols     = document.getElementById('pathway-filter-text').value;
     var symbol_list = symbols.split(",");
     var panels      =  document.getElementsByClassName("pathway-panel");
+    var numshown    = 0;
 
     if (!symbols) {
         // Nothing to filter, show them all
         for (var k = 0; k < panels.length; k++) {
             panels[k].style.display = "block";
         }
+        document.getElementById("numfiltered").textContent=panels.length;
         return false;
     }
 
@@ -58,6 +60,10 @@ $("#pathway-filter").submit(function(e){
 
 
         panels[i].style.display = "block";
+        numshown += 1;
     }
+
+    // Change number of elements displayed text
+    document.getElementById("numfiltered").textContent=numshown;
     return false;
 });
