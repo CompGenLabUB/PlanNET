@@ -373,7 +373,14 @@ def path_finder(request):
                                 graphelements[numpath] = json.dumps(graphelements[numpath])
                 if graphelements:
                     # We have graphelements to display (there are paths)
-                    return render(request, 'NetExplorer/pathway_finder.html', {"pathways" : graphelements, "numpath" : numpath})
+                    response = {
+                        "pathways" : graphelements,
+                        "numpath" : numpath,
+                        "database": database,
+                        "snode": request.GET['start'],
+                        "enode": request.GET['end']
+                    }
+                    return render(request, 'NetExplorer/pathway_finder.html', response)
                 else:
                     return render(request, 'NetExplorer/pathway_finder.html')
             else:

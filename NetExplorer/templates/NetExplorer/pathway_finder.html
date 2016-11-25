@@ -38,31 +38,56 @@
             {% if pathways %}
             <div class="panel panel-warning">
                 <div class="panel-heading">
-                    <h2> Results</h2>
+                    <h2>Results</h2>
                 </div>
-                <div class="panel-body">
-                    <h4>Search parameters:</h4>
+                <div class="panel-body pfind-res-panel">
+                    <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Search parameters:</h4>
                     <div id="search-param-pathway">
-                        <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <br>
-                        <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <br>
-                        <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <br>
-                        <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <br>
+                        <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
+                        <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
+                        <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
+                        <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
+                        <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
                     </div>
-                    <h4>Number of Pathways: {{ numpath }}</h4>
-                    <h4>Path Length:</h4>
+                    <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Number of Pathways: <strong>{{ numpath }}</strong></h4>
+                    <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Path Length: <strong>Unas cuantas</strong></h4>
+                    <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Best Score: <strong>ejej</strong></h4>
+                    <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Avg Score: <strong>ojoj</strong></h4>
                 </div>
             </div>
 
-                {% for path in pathways %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+            {% for path in pathways %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Pathway #{{ path }} - Score: 123
 
-                        <h3>Pathway #{{ path }} <a class="netexplorer-mini-ref" href="#"><img class="netexplorer-mini" src="{% static 'Images/netexplorer-mini.png' %}"/> View on NetExplorer</a></h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="pathway{{ path }}" class="pathway-container"></div>
-                    </div>
+                        <div class="row path-controls">
+                            <div class="col-md-6">
+                                <a title="Center Graph">
+                                    <button id="center-to-graph-{{ path }}" class="btn btn-default" type="button">
+                                        <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a title="View on NetExplorer">
+                                    <button id="netexplorer-mini-{{ path }}" class="btn btn-default" type="button">
+                                        <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+
+
+
+                    </h3>
                 </div>
+
+            <div class="panel-body">
+                <div id="pathway{{ path }}" class="pathway-container"></div>
+
+            </div>
+            </div>
 
 
 
@@ -134,7 +159,10 @@
 
                 <br>
                 <br>
-                <button id="pfind-btn" type="submit" class="btn btn-warning">Find</button>
+                <button id="pfind-btn" type="submit" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    Find
+                </button>
             </form>
 
 
@@ -180,6 +208,18 @@
                             };
                             getCard(card_data);
                         });
+
+                        // Behaviour when mousover
+                        cy.on( 'mousover', 'node', function() {
+                            // show card message
+                        });
+
+                        // Center to graph
+                        $("#center-to-graph-{{ key }}").on("click", function(){
+                            cy.center();
+                            cy.fit();
+                        });
+
                     });
                 </script>
             {% endfor %}
