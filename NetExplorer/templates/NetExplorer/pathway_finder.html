@@ -36,60 +36,65 @@
 
             <!-- PATHWAY RESULTS -->
             {% if pathways %}
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <h2>Results</h2>
-                </div>
-                <div class="panel-body pfind-res-panel">
-                    <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Search parameters:</h4>
-                    <div id="search-param-pathway">
-                        <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
-                        <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
-                        <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
-                        <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
-                        <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h2>Results</h2>
                     </div>
-                    <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Number of Pathways: <strong>{{ numpath }}</strong></h4>
-                    <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Path Length: <strong>Unas cuantas</strong></h4>
-                    <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Best Score: <strong>ejej</strong></h4>
-                    <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Avg Score: <strong>ojoj</strong></h4>
+                    <div class="panel-body pfind-res-panel">
+                        <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Search parameters:</h4>
+                        <div id="search-param-pathway">
+                            <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
+                            <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
+                            <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
+                            <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
+                            <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
+                        </div>
+                        <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Number of Pathways: <strong>{{ numpath }}</strong></h4>
+                        <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Path Length: <strong>Unas cuantas</strong></h4>
+                        <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Best Score: <strong>ejej</strong></h4>
+                        <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Avg Score: <strong>ojoj</strong></h4>
+                    </div>
                 </div>
-            </div>
 
-            {% for path in pathways %}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3>Pathway #{{ path }} - Score: 123
+                <!-- FILTER FORM -->
+                <div id="pathway-filter-div">
+                    <form id="pathway-filter" class="form-inline">
+                        <input id="pathway-filter-text" type="text" class="form-control" name="start" placeholder="Enter Symbol(s), separated by commas">
+                        <input id="pathway-filter-submit" class="btn btn-default" type="submit" value="Filter">
+                    </form>
+                </div>
 
-                        <div class="row path-controls">
-                            <div class="col-md-6">
-                                <a title="Center Graph">
-                                    <button id="center-to-graph-{{ path }}" class="btn btn-default" type="button">
-                                        <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-                                    </button>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <a title="View on NetExplorer">
-                                    <button id="netexplorer-mini-{{ path }}" class="btn btn-default" type="button">
-                                        <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
-                                    </button>
-                                </a>
-                            </div>
+                <!-- PATHWAYS -->
+                {% for key, value in pathways.items %}
+                    <div class="panel panel-default pathway-panel" id="panel{{ key }}" value='{{ value|safe }}' class="visible">
+                        <div class="panel-heading">
+                            <h3>Pathway #{{ key }} - Score: 123
+
+                                <div class="row path-controls">
+                                    <div class="col-md-6">
+                                        <a title="Center Graph">
+                                            <button id="center-to-graph-{{ key }}" class="btn btn-default" type="button">
+                                                <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a title="View on NetExplorer">
+                                            <button id="netexplorer-mini-{{ key }}" class="btn btn-default" type="button">
+                                                <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                </h3>
                         </div>
 
+                        <div class="panel-body">
+                            <div id="pathway{{ key }}" class="pathway-container"></div>
 
-
-                    </h3>
-                </div>
-
-            <div class="panel-body">
-                <div id="pathway{{ path }}" class="pathway-container"></div>
-
-            </div>
-            </div>
-
-
+                        </div>
+                    </div>
 
                 {% endfor %}
             {% endif %}
@@ -178,6 +183,7 @@
         <script src="{% static 'js/cyto-stylesheet-pathway.js' %}"></script>
         <script src="{% static 'js/getCard.js' %}"></script>
         <script src="{% static 'js/cyto-pathway.js' %}"></script>
+        <script src="{% static 'js/filterPathways.js' %}"></script>
         {% if pathways %}
             {% for key, value in pathways.items %}
                 <script>
