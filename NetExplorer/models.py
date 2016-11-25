@@ -100,14 +100,10 @@ class Node(object):
             WHERE n.symbol = '%s'
             AND m.symbol = '%s'
         """ % (self.database, target.database, self.symbol, target.symbol)
-        if including is not None:
-            for inc in including:
-                query += 'AND ANY(x IN nodes(p) WHERE x.symbol = "%s")\n' % (inc)
-        if excluding is not None:
-            for exc in excluding:
-                query += 'AND NOT ANY(x IN nodes(p) WHERE x.symbol = "%s")\n' % (exc)
 
-        query += "return DISTINCT p"
+
+        query += """RETURN DISTINCT p,
+                    reduce(int_prob = 0.0, r IN relationships(p) | int_prob + toFloat(r.int_prob))/length(p) AS total_prob"""
         print(query)
         results = graph.run(query).data()
 

@@ -9,8 +9,8 @@ $('.small-searchpanel').click(function(){
     var card_data = {
         target  : $(this).attr('target'),
         targetDB: $(this).attr('targetDB'),
-    }
-    elementID = card_data["target"] + "_card";
+    };
+    elementID = card_data.target + "_card";
     $('[id="' + elementID + '"]').slideToggle(450);
     $('.close-overlay').slideToggle(450);
     $('.full-screen-card').slideToggle(450);

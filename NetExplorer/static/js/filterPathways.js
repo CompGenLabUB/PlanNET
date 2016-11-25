@@ -13,7 +13,7 @@ $("#pathway-filter").submit(function(e){
         return false;
     }
 
-
+    symbol_list = symbol_list.map(function(x){ return x.toUpperCase(); })
     // Iterate through all the panels
     panel:
     for (var i = 0; i < panels.length; i++) {
@@ -30,8 +30,8 @@ $("#pathway-filter").submit(function(e){
 
         nodes:
         for (var j = 0; j < graphobj.nodes.length; j++) {
-            var id      = graphobj.nodes[j].data.id;
-            var homolog = graphobj.nodes[j].data.homolog;
+            var id      = graphobj.nodes[j].data.id.toUpperCase();
+            var homolog = graphobj.nodes[j].data.homolog.toUpperCase();
 
             if (symbol_list.indexOf(id) > -1) {
                 //Node id in the path
