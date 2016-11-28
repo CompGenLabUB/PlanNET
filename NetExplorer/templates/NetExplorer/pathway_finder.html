@@ -67,22 +67,22 @@
                 <h4>Showing <span id="numfiltered">{{ pathways|length }}</span> of {{ pathways|length }} pathways</h4>
 
                 <!-- PATHWAYS -->
-                {% for key, value in pathways.items %}
-                    <div class="panel panel-default pathway-panel" id="panel{{ key }}" value='{{ value|safe }}' class="visible">
+                {% for path in pathways %}
+                    <div class="panel panel-default pathway-panel" id="panel{{ forloop.counter }}" value='{{ path.0|safe }}' class="visible">
                         <div class="panel-heading">
-                            <h3>Pathway #{{ key }} - Score: 123
+                            <h3>Pathway #{{ forloop.counter }} - Score: {{ path.1 }}
 
                                 <div class="row path-controls">
                                     <div class="col-md-6">
                                         <a title="Center Graph">
-                                            <button id="center-to-graph-{{ key }}" class="btn btn-default" type="button">
+                                            <button id="center-to-graph-{{ forloop.counter }}" class="btn btn-default" type="button">
                                                 <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
                                             </button>
                                         </a>
                                     </div>
                                     <div class="col-md-6">
                                         <a title="View on NetExplorer">
-                                            <button id="netexplorer-mini-{{ key }}" class="btn btn-default" type="button">
+                                            <button id="netexplorer-mini-{{ forloop.counter }}" class="btn btn-default" type="button">
                                                 <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
                                             </button>
                                         </a>
@@ -93,7 +93,7 @@
                         </div>
 
                         <div class="panel-body">
-                            <div id="pathway{{ key }}" class="pathway-container"></div>
+                            <div id="pathway{{ forloop.counter }}" class="pathway-container"></div>
 
                         </div>
                     </div>
@@ -187,16 +187,16 @@
         <script src="{% static 'js/cyto-pathway.js' %}"></script>
         <script src="{% static 'js/filterPathways.js' %}"></script>
         {% if pathways %}
-            {% for key, value in pathways.items %}
+            {% for path in pathways %}
                 <script>
                     $(document).ready(function(){
                         var cy = cytoscape({
                             style: stylesheet,
                             layout: { name: 'preset' },
-                            container: document.getElementById('pathway{{ key }}'),
+                            container: document.getElementById('pathway{{ forloop.counter }}'),
                             ready: function() {}
                         });
-                        var elements = {{ value|safe }};
+                        var elements = {{ path.0|safe }};
                         cy.load(elements)
                         cy.layout({
                             name: 'grid',
@@ -223,7 +223,7 @@
                         });
 
                         // Center to graph
-                        $("#center-to-graph-{{ key }}").on("click", function(){
+                        $("#center-to-graph-{{ forloop.counter }}").on("click", function(){
                             cy.center();
                             cy.fit();
                         });

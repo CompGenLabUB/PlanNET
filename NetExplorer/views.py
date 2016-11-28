@@ -316,7 +316,10 @@ def blast(request):
 # ------------------------------------------------------------------------------
 def path_finder(request):
     """
-    View for the Pathway Finder
+    View for the Pathway Finder.
+    Returns a list called "graphelements". This is a list of tuples, with the first element
+    of the tuple being the JSON of the graph to be used by cytoscape.js, and the second element being
+    the score assigned to the given pathway.
     """
     if request.method == "GET":
         if 'start' in request.GET and 'end' in request.GET:
@@ -353,7 +356,7 @@ def path_finder(request):
                         continue
 
                 # Get shortest paths
-                graphelements = dict()
+                graphelements = list()
                 numpath = 0
                 for snode in startnodes:
                     for enode in endnodes:
@@ -363,16 +366,19 @@ def path_finder(request):
                             continue
                         else:
                             for p in paths:
-                                numpath += 1
-                                graphelements[numpath] = {'nodes': list(), 'edges': list()}
+                                graphelements.append({'nodes': list(), 'edges': list()})
                                 for edge in p['edges']:
                                     graphelements[numpath]['edges'].append(edge_to_jsondict(edge))
                                 for node in p['nodes']:
                                     node.get_homolog()
                                     graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
-                                graphelements[numpath] = json.dumps(graphelements[numpath])
+                                graphelements[numpath] = (json.dumps(graphelements[numpath]), round(p['score'], 2))
+                                numpath += 1
                 if graphelements:
                     # We have graphelements to display (there are paths)
+
+                    graphelements = sorted(graphelements, key=lambda k: k[1], reverse=True)
+                    print(graphelements)
                     response = {
                         "pathways" : graphelements,
                         "numpath" : numpath,

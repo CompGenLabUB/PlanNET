@@ -104,7 +104,6 @@ class Node(object):
 
         query += """RETURN DISTINCT p,
                     reduce(int_prob = 0.0, r IN relationships(p) | int_prob + toFloat(r.int_prob))/length(p) AS total_prob"""
-        print(query)
         results = graph.run(query).data()
 
         if results:
@@ -115,6 +114,7 @@ class Node(object):
                 rels_obj_in_path  = list()
                 nodes_in_path     = path['p'].nodes()
                 rels_in_path      = path['p'].relationships()
+                path_score        = path['total_prob']
                 rel_properties    = None
 
                 for idx, node in enumerate(nodes_in_path):
@@ -142,8 +142,8 @@ class Node(object):
                     if idx < len(rels_in_path):
                         rel_properties = rels_in_path[idx]
                         rel_properties['path_length'] = int(rel_properties['path_length'])
-                paths.append({'nodes': nodes_obj_in_path, 'edges': rels_obj_in_path})
-            print(paths)
+                paths.append({'nodes': nodes_obj_in_path, 'edges': rels_obj_in_path, 'score': path_score })
+            # Sort paths by score
             return paths
         else:
             # No results
