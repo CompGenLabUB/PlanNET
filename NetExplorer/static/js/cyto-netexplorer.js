@@ -1,6 +1,15 @@
 $(document).ready(function(){
     if (upload_json) {
         cy.add(upload_json);
+        if (no_layout) {
+            cy.layout({
+                name: 'cola',
+                maxSimulationTime: 3000,
+                fit: true,
+                directed: false,
+                padding: 40
+            });
+        }
     }
 
     // CHANGE LAYOUT CONTROLS
@@ -126,7 +135,7 @@ $(document).ready(function(){
 
     // Save Graph
     $("#save-graph").on("click", function(){
-        var jsonGraph = JSON.stringify(cy.json()['elements']);
+        var jsonGraph = JSON.stringify(cy.json().elements);
         var blob = new Blob([jsonGraph], {type: "text/plain;charset=utf-8"});
         saveAs(blob, "graph-export.json");
     });

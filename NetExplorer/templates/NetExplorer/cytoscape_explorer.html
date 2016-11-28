@@ -22,10 +22,16 @@
         <script>
             var graphelements = "";
             var upload_json   = "";
+            var no_layout     = 0;
         </script>
         {% if upload_json %}
             <script>
                 upload_json = {{ upload_json|safe }};
+            </script>
+        {% endif %}
+        {% if no_layout %}
+            <script>
+                no_layout = 1;
             </script>
         {% endif %}
     </head>

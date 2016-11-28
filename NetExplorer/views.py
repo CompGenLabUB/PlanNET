@@ -273,23 +273,31 @@ def net_explorer(request):
         return HttpResponse(json_data, content_type="application/json")
 
     elif request.method == "POST":
-        render_to_return = upload_graph(request)
+        json_text = None
+        if 'json_text' in request.POST:
+            json_text = request.POST['json_text']
+        render_to_return = upload_graph(request, json_text)
         return render_to_return
     else:
         return render(request, 'NetExplorer/cytoscape_explorer.html')
 
 # ------------------------------------------------------------------------------
-def upload_graph(request):
+def upload_graph(request, json_text):
     """
     This function will take the request with a JSON file and it will return
     a template with the graph loaded (it will also handle the errors).
     It will return a render object to be returned by net_explorer view.
     """
     # JSON with graph uploaded
-
-    graph_content   = request.FILES['myfile'].read()
-    graph_content   = graph_content.replace("\xef\xbb\xbf", "") # Remove unicode BOM
-    graph_content.replace("'", '"') # Json only allows double quotes
+    graph_content = str()
+    no_layout     = 0
+    if json_text is None:
+        graph_content   = request.FILES['myfile'].read()
+        graph_content   = graph_content.replace("\xef\xbb\xbf", "") # Remove unicode BOM
+        graph_content.replace("'", '"') # Json only allows double quotes
+    else:
+        graph_content = json_text
+        no_layout = 1
 
     try: # Check if file is a valid JSON
         json_graph = json.loads(graph_content)
@@ -302,7 +310,7 @@ def upload_graph(request):
         print("Not a valid Json File %s\n" % (err))
         return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
 
-    return render(request, 'NetExplorer/cytoscape_explorer.html', {'upload_json': graph_content})
+    return render(request, 'NetExplorer/cytoscape_explorer.html', {'upload_json': graph_content, 'no_layout': no_layout})
 
 
 # ------------------------------------------------------------------------------
@@ -358,9 +366,12 @@ def path_finder(request):
                 # Get shortest paths
                 graphelements = list()
                 numpath = 0
+                plen    = 0
                 for snode in startnodes:
                     for enode in endnodes:
                         paths = snode.path_to_node(enode, including, excluding)
+                        plen = len(paths[0]['edges'])
+                        print(plen)
                         if paths is None:
                             # Return no-path that matches the query_node
                             continue
@@ -378,13 +389,13 @@ def path_finder(request):
                     # We have graphelements to display (there are paths)
 
                     graphelements = sorted(graphelements, key=lambda k: k[1], reverse=True)
-                    print(graphelements)
                     response = {
                         "pathways" : graphelements,
-                        "numpath" : numpath,
-                        "database": database,
-                        "snode": request.GET['start'],
-                        "enode": request.GET['end']
+                        "plen"     : plen,
+                        "numpath"  : numpath,
+                        "database" : database,
+                        "snode"    : request.GET['start'],
+                        "enode"    : request.GET['end']
                     }
                     return render(request, 'NetExplorer/pathway_finder.html', response)
                 else:
