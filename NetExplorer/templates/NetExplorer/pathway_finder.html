@@ -50,14 +50,13 @@
                             <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
                         </div>
                         <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Number of Pathways: <strong>{{ numpath }}</strong></h4>
-                        <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Path Length: <strong>Unas cuantas</strong></h4>
-                        <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Best Score: <strong>ejej</strong></h4>
-                        <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Avg Score: <strong>ojoj</strong></h4>
+                        <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Path Length: <strong>{{ plen }}</strong></h4>
                     </div>
                 </div>
 
                 <!-- FILTER FORM -->
                 <div id="pathway-filter-div">
+                    <h3 class="filter-title">Filter pathways by identifiers</h3>
                     <form id="pathway-filter" class="form-inline">
                         <input id="pathway-filter-text" type="text" class="form-control" name="start" placeholder="Enter Symbol(s), separated by commas">
                         <input id="pathway-filter-submit" class="btn btn-warning" type="submit" value="Filter">
@@ -71,7 +70,7 @@
                     <div class="panel panel-default pathway-panel" id="panel{{ forloop.counter }}" value='{{ path.0|safe }}' class="visible">
                         <div class="panel-heading">
                             <div class="path-title">
-                                <h3>Pathway #{{ forloop.counter }}</h3>
+                                <h3>Pathway {{ forloop.counter }}</h3>
                                 <span class="text-success path-score">Score: {{ path.1 }}</span>
                             </div>
 
