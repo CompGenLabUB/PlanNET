@@ -736,10 +736,7 @@ input[type="file"] {
     margin-left: 6%;
 }
 
-.path-controls{
-    position: relative;
-    float: right;
-}
+
 
 
 .pfind-res-panel {
@@ -760,4 +757,19 @@ input[type="file"] {
 
 .hidden {
         display: none;
+}
+
+.path-score {
+    font-size: 16 !important;
+}
+
+
+.path-title {
+    display: inline-block;
+}
+
+.path-controls{
+    position: relative;
+    float: right;
+    margin-top: 1%;
 }

@@ -70,26 +70,27 @@
                 {% for path in pathways %}
                     <div class="panel panel-default pathway-panel" id="panel{{ forloop.counter }}" value='{{ path.0|safe }}' class="visible">
                         <div class="panel-heading">
-                            <h3>Pathway #{{ forloop.counter }} - Score: {{ path.1 }}
+                            <div class="path-title">
+                                <h3>Pathway #{{ forloop.counter }}</h3>
+                                <span class="text-success path-score">Score: {{ path.1 }}</span>
+                            </div>
 
-                                <div class="row path-controls">
-                                    <div class="col-md-6">
-                                        <a title="Center Graph">
-                                            <button id="center-to-graph-{{ forloop.counter }}" class="btn btn-default" type="button">
-                                                <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <a title="View on NetExplorer">
-                                            <button id="netexplorer-mini-{{ forloop.counter }}" class="btn btn-default" type="button">
-                                                <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
-                                            </button>
-                                        </a>
-                                    </div>
+                            <div class="row path-controls">
+                                <div class="col-md-6">
+                                    <a title="Center Graph">
+                                        <button id="center-to-graph-{{ forloop.counter }}" class="btn btn-default" type="button">
+                                            <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                                        </button>
+                                    </a>
                                 </div>
-
-                                </h3>
+                                <div class="col-md-6">
+                                    <a title="View on NetExplorer">
+                                        <button id="netexplorer-mini-{{ forloop.counter }}" class="btn btn-default" type="button">
+                                            <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="panel-body">
