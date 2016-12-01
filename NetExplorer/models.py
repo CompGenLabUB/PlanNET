@@ -7,8 +7,109 @@ from py2neo import Graph, Path
 graph = Graph("http://localhost:7474/db/data/")
 
 
-# NEO4J CLASSES
 
+# QUERIES
+# ------------------------------------------------------------------------------
+prednode_query = """
+    MATCH (n:%s)-[r:HOMOLOG_OF]-(m:Human)
+    WHERE  n.symbol = "%s"
+    RETURN n.symbol AS symbol,
+        n.sequence AS sequence,
+        n.orf AS orf,
+        m.symbol AS human,
+        r.blast_cov AS blast_cov,
+        r.blast_eval AS blast_eval,
+        r.nog_brh AS nog_brh,
+        r.pfam_sc AS pfam_sc,
+        r.nog_eval AS nog_eval,
+        r.blast_brh AS blast_brh,
+        r.pfam_brh AS pfam_brh LIMIT 1
+"""
+
+# ------------------------------------------------------------------------------
+humannode_query = """
+    MATCH (n:%s)
+    WHERE n.symbol = "%s"
+    RETURN n.symbol AS symbol
+"""
+
+# ------------------------------------------------------------------------------
+predinteraction_query = """
+    MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)
+    WHERE n.symbol = '%s' AND m.symbol = '%s'
+    RETURN r.int_prob     AS int_prob,
+        r.path_length  AS path_length,
+        r.cellcom_nto  AS cellcom_nto,
+        r.molfun_nto   AS molfun_nto,
+        r.bioproc_nto  AS bioproc_nto,
+        r.dom_int_sc   AS dom_int_sc
+        LIMIT 1
+"""
+
+# ------------------------------------------------------------------------------
+neighbours_query = """
+    MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)-[s:HOMOLOG_OF]-(l:Human)
+    WHERE  n.symbol = '%s'
+    RETURN m.symbol         AS target,
+        m.orf            AS torf,
+        m.sequence       AS tsequence,
+        l.symbol         AS human,
+        r.int_prob       AS int_prob,
+        r.path_length    AS path_length,
+        r.cellcom_nto    AS cellcom_nto,
+        r.molfun_nto     AS molfun_nto,
+        r.bioproc_nto    AS bioproc_nto,
+        r.dom_int_sc     AS dom_int_sc,
+        s.blast_cov      AS blast_cov,
+        s.blast_eval     AS blast_eval,
+        s.nog_brh        AS nog_brh,
+        s.pfam_sc        AS pfam_sc,
+        s.nog_eval       AS nog_eval,
+        s.blast_brh      AS blast_brh,
+        s.pfam_brh       AS pfam_brh
+"""
+
+# ------------------------------------------------------------------------------
+shortestpath_query = """
+    MATCH p=allShortestPaths( (n:%s)-[:INTERACT_WITH*]-(m:%s) )
+    WHERE n.symbol = '%s'
+    AND m.symbol = '%s'
+"""
+
+# ------------------------------------------------------------------------------
+domain_query = """
+    MATCH (n:%s)-[r]->(dom:Pfam)
+    WHERE n.symbol = '%s'
+    RETURN dom.accession   AS accession,
+           dom.description AS description,
+           dom.identifier  AS identifier,
+           dom.mlength     AS mlength,
+           r.pfam_start    AS p_start,
+           r.pfam_end      AS p_end,
+           r.s_start       AS s_start,
+           r.s_end         AS s_end,
+           r.perc          AS perc
+"""
+
+# ------------------------------------------------------------------------------
+homologs_query = """
+    MATCH (n:Human)-[r:HOMOLOG_OF]-(m:%s)
+    WHERE  n.symbol = "%s"
+    RETURN n.symbol AS human,
+        m.symbol AS homolog,
+        r.blast_cov AS blast_cov,
+        r.blast_eval AS blast_eval,
+        r.nog_brh AS nog_brh,
+        r.pfam_sc AS pfam_sc,
+        r.nog_eval AS nog_eval,
+        r.blast_brh AS blast_brh,
+        r.pfam_brh AS pfam_brh
+"""
+
+
+
+
+# NEO4J CLASSES
 # ------------------------------------------------------------------------------
 class Node(object):
     """
@@ -30,62 +131,6 @@ class Node(object):
         It will query the Neo4j database and it will get the required node.
         """
 
-    def get_neighbours(self):
-        """
-        Method to get the adjacent nodes in the graph. Attribute neighbours will
-        be a list of PredInteraction objects.
-
-            # Query to get all the relationships between neighbour nodes.
-            # Return clause should be changed but it seems to work
-
-            MATCH (n:Cthulhu)-[r:INTERACT_WITH]-(m:Cthulhu)
-            WHERE n.symbol = 'cth1_Trc_comp6878_c0_seq1'
-            WITH collect(m) as neighbours, n as parent, collect(r) as parentrels
-            match (a:Cthulhu)-[l:INTERACT_WITH]-(b:Cthulhu)
-            WHERE a in neighbours and b in neighbours
-            return a.symbol, b.symbol, l, parentrels, neighbours
-
-        """
-        query = """
-            MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)
-            WHERE  n.symbol = '%s'
-            RETURN m.symbol      AS target,
-                   r.int_prob    AS int_prob,
-                   r.path_length AS path_length,
-                   r.cellcom_nto AS cellcom_nto,
-                   r.molfun_nto  AS molfun_nto,
-                   r.bioproc_nto AS bioproc_nto,
-                   r.dom_int_sc  AS dom_int_sc
-        """ % (self.database, self.database, self.symbol)
-
-        results = graph.run(query)
-        results = results.data()
-
-        if results:
-            for row in results:
-                parameters = dict()
-                parameters = { # Initialize parameters to pass to the object
-                    'int_prob'    : round(float(row['int_prob']), 3),
-                    'path_length' : round(float(row['path_length']), 3),
-                    'cellcom_nto' : round(float(row['cellcom_nto']), 3),
-                    'molfun_nto'  : round(float(row['molfun_nto']), 3),
-                    'bioproc_nto' : round(float(row['bioproc_nto']), 3),
-                    'dom_int_sc'  : round(float(row['dom_int_sc']), 3)
-                }
-                target = PredictedNode(row['target'], self.database)
-                interaction = PredInteraction(
-                    source_symbol = self.symbol,
-                    target        = target,
-                    database      = self.database,
-                    parameters    = parameters
-                )
-
-                # Add interaction to list of neighbours
-                self.neighbours.append(interaction)
-
-        # Sort interactions by probability
-        self.neighbours = sorted(self.neighbours, key=lambda k: k.parameters['int_prob'], reverse=True)
-
 
     def path_to_node(self, target, including=None, excluding=None):
         """
@@ -95,11 +140,7 @@ class Node(object):
             'nodes': list of PredictedNode objects in path.
             'edges': list of PredInteraction objects in path.
         """
-        query = """
-            MATCH p=allShortestPaths( (n:%s)-[:INTERACT_WITH*]-(m:%s) )
-            WHERE n.symbol = '%s'
-            AND m.symbol = '%s'
-        """ % (self.database, target.database, self.symbol, target.symbol)
+        query = shortestpath_query % (self.database, target.database, self.symbol, target.symbol)
 
 
         query += """RETURN DISTINCT p,
@@ -119,15 +160,9 @@ class Node(object):
 
                 for idx, node in enumerate(nodes_in_path):
                     symbol   = node.properties['symbol']
-                    sequence = node.properties['sequence']
-                    orf      = node.properties['orf']
-                    length   = node.properties['length']
                     current_node = PredictedNode(
                                 symbol   = symbol,
                                 database = self.database,
-                                sequence = sequence,
-                                orf      = orf,
-                                length   = length
                     )
                     nodes_obj_in_path.append(current_node)
                     if idx > 0:
@@ -155,19 +190,7 @@ class Node(object):
         This will return a list of Has_domain objects or, if the sequence has no Pfam domains,
         a None object.
         """
-        query = """
-                MATCH (n:%s)-[r]->(dom:Pfam)
-                WHERE n.symbol = '%s'
-                RETURN dom.accession   AS accession,
-                       dom.description AS description,
-                       dom.identifier  AS identifier,
-                       dom.mlength     AS mlength,
-                       r.pfam_start    AS p_start,
-                       r.pfam_end      AS p_end,
-                       r.s_start       AS s_start,
-                       r.s_end         AS s_end,
-                       r.perc          AS perc
-                """ % (self.database, self.symbol)
+        query = domain_query % (self.database, self.symbol)
 
         results = graph.run(query)
         results = results.data()
@@ -205,7 +228,7 @@ class Homology(object):
     """
     Class for homology relationships between a PredictedNode and a HumanNode.
     """
-    def __init__(self, prednode, human, blast_cov, blast_eval, nog_brh,  pfam_sc, nog_eval, blast_brh, pfam_brh):
+    def __init__(self,  human, blast_cov, blast_eval, nog_brh,  pfam_sc, nog_eval, blast_brh, pfam_brh, prednode=None):
         self.prednode   = prednode
         self.human      = human
         self.blast_cov  = blast_cov
@@ -261,17 +284,7 @@ class PredInteraction(object):
         """
         This private method will fetch the interaction from the DB.
         """
-        query = """
-            MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)
-            WHERE n.symbol = '%s' AND m.symbol = '%s'
-            RETURN r.int_prob     AS int_prob,
-                   r.path_length  AS path_length,
-                   r.cellcom_nto  AS cellcom_nto,
-                   r.molfun_nto   AS molfun_nto,
-                   r.bioproc_nto  AS bioproc_nto,
-                   r.dom_int_sc   AS dom_int_sc
-            LIMIT 1
-        """ % (self.database, self.database, self.source_symbol, self.target.symbol)
+        query = predinteraction_query % (self.database, self.database, self.source_symbol, self.target.symbol)
 
         results = graph.run(query)
         results = results.data()
@@ -284,6 +297,7 @@ class PredInteraction(object):
                 self.parameters['molfun_nto']  = row['molfun_nto']
                 self.parameters['bioproc_nto'] = row['bioproc_nto']
                 self.parameters['dom_int_sc']  = row['dom_int_sc']
+
 
 
 # ------------------------------------------------------------------------------
@@ -299,13 +313,8 @@ class HumanNode(Node):
         self.__query_node()
 
     def __query_node(self):
-        query = """
-            MATCH (n:%s)
-            WHERE n.symbol = "%s"
-            RETURN n.symbol AS symbol
-        """ % (self.database, self.symbol)
+        query = humannode_query % (self.database, self.symbol)
 
-        print(query)
         results = graph.run(query)
         results = results.data()
         if results:
@@ -318,19 +327,7 @@ class HumanNode(Node):
         """
         Gets all homologs of the specified database. Returns a LIST of Homology objects.
         """
-        query = """
-            MATCH (n:Human)-[r:HOMOLOG_OF]-(m:%s)
-            WHERE  n.symbol = "%s"
-            RETURN n.symbol AS human,
-                   m.symbol AS homolog,
-                   r.blast_cov AS blast_cov,
-                   r.blast_eval AS blast_eval,
-                   r.nog_brh AS nog_brh,
-                   r.pfam_sc AS pfam_sc,
-                   r.nog_eval AS nog_eval,
-                   r.blast_brh AS blast_brh,
-                   r.pfam_brh AS pfam_brh
-        """ % (database, self.symbol)
+        query = homologs_query % (database, self.symbol)
 
         results  = graph.run(query)
         results  = results.data()
@@ -368,39 +365,16 @@ class PredictedNode(Node):
 
     allowed_databases = set(["Cthulhu", "Consolidated"])
 
-    def __init__(self, symbol, database, sequence=None, length=None, orf=None):
+    def __init__(self, symbol, database, sequence=None, orf=None, homolog=None):
         super(PredictedNode, self).__init__(symbol, database)
-        self.sequence       = None
-        self.orf            = None
-        self.length         = None
+        self.sequence       = sequence
+        self.orf            = orf
+        self.homolog        = homolog
         self.gccont         = None
-        self.homolog        = None
-        self.n_homologs     = None
-        self.n_interactors  = None
-        self.homolog_symbol = None
+        self.length         = None
+
         if sequence is None:
             self.__query_node()
-
-    def __query_node(self):
-        "Gets node from neo4j and fills sequence, orf and length attributes."
-        query = """
-            MATCH (n:%s)-[r:HOMOLOG_OF]-(m:Human)
-            WHERE  n.symbol = "%s"
-            RETURN n.symbol AS symbol, n.sequence AS sequence, n.orf AS orf, m.symbol AS homolog LIMIT 1
-        """ % (self.database, self.symbol)
-
-        results = graph.run(query)
-        results = results.data()
-
-        if results:
-            for row in results:
-                self.symbol         = row["symbol"]
-                self.sequence       = row['sequence']
-                self.orf            = row["orf"]
-                self.homolog_symbol = row['homolog']
-        else:
-            print("NOTFOUND")
-            raise NodeNotFound(self)
 
     def get_summary(self):
         '''
@@ -410,29 +384,21 @@ class PredictedNode(Node):
         self.length = len(self.sequence)
         self.gccont = ( self.sequence.count("G") + self.sequence.count("C") ) / self.length
 
-    def get_homolog(self):
-        '''
-        Gets human homolog with all its information and saves it as an "homology" object
-        in the attribute self.homolog.
-        '''
-        query = """
-            MATCH (n:%s)-[r:HOMOLOG_OF]-(m:Human)
-            WHERE  n.symbol = "%s"
-            RETURN m.symbol AS human,
-                   r.blast_cov AS blast_cov,
-                   r.blast_eval AS blast_eval,
-                   r.nog_brh AS nog_brh,
-                   r.pfam_sc AS pfam_sc,
-                   r.nog_eval AS nog_eval,
-                   r.blast_brh AS blast_brh,
-                   r.pfam_brh AS pfam_brh
-        """ % (self.database, self.symbol)
+    def __query_node(self):
+        "Gets node from neo4j and fills sequence, orf and length attributes."
+        query = prednode_query % (self.database, self.symbol)
 
         results = graph.run(query)
         results = results.data()
 
         if results:
             for row in results:
+                # Add node
+                self.symbol         = row["symbol"]
+                self.sequence       = row['sequence']
+                self.orf            = row["orf"]
+
+                # Add homolog
                 human_node = HumanNode(row['human'], "Human")
                 self.homolog = Homology(
                     prednode   = self,
@@ -445,11 +411,84 @@ class PredictedNode(Node):
                     blast_brh  = row['blast_brh'],
                     pfam_brh   = row['pfam_brh']
                 )
-                self.homolog_symbol = human_node.symbol
-                return self.homolog
-
         else:
-            return None
+            print("NOTFOUND")
+            raise NodeNotFound(self)
+
+    def get_neighbours(self):
+        """
+        Method to get the adjacent nodes in the graph. Attribute neighbours will
+        be a list of PredInteraction objects.
+
+            # Query to get all the relationships between neighbour nodes.
+            # Return clause should be changed but it seems to work
+
+            MATCH (n:Cthulhu)-[r:INTERACT_WITH]-(m:Cthulhu)
+            WHERE n.symbol = 'cth1_Trc_comp6878_c0_seq1'
+            WITH collect(m) as neighbours, n as parent, collect(r) as parentrels
+            match (a:Cthulhu)-[l:INTERACT_WITH]-(b:Cthulhu)
+            WHERE a in neighbours and b in neighbours
+            return a.symbol, b.symbol, l, parentrels, neighbours
+
+            symbol, database, sequence=None, length=None, orf=None
+
+        """
+        query = neighbours_query % (self.database, self.database, self.symbol)
+
+        results = graph.run(query)
+        results = results.data()
+        if results:
+            for row in results:
+                parameters = dict()
+                # Initialize parameters to pass to the PredInteraction object
+                parameters = {
+                    'int_prob'    : round(float(row['int_prob']), 3),
+                    'path_length' : round(float(row['path_length']), 3),
+                    'cellcom_nto' : round(float(row['cellcom_nto']), 3),
+                    'molfun_nto'  : round(float(row['molfun_nto']), 3),
+                    'bioproc_nto' : round(float(row['bioproc_nto']), 3),
+                    'dom_int_sc'  : round(float(row['dom_int_sc']), 3)
+                }
+
+
+                # Homology object
+                human_node = HumanNode(row['human'], "Human")
+                thomolog  = Homology(
+                    human      = human_node,
+                    blast_cov  = row['blast_cov'],
+                    blast_eval = row['blast_eval'],
+                    nog_brh    = row['nog_brh'],
+                    pfam_sc    = row['pfam_sc'],
+                    nog_eval   = row['nog_eval'],
+                    blast_brh  = row['blast_brh'],
+                    pfam_brh   = row['pfam_brh']
+                )
+                # Node Object
+                target = PredictedNode(
+                    symbol   = row['target'],
+                    database = self.database,
+                    sequence = row['tsequence'],
+                    orf      = row['torf'],
+                    homolog  = thomolog
+                )
+
+                # Add prednode to homology object
+                target.homolog.prednode = target
+
+                # Interaction Object
+                interaction = PredInteraction(
+                    source_symbol = self.symbol,
+                    target        = target,
+                    database      = self.database,
+                    parameters    = parameters
+                )
+
+                # Add interaction to list of neighbours
+                self.neighbours.append(interaction)
+
+        # Sort interactions by probability
+        self.neighbours = sorted(self.neighbours, key=lambda k: k.parameters['int_prob'], reverse=True)
+        return self.neighbours
 
 
 # ------------------------------------------------------------------------------
@@ -458,7 +497,6 @@ class Document(models.Model):
     Class for Documents uploaded to the server.
     """
     docfile = models.FileField(upload_to='documents/%Y/%m/%d')
-
 
 
 # EXCEPTIONS
@@ -476,3 +514,9 @@ class NodeNotFound(Exception):
     """Exception raised when a node is not found on the db"""
     def __str__(self):
         return "Symbol %s not found in database %s." % (self.pnode.symbol, self.pnode.database)
+
+# ------------------------------------------------------------------------------
+class NoHomologFound(Exception):
+    """Exception raised when a node homolog is not found. Internal error. Should not happen"""
+    def __str__(self):
+        return "Homolog of %s not found in database." % (self.symbol)

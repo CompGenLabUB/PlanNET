@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <a title="View on NetExplorer">
-                                        <form method="POST" action="{% url net_explorer %}"> {% csrf_token %}
+                                        <form method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
                                             <input type="hidden" name="json_text" value='{{ path.0|safe }}' />
                                             <button id="netexplorer-mini-{{ forloop.counter }}" class="btn btn-default netexplorer-view" type="submit">
                                                 <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>

@@ -72,7 +72,7 @@ def node_to_jsondict(node, query):
     element['data']['id']       = node.symbol
     element['data']['name']     = node.symbol
     element['data']['database'] = node.database
-    element['data']['homolog']  = node.homolog_symbol
+    element['data']['homolog']  = node.homolog.human.symbol
     if query:
         element['data']['colorNODE'] = "#449D44"
     else:
@@ -118,6 +118,7 @@ def get_graph_elements(symbols, database, graphelements, added_elements):
                  # Add search node
                 graphelements['nodes'].append( node_to_jsondict(search_node, True) )
                 added_elements.add(search_node.symbol)
+                print(graphelements)
 
                 for interaction in search_node.neighbours:
                     if interaction.target.symbol not in added_elements and interaction.target.symbol not in symbols:
@@ -192,7 +193,6 @@ def get_card(request, symbol=None, database=None):
     try:
         card_node = query_node(symbol, database)
         card_node.get_neighbours()
-        card_node.get_homolog()
         card_node.get_domains()
     except Exception as e:
         return render(request, 'NetExplorer/404.html')
@@ -381,7 +381,6 @@ def path_finder(request):
                                 for edge in p['edges']:
                                     graphelements[numpath]['edges'].append(edge_to_jsondict(edge))
                                 for node in p['nodes']:
-                                    node.get_homolog()
                                     graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
                                 graphelements[numpath] = (json.dumps(graphelements[numpath]), round(p['score'], 2))
                                 numpath += 1
