@@ -295,8 +295,8 @@
 
         <!-- SCRIPTS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
+        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
         <script src="{% static 'js/netexplorer-cytoscape-definition.js' %}"></script>
         <script src="{% static 'js/netexplorer-showhomologs.js' %}"></script>
         <script src="{% static 'js/get-card.js' %}"></script>
@@ -338,7 +338,7 @@
 
         <script>
         $(document).ready(function(){
-            $('.int-table-class').DataTable({
+            $('.int-table').DataTable({
                 "order": [[ 1, "desc" ]]
             });
 

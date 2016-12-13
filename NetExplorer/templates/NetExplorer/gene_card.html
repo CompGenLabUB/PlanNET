@@ -209,7 +209,7 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
 
-            history.pushState(card_data, null, "/gene_card/" + card_data['targetDB'] + "/" + card_data['target']);
+            history.pushState(card_data, null, "/gene_card/" + card_data.targetDB + "/" + card_data.target);
             // Load Get request html on current card-overlay
             $.ajax({
                 type: "GET",
@@ -226,7 +226,7 @@
                 success : function(data) {
                     $(this).closest('.card-overlay').html(data)
                     $(document).ready(function(){
-                        $('.int-table-class').DataTable({
+                        $('#int-table').DataTable({
                             "order": [[ 1, "desc" ]]
                         });
                     });
@@ -235,8 +235,6 @@
 
 
         });
-
-
 
         // This will check if the user is pressing the "back" button on his/her
         // browser. If that's the case, it will update the content of the "visible"
@@ -256,11 +254,6 @@
                     },
                     success : function(data) {
                         $('.card-overlay:visible').html(data)
-                        $(document).ready(function(){
-                            $('.int-table-class').DataTable({
-                                "order": [[ 1, "desc" ]]
-                            });
-                        });
                     }
                 });
             }

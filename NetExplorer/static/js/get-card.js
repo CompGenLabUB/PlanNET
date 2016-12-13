@@ -14,10 +14,21 @@ function getCard(card_data) {
             'csrfmiddlewaretoken': '{{ csrf_token }}'
         },
         success : function(data) {
+            // Add history entry!
+            history.pushState(card_data, null, "/gene_card/" + card_data.targetDB + "/" + card_data.target);
+
+            // Get the HTML data
             $('[id="' + elementID + '"]').html(data);
+
+            // Show the hidden div
             $('[id="card-overlay"]').slideToggle(450);
             $('.close-overlay').slideToggle(450);
             $('.full-screen-card').slideToggle(450);
+
+            // Activate DataTable
+            $('#int-table').DataTable({
+                "order": [[ 1, "desc" ]]
+            });
 
         }
     });

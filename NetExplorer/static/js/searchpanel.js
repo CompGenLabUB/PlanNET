@@ -8,9 +8,6 @@ $(function() {
             csrfmiddlewaretoken: '{{ csrf_token }}'
         };
 
-        // Add history entry!!
-        history.pushState(card_data, null, "/gene_card/" + card_data.targetDB + "/" + card_data.target);
-
         // Do AJAX request and load the html data
         getCard(card_data);
     });
