@@ -34,6 +34,61 @@
             </div>
             <div class="card-overlay" id="card-overlay"></div>
 
+            <!-- ERRORS -->
+            {% if nodb %}
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h2>No database</h2>
+                    </div>
+                    <div class="panel-body">
+                        Please, select a <strong>Database</strong> <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if nonodes %}
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h2>No nodes specified</h2>
+                    </div>
+                    <div class="panel-body">
+                        Please, select one <strong>Starting node</strong> <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> and one <strong>Final node</strong> <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if noresults %}
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h2>Results</h2>
+                    </div>
+                    <div class="panel-body pfind-res-panel">
+                        <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Search parameters:</h4>
+                        <div id="search-param-pathway">
+                            <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
+                            <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
+                            <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
+                            <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
+                            <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h2>No results for your query.</h2>
+                    </div>
+                    <div class="panel-body">
+                        <h2>Possible causes</h2>
+                        <ul>
+                            <li>The identifiers were not correctly spelled.</li>
+                            <li>If an including or an excluding node was specified, there are no paths between the two nodes that match this criteria.</li>
+                            <li>There is no path connecting the start node and the end node in the specified database.</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+
             <!-- PATHWAY RESULTS -->
             {% if pathways %}
                 <div class="panel panel-warning">
@@ -118,8 +173,8 @@
 
             <!-- FORM -->
             <form method="GET" action="{% url path_finder %}">
-
                 <!-- Select Database -->
+                <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/>
                 <select name="database" class="selectpicker" title="Select Database">
                     <option value="Cthulhu">Cthulhu</option>
                     <option value="Consolidated">Consolidated</option>

@@ -114,7 +114,20 @@
     width: 180;
 }
 
+.panel-blast {
+    background-color: #edd9f8 !important;
 
+}
+
+.btn-blast:hover {
+    background-color: #9051b1;
+    color: white !important;
+}
+
+.btn-blast {
+    background-color: #a265c2;
+    color: white;
+}
 
 
 /* GENE CARDS */
