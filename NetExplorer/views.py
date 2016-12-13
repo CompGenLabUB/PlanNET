@@ -1,3 +1,7 @@
+"""
+Views of PlanNet
+"""
+
 from django.shortcuts   import render
 from django.shortcuts   import render_to_response
 from django.http        import HttpResponse
@@ -6,7 +10,6 @@ from NetExplorer.models import PredictedNode, HumanNode, PredInteraction,Documen
 import textwrap
 import json
 import re
-from pprint import pprint
 
 # -----------------------
 # FUNCTIONS
@@ -46,13 +49,13 @@ def get_shortest_paths(startnodes, endnodes, including, excluding):
                 # Return no-path that matches the query_node
                 continue
             else:
-                for p in paths:
+                for path in paths:
                     graphelements.append({'nodes': list(), 'edges': list()})
-                    for edge in p['edges']:
+                    for edge in path['edges']:
                         graphelements[numpath]['edges'].append(edge_to_jsondict(edge))
-                    for node in p['nodes']:
+                    for node in path['nodes']:
                         graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
-                    graphelements[numpath] = (json.dumps(graphelements[numpath]), round(p['score'], 2))
+                    graphelements[numpath] = (json.dumps(graphelements[numpath]), round(path['score'], 2))
                     numpath += 1
     return graphelements, plen, numpath
 

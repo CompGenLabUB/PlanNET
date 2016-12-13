@@ -1,7 +1,10 @@
-from __future__ import unicode_literals
+"""
+Models of PlanNet
+"""
 
+from __future__ import unicode_literals
 from django.db import models
-from py2neo import Graph, Path
+from py2neo import Graph
 
 
 graph = Graph("http://localhost:7474/db/data/")
@@ -10,7 +13,7 @@ graph = Graph("http://localhost:7474/db/data/")
 
 # QUERIES
 # ------------------------------------------------------------------------------
-prednode_query = """
+PREDNODE_QUERY = """
     MATCH (n:%s)-[r:HOMOLOG_OF]-(m:Human)
     WHERE  n.symbol = "%s"
     RETURN n.symbol AS symbol,
@@ -27,14 +30,14 @@ prednode_query = """
 """
 
 # ------------------------------------------------------------------------------
-humannode_query = """
+HUMANNODE_QUERY = """
     MATCH (n:%s)
     WHERE n.symbol = "%s"
     RETURN n.symbol AS symbol
 """
 
 # ------------------------------------------------------------------------------
-predinteraction_query = """
+PREDINTERACTION_QUERY = """
     MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)
     WHERE n.symbol = '%s' AND m.symbol = '%s'
     RETURN r.int_prob     AS int_prob,
@@ -47,7 +50,7 @@ predinteraction_query = """
 """
 
 # ------------------------------------------------------------------------------
-neighbours_query = """
+NEIGHBOURS_QUERY = """
     MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)-[s:HOMOLOG_OF]-(l:Human)
     WHERE  n.symbol = '%s'
     RETURN m.symbol         AS target,
@@ -70,14 +73,14 @@ neighbours_query = """
 """
 
 # ------------------------------------------------------------------------------
-shortestpath_query = """
+SHORTESTPATH_QUERY = """
     MATCH p=allShortestPaths( (n:%s)-[:INTERACT_WITH*]-(m:%s) )
     WHERE n.symbol = '%s'
     AND m.symbol = '%s'
 """
 
 # ------------------------------------------------------------------------------
-domain_query = """
+DOMAIN_QUERY = """
     MATCH (n:%s)-[r]->(dom:Pfam)
     WHERE n.symbol = '%s'
     RETURN dom.accession   AS accession,
@@ -92,7 +95,7 @@ domain_query = """
 """
 
 # ------------------------------------------------------------------------------
-homologs_query = """
+HOMOLOGS_QUERY = """
     MATCH (n:Human)-[r:HOMOLOG_OF]-(m:%s)
     WHERE  n.symbol = "%s"
     RETURN n.symbol AS human,
@@ -140,7 +143,7 @@ class Node(object):
             'nodes': list of PredictedNode objects in path.
             'edges': list of PredInteraction objects in path.
         """
-        query = shortestpath_query % (self.database, target.database, self.symbol, target.symbol)
+        query = SHORTESTPATH_QUERY % (self.database, target.database, self.symbol, target.symbol)
 
 
         query += """RETURN DISTINCT p,
@@ -190,7 +193,7 @@ class Node(object):
         This will return a list of Has_domain objects or, if the sequence has no Pfam domains,
         a None object.
         """
-        query = domain_query % (self.database, self.symbol)
+        query = DOMAIN_QUERY % (self.database, self.symbol)
 
         results = graph.run(query)
         results = results.data()
@@ -204,7 +207,7 @@ class Node(object):
                     identifier  = row['identifier'],
                     mlength     = row['mlength']
                 )
-                domain_annotation = Has_domain(
+                domain_annotation = HasDomain(
                     node    = self,
                     domain  = domain,
                     p_start = row['p_start'],
@@ -252,7 +255,7 @@ class Domain(object):
         self.mlength     = mlength
 
 # ------------------------------------------------------------------------------
-class Has_domain(object):
+class HasDomain(object):
     """
     Class for relationships between a node and a Pfam domain annotated on the sequence.
     """
@@ -284,7 +287,7 @@ class PredInteraction(object):
         """
         This private method will fetch the interaction from the DB.
         """
-        query = predinteraction_query % (self.database, self.database, self.source_symbol, self.target.symbol)
+        query = PREDINTERACTION_QUERY % (self.database, self.database, self.source_symbol, self.target.symbol)
 
         results = graph.run(query)
         results = results.data()
@@ -313,7 +316,7 @@ class HumanNode(Node):
         self.__query_node()
 
     def __query_node(self):
-        query = humannode_query % (self.database, self.symbol)
+        query = HUMANNODE_QUERY % (self.database, self.symbol)
 
         results = graph.run(query)
         results = results.data()
@@ -327,7 +330,7 @@ class HumanNode(Node):
         """
         Gets all homologs of the specified database. Returns a LIST of Homology objects.
         """
-        query = homologs_query % (database, self.symbol)
+        query = HOMOLOGS_QUERY % (database, self.symbol)
 
         results  = graph.run(query)
         results  = results.data()
@@ -386,7 +389,7 @@ class PredictedNode(Node):
 
     def __query_node(self):
         "Gets node from neo4j and fills sequence, orf and length attributes."
-        query = prednode_query % (self.database, self.symbol)
+        query = PREDNODE_QUERY % (self.database, self.symbol)
 
         results = graph.run(query)
         results = results.data()
@@ -433,7 +436,7 @@ class PredictedNode(Node):
             symbol, database, sequence=None, length=None, orf=None
 
         """
-        query = neighbours_query % (self.database, self.database, self.symbol)
+        query = NEIGHBOURS_QUERY % (self.database, self.database, self.symbol)
 
         results = graph.run(query)
         results = results.data()
@@ -503,9 +506,6 @@ class Document(models.Model):
 # ------------------------------------------------------------------------------
 class IncorrectDatabase(Exception):
     """Exception raised when incorrect database"""
-    def __init__(self, database):
-        self.database = database
-
     def __str__(self):
         return "%s database not found, incorrect database name." % self.database
 
