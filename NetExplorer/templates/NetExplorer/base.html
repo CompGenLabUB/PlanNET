@@ -81,48 +81,9 @@
              sends to Django's view "get_card" the variables "symbol" and "database".
           -->
 
-        <script>
-
-            $(function() {
-                $('.small-searchpanel').click(function() {
-                    var card_data = {
-                        target  : $(this).attr("target"),
-                        targetDB: $(this).attr("targetDB"),
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    }
-
-                    // Add history entry!!
-                    history.pushState(card_data, null, "/gene_card/" + card_data['targetDB'] + "/" + card_data['target']);
-
-                    // Get the ID of the div to update
-                    elementID = card_data["target"] + "_card";
-                    $.ajax({
-                        type: "GET",
-                        url: "{% url get_card %}",
-                        data: {
-                            'target'    : card_data['target'],
-                            'targetDB'  : card_data['targetDB'],
-                            'csrfmiddlewaretoken': '{{ csrf_token }}'
-                        },
-                        success : function(data) {
-                            $('[id="' + elementID + '"]').html(data);
-                            $(document).ready(function(){
-                                $('.int-table-class').DataTable({
-                                    "order": [[ 1, "desc" ]]
-                                });
-                            });
-                        }
-                    });
-
-
-                    //$(this).nextAll(".card-overlay").load("/");
-                    //$(this).closest('.card-overlay').load("/");
-                });
-
-
-            });
-
-        </script>
+        {% block scripts %}
+        <!-- Additional scripts that need to be loaded -->
+        {% endblock scripts %}
 
     </body>
 </html>

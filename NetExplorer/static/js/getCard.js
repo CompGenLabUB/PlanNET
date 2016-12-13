@@ -1,4 +1,4 @@
-// GENE CARD WHEN CLICKING ON NODE IN CYTOSCAPE JS
+// GENE CARD WHEN CLICKING ON NODE OR IN SEARCHPANEL
 
 function getCard(card_data) {
     // This function takes the data of a node stored in the

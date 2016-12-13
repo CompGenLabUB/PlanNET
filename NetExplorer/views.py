@@ -371,7 +371,6 @@ def path_finder(request):
                     for enode in endnodes:
                         paths = snode.path_to_node(enode, including, excluding)
                         plen = len(paths[0]['edges'])
-                        print(plen)
                         if paths is None:
                             # Return no-path that matches the query_node
                             continue

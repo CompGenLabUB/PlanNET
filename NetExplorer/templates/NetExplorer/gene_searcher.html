@@ -46,6 +46,7 @@
 
         <h2>Results:</h2>
 
+        <!-- Small searchpanel for each gene in results -->
         {% for node in res %}
             <div id="{{ node.symbol }}"
                  class="panel panel-info small-searchpanel"
@@ -58,24 +59,23 @@
                     <p>Database: {{ node.database }}</p>
                 </div>
             </div>
-
-            <!-- This will be filled by the JS code in base.html with an onclick
-                 event triggered by small-searchpanel -->
-            <div id="button-container">
-                <div class="close-overlay" title="Close card">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </div>
-                <div class="full-screen-card" title="Open in new window">
-                    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
-                </div>
-            </div>
-            <div id="{{ node.symbol }}_card" class="card-overlay">
-                    <div class="card-title">
-                        <h1>{{ node.symbol }}</h1>
-                    </div>
-           </div>
-
         {% endfor %}
+
+        <!-- This will be filled by the JS code in base.html with an onclick
+             event triggered by small-searchpanel -->
+        <div id="button-container">
+            <div class="close-overlay" title="Close card">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </div>
+            <div class="full-screen-card" title="Open in new window">
+                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+            </div>
+        </div>
+        <div id="card-overlay" class="card-overlay">
+            <div class="card-title">
+
+            </div>
+       </div>
 
     {% else %}
         <!-- NO RESULTS, LOOK FOR ERROR -->
@@ -91,3 +91,9 @@
     <a href="#0" class="cd-top" title="Back to Top">Top</a>
 
 {% endblock content %}
+
+
+{% block scripts %}
+    <script src="{% static 'js/getCard.js' %}"></script>
+    <script src="{% static 'js/searchpanel.js' %}"></script>
+{% endblock scripts %}
