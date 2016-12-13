@@ -80,11 +80,32 @@
     {% else %}
         <!-- NO RESULTS, LOOK FOR ERROR -->
         {% if search_error == 1 %}
-            <h2>No results for your query</h2>
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h2>No results for your query.</h2>
+                </div>
+                <div class="panel-body">
+                    <h2>Possible causes</h2>
+                    <ul>
+                        <li>The identifiers were not correctly spelled.</li>
+                    </ul>
+                </div>
+            </div>
         {% elif search_error == 2 %}
-            <h2> Please, select a database</h2>
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h2>No database selected.</h2>
+                </div>
+                <div class="panel-body">
+                    Please, select a database.
+                </div>
+            </div>
         {% elif search_error %}
-            <h2>Internal Server Error</h2>
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    Internal Server Error
+                </div>
+            </div>
         {% endif %}
     {% endif %}
 

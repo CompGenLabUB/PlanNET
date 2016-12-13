@@ -131,14 +131,14 @@
 
                             <div class="row path-controls">
                                 <div class="col-md-6">
-                                    <a title="Center Graph">
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Center Graph">
                                         <button id="center-to-graph-{{ forloop.counter }}" class="btn btn-default" type="button">
                                             <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
                                         </button>
                                     </a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a title="View on NetExplorer">
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
                                         <form method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
                                             <input type="hidden" name="json_text" value='{{ path.0|safe }}' />
                                             <button id="netexplorer-mini-{{ forloop.counter }}" class="btn btn-default netexplorer-view" type="submit">
@@ -238,6 +238,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+        <script>$('[data-toggle="tooltip"]').tooltip({container:'body'});</script>
         <script src="{% static 'js/card-overlay.js' %}"></script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
         <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>

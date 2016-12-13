@@ -29,6 +29,35 @@ def query_node(symbol, database):
 
 
 # ------------------------------------------------------------------------------
+def get_shortest_paths(startnodes, endnodes, including, excluding):
+    '''
+    This function gets all the possible shortest paths between the specified nodes.
+    Returns a json string with all the nodes and edges, the length of the paths and
+    the total number of paths
+    '''
+    graphelements = list()
+    numpath = 0
+    plen    = 0
+    for snode in startnodes:
+        for enode in endnodes:
+            paths = snode.path_to_node(enode, including, excluding)
+            plen = len(paths[0]['edges'])
+            if paths is None:
+                # Return no-path that matches the query_node
+                continue
+            else:
+                for p in paths:
+                    graphelements.append({'nodes': list(), 'edges': list()})
+                    for edge in p['edges']:
+                        graphelements[numpath]['edges'].append(edge_to_jsondict(edge))
+                    for node in p['nodes']:
+                        graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
+                    graphelements[numpath] = (json.dumps(graphelements[numpath]), round(p['score'], 2))
+                    numpath += 1
+    return graphelements, plen, numpath
+
+
+# ------------------------------------------------------------------------------
 def substitute_human_symbols(symbols, database):
     """
     This function will get a list of symbols and it will substitute all human symbols by
@@ -213,7 +242,7 @@ def gene_search(request):
         # Get Form input
         symbols      = request.GET['genesymbol']
         database     = None
-        if "database" in request.GET:
+        if "database" in request.GET and request.GET['database']:
             database = request.GET['database']
         nodes        = list()
         search_error = False
@@ -331,76 +360,66 @@ def path_finder(request):
     """
     if request.method == "GET":
         if 'start' in request.GET and 'end' in request.GET:
+            # We have a search
+            if not request.GET['database']:
+                return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True})
+            if not request.GET['start'] or not request.GET['end']:
+                return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True})
+
             # Search
-            if request.GET['start'] and request.GET['end'] and request.GET['database']:
-                # Valid search
-                database = request.GET['database']
-                startnodes = list()
-                endnodes   = list()
-                including  = None
-                excluding  = None
+            # Valid search
+            database = request.GET['database']
+            startnodes = list()
+            endnodes   = list()
+            including  = None
+            excluding  = None
 
-                if request.GET['including']:
-                    including = request.GET['including'].split(",")
-                if request.GET['excluding']:
-                    excluding = request.GET['excluding'].split(",")
+            if request.GET['including']:
+                including = request.GET['including'].split(",")
+            if request.GET['excluding']:
+                excluding = request.GET['excluding'].split(",")
 
-                start_nodes_symbols = substitute_human_symbols([request.GET['start']], database)
-                end_nodes_symbols   = substitute_human_symbols([request.GET['end']],   database)
+            start_nodes_symbols = substitute_human_symbols([request.GET['start']], database)
+            end_nodes_symbols   = substitute_human_symbols([request.GET['end']],   database)
 
-                # Query all the nodes and get node objects
-                for symbol in start_nodes_symbols:
-                    try:
-                        node = query_node(symbol, database)
-                        startnodes.append(node)
-                    except:
-                        continue
+            # Query all the nodes and get node objects
+            for symbol in start_nodes_symbols:
+                try:
+                    node = query_node(symbol, database)
+                    startnodes.append(node)
+                except:
+                    continue
 
-                for symbol in end_nodes_symbols:
-                    try:
-                        node = query_node(symbol, database)
-                        endnodes.append(node)
-                    except:
-                        continue
+            for symbol in end_nodes_symbols:
+                try:
+                    node = query_node(symbol, database)
+                    endnodes.append(node)
+                except:
+                    continue
 
-                # Get shortest paths
-                graphelements = list()
-                numpath = 0
-                plen    = 0
-                for snode in startnodes:
-                    for enode in endnodes:
-                        paths = snode.path_to_node(enode, including, excluding)
-                        plen = len(paths[0]['edges'])
-                        if paths is None:
-                            # Return no-path that matches the query_node
-                            continue
-                        else:
-                            for p in paths:
-                                graphelements.append({'nodes': list(), 'edges': list()})
-                                for edge in p['edges']:
-                                    graphelements[numpath]['edges'].append(edge_to_jsondict(edge))
-                                for node in p['nodes']:
-                                    graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
-                                graphelements[numpath] = (json.dumps(graphelements[numpath]), round(p['score'], 2))
-                                numpath += 1
-                if graphelements:
-                    # We have graphelements to display (there are paths)
+            # Get shortest paths
+            graphelements, plen, numpath = get_shortest_paths(
+                startnodes,
+                endnodes,
+                including,
+                excluding
+            )
+            response = dict()
+            response['database'] = database
+            response['snode']    = request.GET['start']
+            response['enode']    = request.GET['end']
 
-                    graphelements = sorted(graphelements, key=lambda k: k[1], reverse=True)
-                    response = {
-                        "pathways" : graphelements,
-                        "plen"     : plen,
-                        "numpath"  : numpath,
-                        "database" : database,
-                        "snode"    : request.GET['start'],
-                        "enode"    : request.GET['end']
-                    }
-                    return render(request, 'NetExplorer/pathway_finder.html', response)
-                else:
-                    return render(request, 'NetExplorer/pathway_finder.html')
+            if graphelements:
+                # We have graphelements to display (there are paths)
+                graphelements = sorted(graphelements, key=lambda k: k[1], reverse=True)
+                response["pathways"] = graphelements
+                response["numpath"]  = numpath
+                response["plen"]     = plen
+                return render(request, 'NetExplorer/pathway_finder.html', response)
             else:
-                # Not valid search
-                return render(request, 'NetExplorer/pathway_finder.html')
+                # No results
+                response['noresults'] = True
+                return render(request, 'NetExplorer/pathway_finder.html', response)
         else:
             # Not a search
             return render(request, 'NetExplorer/pathway_finder.html')

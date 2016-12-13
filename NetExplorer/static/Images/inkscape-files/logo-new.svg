@@ -16,7 +16,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r"
-   sodipodi:docname="logo-new.svg">
+   sodipodi:docname="logo-new.svg"
+   inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/inkscape-files/logo-new.png"
+   inkscape:export-xdpi="199"
+   inkscape:export-ydpi="199">
   <defs
      id="defs4">
     <inkscape:path-effect
@@ -79,16 +82,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35355339"
-     inkscape:cx="-632.83465"
-     inkscape:cy="2038.4609"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="-97.630054"
+     inkscape:cy="1886.1424"
      inkscape:document-units="px"
-     inkscape:current-layer="g5322"
+     inkscape:current-layer="g4506"
      showgrid="false"
      inkscape:window-width="1600"
-     inkscape:window-height="1149"
+     inkscape:window-height="1136"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true" />
@@ -125,12 +128,12 @@
        id="g5322"
        transform="translate(-172,-931.99999)">
       <g
-         transform="matrix(-1,0,0,-1,-1586.5984,802.46959)"
+         transform="matrix(-1,0,0,-1,-1579.5273,805.29802)"
          id="g5299">
         <flowRoot
            xml:space="preserve"
            id="flowRoot4324"
-           style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Inconsolata;font-style:normal;font-weight:500;font-size:80px;line-height:125%;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:Inconsolata Medium;font-stretch:normal;font-variant:normal"><flowRegion
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:80px;line-height:125%;font-family:Inconsolata;-inkscape-font-specification:'Inconsolata Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
              id="flowRegion4326"><rect
                id="rect4328"
                width="741.04791"
@@ -139,23 +142,25 @@
                y="-781.8728" /></flowRegion><flowPara
              id="flowPara4330" /></flowRoot>        <g
            id="g4506"
-           transform="translate(-265.87215,321.02648)">
+           transform="translate(-247.48737,313.24831)">
           <path
              inkscape:export-ydpi="199.98721"
              inkscape:export-xdpi="199.98721"
              inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
              inkscape:connector-curvature="0"
              id="path4322"
-             d="m -1356.9618,324.24484 c 161.9275,-96.87363 403.05092,-86.26702 403.05092,-86.26702"
-             style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.35294118" />
+             d="m -1365.8006,332.55334 c 161.9275,-96.87363 411.88972,-94.57552 411.88972,-94.57552"
+             style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.35294118"
+             sodipodi:nodetypes="cc" />
           <path
              inkscape:export-ydpi="199.98721"
              inkscape:export-xdpi="199.98721"
              inkscape:export-filename="/home/sergio/code/PlaNET/NetExplorer/static/Images/logo-new.png"
              inkscape:connector-curvature="0"
              id="path4303"
-             d="m -1109.8279,417.58294 c -110.3087,-55.86144 -217.4354,-58.68986 -217.4354,-58.68986"
-             style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.35483871" />
+             d="m -1113.9657,422.02964 c -110.3087,-55.86144 -241.9354,-68.43986 -241.9354,-68.43986"
+             style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.35483871"
+             sodipodi:nodetypes="cc" />
           <ellipse
              inkscape:export-ydpi="199.98721"
              inkscape:export-xdpi="199.98721"
@@ -182,7 +187,7 @@
                y="-290.90637"
                x="979.79938"
                id="tspan4193"
-               sodipodi:role="line">Pla<tspan
+               sodipodi:role="line">Plan<tspan
    id="tspan4456"
    style="fill:#31b0d5;fill-opacity:1">net</tspan></tspan></text>
           <text
@@ -214,7 +219,7 @@
              rx="32.526913"
              transform="scale(-1,-1)"
              cy="-356.41824"
-             cx="1361.2045"
+             cx="1388.7816"
              id="path4265"
              style="opacity:1;fill:#ec971f;fill-opacity:0.54901961;stroke:#292c2f;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.47058824" />
           <ellipse
@@ -246,7 +251,7 @@
              inkscape:connector-curvature="0"
              id="path4301"
              d="m -1117.6061,442.86201 c -25.9862,19.97576 -68.7661,21.03642 -68.7661,21.03642"
-             style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.28494628" />
+             style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.2849464" />
           <g
              inkscape:export-ydpi="199"
              inkscape:export-xdpi="199"
