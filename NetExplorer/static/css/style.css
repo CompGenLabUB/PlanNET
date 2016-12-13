@@ -774,3 +774,16 @@ input[type="file"] {
     float: right;
     margin-top: 1%;
 }
+
+/* ERROR 404 PAGE */
+#error404 {
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+    color: #777777;
+}
+
+#img404 {
+    margin-top: 5%;
+    width: 40%;
+}
