@@ -11,7 +11,7 @@ $(function() {
         // Add history entry!!
         history.pushState(card_data, null, "/gene_card/" + card_data.targetDB + "/" + card_data.target);
 
-        // Get the ID of the div to update
+        // Do AJAX request and load the html data
         getCard(card_data);
     });
 

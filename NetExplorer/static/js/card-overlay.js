@@ -1,3 +1,5 @@
+// This script contains the general behaviour of card overlay divs
+
 $('.card-overlay').hide();
 $('.close-overlay').hide();
 $('.full-screen-card').hide();

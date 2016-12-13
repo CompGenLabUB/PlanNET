@@ -1,3 +1,6 @@
+// Script that contains function to filter pathways in Pathway Finder using a text
+// based form.
+
 $("#pathway-filter").submit(function(e){
     var symbols     = document.getElementById('pathway-filter-text').value;
     var symbol_list = symbols.split(",");
@@ -28,8 +31,6 @@ $("#pathway-filter").submit(function(e){
         for (var sym in symbol_list) {
             needed[symbol_list[sym]] = 0;
         }
-
-        console.log(needed);
 
         nodes:
         for (var j = 0; j < graphobj.nodes.length; j++) {

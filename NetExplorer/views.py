@@ -222,7 +222,7 @@ def gene_search(request):
             symbols = symbols.split(",")
             if database is None: # No database selected
                 search_error = 2
-                return render(request, 'NetExplorer/gene_searcher.html', {'res': nodes, 'search_error': search_error } )
+                return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error } )
 
             for genesymbol in symbols:
                 try:
@@ -232,12 +232,12 @@ def gene_search(request):
                     # No search results...
                     search_error = 1
 
-            return render(request, 'NetExplorer/gene_searcher.html', {'res': nodes, 'search_error': search_error } )
+            return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error } )
 
         # Render when user enters the page
-        return render(request, 'NetExplorer/gene_searcher.html' )
+        return render(request, 'NetExplorer/gene_search.html' )
     else:
-        return render(request, 'NetExplorer/gene_searcher.html')
+        return render(request, 'NetExplorer/gene_search.html')
 
 
 # ------------------------------------------------------------------------------
@@ -279,7 +279,7 @@ def net_explorer(request):
         render_to_return = upload_graph(request, json_text)
         return render_to_return
     else:
-        return render(request, 'NetExplorer/cytoscape_explorer.html')
+        return render(request, 'NetExplorer/netexplorer.html')
 
 # ------------------------------------------------------------------------------
 def upload_graph(request, json_text):
@@ -305,12 +305,12 @@ def upload_graph(request, json_text):
             json_graph[u'nodes']
         except KeyError:
             print("Json is not a graph declaration (no nodes)")
-            return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
+            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True})
     except ValueError as err:
         print("Not a valid Json File %s\n" % (err))
-        return render(request, 'NetExplorer/cytoscape_explorer.html', {'json_err': True})
+        return render(request, 'NetExplorer/netexplorer.html', {'json_err': True})
 
-    return render(request, 'NetExplorer/cytoscape_explorer.html', {'upload_json': graph_content, 'no_layout': no_layout})
+    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout})
 
 
 # ------------------------------------------------------------------------------

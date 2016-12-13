@@ -1,3 +1,7 @@
+// This script contains the general behaviour of the NetExplorer application.
+// It uses several other scripts that can also be found in the js/ folder.
+
+
 $(document).ready(function(){
     if (upload_json) {
         cy.add(upload_json);
