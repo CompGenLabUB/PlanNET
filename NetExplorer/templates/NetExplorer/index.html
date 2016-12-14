@@ -30,8 +30,8 @@
                     <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
                 </div>
             </div>
-            <div class="panel panel-danger app-container" >
-                <div class="panel-heading panel-blast">
+            <div class="panel panel-blast app-container" >
+                <div class="panel-heading">
                     BLAST
                     <a href="#" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -76,3 +76,14 @@
     </div>
 
 {% endblock content %}
+
+
+
+
+{% block scripts %}
+    <!-- CHANGE ACTIVE NAVBAR BUTTON -->
+    <script>
+        $(".navbar-element").toggleClass('active inactive');
+        $("#navbar-home").toggleClass('inactive active')
+    </script>
+{% endblock scripts%}

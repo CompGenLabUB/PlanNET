@@ -37,7 +37,7 @@
     margin-top: 5%;
     margin-left: 5%;
     margin-right: 5%;
-
+    color: #777777;
 }
 
 /* SOME FOOTER THINGS */
@@ -115,9 +115,13 @@
 }
 
 .panel-blast {
-    background-color: #edd9f8 !important;
-    border-color: #a265c2 !important;
+    border-color: #e7ccf6 !important;
+    border-style: solid !important;
+}
 
+.panel-blast .panel-heading {
+    background-color: #edd9f8 !important;
+    border-color: #e7ccf6 !important;
 }
 
 .btn-blast:hover {
@@ -800,4 +804,15 @@ input[type="file"] {
 #img404 {
     margin-top: 5%;
     width: 40%;
+}
+
+
+/* TUTORIAL */
+.tutorial-title {
+    color: #777777;
+}
+
+.tutorial-title:hover {
+    color: #777777;
+    text-decoration: none;
 }

@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^get_fasta',     views.get_fasta,     name="get_fasta"),
     url(r'^info_card',     views.get_card,      name="get_card"),
     url(r'^blast',         views.blast,         name="blast"),
-    url(r'^path_finder', views.path_finder,     name="path_finder")
+    url(r'^path_finder', views.path_finder,     name="path_finder"),
+    url(r'^tutorial', views.tutorial,           name="tutorial"),
 ]
