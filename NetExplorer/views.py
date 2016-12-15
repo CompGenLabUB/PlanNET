@@ -313,6 +313,32 @@ def net_explorer(request):
     else:
         return render(request, 'NetExplorer/netexplorer.html')
 
+
+# ------------------------------------------------------------------------------
+def show_connections(request):
+    """
+    View that handles an AJAX request and, given a list of identifiers, returns
+    all the interactions between those identifiers.
+    """
+    if request.is_ajax():
+        nodes     = request.GET['nodes'].split(",")
+        databases = request.GET['databases'].split(",")
+        graphelements = dict()
+        graphelements['edges'] = list()
+        graphelements['nodes'] = list()
+        for node_id, database in zip(nodes, databases):
+            node = query_node(node_id, database)
+            node.get_neighbours()
+            for interaction in node.neighbours:
+                if interaction.target.symbol in nodes:
+                    print(interaction.target.symbol)
+                    graphelements['edges'].append( edge_to_jsondict(interaction) )
+        graphelements = json.dumps(graphelements)
+        print(graphelements)
+        return HttpResponse(graphelements   , content_type="application/json")
+    else:
+        return render(request, 'NetExplorer/404.html')
+
 # ------------------------------------------------------------------------------
 def upload_graph(request, json_text):
     """
@@ -428,11 +454,14 @@ def path_finder(request):
             return render(request, 'NetExplorer/pathway_finder.html')
 
 
+
 def tutorial(request):
     """
     View for tutorial
     """
     return render(request, 'NetExplorer/tutorial.html')
+
+
 
 
 # ------------------------------------------------------------------------------
