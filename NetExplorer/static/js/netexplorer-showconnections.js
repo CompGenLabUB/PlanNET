@@ -1,10 +1,12 @@
+// Functionality to show connections between nodes in graph
+
 $("#show_connections").on("click", function(){
     var nodes     = cy.elements('node[database != "Human"]');
     var node_ids  = [];
     var databases = [];
     for (var i = 0; i < nodes.length; i++) {
         node_ids.push( nodes[i].data("id") );
-        databases.push( nodes[i].data("database") )
+        databases.push( nodes[i].data("database") );
     }
     node_ids  = node_ids.join(",");
     databases = databases.join(",");

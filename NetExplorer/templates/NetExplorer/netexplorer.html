@@ -4,20 +4,21 @@
 
 <html>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-    <link rel="stylesheet" href="{% static 'css/slider.css' %}">
-    <link rel="stylesheet" href="{% static 'css/toggle-switch.css' %}">
-    <link rel="stylesheet" href="{% static 'css/cytoscape.js-panzoom.css' %}">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/bootstrap-switch.min.css' %}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
 
     <head>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+        <link rel="stylesheet" href="{% static 'css/slider.css' %}">
+        <link rel="stylesheet" href="{% static 'css/toggle-switch.css' %}">
+        <link rel="stylesheet" href="{% static 'css/cytoscape.js-panzoom.css' %}">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-switch.min.css' %}">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+        <link rel="shortcut icon" href="{% static 'Images/mini-logo.ico' %}">
         <title>PlaNET - Net Explorer</title>
         <script>
             var graphelements = "";
@@ -79,7 +80,9 @@
             </div>
             <div id="node-not-found"><div class="panel panel-danger"><div class="panel-heading">Node not found</div></div></div>
             <hr>
-        <!-- Layout Selection-->
+
+        <div id="layout-homologs-container">
+            <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
                 <div class="row control-row">
                     <div class="col-sm-6" id="layout-title">
@@ -100,35 +103,37 @@
                             </ul>
                     </div>
                 </div>
-
-                <div class="row control-row">
-                    <div class="col-sm-6" id="show-homologs-container-title">
-                        <h3>Homologs</h3>
-                    </div>
-                    <div class="col-sm-6" id="show-homologs-toggle">
-                        <label class="switch-light switch-candy show-homologs-label" onclick="">
-                            <input type="checkbox" id="show-homologs">
-                            <span class="show-homolog-btn">
-                                <span class="show-homolog-btn">Off</span>
-                                <span class="show-homolog-btn">On</span>
-                                <a></a>
-                            </span>
-                        </label>
-                    </div>
-                </div>
-
-
-                <div class="row control-row">
-                    <div class="col-sm-12">
-                        <div id="show_connections" class="btn btn-default">
-                            Show Connections
-                        </div>
-                    </div>
-                </div>
             </div>
 
-
+            <!-- SHOW HOMOLOGS -->
+            <div class="row control-row">
+                <div class="col-sm-6" id="show-homologs-container-title">
+                    <h3>Homologs</h3>
+                </div>
+                <div class="col-sm-6" id="show-homologs-toggle">
+                    <label class="switch-light switch-candy show-homologs-label" onclick="">
+                        <input type="checkbox" id="show-homologs">
+                        <span class="show-homolog-btn">
+                            <span class="show-homolog-btn">Off</span>
+                            <span class="show-homolog-btn">On</span>
+                            <a></a>
+                        </span>
+                    </label>
+                </div>
+            </div>
             <hr>
+        </div>
+
+        <!-- SHOW CONNECTIONS -->
+        <div id="showconnections-container">
+            <button id="show_connections" class="btn btn-default">
+                Show Connections
+            </button> <a data-toggle="tooltip" data-placement="bottom" title="
+                This button will show all the interactions between the nodes displayed
+                on the screen.
+            "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+            <hr>
+        </div>
 
 
             <!--- "On click" Behaviour -->

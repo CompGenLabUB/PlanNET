@@ -430,6 +430,7 @@
 
 #cyt-controls {
     overflow-y: scroll;
+    overflow-x: hidden;
     height: 100%;
     width: 25%;
     float: left;
@@ -458,6 +459,19 @@
 }
 
 #on-click-container {
+    top: 1%;
+    position: relative;
+    display: block;
+}
+
+#showconnections-container {
+    top: 1%;
+    bottom: 1%;
+    position: relative;
+    display: block;
+}
+
+#layout-homologs-container {
     top: 1%;
     position: relative;
     display: block;
@@ -571,7 +585,7 @@
 }
 
 
-h3 .tooltip-inner {
+#cyt-controls .tooltip-inner {
     text-align: left !important;
     color: #777777 !important;
     font-size: 14 !important;
@@ -586,7 +600,7 @@ h3 .tooltip-inner {
     border-width: 2px;
 }
 
-h3 .tooltip.in {
+#cyt-controls .tooltip.in {
   opacity: 1 !important;
 }
 
@@ -666,7 +680,6 @@ input[type="file"] {
 }
 
 #layout-toggle-btn {
-    height: 50% !important;
     vertical-align: middle;
     margin-top: 10%;
 }
@@ -810,6 +823,11 @@ input[type="file"] {
 /* TUTORIAL */
 .tutorial-title {
     color: #777777;
+}
+
+#back_home {
+    margin-top: 10%;
+    margin-left: -14px;
 }
 
 .tutorial-title:hover {
