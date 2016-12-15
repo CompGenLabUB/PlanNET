@@ -138,6 +138,9 @@
 /* GENE CARDS */
 /* ----------------------------- */
 
+.glyphicon-print {
+    font-size: 30px;
+}
 .small-searchpanel {
     height: 10%;
     overflow: hidden;
