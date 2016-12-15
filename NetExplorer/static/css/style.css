@@ -827,12 +827,16 @@ input[type="file"] {
 
 #back_home {
     margin-top: 10%;
-    margin-left: -14px;
+    margin-left: -24px;
 }
 
 .tutorial-title:hover {
     color: #777777;
     text-decoration: none;
+}
+
+#back_home .glyphicon-triangle-left {
+    margin-right: 6px;
 }
 
 .table-of-contents {

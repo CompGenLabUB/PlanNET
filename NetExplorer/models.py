@@ -425,19 +425,8 @@ class PredictedNode(Node):
 
             # Query to get all the relationships between neighbour nodes.
             # Return clause should be changed but it seems to work
-
-            MATCH (n:Cthulhu)-[r:INTERACT_WITH]-(m:Cthulhu)
-            WHERE n.symbol = 'cth1_Trc_comp6878_c0_seq1'
-            WITH collect(m) as neighbours, n as parent, collect(r) as parentrels
-            match (a:Cthulhu)-[l:INTERACT_WITH]-(b:Cthulhu)
-            WHERE a in neighbours and b in neighbours
-            return a.symbol, b.symbol, l, parentrels, neighbours
-
-            symbol, database, sequence=None, length=None, orf=None
-
         """
         query = NEIGHBOURS_QUERY % (self.database, self.database, self.symbol)
-
         results = graph.run(query)
         results = results.data()
         if results:
@@ -452,8 +441,6 @@ class PredictedNode(Node):
                     'bioproc_nto' : round(float(row['bioproc_nto']), 3),
                     'dom_int_sc'  : round(float(row['dom_int_sc']), 3)
                 }
-
-
                 # Homology object
                 human_node = HumanNode(row['human'], "Human")
                 thomolog  = Homology(

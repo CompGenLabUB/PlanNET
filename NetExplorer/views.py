@@ -6,7 +6,7 @@ from django.shortcuts   import render
 from django.shortcuts   import render_to_response
 from django.http        import HttpResponse
 from django.template    import RequestContext
-from NetExplorer.models import PredictedNode, HumanNode, PredInteraction,Document
+from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase
 import textwrap
 import json
 import re
@@ -84,7 +84,7 @@ def substitute_human_symbols(symbols, database):
                 homologs   = human_node.get_homologs(database)
                 for hom in homologs:
                     newsymbols.append(hom.prednode.symbol)
-            except:
+            except (NodeNotFound, IncorrectDatabase):
                 # Node is not a human node :_(
                 print("Node is not a human node, try next symbol")
                 continue
@@ -146,21 +146,19 @@ def get_graph_elements(symbols, database, graphelements, added_elements):
             try:
                 search_node = query_node(symbol, database)
                 search_node.get_neighbours()
-
-                 # Add search node
-                graphelements['nodes'].append( node_to_jsondict(search_node, True) )
-                added_elements.add(search_node.symbol)
-                print(graphelements)
-
-                for interaction in search_node.neighbours:
-                    if interaction.target.symbol not in added_elements and interaction.target.symbol not in symbols:
-                        graphelements['nodes'].append( node_to_jsondict(interaction.target, False) )
-                        added_elements.add(interaction.target.symbol)
-                    added_elements.add((search_node.symbol, interaction.target.symbol))
-                    if (interaction.target.symbol, search_node.symbol) not in added_elements:
-                        graphelements['edges'].append( edge_to_jsondict(interaction) )
-            except:
-                print("node not found")
+            except (NodeNotFound, IncorrectDatabase):
+                continue
+            # Add search node
+            graphelements['nodes'].append( node_to_jsondict(search_node, True) )
+            added_elements.add(search_node.symbol)
+            for interaction in search_node.neighbours:
+                if interaction.target.symbol not in added_elements and interaction.target.symbol not in symbols:
+                    graphelements['nodes'].append( node_to_jsondict(interaction.target, False) )
+                    added_elements.add(interaction.target.symbol)
+                added_elements.add((search_node.symbol, interaction.target.symbol))
+                if (interaction.target.symbol, search_node.symbol) not in added_elements:
+                    graphelements['edges'].append( edge_to_jsondict(interaction) )
+            print("node not found")
     return
 
 # -----------------------
@@ -193,7 +191,7 @@ def get_fasta(request):
     node = None
     try:
         node = query_node(genesymbol, database)
-    except:
+    except (NodeNotFound, IncorrectDatabase):
         pass # server error!
 
     sequence = str()
@@ -226,7 +224,7 @@ def get_card(request, symbol=None, database=None):
         card_node = query_node(symbol, database)
         card_node.get_neighbours()
         card_node.get_domains()
-    except Exception as e:
+    except (NodeNotFound, IncorrectDatabase):
         return render(request, 'NetExplorer/404.html')
 
     if request.is_ajax():
@@ -260,7 +258,7 @@ def gene_search(request):
                 try:
                     search_node = query_node(genesymbol, database)
                     nodes.append(search_node)
-                except Exception as e:
+                except (NodeNotFound, IncorrectDatabase):
                     # No search results...
                     search_error = 1
 
@@ -300,8 +298,6 @@ def net_explorer(request):
         if not graphelements['edges'] and not graphelements['nodes']:
             # No nodes nor edges!
             json_data = ""
-
-        print(json_data)
         return HttpResponse(json_data, content_type="application/json")
 
     elif request.method == "POST":
@@ -318,14 +314,12 @@ def net_explorer(request):
 def show_connections(request):
     """
     View that handles an AJAX request and, given a list of identifiers, returns
-    all the interactions between those identifiers.
+    all the interactions between those identifiers/nodes.
     """
     if request.is_ajax():
         nodes     = request.GET['nodes'].split(",")
         databases = request.GET['databases'].split(",")
-        graphelements = dict()
-        graphelements['edges'] = list()
-        graphelements['nodes'] = list()
+        graphelements = {'nodes': list(), 'edges': list()}
         for node_id, database in zip(nodes, databases):
             node = query_node(node_id, database)
             node.get_neighbours()
@@ -333,7 +327,7 @@ def show_connections(request):
                 if interaction.target.symbol in nodes:
                     graphelements['edges'].append( edge_to_jsondict(interaction) )
         graphelements = json.dumps(graphelements)
-        return HttpResponse(graphelements   , content_type="application/json")
+        return HttpResponse(graphelements, content_type="application/json")
     else:
         return render(request, 'NetExplorer/404.html')
 
@@ -414,14 +408,14 @@ def path_finder(request):
                 try:
                     node = query_node(symbol, database)
                     startnodes.append(node)
-                except:
+                except (NodeNotFound, IncorrectDatabase):
                     continue
 
             for symbol in end_nodes_symbols:
                 try:
                     node = query_node(symbol, database)
                     endnodes.append(node)
-                except:
+                except (NodeNotFound, IncorrectDatabase):
                     continue
 
             # Get shortest paths
@@ -475,6 +469,9 @@ def handler404(request):
 
 # ------------------------------------------------------------------------------
 def handler500(request):
+    """
+    Handler for error 500 (internal server error), doesn't work.
+    """
     response = render_to_response('NetExplorer/500.html', {},
                                   context_instance=RequestContext(request))
     response.status_code = 500
