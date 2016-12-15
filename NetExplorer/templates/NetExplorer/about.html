@@ -1,0 +1,20 @@
+{% extends 'NetExplorer/base.html' %}
+{% load static %}
+
+{% block title %}- About{% endblock title %}
+
+
+
+{% block content %}
+    ABOUTTTTTTTT
+{% endblock content %}
+
+
+
+{% block scripts %}
+    <!-- CHANGE ACTIVE NAVBAR BUTTON -->
+    <script>
+        $(".navbar-element").toggleClass('active inactive');
+        $("#navbar-about").toggleClass('inactive active')
+    </script>
+{% endblock scripts%}

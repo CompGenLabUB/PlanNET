@@ -11,5 +11,7 @@ urlpatterns = [
     url(r'^blast',         views.blast,         name="blast"),
     url(r'^path_finder', views.path_finder,     name="path_finder"),
     url(r'^tutorial', views.tutorial,           name="tutorial"),
-    url(r'^show_connections', views.show_connections, name="show_connections")
+    url(r'^show_connections', views.show_connections, name="show_connections"),
+    url(r'^downloads', views.downloads, name="downloads"),
+    url(r'^about', views.about, name="about"),
 ]

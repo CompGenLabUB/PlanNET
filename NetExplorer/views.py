@@ -446,15 +446,26 @@ def path_finder(request):
             return render(request, 'NetExplorer/pathway_finder.html')
 
 
-
+# ------------------------------------------------------------------------------
 def tutorial(request):
     """
     View for tutorial
     """
     return render(request, 'NetExplorer/tutorial.html')
 
+# ------------------------------------------------------------------------------
+def downloads(request):
+    """
+    View for downloads
+    """
+    return render(request, 'NetExplorer/downloads.html')
 
-
+# ------------------------------------------------------------------------------
+def about(request):
+    """
+    View for about
+    """
+    return render(request, 'NetExplorer/about.html')
 
 # ------------------------------------------------------------------------------
 def handler404(request):

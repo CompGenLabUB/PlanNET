@@ -585,7 +585,8 @@
 }
 
 
-#cyt-controls .tooltip-inner {
+/* DOES NOT WORK */
+#cyt-controls .info-tooltip .tooltip-inner {
     text-align: left !important;
     color: #777777 !important;
     font-size: 14 !important;
@@ -600,7 +601,7 @@
     border-width: 2px;
 }
 
-#cyt-controls .tooltip.in {
+#cyt-controls .info-tooltip .tooltip.in {
   opacity: 1 !important;
 }
 
