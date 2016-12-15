@@ -331,10 +331,8 @@ def show_connections(request):
             node.get_neighbours()
             for interaction in node.neighbours:
                 if interaction.target.symbol in nodes:
-                    print(interaction.target.symbol)
                     graphelements['edges'].append( edge_to_jsondict(interaction) )
         graphelements = json.dumps(graphelements)
-        print(graphelements)
         return HttpResponse(graphelements   , content_type="application/json")
     else:
         return render(request, 'NetExplorer/404.html')
