@@ -816,3 +816,17 @@ input[type="file"] {
     color: #777777;
     text-decoration: none;
 }
+
+.table-of-contents {
+    width: 150px;
+    display: inline-block;
+}
+
+.tutorial-panel {
+    width: 100%;
+    display: inline-block;
+}
+
+.affix {
+    top: 100px;
+}
