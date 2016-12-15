@@ -109,9 +109,6 @@ HOMOLOGS_QUERY = """
         r.pfam_brh AS pfam_brh
 """
 
-
-
-
 # NEO4J CLASSES
 # ------------------------------------------------------------------------------
 class Node(object):
@@ -324,7 +321,7 @@ class HumanNode(Node):
             for row in results:
                 self.symbol   = row["symbol"]
         else:
-            raise NodeNotFound(self)
+            raise NodeNotFound(self.symbol, self.database)
 
     def get_homologs(self, database):
         """
@@ -416,15 +413,12 @@ class PredictedNode(Node):
                 )
         else:
             print("NOTFOUND")
-            raise NodeNotFound(self)
+            raise NodeNotFound(self.symbol, self.database)
 
     def get_neighbours(self):
         """
-        Method to get the adjacent nodes in the graph. Attribute neighbours will
-        be a list of PredInteraction objects.
-
-            # Query to get all the relationships between neighbour nodes.
-            # Return clause should be changed but it seems to work
+        Method to get the adjacent nodes in the graph.
+        Fills attribute neighbours, which will be a list of PredInteraction objects.
         """
         query = NEIGHBOURS_QUERY % (self.database, self.database, self.symbol)
         results = graph.run(query)
@@ -493,17 +487,24 @@ class Document(models.Model):
 # ------------------------------------------------------------------------------
 class IncorrectDatabase(Exception):
     """Exception raised when incorrect database"""
+    def __init__(self, database):
+        self.database = database
+
     def __str__(self):
         return "%s database not found, incorrect database name." % self.database
 
 # ------------------------------------------------------------------------------
 class NodeNotFound(Exception):
     """Exception raised when a node is not found on the db"""
+    def __init__(self, symbol, database):
+        self.symbol = symbol
     def __str__(self):
         return "Symbol %s not found in database %s." % (self.pnode.symbol, self.pnode.database)
 
 # ------------------------------------------------------------------------------
 class NoHomologFound(Exception):
     """Exception raised when a node homolog is not found. Internal error. Should not happen"""
+    def __init__(self, symbol):
+        self.symbol = symbol
     def __str__(self):
         return "Homolog of %s not found in database." % (self.symbol)
