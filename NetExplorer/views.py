@@ -93,66 +93,6 @@ def substitute_human_symbols(symbols, database):
     return newsymbols
 
 
-# ------------------------------------------------------------------------------
-def node_to_jsondict(node, query):
-    '''
-    This function takes a node object and returns a dictionary with the necessary
-    structure to convert it to json and be read by cytoscape.js
-    '''
-    element                     = dict()
-    element['data']             = dict()
-    element['data']['id']       = node.symbol
-    element['data']['name']     = node.symbol
-    element['data']['database'] = node.database
-    element['data']['homolog']  = node.homolog.human.symbol
-    if query:
-        element['data']['colorNODE'] = "#449D44"
-    else:
-        element['data']['colorNODE'] = "#404040"
-    return element
-
-# ------------------------------------------------------------------------------
-def edge_to_jsondict(edge):
-    '''
-    This function takes a PredInteraction object and returns a dictionary with the necessary
-    structure to convert it to json and be read by cytoscape.js
-    '''
-    element         = dict()
-    element['data'] = dict()
-    element['data']['id']          = "-".join(sorted((edge.source_symbol, edge.target.symbol)))
-    element['data']['source']      = edge.source_symbol
-    element['data']['target']      = edge.target.symbol
-    element['data']['pathlength']  = edge.parameters['path_length']
-    element['data']['probability'] = edge.parameters['int_prob']
-
-    if edge.parameters['path_length'] == 1:
-        element['data']['colorEDGE']   = "#72a555"
-    else:
-        element['data']['colorEDGE']   = "#CA6347"
-
-    return element
-
-# ------------------------------------------------------------------------------
-def fill_graph_elements(symbols, database):
-    """
-    This function takes the list of symbols from the net_explorer form and
-    fills a dictionary with the elements to add to the graph.
-    """
-    if database is None:
-        # No database
-        return None
-    else:
-        for symbol in symbols:
-            try:
-                search_node = query_node(symbol, database)
-                search_node.get_neighbours()
-                jsondat = search_node.get_graphelements()
-                return jsondat
-            except (NodeNotFound, IncorrectDatabase):
-                continue
-            # Add search node
-    return
-
 # -----------------------
 # VIEWS
 # -----------------------
