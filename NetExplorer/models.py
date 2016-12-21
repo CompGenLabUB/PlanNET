@@ -5,6 +5,7 @@ Models of PlanNet
 from __future__ import unicode_literals
 from django.db import models
 from py2neo import Graph
+import json
 
 
 graph = Graph("http://localhost:7474/db/data/")
@@ -298,6 +299,25 @@ class PredInteraction(object):
                 self.parameters['bioproc_nto'] = row['bioproc_nto']
                 self.parameters['dom_int_sc']  = row['dom_int_sc']
 
+    def to_jsondict(self):
+        '''
+        This function takes a PredInteraction object and returns a dictionary with the necessary
+        structure to convert it to json and be read by cytoscape.js
+        '''
+        element         = dict()
+        element['data'] = dict()
+        element['data']['id']          = "-".join(sorted((self.source_symbol, self.target.symbol)))
+        element['data']['source']      = self.source_symbol
+        element['data']['target']      = self.target.symbol
+        element['data']['pathlength']  = self.parameters['path_length']
+        element['data']['probability'] = self.parameters['int_prob']
+
+        if self.parameters['path_length'] == 1:
+            element['data']['colorEDGE']   = "#72a555"
+        else:
+            element['data']['colorEDGE']   = "#CA6347"
+
+        return element
 
 
 # ------------------------------------------------------------------------------
@@ -415,6 +435,25 @@ class PredictedNode(Node):
             print("NOTFOUND")
             raise NodeNotFound(self.symbol, self.database)
 
+
+    def to_jsondict(self, query=False):
+        '''
+        This function takes a node object and returns a dictionary with the necessary
+        structure to convert it to json and be read by cytoscape.js
+        '''
+        element                     = dict()
+        element['data']             = dict()
+        element['data']['id']       = self.symbol
+        element['data']['name']     = self.symbol
+        element['data']['database'] = self.database
+        element['data']['homolog']  = self.homolog.human.symbol
+        if query:
+            element['data']['colorNODE'] = "#449D44"
+        else:
+            element['data']['colorNODE'] = "#404040"
+        return element
+
+
     def get_neighbours(self):
         """
         Method to get the adjacent nodes in the graph.
@@ -474,6 +513,29 @@ class PredictedNode(Node):
         self.neighbours = sorted(self.neighbours, key=lambda k: k.parameters['int_prob'], reverse=True)
         return self.neighbours
 
+    def get_graphelements(self, including=None):
+        """
+        Returns a JSON dictionary with the cytoscape declaration of the node and its
+        interactors. It takes an optional argument, a set with node symbols. If this
+        argument is given, get_graphelements will only return the elements that include
+        one of the nodes in the set.
+        """
+        graphelements  = {'nodes': list(), 'edges': list()}
+        added_elements = set()
+        if not self.neighbours:
+            self.get_neighbours()
+        graphelements['nodes'].append( self.to_jsondict(True))
+        added_elements.add(self.symbol)
+        for interaction in self.neighbours:
+            if including and interaction.target.symbol not in including:
+                continue
+            if interaction.target.symbol not in added_elements:
+                added_elements.add(interaction.target.symbol)
+                graphelements['nodes'].append( interaction.target.to_jsondict() )
+            if (interaction.target.symbol, self.symbol) not in added_elements:
+                added_elements.add((self.symbol, interaction.target.symbol))
+                graphelements['edges'].append( interaction.to_jsondict() )
+        return graphelements
 
 # ------------------------------------------------------------------------------
 class Document(models.Model):

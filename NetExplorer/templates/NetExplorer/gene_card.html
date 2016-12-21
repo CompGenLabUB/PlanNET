@@ -146,10 +146,17 @@
                         </table>
                     {% endif %}
 
-
                     <br>
                     <h2>Interactions</h2>
                     <hr>
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
+                        <form method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
+                            <input type="hidden" name="json_text" value='{{ json_data|safe }}' />
+                            <button id="netexplorer-mini" class="btn btn-default netexplorer-view" type="submit">
+                                <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+                            </button>
+                        </form>
+                    </a>
                     {% if node.neighbours %}
                     <div class="int-table-container">
                         <table id="int-table" class="table table-hover int-table-class">

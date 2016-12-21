@@ -52,9 +52,9 @@ def get_shortest_paths(startnodes, endnodes, including, excluding):
                 for path in paths:
                     graphelements.append({'nodes': list(), 'edges': list()})
                     for edge in path['edges']:
-                        graphelements[numpath]['edges'].append(edge_to_jsondict(edge))
+                        graphelements[numpath]['edges'].append(edge.to_jsondict())
                     for node in path['nodes']:
-                        graphelements[numpath]['nodes'].append(node_to_jsondict(node, False))
+                        graphelements[numpath]['nodes'].append(node.to_jsondict())
                     graphelements[numpath] = (json.dumps(graphelements[numpath]), round(path['score'], 2))
                     numpath += 1
     return graphelements, plen, numpath
@@ -133,7 +133,7 @@ def edge_to_jsondict(edge):
     return element
 
 # ------------------------------------------------------------------------------
-def get_graph_elements(symbols, database, graphelements, added_elements):
+def fill_graph_elements(symbols, database):
     """
     This function takes the list of symbols from the net_explorer form and
     fills a dictionary with the elements to add to the graph.
@@ -146,19 +146,11 @@ def get_graph_elements(symbols, database, graphelements, added_elements):
             try:
                 search_node = query_node(symbol, database)
                 search_node.get_neighbours()
+                jsondat = search_node.get_graphelements()
+                return jsondat
             except (NodeNotFound, IncorrectDatabase):
                 continue
             # Add search node
-            graphelements['nodes'].append( node_to_jsondict(search_node, True) )
-            added_elements.add(search_node.symbol)
-            for interaction in search_node.neighbours:
-                if interaction.target.symbol not in added_elements and interaction.target.symbol not in symbols:
-                    graphelements['nodes'].append( node_to_jsondict(interaction.target, False) )
-                    added_elements.add(interaction.target.symbol)
-                added_elements.add((search_node.symbol, interaction.target.symbol))
-                if (interaction.target.symbol, search_node.symbol) not in added_elements:
-                    graphelements['edges'].append( edge_to_jsondict(interaction) )
-            print("node not found")
     return
 
 # -----------------------
@@ -224,11 +216,12 @@ def get_card(request, symbol=None, database=None):
         card_node = query_node(symbol, database)
         card_node.get_neighbours()
         card_node.get_domains()
+        json_data = json.dumps( card_node.get_graphelements() )
     except (NodeNotFound, IncorrectDatabase):
         return render(request, 'NetExplorer/404.html')
 
     if request.is_ajax():
-        return render(request, 'NetExplorer/gene_card.html', { 'node': card_node })
+        return render(request, 'NetExplorer/gene_card.html', { 'node': card_node, 'json_data': json_data })
     else:
         return render(request, 'NetExplorer/gene_card_fullscreen.html', { 'node': card_node })
 
@@ -275,7 +268,6 @@ def net_explorer(request):
     '''
     This is the cytoscape graph-based search function.
     '''
-
     if request.method == "GET" and "genesymbol" in request.GET and request.is_ajax():
         symbols  = request.GET['genesymbol']
         symbols  = symbols.split(",")
@@ -286,20 +278,19 @@ def net_explorer(request):
         else:
             print("NO DATABASE")
 
-        graphelements    = {'nodes': list(), 'edges': list()}
-        added_elements   = set()
-
-        symbols = substitute_human_symbols(symbols, database)
-
-        get_graph_elements(symbols, database, graphelements, added_elements)
+        symbols       = substitute_human_symbols(symbols, database)
+        graphelements = {'nodes': list(), 'edges': list()}
+        if database is not None:
+            for symbol in symbols:
+                try:
+                    search_node = query_node(symbol, database)
+                    json_dict   = search_node.get_graphelements()
+                    graphelements['nodes'].extend(json_dict['nodes'])
+                    graphelements['edges'].extend(json_dict['edges'])
+                except (NodeNotFound, IncorrectDatabase):
+                    continue
         json_data = json.dumps(graphelements)
-
-        # Expand graph on click
-        if not graphelements['edges'] and not graphelements['nodes']:
-            # No nodes nor edges!
-            json_data = ""
         return HttpResponse(json_data, content_type="application/json")
-
     elif request.method == "POST":
         json_text = None
         if 'json_text' in request.POST:
@@ -323,9 +314,8 @@ def show_connections(request):
         for node_id, database in zip(nodes, databases):
             node = query_node(node_id, database)
             node.get_neighbours()
-            for interaction in node.neighbours:
-                if interaction.target.symbol in nodes:
-                    graphelements['edges'].append( edge_to_jsondict(interaction) )
+            json_dict = node.get_graphelements()
+            graphelements['edges'].extend(json_dict['edges'])
         graphelements = json.dumps(graphelements)
         return HttpResponse(graphelements, content_type="application/json")
     else:
