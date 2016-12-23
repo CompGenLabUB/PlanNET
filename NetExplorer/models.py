@@ -138,12 +138,10 @@ class Node(object):
         Given a target node object, this method finds all the shortest paths to that node,
         if there aren't any, it returns None.
         It returns a list of dictionaries, each of them with two keys:
-            'nodes': list of PredictedNode objects in path.
-            'edges': list of PredInteraction objects in path.
+            'graph': GraphCytoscape object with the graph of the path
+            'score': Score of the given path.
         """
         query = SHORTESTPATH_QUERY % (self.database, target.database, self.symbol, target.symbol)
-
-
         query += """RETURN DISTINCT p,
                     reduce(int_prob = 0.0, r IN relationships(p) | int_prob + toFloat(r.int_prob))/length(p) AS total_prob"""
         results = graph.run(query).data()
@@ -178,7 +176,10 @@ class Node(object):
                     if idx < len(rels_in_path):
                         rel_properties = rels_in_path[idx]
                         rel_properties['path_length'] = int(rel_properties['path_length'])
-                paths.append({'nodes': nodes_obj_in_path, 'edges': rels_obj_in_path, 'score': path_score })
+                graphobj = GraphCytoscape()
+                graphobj.add_elements(nodes_obj_in_path)
+                graphobj.add_elements(rels_obj_in_path)
+                paths.append({'graph': graphobj, 'score': path_score })
             # Sort paths by score
             return paths
         else:
@@ -376,13 +377,11 @@ class HumanNode(Node):
             return None
 
 
-
 # ------------------------------------------------------------------------------
 class PredictedNode(Node):
     """
     Class for planarian nodes.
     """
-
     allowed_databases = set(["Cthulhu", "Consolidated"])
 
     def __init__(self, symbol, database, sequence=None, orf=None, homolog=None):
@@ -435,7 +434,6 @@ class PredictedNode(Node):
             print("NOTFOUND")
             raise NodeNotFound(self.symbol, self.database)
 
-
     def to_jsondict(self, query=False):
         '''
         This function takes a node object and returns a dictionary with the necessary
@@ -452,7 +450,6 @@ class PredictedNode(Node):
         else:
             element['data']['colorNODE'] = "#404040"
         return element
-
 
     def get_neighbours(self):
         """
@@ -515,27 +512,84 @@ class PredictedNode(Node):
 
     def get_graphelements(self, including=None):
         """
-        Returns a JSON dictionary with the cytoscape declaration of the node and its
-        interactors. It takes an optional argument, a set with node symbols. If this
-        argument is given, get_graphelements will only return the elements that include
-        one of the nodes in the set.
+
         """
-        graphelements  = {'nodes': list(), 'edges': list()}
+        nodes = list()
+        edges = list()
         added_elements = set()
         if not self.neighbours:
             self.get_neighbours()
-        graphelements['nodes'].append( self.to_jsondict(True))
+        nodes.append(self)
         added_elements.add(self.symbol)
         for interaction in self.neighbours:
             if including and interaction.target.symbol not in including:
                 continue
             if interaction.target.symbol not in added_elements:
                 added_elements.add(interaction.target.symbol)
-                graphelements['nodes'].append( interaction.target.to_jsondict() )
+                nodes.append( interaction.target )
             if (interaction.target.symbol, self.symbol) not in added_elements:
                 added_elements.add((self.symbol, interaction.target.symbol))
-                graphelements['edges'].append( interaction.to_jsondict() )
+                edges.append( interaction )
+        return nodes, edges
+
+# ------------------------------------------------------------------------------
+class GraphCytoscape(object):
+    """
+    Class for a graph object
+    """
+    def __init__(self):
+        self.nodes = list()
+        self.edges = list()
+
+    def add_elements(self, elements):
+        """
+        Method that takes a list of node or PredInteraction objects and adds them
+        to the grah.
+        """
+        for element in elements:
+            if isinstance(element, Node):
+                self.nodes.append( element )
+            elif isinstance(element, PredInteraction):
+                self.edges.append( element )
+            else:
+                raise WrongGraphObject(element)
+
+    def to_json(self):
+        """
+        Converts the graph to a json string to add it to cytoscape.js
+        """
+        graphelements = {
+            'nodes': [node.to_jsondict() for node in self.nodes],
+            'edges': [edge.to_jsondict() for edge in self.edges]
+        }
+        graphelements = json.dumps(graphelements)
         return graphelements
+
+    def filter(self, including):
+        """
+        Filters nodes and edges from the graph
+        """
+        nodes_to_keep = list()
+        edges_to_keep = list()
+        for node in self.nodes:
+            if node.symbol in including:
+                nodes_to_keep.append(node)
+            else:
+                continue
+        for edge in self.edges:
+            if edge.source_symbol in including and edge.target.symbol in including:
+                edges_to_keep.append(edge)
+            else:
+                continue
+        self.nodes = nodes_to_keep
+        self.edges = edges_to_keep
+        return
+
+
+
+
+
+
 
 # ------------------------------------------------------------------------------
 class Document(models.Model):
@@ -554,6 +608,14 @@ class IncorrectDatabase(Exception):
 
     def __str__(self):
         return "%s database not found, incorrect database name." % self.database
+
+# ------------------------------------------------------------------------------
+class WrongGraphObject(Exception):
+    """Exception for wrong graph object given to add_[node|edge]"""
+    def __init__(self, obj):
+        self.type = type(obj)
+    def __str__(self):
+        return "Can't add object of type %s to GraphCytoscape object." % self.type
 
 # ------------------------------------------------------------------------------
 class NodeNotFound(Exception):

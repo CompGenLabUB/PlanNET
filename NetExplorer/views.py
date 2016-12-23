@@ -6,7 +6,7 @@ from django.shortcuts   import render
 from django.shortcuts   import render_to_response
 from django.http        import HttpResponse
 from django.template    import RequestContext
-from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase
+from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase, GraphCytoscape
 import textwrap
 import json
 import re
@@ -44,18 +44,16 @@ def get_shortest_paths(startnodes, endnodes, including, excluding):
     for snode in startnodes:
         for enode in endnodes:
             paths = snode.path_to_node(enode, including, excluding)
-            plen = len(paths[0]['edges'])
+            plen = len(paths[0]['graph'].edges)
             if paths is None:
                 # Return no-path that matches the query_node
                 continue
             else:
                 for path in paths:
-                    graphelements.append({'nodes': list(), 'edges': list()})
-                    for edge in path['edges']:
-                        graphelements[numpath]['edges'].append(edge.to_jsondict())
-                    for node in path['nodes']:
-                        graphelements[numpath]['nodes'].append(node.to_jsondict())
-                    graphelements[numpath] = (json.dumps(graphelements[numpath]), round(path['score'], 2))
+                    graphelements.append( GraphCytoscape() )
+                    graphelements[numpath].add_elements(path['graph'].nodes)
+                    graphelements[numpath].add_elements(path['graph'].edges)
+                    graphelements[numpath] = (graphelements[numpath].to_json, round(path['score'], 2))
                     numpath += 1
     return graphelements, plen, numpath
 
@@ -151,12 +149,16 @@ def get_card(request, symbol=None, database=None):
         database  = request.GET['targetDB']
 
     card_node = None
-
+    json_data = None
     try:
         card_node = query_node(symbol, database)
         card_node.get_neighbours()
         card_node.get_domains()
-        json_data = json.dumps( card_node.get_graphelements() )
+        nodes, edges =card_node.get_graphelements()
+        graph = GraphCytoscape()
+        graph.add_elements(nodes)
+        graph.add_elements(edges)
+        json_data = graph.to_json()
     except (NodeNotFound, IncorrectDatabase):
         return render(request, 'NetExplorer/404.html')
 
@@ -219,17 +221,17 @@ def net_explorer(request):
             print("NO DATABASE")
 
         symbols       = substitute_human_symbols(symbols, database)
-        graphelements = {'nodes': list(), 'edges': list()}
+        graphobject   = GraphCytoscape()
         if database is not None:
             for symbol in symbols:
                 try:
-                    search_node = query_node(symbol, database)
-                    json_dict   = search_node.get_graphelements()
-                    graphelements['nodes'].extend(json_dict['nodes'])
-                    graphelements['edges'].extend(json_dict['edges'])
+                    search_node  = query_node(symbol, database)
+                    nodes, edges = search_node.get_graphelements()
+                    graphobject.add_elements(nodes)
+                    graphobject.add_elements(edges)
                 except (NodeNotFound, IncorrectDatabase):
                     continue
-        json_data = json.dumps(graphelements)
+        json_data = graphobject.to_json()
         return HttpResponse(json_data, content_type="application/json")
     elif request.method == "POST":
         json_text = None
@@ -248,15 +250,17 @@ def show_connections(request):
     all the interactions between those identifiers/nodes.
     """
     if request.is_ajax():
-        nodes     = request.GET['nodes'].split(",")
-        databases = request.GET['databases'].split(",")
-        graphelements = {'nodes': list(), 'edges': list()}
-        for node_id, database in zip(nodes, databases):
+        nodes_including = request.GET['nodes'].split(",")
+        databases       = request.GET['databases'].split(",")
+        graph           = GraphCytoscape()
+        for node_id, database in zip(nodes_including, databases):
             node = query_node(node_id, database)
             node.get_neighbours()
-            json_dict = node.get_graphelements()
-            graphelements['edges'].extend(json_dict['edges'])
-        graphelements = json.dumps(graphelements)
+            nodes, edges = node.get_graphelements()
+            graph.add_elements(nodes)
+            graph.add_elements(edges)
+        graph.filter( set(nodes_including) )
+        graphelements = graph.to_json()
         return HttpResponse(graphelements, content_type="application/json")
     else:
         return render(request, 'NetExplorer/404.html')
@@ -309,71 +313,70 @@ def path_finder(request):
     of the tuple being the JSON of the graph to be used by cytoscape.js, and the second element being
     the score assigned to the given pathway.
     """
-    if request.method == "GET":
-        if 'start' in request.GET and 'end' in request.GET:
-            # We have a search
-            if not request.GET['database']:
-                return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True})
-            if not request.GET['start'] or not request.GET['end']:
-                return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True})
+    if 'start' in request.GET and 'end' in request.GET:
+        # We have a search
+        if not request.GET['database']:
+            return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True})
+        if not request.GET['start'] or not request.GET['end']:
+            return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True})
 
-            # Search
-            # Valid search
-            database = request.GET['database']
-            startnodes = list()
-            endnodes   = list()
-            including  = None
-            excluding  = None
+        # Search
+        # Valid search
+        database = request.GET['database']
+        startnodes = list()
+        endnodes   = list()
+        including  = None
+        excluding  = None
 
-            if request.GET['including']:
-                including = request.GET['including'].split(",")
-            if request.GET['excluding']:
-                excluding = request.GET['excluding'].split(",")
+        if request.GET['including']:
+            including = request.GET['including'].split(",")
+        if request.GET['excluding']:
+            excluding = request.GET['excluding'].split(",")
 
-            start_nodes_symbols = substitute_human_symbols([request.GET['start']], database)
-            end_nodes_symbols   = substitute_human_symbols([request.GET['end']],   database)
+        start_nodes_symbols = substitute_human_symbols([request.GET['start']], database)
+        end_nodes_symbols   = substitute_human_symbols([request.GET['end']],   database)
 
-            # Query all the nodes and get node objects
-            for symbol in start_nodes_symbols:
-                try:
-                    node = query_node(symbol, database)
-                    startnodes.append(node)
-                except (NodeNotFound, IncorrectDatabase):
-                    continue
+        # Query all the nodes and get node objects
+        for symbol in start_nodes_symbols:
+            try:
+                node = query_node(symbol, database)
+                startnodes.append(node)
+            except (NodeNotFound, IncorrectDatabase):
+                continue
 
-            for symbol in end_nodes_symbols:
-                try:
-                    node = query_node(symbol, database)
-                    endnodes.append(node)
-                except (NodeNotFound, IncorrectDatabase):
-                    continue
+        for symbol in end_nodes_symbols:
+            try:
+                node = query_node(symbol, database)
+                endnodes.append(node)
+            except (NodeNotFound, IncorrectDatabase):
+                continue
 
-            # Get shortest paths
-            graphelements, plen, numpath = get_shortest_paths(
-                startnodes,
-                endnodes,
-                including,
-                excluding
-            )
-            response = dict()
-            response['database'] = database
-            response['snode']    = request.GET['start']
-            response['enode']    = request.GET['end']
+        # Get shortest paths
+        graphelements, plen, numpath = get_shortest_paths(
+            startnodes,
+            endnodes,
+            including,
+            excluding
+        )
+        response = dict()
+        response['database'] = database
+        response['snode']    = request.GET['start']
+        response['enode']    = request.GET['end']
 
-            if graphelements:
-                # We have graphelements to display (there are paths)
-                graphelements = sorted(graphelements, key=lambda k: k[1], reverse=True)
-                response["pathways"] = graphelements
-                response["numpath"]  = numpath
-                response["plen"]     = plen
-                return render(request, 'NetExplorer/pathway_finder.html', response)
-            else:
-                # No results
-                response['noresults'] = True
-                return render(request, 'NetExplorer/pathway_finder.html', response)
+        if graphelements:
+            # We have graphelements to display (there are paths)
+            graphelements = sorted(graphelements, key=lambda k: k[1], reverse=True)
+            response["pathways"] = graphelements
+            response["numpath"]  = numpath
+            response["plen"]     = plen
+            return render(request, 'NetExplorer/pathway_finder.html', response)
         else:
-            # Not a search
-            return render(request, 'NetExplorer/pathway_finder.html')
+            # No results
+            response['noresults'] = True
+            return render(request, 'NetExplorer/pathway_finder.html', response)
+    else:
+        # Not a search
+        return render(request, 'NetExplorer/pathway_finder.html')
 
 
 # ------------------------------------------------------------------------------
