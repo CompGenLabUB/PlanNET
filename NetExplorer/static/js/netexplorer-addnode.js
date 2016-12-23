@@ -18,7 +18,7 @@ function addNode(symbol, database, cyobj) {
             var layout_name = $('#select-layout li').text().toLowerCase();
             var newelements = cyobj.add(data);
             checkHomologs(document.getElementById( "show-homologs" ), cyobj); // Show homologs if necessary
-
+            console.log(data);
             cyobj.layout({
                 name: 'cola',
                 maxSimulationTime: 3000,

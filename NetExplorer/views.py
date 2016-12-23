@@ -152,7 +152,6 @@ def get_card(request, symbol=None, database=None):
     json_data = None
     try:
         card_node = query_node(symbol, database)
-        card_node.get_neighbours()
         card_node.get_domains()
         nodes, edges =card_node.get_graphelements()
         graph = GraphCytoscape()
@@ -256,7 +255,6 @@ def show_connections(request):
         graph           = GraphCytoscape()
         for node_id, database in zip(nodes_including, databases):
             node = query_node(node_id, database)
-            node.get_neighbours()
             nodes, edges = node.get_graphelements()
             graph.add_elements(nodes)
             graph.add_elements(edges)

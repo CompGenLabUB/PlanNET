@@ -392,9 +392,11 @@ class PredictedNode(Node):
         self.important      = important
         self.gccont         = None
         self.length         = None
+        self.degree         = None
 
         if sequence is None:
             self.__query_node()
+            self.get_neighbours()
 
     def get_summary(self):
         '''
@@ -446,6 +448,7 @@ class PredictedNode(Node):
         element['data']['name']     = self.symbol
         element['data']['database'] = self.database
         element['data']['homolog']  = self.homolog.human.symbol
+        element['data']['degree']   = self.degree
         if self.important:
             element['data']['colorNODE'] = "#449D44"
         else:
@@ -503,6 +506,7 @@ class PredictedNode(Node):
 
         # Sort interactions by probability
         self.neighbours = sorted(self.neighbours, key=lambda k: k.parameters['int_prob'], reverse=True)
+        self.degree     = int(len(self.neighbours))
         return self.neighbours
 
     def get_graphelements(self, including=None):
