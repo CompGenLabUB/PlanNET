@@ -384,11 +384,12 @@ class PredictedNode(Node):
     """
     allowed_databases = set(["Cthulhu", "Consolidated"])
 
-    def __init__(self, symbol, database, sequence=None, orf=None, homolog=None):
+    def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False):
         super(PredictedNode, self).__init__(symbol, database)
         self.sequence       = sequence
         self.orf            = orf
         self.homolog        = homolog
+        self.important      = important
         self.gccont         = None
         self.length         = None
 
@@ -434,7 +435,7 @@ class PredictedNode(Node):
             print("NOTFOUND")
             raise NodeNotFound(self.symbol, self.database)
 
-    def to_jsondict(self, query=False):
+    def to_jsondict(self):
         '''
         This function takes a node object and returns a dictionary with the necessary
         structure to convert it to json and be read by cytoscape.js
@@ -445,7 +446,7 @@ class PredictedNode(Node):
         element['data']['name']     = self.symbol
         element['data']['database'] = self.database
         element['data']['homolog']  = self.homolog.human.symbol
-        if query:
+        if self.important:
             element['data']['colorNODE'] = "#449D44"
         else:
             element['data']['colorNODE'] = "#404040"
@@ -474,21 +475,15 @@ class PredictedNode(Node):
                 # Homology object
                 human_node = HumanNode(row['human'], "Human")
                 thomolog  = Homology(
-                    human      = human_node,
-                    blast_cov  = row['blast_cov'],
-                    blast_eval = row['blast_eval'],
-                    nog_brh    = row['nog_brh'],
-                    pfam_sc    = row['pfam_sc'],
-                    nog_eval   = row['nog_eval'],
-                    blast_brh  = row['blast_brh'],
-                    pfam_brh   = row['pfam_brh']
+                    human      = human_node,        blast_cov = row['blast_cov'],
+                    blast_eval = row['blast_eval'], nog_brh = row['nog_brh'],
+                    pfam_sc    = row['pfam_sc'],    nog_eval   = row['nog_eval'],
+                    blast_brh  = row['blast_brh'],  pfam_brh   = row['pfam_brh']
                 )
                 # Node Object
                 target = PredictedNode(
-                    symbol   = row['target'],
-                    database = self.database,
-                    sequence = row['tsequence'],
-                    orf      = row['torf'],
+                    symbol   = row['target'],    database = self.database,
+                    sequence = row['tsequence'], orf      = row['torf'],
                     homolog  = thomolog
                 )
 
@@ -512,7 +507,7 @@ class PredictedNode(Node):
 
     def get_graphelements(self, including=None):
         """
-
+        Returns a list of nodes and edges adjacent to the node.
         """
         nodes = list()
         edges = list()
@@ -554,6 +549,26 @@ class GraphCytoscape(object):
             else:
                 raise WrongGraphObject(element)
 
+    def add_node(self, node):
+        """
+        Adds a single node to the graph
+        """
+        self.add_elements([node])
+
+    def add_interaction(self, interaction):
+        """
+        Adds a single interaction to the graph
+        """
+        self.add_elements([interaction])
+
+    def define_important(self, vip_nodes):
+        """
+        Gets a list of nodes and defines them as important
+        """
+        for node in self.nodes:
+            if node.symbol in vip_nodes:
+                node.important = True
+
     def to_json(self):
         """
         Converts the graph to a json string to add it to cytoscape.js
@@ -584,12 +599,6 @@ class GraphCytoscape(object):
         self.nodes = nodes_to_keep
         self.edges = edges_to_keep
         return
-
-
-
-
-
-
 
 # ------------------------------------------------------------------------------
 class Document(models.Model):

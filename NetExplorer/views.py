@@ -231,6 +231,7 @@ def net_explorer(request):
                     graphobject.add_elements(edges)
                 except (NodeNotFound, IncorrectDatabase):
                     continue
+        graphobject.define_important(set(symbols))
         json_data = graphobject.to_json()
         return HttpResponse(json_data, content_type="application/json")
     elif request.method == "POST":
