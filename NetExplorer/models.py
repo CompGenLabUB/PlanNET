@@ -553,6 +553,15 @@ class GraphCytoscape(object):
             else:
                 raise WrongGraphObject(element)
 
+    def is_empty(self):
+        """
+        Checks if the graph is empty or not.
+        """
+        if not self.nodes and not self.edges:
+            return True
+        else:
+            return False
+
     def add_node(self, node):
         """
         Adds a single node to the graph
