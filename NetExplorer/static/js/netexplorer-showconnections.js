@@ -20,6 +20,9 @@ $("#show_connections").on("click", function(){
             'databases': databases,
             'csrfmiddlewaretoken': '{{ csrf_token }}'
         },
+        beforeSend: function() {
+            $('#loading').show();
+        },
         success : function(data) {
             var newelements = cy.add(data);
 
@@ -31,6 +34,7 @@ $("#show_connections").on("click", function(){
                 directed: false,
                 padding: 40
             });
+            $('#loading').hide();
 
             // Show only edges above slider threshold
             var value = $('#sl1').val();
@@ -46,6 +50,7 @@ $("#show_connections").on("click", function(){
             });
         },
         error : function(err) {
+            $('#loading').hide();
             console.log(err);
         }
     });

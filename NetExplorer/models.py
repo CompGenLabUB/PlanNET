@@ -576,7 +576,7 @@ class GraphCytoscape(object):
 
     def define_important(self, vip_nodes):
         """
-        Gets a list of nodes and defines them as important
+        Gets a list/set of nodes and defines them as important
         """
         for node in self.nodes:
             if node.symbol in vip_nodes:

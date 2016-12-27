@@ -14,11 +14,13 @@ function addNode(symbol, database, cyobj) {
             'database'  : database,
             'csrfmiddlewaretoken': '{{ csrf_token }}'
         },
+        beforeSend: function() {
+            $('#loading').show();
+        },
         success : function(data) {
             var layout_name = $('#select-layout li').text().toLowerCase();
             var newelements = cyobj.add(data);
             checkHomologs(document.getElementById( "show-homologs" ), cyobj); // Show homologs if necessary
-            console.log(data);
             cyobj.layout({
                 name: 'cola',
                 maxSimulationTime: 3000,
@@ -26,6 +28,7 @@ function addNode(symbol, database, cyobj) {
                 directed: false,
                 padding: 40
             });
+            $('#loading').hide();
 
             // Show only edges above slider threshold
             var value = $('#sl1').val();
@@ -41,6 +44,7 @@ function addNode(symbol, database, cyobj) {
             });
         },
         error : function() {
+            $('#loading').hide();
             $('#node-not-found').slideToggle(200);
             setTimeout(function () {
                 $('#node-not-found').hide(200);
