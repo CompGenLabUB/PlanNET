@@ -4,8 +4,6 @@
 
 
 {% block content %}
-    <div id="panel-container">
-        <div class="panel-group">
             <!--
             <div class="panel panel-info" id="gf-container">
                 <div class="panel-heading">Gene Finder</div>
@@ -17,63 +15,98 @@
             </div>
 
         -->
-            <div class="panel panel-info app-container" >
-                <div class="panel-heading">
-                    Gene Search
-                    <a href="/tutorial#genesearch" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
-                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                    </a>
-                </div>
-                <a class="btn btn-info app-button" href="{% url gene_search %}">Search</a>
-                <div class="panel-body app-panel" >
-                    <p>Search for genes and contigs using identifiers.</p>
-                    <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
-                </div>
-            </div>
-            <div class="panel panel-blast app-container" >
-                <div class="panel-heading">
-                    BLAST
-                    <a href="/tutorial#blast" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
-                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                    </a>
-                </div>
-                <a class="btn btn-blast app-button" href="{% url blast %}">Blast</a>
-                <div class="panel-body app-panel">
-                    <p>BLAST the different planarian transcriptomes.</p>
-                    <img class="app-icon" src="{% static 'Images/blast-icon.png' %}"/>
-                </div>
-            </div>
-            <div class="panel panel-success app-container" >
-                <div class="panel-heading">
-                    Network Explorer
-                    <a href="/tutorial#netexplorer" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
-                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                    </a>
-                </div>
-                <a class="btn btn-success app-button" href="{% url net_explorer %}">Explore</a>
-                <div class="panel-body app-panel">
-                    <p>Explore the predicted protein-protein interactions network.</p>
-                    <img class="app-icon" src="{% static 'Images/network-icon.png' %}"/>
-                </div>
-            </div>
-            <div class="panel panel-warning app-container" >
-                <div class="panel-heading">
-                    Pathway Finder
-                    <a href="/tutorial#pathwayfinder" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
-                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                    </a>
-                </div>
 
-                <a class="btn btn-warning app-button" href="{% url path_finder %}">Find</a>
-                <div class="panel-body app-panel">
-                    <p>Look for specific pathways in the different interaction networks.</p>
-                    <img class="app-icon" src="{% static 'Images/pathway-icon.png' %}"/>
+        <div class="row row-app">
+            <div class="col-sm-6">
+                <div class="panel panel-info app-container" >
+                    <div class="panel-heading">
+                        Gene Search
+                        <a href="/tutorial#genesearch" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <div class="panel-body app-panel" >
+                        <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
+                        <a class="btn btn-info app-button" href="{% url gene_search %}">Search</a>
+                        <p>Search for genes and contigs using identifiers.</p>
+                    </div>
                 </div>
             </div>
 
+            <div class="col-sm-6">
+
+                <div class="panel panel-blast app-container" >
+                    <div class="panel-heading">
+                        BLAST
+                        <a href="/tutorial#blast" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <div class="panel-body app-panel">
+                        <img class="app-icon" src="{% static 'Images/blast-icon.png' %}"/>
+                        <a class="btn btn-blast app-button" href="{% url blast %}">Blast</a>
+                        <p>BLAST the different planarian transcriptomes.</p>
+                    </div>
+                </div>
+
+
+            </div>
         </div>
 
-    </div>
+        <div class="row row-app">
+            <div class="col-sm-6">
+
+                <div class="panel panel-success app-container" >
+                    <div class="panel-heading">
+                        Network Explorer
+                        <a href="/tutorial#netexplorer" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <div class="panel-body app-panel">
+                        <img class="app-icon" src="{% static 'Images/network-icon.png' %}"/>
+                        <a class="btn btn-success app-button" href="{% url net_explorer %}">Explore</a>
+                        <p>Explore the predicted protein-protein interactions network.</p>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="col-sm-6">
+
+                <div class="panel panel-warning app-container" >
+                    <div class="panel-heading">
+                        Pathway Finder
+                        <a href="/tutorial#pathwayfinder" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        </a>
+                    </div>
+
+                    <div class="panel-body app-panel">
+                        <img class="app-icon" src="{% static 'Images/pathway-icon.png' %}"/>
+                        <a class="btn btn-warning app-button" href="{% url path_finder %}">Find</a>
+                        <p>Look for pathways in the different interaction networks.</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+<!--
+            <div class="row row-app">
+                <div class="col-sm-6">
+
+                </div>
+
+                <div class="col-sm-6">
+
+                </div>
+
+            </div>
+-->
 
 {% endblock content %}
 
