@@ -304,7 +304,12 @@ def blast(request):
     """
     View for the BLAST form page
     """
-    return render(request, 'NetExplorer/404.html')
+    if request.POST:
+        print("POST request")
+        print(request.POST)
+        return render(request, 'NetExplorer/blast.html')
+    else:
+        return render(request, 'NetExplorer/blast.html')
 
 
 # ------------------------------------------------------------------------------

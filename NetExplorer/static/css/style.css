@@ -864,3 +864,44 @@ input[type="file"] {
 .affix {
     top: 100px;
 }
+
+/* BLAST */
+#query-textarea {
+    width: 60% !important;
+}
+
+.icon-container {
+    text-align: center;
+}
+
+.blast-icon-inside {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.blast-icon-container {
+    vertical-align:middle;
+}
+.blast-title {
+    vertical-align:middle;
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+.label-blast {
+    background-color: #a265c2;
+    color: white;
+}

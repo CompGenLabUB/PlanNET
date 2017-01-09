@@ -25,6 +25,17 @@
                             <li id="navbar-home"><a href="/">Home</a></li>
                             <li id="navbar-tutorial"><a href="/tutorial">Tutorial</a></li>
                             <li id="navbar-downloads"><a href="/downloads">Downloads</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url gene_search %}">Gene Search</a></li>
+                                    <li><a href="{% url blast %}">Blast</a></li>
+                                    <li><a href="{% url net_explorer %}">NetExplorer</a></li>
+                                    <li><a href="{% url path_finder %}">Pathway Finder</a></li>
+                                </ul>
+                            </li>
                             <li id="navbar-about"><a href="/about">About</a></li>
                         </ul>
                     </div>
