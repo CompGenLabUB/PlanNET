@@ -1,0 +1,92 @@
+{% extends 'NetExplorer/base.html' %}
+{% load static %}
+
+{% block title %}
+     - BLAST
+{% endblock title %}
+
+
+
+
+
+{% block content %}
+
+<!-- ERROR MESSAGE -->
+<div class="panel panel-danger error-msg">
+    <div class="panel-heading">
+        Error
+    </div>
+    <div class="panel-body">
+        {{ error_msg }}
+    </div>
+</div>
+
+
+<!-- BLAST FORM -->
+<div class="panel panel-blast">
+    <div class="panel-heading">
+        <div class="row row-eq-height">
+            <div class="col-sm-1 blast-icon-container">
+                <img class="blast-icon-inside" src="{% static 'Images/blast-icon-transparent.png' %}"/>
+            </div>
+            <div class="col-sm-11 blast-title">
+                <h1>BLAST</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body">
+
+        <form id="blast_form" method="post" enctype="multipart/form-data" action="{% url blast %}">
+            {% csrf_token %}
+
+            <h2>Query</h2>
+            <label for="query-textarea"></label>
+            <textarea form="blast_form" name="fasta_plain" class="form-control" id="query-textarea" rows="6" cols="12" placeholder="Paste your sequences here"></textarea>
+            <br>or
+            <label class="btn btn-default" for="my-file-selector">
+                <input id="my-file-selector" name="fastafile" type="file" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
+                Upload Fasta
+            </label>
+            <span class='label label-blast' id="upload-file-info"></span>
+
+            <hr>
+            <h2>Database</h2>
+            <select name="database" class="selectpicker" title="Select Database">
+                <option value="Cthulhu">Cthulhu</option>
+                <option value="Consolidated">Consolidated</option>
+                <option value="Human">Human</option>
+            </select>
+            <br><br>
+            <hr>
+            <h2>Application</h2>
+            <select name="type" class="selectpicker" title="Select type of BLAST">
+                <option value="blastn">BLASTn</option>
+                <option value="blastp">BLASTp</option>
+                <option value="blastx">BLASTx</option>
+                <option value="tblastx">tBLASTx</option>
+                <option value="tblastn">tBLASTn</option>
+            </select>
+            <button id="blast-btn" type="submit" class="btn btn-blast">
+                 BLAST
+            </button>
+
+        </form>
+
+
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+<!-- ADDITIONAL SCRIPTS -->
+{% block scripts %}
+{% if error_msg %}
+    <script>
+        $(".error-msg").show();
+    </script>
+{% endif %}
+
+{% endblock scripts %}
