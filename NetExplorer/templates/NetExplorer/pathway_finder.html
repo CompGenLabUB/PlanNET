@@ -24,141 +24,144 @@
 
         <!-- RESULTS -->
         <div id="pfind-results">
-            <!-- CARD DIV -->
-            <div id="button-container">
-                <div class="close-overlay" title="Close card">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </div>
-                <div class="full-screen-card" title="Open in new window">
-                    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
-                </div>
-            </div>
-            <div class="card-overlay" id="card-overlay"></div>
-
-            <!-- ERRORS -->
-            {% if nodb %}
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h2>No database</h2>
+            <img src="{% static 'Images/loading.gif' %}" id="loading"/>
+            <div id="pfind-results-container">
+                <!-- CARD DIV -->
+                <div id="button-container">
+                    <div class="close-overlay" title="Close card">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </div>
-                    <div class="panel-body">
-                        Please, select a <strong>Database</strong> <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/>
+                    <div class="full-screen-card" title="Open in new window">
+                        <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
                     </div>
                 </div>
-            {% endif %}
+                <div class="card-overlay" id="card-overlay"></div>
 
-            {% if nonodes %}
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h2>No nodes specified</h2>
-                    </div>
-                    <div class="panel-body">
-                        Please, select one <strong>Starting node</strong> <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> and one <strong>Final node</strong> <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/>
-                    </div>
-                </div>
-            {% endif %}
-
-            {% if noresults %}
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <h2>Results</h2>
-                    </div>
-                    <div class="panel-body pfind-res-panel">
-                        <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Search parameters:</h4>
-                        <div id="search-param-pathway">
-                            <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
-                            <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
-                            <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
-                            <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
-                            <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h2>No results for your query.</h2>
-                    </div>
-                    <div class="panel-body">
-                        <h2>Possible causes</h2>
-                        <ul>
-                            <li>The identifiers were not correctly spelled.</li>
-                            <li>If an including or an excluding node was specified, there are no paths between the two nodes that match this criteria.</li>
-                            <li>There is no path connecting the start node and the end node in the specified database.</li>
-                        </ul>
-                    </div>
-                </div>
-            {% endif %}
-
-            <!-- PATHWAY RESULTS -->
-            {% if pathways %}
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <h2>Results</h2>
-                    </div>
-                    <div class="panel-body pfind-res-panel">
-                        <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Search parameters:</h4>
-                        <div id="search-param-pathway">
-                            <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
-                            <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
-                            <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
-                            <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
-                            <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
-                        </div>
-                        <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Number of Pathways: <strong>{{ numpath }}</strong></h4>
-                        <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Path Length: <strong>{{ plen }}</strong></h4>
-                    </div>
-                </div>
-
-                <!-- FILTER FORM -->
-                <div id="pathway-filter-div">
-                    <h3 class="filter-title">Filter pathways by identifiers</h3>
-                    <form id="pathway-filter" class="form-inline">
-                        <input id="pathway-filter-text" type="text" class="form-control" name="start" placeholder="Enter Symbol(s), separated by commas">
-                        <input id="pathway-filter-submit" class="btn btn-warning" type="submit" value="Filter">
-                    </form>
-                </div>
-
-                <h4>Showing <span id="numfiltered">{{ pathways|length }}</span> of {{ pathways|length }} pathways</h4>
-
-                <!-- PATHWAYS -->
-                {% for path in pathways %}
-                    <div class="panel panel-default pathway-panel" id="panel{{ forloop.counter }}" value='{{ path.0|safe }}' class="visible">
+                <!-- ERRORS -->
+                {% if nodb %}
+                    <div class="panel panel-danger">
                         <div class="panel-heading">
-                            <div class="path-title">
-                                <h3>Pathway {{ forloop.counter }}</h3>
-                                <span class="text-success path-score">Score: {{ path.1 }}</span>
-                            </div>
-
-                            <div class="row path-controls">
-                                <div class="col-md-6">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Center Graph">
-                                        <button id="center-to-graph-{{ forloop.counter }}" class="btn btn-default" type="button">
-                                            <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-                                        </button>
-                                    </a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
-                                        <form method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
-                                            <input type="hidden" name="json_text" value='{{ path.0|safe }}' />
-                                            <button id="netexplorer-mini-{{ forloop.counter }}" class="btn btn-default netexplorer-view" type="submit">
-                                                <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
-                                            </button>
-                                        </form>
-                                    </a>
-                                </div>
-                            </div>
+                            <h2>No database</h2>
                         </div>
-
                         <div class="panel-body">
-                            <div id="pathway{{ forloop.counter }}" class="pathway-container"></div>
+                            Please, select a <strong>Database</strong> <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/>
+                        </div>
+                    </div>
+                {% endif %}
 
+                {% if nonodes %}
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h2>No nodes specified</h2>
+                        </div>
+                        <div class="panel-body">
+                            Please, select one <strong>Starting node</strong> <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> and one <strong>Final node</strong> <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if noresults %}
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h2>Results</h2>
+                        </div>
+                        <div class="panel-body pfind-res-panel">
+                            <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Search parameters:</h4>
+                            <div id="search-param-pathway">
+                                <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
+                                <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
+                                <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
+                                <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
+                                <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
+                            </div>
                         </div>
                     </div>
 
-                {% endfor %}
-            {% endif %}
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h2>No results for your query.</h2>
+                        </div>
+                        <div class="panel-body">
+                            <h2>Possible causes</h2>
+                            <ul>
+                                <li>The identifiers were not correctly spelled.</li>
+                                <li>If an including or an excluding node was specified, there are no paths between the two nodes that match this criteria.</li>
+                                <li>There is no path connecting the start node and the end node in the specified database.</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- PATHWAY RESULTS -->
+                {% if pathways %}
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h2>Results</h2>
+                        </div>
+                        <div class="panel-body pfind-res-panel">
+                            <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Search parameters:</h4>
+                            <div id="search-param-pathway">
+                                <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
+                                <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
+                                <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
+                                <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
+                                <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
+                            </div>
+                            <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Number of Pathways: <strong>{{ numpath }}</strong></h4>
+                            <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Path Length: <strong>{{ plen }}</strong></h4>
+                        </div>
+                    </div>
+
+                    <!-- FILTER FORM -->
+                    <div id="pathway-filter-div">
+                        <h3 class="filter-title">Filter pathways by identifiers</h3>
+                        <form id="pathway-filter" class="form-inline">
+                            <input id="pathway-filter-text" type="text" class="form-control" name="start" placeholder="Enter Symbol(s), separated by commas">
+                            <input id="pathway-filter-submit" class="btn btn-warning" type="submit" value="Filter">
+                        </form>
+                    </div>
+
+                    <h4>Showing <span id="numfiltered">{{ pathways|length }}</span> of {{ pathways|length }} pathways</h4>
+
+                    <!-- PATHWAYS -->
+                    {% for path in pathways %}
+                        <div class="panel panel-default pathway-panel" id="panel{{ forloop.counter }}" value='{{ path.0|safe }}' class="visible">
+                            <div class="panel-heading">
+                                <div class="path-title">
+                                    <h3>Pathway {{ forloop.counter }}</h3>
+                                    <span class="text-success path-score">Score: {{ path.1 }}</span>
+                                </div>
+
+                                <div class="row path-controls">
+                                    <div class="col-md-6">
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Center Graph">
+                                            <button id="center-to-graph-{{ forloop.counter }}" class="btn btn-default" type="button">
+                                                <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
+                                            <form method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
+                                                <input type="hidden" name="json_text" value='{{ path.0|safe }}' />
+                                                <button id="netexplorer-mini-{{ forloop.counter }}" class="btn btn-default netexplorer-view" type="submit">
+                                                    <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+                                                </button>
+                                            </form>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-body">
+                                <div id="pathway{{ forloop.counter }}" class="pathway-container"></div>
+
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
 
 
@@ -247,6 +250,12 @@
         <script src="{% static 'js/get-card.js' %}"></script>
         <script src="{% static 'js/cyto-pathway.js' %}"></script>
         <script src="{% static 'js/filter-pathways.js' %}"></script>
+        <script>
+            $('#pfind-btn').on('click', function(){
+                $('#pfind-results-container').hide();
+                $('#loading').show();
+            });
+        </script>
         {% if pathways %}
             {% for path in pathways %}
                 <script>
