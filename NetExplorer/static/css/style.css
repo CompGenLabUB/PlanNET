@@ -905,3 +905,7 @@ input[type="file"] {
     background-color: #a265c2;
     color: white;
 }
+
+.error-msg {
+    display: none;
+}

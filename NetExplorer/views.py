@@ -7,9 +7,17 @@ from django.shortcuts   import render_to_response
 from django.http        import HttpResponse
 from django.template    import RequestContext
 from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase, GraphCytoscape
+from subprocess import Popen, PIPE
+from django.contrib.staticfiles.templatetags.staticfiles import static
+import tempfile
 import textwrap
 import json
 import re
+
+# -----------------------
+# CONSTANTS
+# -----------------------
+BLAST_DB_DIR = "/home/sergio/code/PlaNET/blast/"
 
 # -----------------------
 # FUNCTIONS
@@ -305,8 +313,39 @@ def blast(request):
     View for the BLAST form page
     """
     if request.POST:
-        print("POST request")
-        print(request.POST)
+        if not request.POST['database']:
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No Database selected"})
+        if not request.POST['type']:
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No BLAST application selected"})
+
+        fasta = str()
+        database = request.POST['database'].lower()
+
+        if request.FILES:
+            print("There is a file")
+            # Must check if FASTA
+            fasta = request.FILES['fastafile'].read()
+
+        else:
+            print("No-file")
+            # Must check if FASTA/plain or otherwise not valid
+            fasta = request.POST['fasta_plain']
+
+        # Create temp file with the sequences
+        with tempfile.NamedTemporaryFile() as temp:
+            temp.write(fasta)
+            temp.flush()
+            # Must access temp.name
+
+            pipe = Popen([request.POST['type'], "-db", BLAST_DB_DIR + database , "-query", temp.name])
+            stdout, stderr = pipe.communicate()
+            print(stdout)
+            #url = static("css/style.css")
+            #f = open(url, "r")
+            #for line in f:
+            #    print(line)
+
+
         return render(request, 'NetExplorer/blast.html')
     else:
         return render(request, 'NetExplorer/blast.html')
