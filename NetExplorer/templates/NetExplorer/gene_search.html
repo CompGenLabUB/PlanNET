@@ -49,7 +49,7 @@
         <!-- Small searchpanel for each gene in results -->
         {% for node in res %}
             <div id="{{ node.symbol }}"
-                 class="panel panel-info small-searchpanel"
+                 class="panel panel-info small-searchpanel card-trigger"
                  title="Click to view info card"
                  target="{{ node.symbol }}"
                  targetDB="{{ node.database }}">

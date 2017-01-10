@@ -103,12 +103,38 @@
                 {% for line in results %}
                     <tr>
                         {% for col in line %}
-                            <td>{{ col }}</td>
+                            {% if forloop.counter == 2 %}
+                                <td>
+                                    <a class="card-trigger"
+                                       title="Click to view info card"
+                                       target="{{ col }}"
+                                       targetDB="{{ database }}">
+                                       {{ col }}
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td>{{ col }}</td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- HIDDEN CARD OVERLAY -->
+        <div id="button-container">
+            <div class="close-overlay" title="Close card">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </div>
+            <div class="full-screen-card" title="Open in new window">
+                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+            </div>
+        </div>
+        <div id="card-overlay" class="card-overlay">
+            <div class="card-title">
+
+            </div>
+       </div>
     {% endif %}
 </div>
 
@@ -118,6 +144,8 @@
 
 <!-- ADDITIONAL SCRIPTS -->
 {% block scripts %}
+<script src="{% static 'js/get-card.js' %}"></script>
+<script src="{% static 'js/searchpanel.js' %}"></script>
 <script src="{% static 'js/blast-type-handler.js' %}"></script>
     {% if results %}
         <script>

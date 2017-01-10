@@ -341,7 +341,7 @@ def blast(request):
             pipe = Popen([request.POST['type'], "-db", BLAST_DB_DIR + database , "-query", temp.name, '-outfmt', '6'], stdout=PIPE, stderr=STDOUT)
             stdout, stderr = pipe.communicate()
             results = [ line.split("\t") for line in stdout.split("\n") if line ]
-        return render(request, 'NetExplorer/blast.html', {'results': results })
+        return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database })
     else:
         return render(request, 'NetExplorer/blast.html')
 
