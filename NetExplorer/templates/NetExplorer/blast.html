@@ -52,7 +52,7 @@
 
             <hr>
             <h2>Database</h2>
-            <select name="database" class="selectpicker" title="Select Database">
+            <select id="database-selection" name="database" class="selectpicker" title="Select Database">
                 <option value="Cthulhu">Cthulhu</option>
                 <option value="Consolidated">Consolidated</option>
                 <option value="Human">Human</option>
@@ -61,11 +61,11 @@
             <hr>
             <h2>Application</h2>
             <select name="type" class="selectpicker" title="Select type of BLAST">
-                <option value="blastn">BLASTn</option>
-                <option value="blastp">BLASTp</option>
-                <option value="blastx">BLASTx</option>
-                <option value="tblastx">tBLASTx</option>
-                <option value="tblastn">tBLASTn</option>
+                <option id="blastn"  value="blastn">BLASTn</option>
+                <option id="blastp"  value="blastp">BLASTp</option>
+                <option id="blastx"  value="blastx">BLASTx</option>
+                <option id="tblastx" value="tblastx">tBLASTx</option>
+                <option id="tblastn" value="tblastn">tBLASTn</option>
             </select>
             <button id="blast-btn" type="submit" class="btn btn-blast">
                  BLAST
@@ -83,6 +83,7 @@
 
 <!-- ADDITIONAL SCRIPTS -->
 {% block scripts %}
+<script src="{% static 'js/blast-type-handler.js' %}"></script>
 {% if error_msg %}
     <script>
         $(".error-msg").show();

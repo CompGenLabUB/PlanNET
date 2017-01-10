@@ -340,6 +340,7 @@ def blast(request):
             pipe = Popen([request.POST['type'], "-db", BLAST_DB_DIR + database , "-query", temp.name])
             stdout, stderr = pipe.communicate()
             print(stdout)
+            print(stderr)
             #url = static("css/style.css")
             #f = open(url, "r")
             #for line in f:
