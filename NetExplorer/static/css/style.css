@@ -909,3 +909,13 @@ input[type="file"] {
 .error-msg {
     display: none;
 }
+
+.results-div {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+#blast-results {
+    font-size: 12px;
+    color: #777777;
+}

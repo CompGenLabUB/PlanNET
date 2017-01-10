@@ -75,6 +75,41 @@
 
 
     </div>
+
+</div>
+
+<div class="results-div">
+    {% if results %}
+    <h2>Results</h2>
+    <br>
+        <table id="blast-results">
+            <thead>
+                <tr>
+                    <th>Query</th>
+                    <th>Subject</th>
+                    <th>Identity</th>
+                    <th>Al length</th>
+                    <th>Mismatches</th>
+                    <th>Gap opens</th>
+                    <th>Q start</th>
+                    <th>Q end</th>
+                    <th>S start</th>
+                    <th>S end</th>
+                    <th>E-value</th>
+                    <th>Bit score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for line in results %}
+                    <tr>
+                        {% for col in line %}
+                            <td>{{ col }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 </div>
 
 {% endblock content %}
@@ -84,6 +119,14 @@
 <!-- ADDITIONAL SCRIPTS -->
 {% block scripts %}
 <script src="{% static 'js/blast-type-handler.js' %}"></script>
+    {% if results %}
+        <script>
+            $(document).ready(function(){
+                $('#culo').DataTable();
+                $('#blast-results').DataTable();
+            });
+        </script>
+    {% endif %}
 {% if error_msg %}
     <script>
         $(".error-msg").show();
