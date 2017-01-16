@@ -393,6 +393,7 @@ class PredictedNode(Node):
         self.gccont         = None
         self.length         = None
         self.degree         = None
+        self.expression     = None
 
         if sequence is None:
             self.__query_node()
@@ -508,6 +509,13 @@ class PredictedNode(Node):
         self.neighbours = sorted(self.neighbours, key=lambda k: k.parameters['int_prob'], reverse=True)
         self.degree     = int(len(self.neighbours))
         return self.neighbours
+
+    def get_expression(self, exp_file):
+        """
+        Gets expression data for a particular node and a particular experiment
+        """
+        self.expression = exp_file
+        return self.expression
 
     def get_graphelements(self, including=None):
         """

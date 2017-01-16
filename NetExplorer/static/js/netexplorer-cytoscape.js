@@ -169,11 +169,11 @@ $(document).ready(function(){
             width: 400,
             modal: true,
             buttons: {
-                "Delete graph": function() {
-                    cy.nodes().remove();
+                Cancel: function() {
                     $( this ).dialog( "close" );
                 },
-                Cancel: function() {
+                "Delete graph": function() {
+                    cy.nodes().remove();
                     $( this ).dialog( "close" );
                 }
             }
@@ -196,4 +196,22 @@ $(document).ready(function(){
             }
         }
     });
+
+
 });
+
+// Function that returns the nodes and the databases of the elements in the graph
+// used in select-expression.js and netexplorer-showconnections.js
+function get_graphelements(cy) {
+    var nodes     = cy.elements('node[database != "Human"]');
+    var node_ids  = [];
+    var databases = [];
+    for (var i = 0; i < nodes.length; i++) {
+        node_ids.push( nodes[i].data("id") );
+        databases.push( nodes[i].data("database") );
+    }
+    var data = {};
+    data.node_ids = node_ids.join(",");
+    data.databases = databases.join(",");
+    return data;
+}

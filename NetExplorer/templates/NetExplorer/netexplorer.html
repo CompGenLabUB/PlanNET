@@ -199,6 +199,21 @@
                 <hr>
             </div>
 
+            <div id="expression-container">
+                <h3>Show Expression Data <a class="info-tooltip" data-toggle="tooltip" data-placement="bottom" title="
+                    Select an expression data experiment to show the expression projected over the graph.
+                    "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                </h3>
+                <select id="select-expression" name="expression" class="selectpicker">
+                    <option value="" selected disabled>Select Expression data</option>
+                    <option value="Experiment 1">Experiment 1</option>
+                    <option value="Experiment 2">Experiment 2</option>
+                    <option value="Experiment 3">Experiment 3</option>
+                </select>
+                <hr>
+
+            </div>
+
             <!-- Change labels
             <div id="change-labels-container">
                 <h3>Labels</h3>
@@ -331,6 +346,7 @@
         <script src="{% static 'js/FileSaver.js' %}"></script>
         <script src="{% static 'js/bootstrap-switch.min.js' %}"></script>
         <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'js/select-expression.js' %}"></script>
 
         <script>
         // Initialize slider to filter edges. Function to filter them is in cyto-netexplorer.js

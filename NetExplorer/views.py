@@ -345,7 +345,25 @@ def blast(request):
     else:
         return render(request, 'NetExplorer/blast.html')
 
-# query id, subject id, % identity, alignment length, mismatches, gap opens, q. start, q. end, s. start, s. end, evalue, bit score
+# ------------------------------------------------------------------------------
+def map_expression(request):
+    """
+    View to handle a possible ajax request to map expression onto graph
+    """
+    if request.is_ajax():
+        nodes     = request.GET['nodes'].split(",")
+        databases = request.GET['databases'].split(",")
+        exp_file  = request.GET['file']
+        expression = dict()
+        for node_id, database in zip(nodes, databases):
+            node = query_node(node_id, database)
+            expression[node_id] = node.get_expression(exp_file)
+        json_data = json.dumps(expression)
+        print(json_data)
+        return HttpResponse(json_data, content_type="application/json")
+    else:
+        return render(request, 'NetExplorer/404.html')
+
 
 # ------------------------------------------------------------------------------
 def path_finder(request):
