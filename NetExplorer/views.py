@@ -18,7 +18,10 @@ import sys
 # -----------------------
 # CONSTANTS
 # -----------------------
-BLAST_DB_DIR = "/home/sergio/code/PlaNET/blast/"
+BLAST_DB_DIR    = "/home/sergio/code/PlaNET/blast/"
+MAX_NUMSEQ      = 50
+MAX_CHAR_LENGTH = 25000
+
 
 # -----------------------
 # FUNCTIONS
@@ -343,9 +346,9 @@ def blast(request):
             joined_sequences.append(line.strip())
         joined_sequences = "".join(joined_sequences)
 
-        if numseq > 50:
+        if numseq > MAX_NUMSEQ:
             return render(request, 'NetExplorer/blast.html', {"error_msg": "Too many query sequences (> 50)"})
-        elif len(joined_sequences) >  25000:
+        elif len(joined_sequences) >  MAX_CHAR_LENGTH:
             return render(request, 'NetExplorer/blast.html', {"error_msg": "Query sequence too long (> 25,000 characters)"})
 
         # Create temp file with the sequences
