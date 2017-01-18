@@ -334,6 +334,9 @@ def blast(request):
             # Must check if FASTA/plain or otherwise not valid
             fasta = request.POST['fasta_plain']
 
+        if not fasta:
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No query"})
+            
         # Check length of sequence/number of sequences
         joined_sequences = list()
         numseq           = 0
