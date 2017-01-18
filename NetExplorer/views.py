@@ -326,11 +326,27 @@ def blast(request):
             print("There is a file")
             # Must check if FASTA
             fasta = request.FILES['fastafile'].read()
-
         else:
             print("No-file")
             # Must check if FASTA/plain or otherwise not valid
             fasta = request.POST['fasta_plain']
+
+        # Check length of sequence/number of sequences
+        joined_sequences = list()
+        numseq           = 0
+        for line in fasta.split("\n"):
+            if not line:
+                continue
+            if line[0] == ">":
+                numseq += 1
+                continue
+            joined_sequences.append(line.strip())
+        joined_sequences = "".join(joined_sequences)
+
+        if numseq > 50:
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "Too many query sequences (> 50)"})
+        elif len(joined_sequences) >  25000:
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "Query sequence too long (> 25,000 characters)"})
 
         # Create temp file with the sequences
         with tempfile.NamedTemporaryFile() as temp:
