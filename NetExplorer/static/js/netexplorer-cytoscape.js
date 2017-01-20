@@ -213,6 +213,5 @@ function get_graphelements(cy) {
     var data = {};
     data.node_ids = node_ids.join(",");
     data.databases = databases.join(",");
-    alert(data.node_ids);
     return data;
 }
