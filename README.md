@@ -1,4 +1,6 @@
 # PlaNET
+
+<img src="https://github.com/scastlara/PlaNet/blob/master/NetExplorer/static/Images/logo-new.png" width="250">
 Django web application to explore gene/protein interactions of Schmidtea mediterranea.
 
 # Version
