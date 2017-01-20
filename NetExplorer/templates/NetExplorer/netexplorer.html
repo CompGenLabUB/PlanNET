@@ -50,6 +50,74 @@
 
         <div id="cyt"><img src="{% static 'Images/loading.gif' %}" id="loading"/></div>
 
+        <!-- Map expression div -->
+        <div id="map-expression-dialog">
+            <div id="map-expression-dialog-header">
+                <div id="close-map-expression" title="Close">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div id="map-expression-dialog-body">
+                <h2>Select Experiment</h2>
+                <hr>
+                <select id="select-expression" name="expression" class="selectpicker">
+                    <option value="" selected disabled>Select Expression data</option>
+                    <option value="Experiment 1">Experiment 1</option>
+                    <option value="Experiment 2">Experiment 2</option>
+                    <option value="Experiment 3">Experiment 3</option>
+                </select>
+                <h2>Select Samples</h2>
+                <hr>
+                <div class="sample-container">
+                    <div id="exTab2" class="container">
+                    <ul class="nav nav-tabs">
+                    	<li class="active">
+                            <a  href="#1" data-toggle="tab">One Sample</a>
+                    	</li>
+                    	<li>
+                            <a href="#2" data-toggle="tab">Two Samples</a>
+                    	</li>
+                    </ul>
+                        <div class="tab-content ">
+                            <div class="tab-pane active" id="1">
+                                <select id="select-sample" name="samples" class="selectpicker">
+                                    <option value="" selected disabled>Select samples</option>
+                                    <option value="Sample 1">Sample 1</option>
+                                    <option value="Sample 2">Sample 2</option>
+                                    <option value="Sample 3">Sample 3</option>
+                                </select>
+                            </div>
+                            <div class="tab-pane" id="2">
+                                <select id="select-sample1" name="samples" class="selectpicker">
+                                    <option value="" selected disabled>Select samples</option>
+                                    <option value="Sample 1">Sample 1</option>
+                                    <option value="Sample 2">Sample 2</option>
+                                    <option value="Sample 3">Sample 3</option>
+                                </select>
+
+                                <select id="select-sample2" name="samples" class="selectpicker">
+                                    <option value="" selected disabled>Select samples</option>
+                                    <option value="Sample 1">Sample 1</option>
+                                    <option value="Sample 2">Sample 2</option>
+                                    <option value="Sample 3">Sample 3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="map-expression-dialog-send">
+                    <hr>
+                    <button class="btn btn-default map-expression-btn" id="map-expression-btn-cancel">
+                        Cancel
+                    </button>
+                    <button class="btn btn-success map-expression-btn" id="map-expression-btn-submit">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+
 
         <div id="cyt-controls">
             <div id="cyt-controls-header">
@@ -204,12 +272,7 @@
                     Select an expression data experiment to show the expression projected over the graph.
                     "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
                 </h3>
-                <select id="select-expression" name="expression" class="selectpicker">
-                    <option value="" selected disabled>Select Expression data</option>
-                    <option value="Experiment 1">Experiment 1</option>
-                    <option value="Experiment 2">Experiment 2</option>
-                    <option value="Experiment 3">Experiment 3</option>
-                </select>
+                <button class="btn btn-default" id="map-expression-btn">Map Expression</button>
                 <hr>
 
             </div>

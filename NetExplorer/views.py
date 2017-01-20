@@ -336,7 +336,7 @@ def blast(request):
 
         if not fasta:
             return render(request, 'NetExplorer/blast.html', {"error_msg": "No query"})
-            
+
         # Check length of sequence/number of sequences
         joined_sequences = list()
         numseq           = 0
@@ -373,13 +373,15 @@ def map_expression(request):
     View to handle a possible ajax request to map expression onto graph
     """
     if request.is_ajax():
-        nodes     = request.GET['nodes'].split(",")
-        databases = request.GET['databases'].split(",")
-        exp_file  = request.GET['file']
+        nodes       = request.GET['nodes'].split(",")
+        databases   = request.GET['databases'].split(",")
+        experiment  = request.GET['experiment']
+        sample      = request.GET['sample']
+        
         expression = dict()
         for node_id, database in zip(nodes, databases):
             node = query_node(node_id, database)
-            expression[node_id] = node.get_expression(exp_file)
+            expression[node_id] = node.get_expression(experiment, sample)
         json_data = json.dumps(expression)
         print(json_data)
         return HttpResponse(json_data, content_type="application/json")

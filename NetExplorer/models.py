@@ -510,11 +510,11 @@ class PredictedNode(Node):
         self.degree     = int(len(self.neighbours))
         return self.neighbours
 
-    def get_expression(self, exp_file):
+    def get_expression(self, experiment, sample):
         """
-        Gets expression data for a particular node and a particular experiment
+        Gets expression data for a particular node, a particular experiment and a particular sample
         """
-        self.expression = exp_file
+        self.expression = experiment, sample
         return self.expression
 
     def get_graphelements(self, including=None):
