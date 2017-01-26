@@ -146,12 +146,16 @@
                         </table>
                     {% endif %}
 
+                    <!-- PRINT THE TABLE WITH THE DOMAINS REPRESENTED AS LINES -->
+                    <div id="pfam-domains-line-table"></div>
+
+
                     <br>
                     <h2>Interactions</h2>
                     <hr>
                     <a href="#" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
                         <form method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
-                            <input type="hidden" name="json_text" value='{{ json_data|safe }}' />
+                            <input type="hidden" name="json_text" value='{{ json_graph|safe }}' />
                             <button id="netexplorer-mini" class="btn btn-default netexplorer-view" type="submit">
                                 <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
                             </button>
@@ -267,4 +271,50 @@
         };
 
     </script>
+
+    {% if domains %}
+        <script>
+            function tonewscale(start, end, length) {
+                var total_width = 700;
+                var width = Math.round(((end - start) / length) * total_width);
+                var newstart = Math.round((start/length)* total_width);
+                return {'width': width, 'newstart': newstart}
+            };
+            var doms        = {{ domains|safe }};
+            var seq_length  = {{ node.orflength }};
+            var newhtml = "<table id='pfam-line-table'><tbody>";
+            newhtml    += "<tr class='pfam-line-table-tr'>";
+            newhtml    += "<td class='pfam-line-table-td-name'><strong>Reference</strong></td>";
+            newhtml    += "<td class='pfam-line-table-td-line'>";
+            newhtml    += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:700px;height:12px;'>";
+            newhtml    += "</td></tr>";
+            for (var i in doms){
+                newcoords = tonewscale(doms[i]['s_start'], doms[i]['s_end'], seq_length);
+                newhtml += "<tr class='pfam-line-table-tr'>";
+                newhtml += "<td class='pfam-line-table-td-name'>";
+                newhtml += "<a href='http://pfam.xfam.org/family/" + doms[i]['accession'] + "' ";
+                newhtml += "target='_blank' title='Open on PFAM site'>" + doms[i]['accession'] + "</td>";
+                newhtml += "<td class='pfam-line-table-td-line'>";
+                newhtml += "<img src='{% static 'Images/pfam-line.png' %}' style='width:" + newcoords['width'] + "; margin-left:" + newcoords['newstart'] + "; height:12px;'>"
+                newhtml += "</td></tr>";
+            }
+            newhtml += "</tbody></table>"
+            alert(newhtml);
+            $('#pfam-domains-line-table').html(newhtml);
+
+            //
+            //}
+        </script>
+    {% endif %}
 </html>
+
+<!--
+<table id='pfam-line-table' class='table table-hover'>
+    <tbody>
+        <tr class='pfam-line-table-row'>
+            <img src='/static/Images/pfam-line.png' style='width:254; margin-left:37'>
+        </tr>
+        <tr class='pfam-line-table-row'>
+            <img src='/static/Images/pfam-line.png' style='width:212; margin-left:68'>
+        </tr></tbody></table>
+-->

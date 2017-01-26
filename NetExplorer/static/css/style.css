@@ -148,6 +148,30 @@
     margin: 5%;
 }
 
+#pfam-line-table {
+    width: 800px;
+    font-size: 12px;
+}
+
+.pfam-line-table-tr {
+    margin-top: 8px;
+    height: 20px;
+    width: 800px;
+}
+
+.pfam-line-table-tr:hover {
+    background-color: #F7F7F7;
+}
+
+.pfam-line-table-td-line {
+    height: 12px;
+    width: 700px;
+}
+
+.pfam-line-table-td-name {
+    height: 12px;
+    width: 100px;
+}
 
 .small-searchpanel:hover {
     opacity: 0.8;

@@ -216,14 +216,25 @@ class Node(object):
                     perc    = row['perc']
                 )
                 annotated_domains.append(domain_annotation)
-            print(annotated_domains)
             annotated_domains.sort(key=lambda x: x.s_start)
             self.domains = annotated_domains
-            print(annotated_domains)
             return self.domains
         else:
             self.domains = None
             return self.domains
+
+    def domains_to_json(self):
+        """
+        This function will return a json string with the information about
+        the domains of the node. You have to call "get_domains()" before!
+        """
+        if self.domains is None:
+            return None
+        else:
+            all_domains = [ dom.to_jsondict() for dom in self.domains ]
+            json_data   = json.dumps(all_domains)
+            return json_data
+
 
 # ------------------------------------------------------------------------------
 class Homology(object):
@@ -253,6 +264,7 @@ class Domain(object):
         self.identifier  = identifier
         self.mlength     = mlength
 
+
 # ------------------------------------------------------------------------------
 class HasDomain(object):
     """
@@ -266,6 +278,18 @@ class HasDomain(object):
         self.s_start = int(s_start)
         self.s_end   = int(s_end)
         self.perc    = perc
+    def to_jsondict(self):
+        json_dict = dict()
+        json_dict['accession']   = self.domain.accession
+        json_dict['description'] = self.domain.description
+        json_dict['identifier']  = self.domain.identifier
+        json_dict['mlength']     = self.domain.mlength
+        json_dict['p_start']     = self.p_start
+        json_dict['p_end']       = self.p_end
+        json_dict['s_start']     = self.s_start
+        json_dict['s_end']       = self.s_end
+        json_dict['perc']        = self.perc
+        return json_dict
 
 # ------------------------------------------------------------------------------
 class PredInteraction(object):
@@ -392,6 +416,7 @@ class PredictedNode(Node):
         self.important      = important
         self.gccont         = None
         self.length         = None
+        self.orflength      = None
         self.degree         = None
         self.expression     = None
 
@@ -404,7 +429,8 @@ class PredictedNode(Node):
         Fills attribute values that are not mandatory, with a summary of several
         features of the node
         '''
-        self.length = len(self.sequence)
+        self.length    = len(self.sequence)
+        self.orflength = len(self.orf)
         self.gccont = ( self.sequence.count("G") + self.sequence.count("C") ) / self.length
 
     def __query_node(self):

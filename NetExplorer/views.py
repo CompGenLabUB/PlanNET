@@ -160,21 +160,24 @@ def get_card(request, symbol=None, database=None):
         symbol    = request.GET['target']
         database  = request.GET['targetDB']
 
-    card_node = None
-    json_data = None
     try:
-        card_node = query_node(symbol, database)
+        card_node    = query_node(symbol, database)
         card_node.get_domains()
-        nodes, edges =card_node.get_graphelements()
-        graph = GraphCytoscape()
+        nodes, edges = card_node.get_graphelements()
+        graph        = GraphCytoscape()
         graph.add_elements(nodes)
         graph.add_elements(edges)
-        json_data = graph.to_json()
+        print(card_node.domains_to_json())
     except (NodeNotFound, IncorrectDatabase):
         return render(request, 'NetExplorer/404.html')
 
     if request.is_ajax():
-        return render(request, 'NetExplorer/gene_card.html', { 'node': card_node, 'json_data': json_data })
+        response = {
+            'node'      : card_node,
+            'json_graph': graph.to_json(),
+            'domains'   : card_node.domains_to_json()
+        }
+        return render(request, 'NetExplorer/gene_card.html', response)
     else:
         return render(request, 'NetExplorer/gene_card_fullscreen.html', { 'node': card_node })
 
@@ -379,7 +382,7 @@ def map_expression(request):
         sample      = request.GET['sample']
         comp_type   = request.GET['type'] # Can be 'one-sample' or 'two-sample'
         if comp_type == "two-sample":
-            # We have to samples to compare 
+            # We have to samples to compare
             sample = sample.split(":")
         expression = dict()
         for node_id, database in zip(nodes, databases):
