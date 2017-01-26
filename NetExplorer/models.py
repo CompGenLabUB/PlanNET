@@ -8,7 +8,7 @@ from py2neo import Graph
 import json
 
 
-graph = Graph("http://localhost:7474/db/data/")
+graph = Graph("https://192.168.0.2:7473/db/data/")
 
 
 
