@@ -275,9 +275,8 @@
     {% if domains %}
         <script>
             function tonewscale(start, end, length) {
-                var total_width = 700;
-                var width = Math.round(((end - start) / length) * total_width);
-                var newstart = Math.round((start/length)* total_width);
+                var width = Math.round(((end - start) / length) * 100);
+                var newstart = Math.round((start/length)* 100);
                 return {'width': width, 'newstart': newstart}
             };
             var doms        = {{ domains|safe }};
@@ -286,7 +285,7 @@
             newhtml    += "<tr class='pfam-line-table-tr'>";
             newhtml    += "<td class='pfam-line-table-td-name'><strong>Reference</strong></td>";
             newhtml    += "<td class='pfam-line-table-td-line'>";
-            newhtml    += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:700px;height:12px;'>";
+            newhtml    += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:100%;height:12px;'>";
             newhtml    += "</td></tr>";
             for (var i in doms){
                 newcoords = tonewscale(doms[i]['s_start'], doms[i]['s_end'], seq_length);
@@ -295,7 +294,7 @@
                 newhtml += "<a href='http://pfam.xfam.org/family/" + doms[i]['accession'] + "' ";
                 newhtml += "target='_blank' title='Open on PFAM site'>" + doms[i]['accession'] + "</td>";
                 newhtml += "<td class='pfam-line-table-td-line'>";
-                newhtml += "<img src='{% static 'Images/pfam-line.png' %}' style='width:" + newcoords['width'] + "; margin-left:" + newcoords['newstart'] + "; height:12px;'>"
+                newhtml += "<img src='{% static 'Images/pfam-line.png' %}' style='width:" + newcoords['width'] + "%; margin-left:" + newcoords['newstart'] + "%; height:12px;'>"
                 newhtml += "</td></tr>";
             }
             newhtml += "</tbody></table>"
