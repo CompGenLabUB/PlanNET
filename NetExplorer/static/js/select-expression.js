@@ -25,7 +25,12 @@ $("#map-expression-btn-submit").on("click", function(){
     var type       = $('.active').attr('id');
     var ERRORTIME  = 3000;
     if (type === "two-sample") {
-        sample = $("#select-sample1").val() + ":" + $("#select-sample2").val();
+        if (! $("#select-sample1").val() || ! $("#select-sample2").val()) {
+            // One of the two samples missing in two-sample mode!
+            sample = "";
+        } else {
+            sample = $("#select-sample1").val() + ":" + $("#select-sample2").val();
+        }
     }
 
     if (! experiment) {
