@@ -377,7 +377,10 @@ def map_expression(request):
         databases   = request.GET['databases'].split(",")
         experiment  = request.GET['experiment']
         sample      = request.GET['sample']
-        
+        comp_type   = request.GET['type'] # Can be 'one-sample' or 'two-sample'
+        if comp_type == "two-sample":
+            # We have to samples to compare 
+            sample = sample.split(":")
         expression = dict()
         for node_id, database in zip(nodes, databases):
             node = query_node(node_id, database)

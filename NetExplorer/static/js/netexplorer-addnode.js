@@ -48,7 +48,7 @@ function addNode(symbol, database, cyobj) {
             $('#node-not-found').slideToggle(200);
             setTimeout(function () {
                 $('#node-not-found').hide(200);
-            }, 2000);
+            }, 3000);
         }
 
     });

@@ -71,10 +71,10 @@
                 <div class="sample-container">
                     <div id="exTab2" class="container">
                     <ul class="nav nav-tabs">
-                    	<li class="active">
+                    	<li id="one-sample" class="active">
                             <a  href="#1" data-toggle="tab">One Sample</a>
                     	</li>
-                    	<li>
+                    	<li id="two-sample">
                             <a href="#2" data-toggle="tab">Two Samples</a>
                     	</li>
                     </ul>
@@ -107,6 +107,13 @@
                 </div>
 
                 <div id="map-expression-dialog-send">
+                    <div id="map-expression-error" class="panel panel-danger">
+                        <div class="panel-heading">
+                            Error
+                        </div>
+                        <div class="panel-body" id="map-expression-error-msg">
+                        </div>
+                    </div>
                     <hr>
                     <button class="btn btn-default map-expression-btn" id="map-expression-btn-cancel">
                         Cancel
@@ -297,7 +304,7 @@
                 <h3>Controls</h3>
 
                 <div id="cyto-button-container">
-                    <div class="row row-margin">
+                    <div class="row">
                         <!--- Center to graph -->
                         <div id="center-to-graph-container" class="col-md-3">
                             <button class="btn btn-default" id="center-to-graph" type="button">
@@ -330,7 +337,7 @@
 
 
 
-                    <div class="row row-margin">
+                    <div class="row">
                         <div id="save-graph-container" class="col-md-3 ">
                             <a download="graph-export.json" id="graph-download" title="Save graph">
                                 <button class="btn btn-default" id="save-graph" type="button">
@@ -341,7 +348,7 @@
 
                         </div>
 
-                        <div id="upload-graph-container" class="col-md-3 ">
+                        <div id="upload-graph-container" class="col-md-3 cyto-button-ind">
                             <form enctype="multipart/form-data" method="post" id="upload-graph-form" action="{% url net_explorer %}">
                                 {% csrf_token %}
                                 <label for="myfile" class="btn btn-default"><span class="glyphicon glyphicon-open" aria-hidden="true"></span></label>

@@ -192,7 +192,7 @@
 #button-container {
     position: fixed;
     top: 30px;
-    left: 18%;
+    right: 18%;
     z-index: 100;
     background-color: #D9EDF7;
     -webkit-box-shadow: 10px 0px 27px 0px rgba(0,0,0,0.15);
@@ -506,6 +506,10 @@
     margin-top: 5%;
 }
 
+.cyto-button-ind {
+    justify-content: center;
+    align-items:center;
+}
 .glyphicon-trash {
     font-size: 26;
 }
