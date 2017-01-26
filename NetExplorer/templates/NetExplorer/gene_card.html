@@ -220,7 +220,7 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
 
-            history.pushState(card_data, null, "/gene_card/" + card_data.targetDB + "/" + card_data.target);
+            history.pushState(card_data, null, "{% url index_view %}gene_card/" + card_data.targetDB + "/" + card_data.target);
             // Load Get request html on current card-overlay
             $.ajax({
                 type: "GET",
@@ -299,7 +299,6 @@
                 newhtml += "</td></tr>";
             }
             newhtml += "</tbody></table>"
-            alert(newhtml);
             $('#pfam-domains-line-table').html(newhtml);
 
             //

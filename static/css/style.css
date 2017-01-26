@@ -1,0 +1,1011 @@
+
+/* BASE HTML */
+/* ----------------------------- */
+
+/* BASE CONTAINERS */
+#page-container {
+    position: absolute;
+    background-color: #E7E7E7;
+    height: auto;
+    min-height: 100%;
+    min-width: 100%;
+    display:block;
+    overflow:auto;
+}
+
+#content {
+    background-color: white;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    height: auto;
+    min-height: 80%;
+    padding-bottom: 6%;
+}
+
+#content-fullscreen {
+    background-color: white;
+    margin-left: 15%;
+    margin-right: 15%;
+    width: 70%;
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 12%;
+}
+
+#body-wrapper {
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    color: #777777;
+}
+
+/* SOME FOOTER THINGS */
+#compgen-logo {
+    width: 100px;
+    margin-right: 20px;
+}
+
+.social-icon {
+    width: 35px;
+    height: 35px;
+}
+
+.social-icon:hover {
+    opacity: 0.7;
+}
+
+/* LOGO AND HEADER */
+#logo-container {
+    margin-left: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+#logoheader {
+    width: 400px;
+    margin-top: 1%;
+}
+
+#logoheader:hover {
+    opacity: 0.5;
+}
+
+/* PANELS */
+
+#search-wrapper {
+    margin-bottom: 2%;
+    text-align: center;
+}
+
+.row-app {
+    width: 100%;
+    margin-bottom: 1%;
+}
+
+.app-container {
+    text-align: center;
+    float: left;
+    height: 300;
+    width: 100%;
+}
+
+
+.app-button {
+    position:relative;
+    display: block;
+    margin: 0 auto;
+    margin-top: 4%;
+    margin-left: 2%;
+    width: 85px;
+}
+
+.app-icon {
+    margin-top: 7%;
+    margin-bottom: 5%;
+    width: 180;
+}
+
+
+
+.app-icon-inside {
+    margin-top: 4%;
+    width: 180;
+}
+
+.panel-blast {
+    border-color: #e7ccf6 !important;
+    border-style: solid !important;
+}
+
+.panel-blast .panel-heading {
+    background-color: #edd9f8 !important;
+    border-color: #e7ccf6 !important;
+}
+
+.btn-blast:hover {
+    background-color: #9051b1;
+    color: white !important;
+}
+
+.btn-blast {
+    background-color: #a265c2;
+    color: white;
+}
+
+
+/* GENE CARDS */
+/* ----------------------------- */
+
+.glyphicon-print {
+    font-size: 30px;
+}
+.small-searchpanel {
+    height: 10%;
+    overflow: hidden;
+    cursor: pointer;
+    width: 70%;
+    margin: 5%;
+}
+
+#pfam-line-table {
+    width: 800px;
+    font-size: 12px;
+}
+
+.pfam-line-table-tr {
+    margin-top: 8px;
+    height: 20px;
+    width: 800px;
+}
+
+.pfam-line-table-tr:hover {
+    background-color: #F7F7F7;
+}
+
+.pfam-line-table-td-line {
+    height: 12px;
+    width: 700px;
+}
+
+.pfam-line-table-td-name {
+    height: 12px;
+    width: 100px;
+}
+
+.small-searchpanel:hover {
+    opacity: 0.8;
+}
+
+.big-searchpanel {
+    height: auto;
+    cursor: pointer;
+    width: 70%;
+
+}
+
+
+/* OVERLAY THINGS */
+.card-overlay {
+    display: none;
+    height: 90%;
+    width: 64%;
+    position: fixed;
+    text-align: left;
+    top: 30px;
+    right: 18%;
+    z-index: 80;
+    background: white;
+    padding-left: 5%;
+    padding-top: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    overflow: scroll;
+    overflow-y: scroll;
+    -webkit-box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
+    color: #777777;
+}
+
+.close-overlay, #click {
+    cursor:
+    pointer;
+}
+
+#button-container {
+    position: fixed;
+    top: 30px;
+    right: 18%;
+    z-index: 100;
+    background-color: #D9EDF7;
+    -webkit-box-shadow: 10px 0px 27px 0px rgba(0,0,0,0.15);
+    -moz-box-shadow: 10px 0px 27px 0px rgba(0,0,0,0.15);
+    box-shadow: 10px 0px 27px 0px rgba(0,0,0,0.15);
+}
+
+.close-overlay {
+    display: inline-block;
+    font-size:16px;
+    font-weight: bold;
+    padding:20px;
+    color: black;
+    float: left;
+    top: 30px;
+    float: left;
+    cursor: pointer;
+    z-index: 100;
+
+}
+
+
+.full-screen-card {
+    font-size:16px;
+    font-weight: bold;
+    padding:20px;
+    color: black;
+    top: 100px;
+    clear:both;
+    left: 18%;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.close-overlay:hover .glyphicon-remove:hover {
+    color: #d1d1d1;
+    opacity: 0.7;
+}
+
+.full-screen-card:hover .glyphicon-new-window:hover {
+    color: #d1d1d1;
+    opacity: 0.7;
+}
+
+
+.glyphicon-remove {
+    color: #777777;
+}
+
+.glyphicon-new-window {
+    color: #777777;
+}
+
+.glyphicon-remove:hover {
+    opacity: 0.2;
+    color: #A8A8A8;
+}
+
+.glyphicon-new-window:hover {
+    opacity: 0.2;
+    color: #A8A8A8;
+}
+
+.glyphicon-remove:active{
+  color:black;
+}
+
+.card-title {
+    text-align: center;
+    background-color: #D9EDF7;
+    width: 100%;
+    height: 8%;
+    display: table;
+}
+
+.card-title h1 {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.card-trigger {
+    cursor: pointer;
+}
+
+
+.panel-body p {
+    color: #777777;
+}
+
+.sequence-container {
+    word-wrap: break-word;
+    background-color: #F7F7F7;
+    padding: 5%;
+    overflow-y: scroll;
+    max-height: 20%;
+}
+
+.download-fasta {
+    width: 50px;
+}
+
+.download-fasta-wrapper:hover {
+    opacity: 0.8;
+}
+
+
+.card-link {
+    cursor: pointer;
+}
+
+
+/* BACK TO TOP THINGS */
+.cd-top.cd-is-visible {
+  /* the button becomes visible */
+  visibility: visible;
+  opacity: 1;
+}
+.cd-top.cd-fade-out {
+  /* if the user keeps scrolling down, the button is out of focus and becomes less visible */
+  opacity: .5;
+}
+
+.cd-top {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  background-size: 40px 40px;
+  position: fixed;
+  bottom: 100px;
+  right: 10px;
+  /* image replacement properties */
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+  background: url(../Images/back_to_top.png) no-repeat center 50%;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+  -moz-transition: opacity .3s 0s, visibility 0s .3s;
+  transition: opacity .3s 0s, visibility 0s .3s;
+}
+
+
+.cd-top.cd-is-visible, .cd-top.cd-fade-out, .no-touch .cd-top:hover {
+  -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+  -moz-transition: opacity .3s 0s, visibility 0s 0s;
+  transition: opacity .3s 0s, visibility 0s 0s;
+}
+.cd-top.cd-is-visible {
+  /* the button becomes visible */
+  visibility: visible;
+  opacity: 1;
+}
+.cd-top.cd-fade-out {
+  /* if the user keeps scrolling down, the button is out of focus and becomes less visible */
+  opacity: .5;
+}
+.no-touch .cd-top:hover {
+  background-color: #e86256;
+  opacity: 1;
+}
+@media only screen and (min-width: 768px) {
+  .cd-top {
+    right: 20px;
+    bottom: 60px;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .cd-top {
+    height: 60px;
+    width: 60px;
+    right: 30px;
+    bottom: 65px;
+  }
+}
+/* END OF BACK TO TOP */
+
+
+/* DATA TABLE */
+.int-table-container {
+    color: #777777;
+    font-size: 12px;
+    text-align: center;
+    width: 90%;
+    margin-left: 5%;
+    overflow-x: scroll;
+}
+
+.domain-table {
+    font-size: 12px;
+    color: #777777;
+}
+
+.int-table-class {
+    font-size: 12px;
+    color: #777777;
+}
+
+.dataTables_filter label {
+    color: #777777;
+    font-weight: bold;
+}
+
+.dataTables_length label {
+    color: #777777;
+    font-weight: bold;
+}
+
+
+.gene_logo {
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    float: left;
+}
+
+.gene_logo:hover {
+    opacity: 0.7;
+}
+
+.homology-table {
+    font-size: 12px;
+    color: #777777;
+}
+
+.homology-table-header {
+    font-weight: bold;
+    width: 30%;
+}
+
+
+
+/* NET EXPLORER CYTOSCAPE */
+/* ----------------------------- */
+#cyt {
+    height: 100%;
+    width: 75%;
+    float: left;
+}
+
+#loading {
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 25%;
+    height: 25%;
+}
+
+#cyt-controls {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    width: 25%;
+    float: left;
+    text-align: center;
+    border-width: 5px;
+    background-color: #F8F8F8;
+    border-color: #777777;
+    border-width: 4px;
+}
+
+#cyt-explorer-icon {
+    display: inline-block;
+    margin-top: 10%;
+}
+
+#select-layout-container {
+    display: block;
+    text-align: left;
+    padding-left: 20%;
+    position: relative;
+}
+
+#select-layout-container h3 {
+    display: inline-block;
+    padding-right: 10%;
+}
+
+#on-click-container {
+    top: 1%;
+    position: relative;
+    display: block;
+}
+
+#showconnections-container {
+    top: 1%;
+    bottom: 1%;
+    position: relative;
+    display: block;
+}
+
+#layout-homologs-container {
+    top: 1%;
+    position: relative;
+    display: block;
+}
+
+#controls-container {
+    top: 2%;
+    position: relative;
+    margin: auto;
+}
+
+
+#cyto-button-container {
+    position: relative;
+    margin-left: 24%;
+    max-width: 70%;
+    margin-top: 5%;
+}
+
+.cyto-button-ind {
+    justify-content: center;
+    align-items:center;
+}
+.glyphicon-trash {
+    font-size: 26;
+}
+
+.glyphicon-save {
+    font-size: 26;
+}
+
+.glyphicon-open {
+    font-size: 26;
+    padding-right: 2%;
+}
+
+.glyphicon-share {
+    font-size: 26;
+}
+
+.row-margin {
+    margin-bottom: 5%;
+    margin-left: 10%;
+}
+
+
+#slider-container {
+    padding-top: 1%;
+}
+
+.glyphicon-picture {
+    font-size: 26;
+}
+
+.glyphicon-resize-small {
+    font-size: 26;
+}
+
+.behaviour-div {
+    width: 80%;
+    left: 10%;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.behaviour-btn{
+    cursor: pointer;
+}
+
+#slider {
+    display:inline-block;
+}
+
+.slider-symbol-minus{
+    display: inline-block;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 20%;
+}
+.slider-symbol-plus{
+    display: inline-block;
+    float: right;
+    text-align: center;
+    font-weight: bold;
+    margin-right: 20%;
+}
+
+#change-labels-container {
+    top: 1%;
+    position: relative;
+}
+
+
+#add-node-container {
+    width: 60%;
+    margin-top: 10%;
+    margin-left: 20%;
+}
+
+#submit_add_node {
+    width: 80%;
+    margin-top: 1%;
+}
+
+#add-node-container .glyphicon-plus {
+    padding-right: 2%;
+}
+
+.glyphicon-info-sign {
+    font-size: 15px;
+    cursor: pointer;
+
+}
+
+#map-expression-dialog {
+    display: none;
+    margin: 5%;
+    width: 60%;
+    height: 80%;
+    z-index: 80;
+    position: fixed;
+    background-color: white;
+    border-color: #D4D4D4;
+    border-style: solid;
+    border-width: 2px;
+}
+
+#map-expression-dialog-header {
+    background-color: #E9E9E9;
+    width: 99%;
+    height: 4%;
+    margin-left: 0.5%;
+    margin-top: 0.5%;
+    padding: 1%;
+}
+
+#map-expression-dialog-body {
+    width: 95%;
+    margin-left: 2.5%;
+    padding: 1%;
+    height: 80%;
+}
+
+#map-expression-dialog-send {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+}
+
+.map-expression-btn {
+    width: 100px;
+    margin-left: 20px;
+}
+
+#close-map-expression {
+    float: right;
+    cursor: pointer;
+}
+
+.tab-pane {
+    margin-top: 2%;
+}
+
+.nav-tabs {
+    width: 50%;
+}
+
+.slider-handle {
+    background-color: green !important;
+    background-image: linear-gradient(to bottom, #5CB85C, #2c682c) !important;
+}
+
+
+/* DOES NOT WORK */
+#cyt-controls .info-tooltip .tooltip-inner {
+    text-align: left !important;
+    color: #777777 !important;
+    font-size: 14 !important;
+    background-color: white  !important;
+     max-width: 500px !important ;
+    /* If max-width does not work, try using width instead */
+    width: 300px !important;
+    padding: 10% !important;
+    opacity: 1 !important;
+    white-space: pre-line;
+    border-style: solid;
+    border-width: 2px;
+}
+
+#cyt-controls .info-tooltip .tooltip.in {
+  opacity: 1 !important;
+}
+
+.form-separator {
+    height: 10px;
+    border: 0;
+    margin-top: 10%;
+    margin-bottom: 0%;
+    box-shadow: 0 10px 10px -10px #8c8b8b inset;
+}
+
+
+#cyt-controls-header {
+    width: 100%;
+    height: 380px;
+}
+
+
+input[type="file"] {
+  display: block;
+  width: 66px;
+  height: 25px;
+  clip: rect(0px 0px 0px 0px);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.btn-default label {
+    width: 120%;
+}
+
+#upload-graph-form {
+    width: 52px;
+}
+
+#dialog-confirm {
+    display: none;
+}
+
+
+#show-homologs-container {
+    display: inline-block;
+    width: 100%;
+    height: 10%;
+    position: relative;
+}
+
+#show-homologs-container-title {
+    height: 100%;
+}
+
+.show-homologs-label {
+    width: 60%;
+    height: 70% !important;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-top: 15%;
+}
+
+#show-homologs-toggle {
+    display: inline-block;
+    height: 100%;
+
+}
+
+#layout-dropdown {
+    display: inline-block;
+    height: 100%;
+}
+
+.control-row {
+    height: 6%;
+}
+#layout-title {
+    height: 100%;
+}
+
+#layout-toggle-btn {
+    vertical-align: middle;
+    margin-top: 10%;
+}
+
+.show-homologs-btn {
+    height: 80% !important;
+}
+
+
+
+/* PATHWAY FINDER */
+/* ----------------------------- */
+
+
+
+#pfind-results {
+    height: 100%;
+    float: left;
+    width: 70%;
+    overflow-y: scroll;
+}
+
+
+/* FORM CONTROLS */
+#pfind-form {
+    position: absolute;
+    height: 100%;
+    width: 30%;
+    text-align: center;
+    background-color: #F8F8F8;
+    right: 0;
+}
+
+#pfind-form-header {
+    margin: 5%;
+    text-align: center
+}
+
+.pfind-form-element {
+    margin: 4%;
+}
+
+.pfind-input-header {
+    text-align: left;
+    min-height: 5%;
+    padding:0;
+    font-size: 15;
+}
+
+#pfind-btn {
+    font-size: 40px;
+    width: 70%;
+    height: 8%;
+    border-radius:20px;
+}
+
+.pfind-form-icon {
+    height: 40px;
+    margin-right: 2%;
+    vertical-align: middle;
+}
+
+#pfind-results {
+    padding: 4%;
+}
+.pathway-container {
+    height: 20%;
+    width: 98%;
+    position: relative;
+    border: solid 1px #cccccc;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 1%;
+}
+
+.netexplorer-mini {
+    width: 27px;
+    height: 27px;
+}
+
+.netexplorer-mini-ref {
+    font-size: 12;
+}
+
+#search-param-pathway {
+    margin-left: 6%;
+}
+
+
+
+
+
+.pfind-res-panel {
+    color: #777777;
+}
+
+
+#pathway-filter-div {
+    margin-left: 20%;
+    width: 60%;
+    margin-top: 6%;
+    margin-bottom: 6%;
+}
+
+#pathway-filter-text {
+    width: 80%;
+}
+
+.hidden {
+        display: none;
+}
+
+.path-score {
+    font-size: 16 !important;
+}
+
+
+.path-title {
+    display: inline-block;
+}
+
+.path-controls{
+    position: relative;
+    float: right;
+    margin-top: 1%;
+}
+
+/* ERROR 404 PAGE */
+#error404 {
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+    color: #777777;
+}
+
+#img404 {
+    margin-top: 5%;
+    width: 40%;
+}
+
+
+/* TUTORIAL */
+.tutorial-title {
+    color: #777777;
+}
+
+#back_home {
+    margin-top: 10%;
+    margin-left: -24px;
+}
+
+.tutorial-title:hover {
+    color: #777777;
+    text-decoration: none;
+}
+
+#back_home .glyphicon-triangle-left {
+    margin-right: 6px;
+}
+
+.table-of-contents {
+    width: 150px;
+    display: inline-block;
+}
+
+.tutorial-panel {
+    width: 100%;
+    display: inline-block;
+}
+
+.affix {
+    top: 100px;
+}
+
+/* BLAST */
+#query-textarea {
+    width: 60% !important;
+}
+
+.icon-container {
+    text-align: center;
+}
+
+.blast-icon-inside {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.blast-icon-container {
+    vertical-align:middle;
+}
+.blast-title {
+    vertical-align:middle;
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+.label-blast {
+    background-color: #a265c2;
+    color: white;
+}
+
+.error-msg {
+    display: none;
+}
+
+.results-div {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+#blast-results {
+    font-size: 12px;
+    color: #777777;
+}
