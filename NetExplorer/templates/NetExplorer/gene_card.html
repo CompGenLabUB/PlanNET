@@ -275,18 +275,54 @@
     {% if domains %}
         <script>
             function tonewscale(start, end, length) {
-                var width = Math.round(((end - start) / length) * 100);
-                var newstart = Math.round((start/length)* 100);
+                // This function takes twoo coordinates (start and end), and the
+                // length of a given sequence and returns the corresponding width
+                // percentage of the sequence start->end on a sequence of length
+                // "length". It also returns the new "start" coordinate.
+                // It basically converts coordinates to percentages.
+                var width = Math.round(((end - start) / length) * 10000) /100;
+                var newstart = Math.round((start/length)* 10000)/100;
                 return {'width': width, 'newstart': newstart}
             };
+
+            function drawrule(length, binsize) {
+                // This function creates a Reference rule using images. It takes
+                // the length of the sequence and the binsize in characters.
+
+                // Basic HTML
+                var rule_html = "<tr class='pfam-line-table-tr'>";
+                rule_html    += "<td class='pfam-line-table-td-name'><strong>Reference</strong></td>";
+                rule_html    += "<td class='pfam-line-table-td-line'>";
+
+                // Get 50 nucleotides in rule scale as percentage
+                binsize += 1; // We add 1 to have binsize characters from 1 to binsize
+                var rule_bins   = tonewscale(1, binsize, length);
+                alert(rule_bins['width']);
+                var num_of_bins = Math.floor(100 / rule_bins['width']);
+                alert(num_of_bins);
+                var bin_width   = rule_bins['width'] - 0.5; // The breaks will be 0.5% wide.
+                var percentage = 0; // Percentage of the sequence already drawn.
+                for (var i = 0; i <num_of_bins; i++) {
+                    percentage += bin_width + 0.5;
+                    rule_html  += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:" + bin_width + "%;height:12px;'>";
+                    rule_html  += "<img src='{% static 'Images/pfam-line-rule-break.png' %}' style ='width:0.5%; height:12px;'>";
+                }
+                // Draw the last bin, which could be less than binsize characters
+                var remaining = 100 - percentage;
+                if (percentage != 0) {
+                    rule_html    += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:" + remaining + "%;height:12px;'>";
+                }
+
+                // Close table
+                rule_html    += "</td></tr>";
+                return rule_html;
+            }
+
             var doms        = {{ domains|safe }};
             var seq_length  = {{ node.orflength }};
             var newhtml = "<table id='pfam-line-table'><tbody>";
-            newhtml    += "<tr class='pfam-line-table-tr'>";
-            newhtml    += "<td class='pfam-line-table-td-name'><strong>Reference</strong></td>";
-            newhtml    += "<td class='pfam-line-table-td-line'>";
-            newhtml    += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:100%;height:12px;'>";
-            newhtml    += "</td></tr>";
+            newhtml     += drawrule(seq_length, 50);
+
             for (var i in doms){
                 newcoords = tonewscale(doms[i]['s_start'], doms[i]['s_end'], seq_length);
                 newhtml += "<tr class='pfam-line-table-tr'>";
