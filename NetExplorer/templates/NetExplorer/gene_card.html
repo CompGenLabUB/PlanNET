@@ -1,6 +1,11 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-data-tables.css' %}">
 
 
 <html>
@@ -112,38 +117,6 @@
                     <hr>
                     {% if node.domains == None %}
                         No domains.
-                    {% else %}
-                        <table class="table table-hover domain-table">
-                            <thead>
-                                <tr>
-                                    <th>Accession</th>
-                                    <th>Identifier</th>
-                                    <th>Sequence Start</th>
-                                    <th>Sequence End</th>
-                                    <th>Pfam Start</th>
-                                    <th>Pfam End</th>
-                                    <th>% of Domain</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                        {% for dom in node.domains %}
-                            <tr>
-                                <td>
-                                    <a href="http://pfam.xfam.org/family/{{ dom.domain.accession }}" target="_blank" title="Open on PFAM site">
-                                        {{ dom.domain.accession }}
-                                    </a>
-                                </td>
-                                <td>{{ dom.domain.identifier }}</td>
-                                <td>{{ dom.s_start }}</td>
-                                <td>{{ dom.s_end }}</td>
-                                <td>{{ dom.p_start }}</td>
-                                <td>{{ dom.p_end }}</td>
-                                <td>{{ dom.perc }}</td>
-                            </tr>
-
-                        {% endfor %}
-                            </tbody>
-                        </table>
                     {% endif %}
 
                     <!-- PRINT THE TABLE WITH THE DOMAINS REPRESENTED AS LINES -->
@@ -208,7 +181,10 @@
     </body>
 
 
-
+    <script src="{% static 'js/jquery-min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/jquery-data-tables-min.js' %}"></script>
     <script>
         $('.card-link').click(function() {
             var card_data = {
@@ -293,13 +269,14 @@
                 var rule_html = "<tr class='pfam-line-table-tr'>";
                 rule_html    += "<td class='pfam-line-table-td-name'><strong>Reference</strong></td>";
                 rule_html    += "<td class='pfam-line-table-td-line'>";
-
+                if (length <= binsize) {
+                    rule_html  += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:100%;height:12px;'>";
+                    return rule_html;
+                }
                 // Get 50 nucleotides in rule scale as percentage
                 binsize += 1; // We add 1 to have binsize characters from 1 to binsize
                 var rule_bins   = tonewscale(1, binsize, length);
-                alert(rule_bins['width']);
                 var num_of_bins = Math.floor(100 / rule_bins['width']);
-                alert(num_of_bins);
                 var bin_width   = rule_bins['width'] - 0.5; // The breaks will be 0.5% wide.
                 var percentage = 0; // Percentage of the sequence already drawn.
                 for (var i = 0; i <num_of_bins; i++) {
@@ -330,7 +307,21 @@
                 newhtml += "<a href='http://pfam.xfam.org/family/" + doms[i]['accession'] + "' ";
                 newhtml += "target='_blank' title='Open on PFAM site'>" + doms[i]['accession'] + "</td>";
                 newhtml += "<td class='pfam-line-table-td-line'>";
-                newhtml += "<img src='{% static 'Images/pfam-line.png' %}' style='width:" + newcoords['width'] + "%; margin-left:" + newcoords['newstart'] + "%; height:12px;'>"
+
+
+                newhtml += "\t<img class='pfam-line-tooltip' ";
+                newhtml += "title='";
+                newhtml += "<strong>" + doms[i]['accession'] + "</strong>\n";
+                newhtml += "<i>" + doms[i]['identifier'] + "</i><hr>";
+                newhtml += "<table class=\"domain-table\"><tr>";
+                newhtml += "<tr><td><strong>on Orf:</strong></td></tr>";
+                newhtml += "<td>Start</td><td>" + doms[i]['s_start'] + "</td></tr>\n";
+                newhtml += "<td>End</td><td>"   + doms[i]['s_end']   + "</td></tr>\n";
+                newhtml += "<tr><td><strong>on Domain:</strong></td></tr>";
+                newhtml += "<td>Start</td><td>"   + doms[i]['p_start'] + "</td></tr>\n";
+                newhtml += "<td>End</td><td>"     + doms[i]['p_end']   + "</td></tr>\n";
+                newhtml += "<td>% of domain</td><td>" + doms[i]['perc'] + "</td></tr></table>\n'";
+                newhtml += " src='{% static 'Images/pfam-line.png' %}' style='width:" + newcoords['width'] + "%; margin-left:" + newcoords['newstart'] + "%; height:12px;'/>"
                 newhtml += "</td></tr>";
             }
             newhtml += "</tbody></table>"
@@ -339,7 +330,24 @@
             //
             //}
         </script>
+        <script>
+        $(".pfam-line-tooltip").tooltip({
+            content: function () {
+                return $(this).prop('title');
+            }
+        });
+          </script>
     {% endif %}
+
+    <script>
+        $(document).ready(function(){
+            $('.int-table').DataTable({
+                "order": [[ 1, "desc" ]]
+            });
+
+        });
+    </script>
+
 </html>
 
 <!--
