@@ -267,8 +267,8 @@
             function domainTooltip(acc, id,  s_start, s_end, p_start, p_end, perc) {
                 // Html of the domain tooltip when hovering over domain line/square
                 return [
-                    "'<strong>", acc, "</strong>\n",
-                    "<i>",       id,  "</i>",
+                    "'<strong>", id, "</strong>\n",
+                    "<div class=\"pfam-line-tooltip-subtitle\">", acc,  "</div>",
                     "<hr>",
                     "<table class=\"domain-table\">",
                         "<tr>",
@@ -330,14 +330,13 @@
                     "<tr class='pfam-line-table-tr'>",
                         "<td class='pfam-line-table-td-name'>",
                             "<a href='http://pfam.xfam.org/family/", acc, " '",
-                                " target='_blank' title='Open on PFAM site'>", acc,
+                                " target='_blank' title='Open on PFAM site'>", id,
                             "</a>",
                         "</td>",
-                        "<td class='pfam-line-table-td-line'>",
+                        "<td class='pfam-line-table-td-line pfam-line-tooltip' ",
+                            "title=", domainTooltip(acc, id, s_start, s_end, p_start, p_end, perc), ">",
                             "<img src=", starting, " style='width: 0.2%; height:12px; margin-left:", newcoords['newstart'], "%; '/>",
-                            "<img class='pfam-line-tooltip' ",
-                                "title=", domainTooltip(acc, id, s_start, s_end, p_start, p_end, perc),
-                                 "src='{% static 'Images/pfam-line.png' %}' ",
+                            "<img src='{% static 'Images/pfam-line.png' %}' ",
                                  "style='width:", newcoords['width'], "%; height:12px;'",
                             "/>",
                             "<img src=", ending, " style='height:12px; width:0.2%;'/>",
@@ -404,9 +403,9 @@
             // Seq length of the sequence and decide how many aa per break in rule
             //binsize = Math.ceil((seq_length/10)/25) * 25;
             if (seq_length <= 100) {
-                binsize = 15;
-            } else if (seq_length <= 250) {
-                binsize = 25;
+                binsize = 10;
+            } else if (seq_length <= 200) {
+                binsize = 20;
             } else if (seq_length <= 500) {
                 binsize = 50;
             } else if (seq_length <= 1000) {
@@ -415,6 +414,10 @@
                 binsize = 150;
             } else if (seq_length <= 2000) {
                 binsize = 200;
+            } else if (seq_length <= 3000){
+                binsize = 300;
+            } else if (seq_length <= 4000){
+                binsize = 400;
             } else {
                 binsize = 500;
             }

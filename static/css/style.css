@@ -470,7 +470,7 @@
     top: 0%;
     left: 0%;
     width: 25%;
-    height: 25%;
+    z-index: 1000000;
 }
 
 #cyt-controls {
@@ -1010,7 +1010,10 @@ input[type="file"] {
 .pfam-line-tooltip {
     cursor: pointer;
 }
-
+.pfam-line-tooltip-subtitle {
+    font-size: 12px;
+    font-style: italic;
+}
 
 .pfam-line-tooltip:hover {
     cursor: pointer;
