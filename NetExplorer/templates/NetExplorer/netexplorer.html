@@ -206,7 +206,21 @@
             </button> <a class="info-tooltip" title="
                 This button will show all the interactions between the nodes displayed on the screen.
             "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+            <br><br>
+            <!-- REMOVE UNCONNECTED  -->
+            <button id="remove-unconnected" class="btn btn-default">
+                Remove unconnected
+            </button> <a class="info-tooltip" title="
+                This button will remove all the nodes without a visible interaction (homology relationships included).
+            "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+            <div id="dialog-unconnected" title="Delete Unconnected nodes?">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+                    All the nodes without a visible interaction will be removed. Are you sure you want to delete these nodes?
+                </p>
+            </div>
             <hr>
+
         </div>
 
 

@@ -181,6 +181,37 @@ $(document).ready(function(){
 
     });
 
+    // Remove unconnected nodes
+
+    $("#remove-unconnected").on("click", function() {
+        $( "#dialog-unconnected" ).dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                },
+                "Delete nodes": function() {
+                    var slider_value = $('#sl1').val();
+                    cy.filter(function(i, element){
+                        if ( element.isNode() ) {
+                            var selector = "[probability>" + slider_value + "]";
+                            var edge_collection = element.connectedEdges(selector);
+                            if (! edge_collection.data()) {
+                                cy.remove(element);
+
+                            }
+                        }
+                    });
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+
+    });
+
 
     $('#node-not-found').hide();
 

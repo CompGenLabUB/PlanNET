@@ -732,6 +732,10 @@ input[type="file"] {
     display: none;
 }
 
+#dialog-unconnected {
+    display: none;
+}
+
 
 #show-homologs-container {
     display: inline-block;
