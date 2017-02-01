@@ -284,6 +284,7 @@
                             "<td>", "End", "</td>",
                             "<td>", s_end, "</td>",
                         "</tr>",
+                        "<tr><td> </td></tr>",
                         "<tr>",
                             "<td>",
                                 "<strong>on Domain:</strong>",
@@ -324,9 +325,6 @@
                 } else {
                     ending = "'{% static 'Images/pfam-line.png' %}'";
                 }
-
-                alert(starting);
-                alert(ending);
 
                 return [
                     "<tr class='pfam-line-table-tr'>",
@@ -401,7 +399,26 @@
             var doms        = {{ domains|safe }};
             var seq_length  = {{ node.orflength }};
             var newhtml = "<table id='pfam-line-table'><tbody>";
-            newhtml     += drawRule(seq_length, 50);
+            var binsize = 0;
+
+            // Seq length of the sequence and decide how many aa per break in rule
+            //binsize = Math.ceil((seq_length/10)/25) * 25;
+            if (seq_length <= 100) {
+                binsize = 15;
+            } else if (seq_length <= 250) {
+                binsize = 25;
+            } else if (seq_length <= 500) {
+                binsize = 50;
+            } else if (seq_length <= 1000) {
+                binsize = 100;
+            } else if (seq_length <= 1500) {
+                binsize = 150;
+            } else if (seq_length <= 2000) {
+                binsize = 200;
+            } else {
+                binsize = 500;
+            }
+            newhtml     += drawRule(seq_length, binsize);
 
             for (var i in doms){
                 newhtml += domainRowTemplate(
