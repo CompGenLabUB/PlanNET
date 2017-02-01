@@ -184,7 +184,7 @@ class Node(object):
             return paths
         else:
             # No results
-            print("No paths")
+            logging.info("No paths")
             return None
 
     def get_domains(self):
@@ -397,7 +397,7 @@ class HumanNode(Node):
                 homologs.append(homolog_rel)
             return homologs
         else:
-            print("NO HOMOLOGS")
+            logging.info("NO HOMOLOGS")
             return None
 
 
@@ -406,7 +406,7 @@ class PredictedNode(Node):
     """
     Class for planarian nodes.
     """
-    allowed_databases = set(["Cthulhu", "Consolidated"])
+    allowed_databases = set(["Cthulhu", "Consolidated", "Dresden"])
 
     def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False):
         super(PredictedNode, self).__init__(symbol, database)
@@ -461,7 +461,7 @@ class PredictedNode(Node):
                     pfam_brh   = row['pfam_brh']
                 )
         else:
-            print("NOTFOUND")
+            logging.info("NOTFOUND")
             raise NodeNotFound(self.symbol, self.database)
 
     def to_jsondict(self):

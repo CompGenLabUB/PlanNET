@@ -140,13 +140,13 @@
                     <form id="add_node" class= "form" method="GET" action="{% url net_explorer %}">
                         {% csrf_token %}
                         <div class="form-group">
-                            <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                            <input type="text" class="form-control netexplorer-form" name="genesymbol" placeholder="Enter Symbol">
 
-                            <select name="database" class="selectpicker">
+                            <select name="database" class="selectpicker" data-width="100%">
                                 <option value="" selected disabled>Select Database</option>
-                                <option value="Human">Human</option>
                                 <option value="Cthulhu">Cthulhu</option>
                                 <option value="Consolidated">Consolidated</option>
+                                <option value="Dresden">Dresden</option>
                             </select>
                             <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
                         </div>

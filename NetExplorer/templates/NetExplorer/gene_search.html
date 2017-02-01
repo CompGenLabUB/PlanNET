@@ -27,7 +27,8 @@
                         <select name="database" class="selectpicker" title="Select Database">
                             <option value="Human">Human</option>
                             <option value="Cthulhu">Cthulhu</option>
-                            <option value="Consolidated">Consolidated</option>
+                            <option value="Consolidated">Consolidated</option>ç
+                            <option value="Dresden">Dresden</option>
                             <option value="PFAM">PFAM</option>
                         </select>
                         <button type="submit" value=" Send" class="btn btn-info" id="submit">Search</button>
@@ -117,4 +118,14 @@
 {% block scripts %}
     <script src="{% static 'js/get-card.js' %}"></script>
     <script src="{% static 'js/searchpanel.js' %}"></script>
+    <script>
+        $( function() {
+            $( ".info-tooltip" ).tooltip({
+                track: true,
+                content: function(){
+                    return $(this).attr("title");
+                }
+            });
+        } );
+    </script>
 {% endblock scripts %}

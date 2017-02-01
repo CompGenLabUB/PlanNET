@@ -522,6 +522,10 @@
     display: block;
 }
 
+.netexplorer-form {
+    width: 100%;
+}
+
 #controls-container {
     top: 2%;
     position: relative;
