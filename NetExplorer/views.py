@@ -167,7 +167,6 @@ def get_card(request, symbol=None, database=None):
         graph        = GraphCytoscape()
         graph.add_elements(nodes)
         graph.add_elements(edges)
-        print(card_node.domains_to_json())
     except (NodeNotFound, IncorrectDatabase):
         return render(request, 'NetExplorer/404.html')
 

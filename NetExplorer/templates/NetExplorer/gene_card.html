@@ -1,13 +1,13 @@
 {% load static %}
+<!--NOT NECESSARY
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-
-<link rel="stylesheet" href="{% static 'css/jquery-ui-card.css' %}">
-<!-- NOT NECESSARY
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
 <link rel="stylesheet" href="{% static 'css/bootstrap-min.css' %}">
-<link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
-<link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">-->
+<link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">-->
 <link rel="stylesheet" href="{% static 'css/jquery-data-tables.css' %}">
+
 
 
 <html>
@@ -181,11 +181,13 @@
 
                 {% endif %}
     </body>
-
-    <script src="{% static 'js/jquery-ui-card.min.js' %}"></script>
-    <!-- NOT NECESSARY
+<!--
     <script src="{% static 'js/jquery-min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>-->
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+    NOT NECESSARY-->
     <script src="{% static 'js/jquery-data-tables-min.js' %}"></script>
     <script>
         $('.card-link').click(function() {
@@ -251,7 +253,7 @@
 
     {% if domains %}
         <script>
-            function tonewscale(start, end, length) {
+            function toNewScale(start, end, length) {
                 // This function takes twoo coordinates (start and end), and the
                 // length of a given sequence and returns the corresponding width
                 // percentage of the sequence start->end on a sequence of length
@@ -262,7 +264,70 @@
                 return {'width': width, 'newstart': newstart}
             };
 
-            function drawrule(length, binsize) {
+            function domainTooltip(acc, id,  s_start, s_end, p_start, p_end, perc) {
+                // Html of the domain tooltip when hovering over domain line/square
+                return [
+                    "'<strong>", acc, "</strong>\n",
+                    "<i>",       id,  "</i>",
+                    "<hr>",
+                    "<table class=\"domain-table\">",
+                        "<tr>",
+                            "<td>",
+                                "<strong>on Orf:</strong>",
+                            "</td>",
+                        "</tr>",
+                        "<tr>",
+                            "<td>", "Start", "</td>",
+                            "<td>", s_start, "</td>",
+                        "</tr>",
+                        "<tr>",
+                            "<td>", "End", "</td>",
+                            "<td>", s_end, "</td>",
+                        "</tr>",
+                        "<tr>",
+                            "<td>",
+                                "<strong>on Domain:</strong>",
+                            "</td>",
+                        "</tr>",
+                        "<tr>",
+                            "<td>", "Start", "</td>",
+                            "<td>", p_start, "</td>",
+                        "</tr>",
+                        "<tr>",
+                            "<td>", "End", "</td>",
+                            "<td>", p_end, "</td>",
+                        "</tr>",
+                        "<tr>",
+                            "<td>", "% of domain", "</td>",
+                            "<td>", perc, "</td>",
+                        "</tr>",
+                    "</table>\n'"
+                ].join('');
+            };
+
+            function domainRowTemplate(acc, id, s_start, s_end, p_start, p_end, perc, seq_length) {
+                // This function returns the HTML code of a pfam domain row in the
+                // visual representation of the domains over a reference line.
+                newcoords = toNewScale(s_start, s_end, seq_length);
+                return [
+                    "<tr class='pfam-line-table-tr'>",
+                        "<td class='pfam-line-table-td-name'>",
+                            "<a href='http://pfam.xfam.org/family/", acc, " '",
+                                " target='_blank' title='Open on PFAM site'>", acc,
+                            "</a>",
+                        "</td>",
+                        "<td class='pfam-line-table-td-line'>",
+                            "<img class='pfam-line-tooltip' ",
+                                "title=", domainTooltip(acc, id, s_start, s_end, p_start, p_end, perc),
+                                 "src='{% static 'Images/pfam-line.png' %}' ",
+                                 "style='width:", newcoords['width'], "%; margin-left:", newcoords['newstart'], "%; height:12px;'",
+                            "/>",
+                        "</td>",
+                    "</tr>"
+                ].join('');
+            };
+
+            function drawRule(length, binsize) {
                 // This function creates a Reference rule using images. It takes
                 // the length of the sequence and the binsize in characters.
 
@@ -276,7 +341,7 @@
                 }
                 // Get 50 nucleotides in rule scale as percentage
                 binsize += 1; // We add 1 to have binsize characters from 1 to binsize
-                var rule_bins   = tonewscale(1, binsize, length);
+                var rule_bins   = toNewScale(1, binsize, length);
                 var num_of_bins = Math.floor(100 / rule_bins['width']);
                 var bin_width   = rule_bins['width'] - 0.5; // The breaks will be 0.5% wide.
                 var percentage = 0; // Percentage of the sequence already drawn.
@@ -299,45 +364,33 @@
             var doms        = {{ domains|safe }};
             var seq_length  = {{ node.orflength }};
             var newhtml = "<table id='pfam-line-table'><tbody>";
-            newhtml     += drawrule(seq_length, 50);
+            newhtml     += drawRule(seq_length, 50);
 
             for (var i in doms){
-                newcoords = tonewscale(doms[i]['s_start'], doms[i]['s_end'], seq_length);
-                newhtml += "<tr class='pfam-line-table-tr'>";
-                newhtml += "<td class='pfam-line-table-td-name'>";
-                newhtml += "<a href='http://pfam.xfam.org/family/" + doms[i]['accession'] + "' ";
-                newhtml += "target='_blank' title='Open on PFAM site'>" + doms[i]['accession'] + "</td>";
-                newhtml += "<td class='pfam-line-table-td-line'>";
-
-
-                newhtml += "\t<img class='pfam-line-tooltip' ";
-                newhtml += "title='";
-                newhtml += "<strong>" + doms[i]['accession'] + "</strong>\n";
-                newhtml += "<i>" + doms[i]['identifier'] + "</i><hr>";
-                newhtml += "<table class=\"domain-table\"><tr>";
-                newhtml += "<tr><td><strong>on Orf:</strong></td></tr>";
-                newhtml += "<td>Start</td><td>" + doms[i]['s_start'] + "</td></tr>\n";
-                newhtml += "<td>End</td><td>"   + doms[i]['s_end']   + "</td></tr>\n";
-                newhtml += "<tr><td><strong>on Domain:</strong></td></tr>";
-                newhtml += "<td>Start</td><td>"   + doms[i]['p_start'] + "</td></tr>\n";
-                newhtml += "<td>End</td><td>"     + doms[i]['p_end']   + "</td></tr>\n";
-                newhtml += "<td>% of domain</td><td>" + doms[i]['perc'] + "</td></tr></table>\n'";
-                newhtml += " src='{% static 'Images/pfam-line.png' %}' style='width:" + newcoords['width'] + "%; margin-left:" + newcoords['newstart'] + "%; height:12px;'/>"
-                newhtml += "</td></tr>";
+                newhtml += domainRowTemplate(
+                    doms[i]["accession"],
+                    doms[i]["identifier"],
+                    doms[i]["s_start"],
+                    doms[i]["s_end"],
+                    doms[i]["p_start"],
+                    doms[i]["p_end"],
+                    doms[i]["perc"],
+                    seq_length
+                );
             }
             newhtml += "</tbody></table>"
             $('#pfam-domains-line-table').html(newhtml);
-
-            //
-            //}
         </script>
         <script>
-        $(".pfam-line-tooltip").tooltip({
-            content: function () {
-                return $(this).prop('title');
-            }
-        });
-          </script>
+            $( function() {
+                $( ".pfam-line-tooltip" ).tooltip({
+                    track: true,
+                    content: function(){
+                        return $(this).attr("title");
+                    }
+                });
+            } );
+        </script>
     {% endif %}
 
     <script>
