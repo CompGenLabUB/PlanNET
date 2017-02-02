@@ -8,7 +8,7 @@ from py2neo import Graph
 import json
 import logging
 
-graph     = Graph("http://127.0.0.1:7474/db/data/")
+graph     = Graph("https://192.168.0.2:7473/db/data/")
 DATABASES = set(["Cthulhu", "Dresden", "Consolidated"])
 
 
