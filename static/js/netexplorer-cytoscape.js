@@ -181,9 +181,9 @@ $(document).ready(function(){
 
     });
 
-    // Remove unconnected nodes
 
     $("#remove-unconnected").on("click", function() {
+        // Remove unconnected nodes
         $( "#dialog-unconnected" ).dialog({
             resizable: false,
             height: "auto",
@@ -197,7 +197,7 @@ $(document).ready(function(){
                     var slider_value = $('#sl1').val();
                     cy.filter(function(i, element){
                         if ( element.isNode() ) {
-                            var selector = "[probability>" + slider_value + "]";
+                            var selector = "[probability>=" + slider_value + "]";
                             var edge_collection = element.connectedEdges(selector);
                             if (! edge_collection.data()) {
                                 cy.remove(element);

@@ -164,20 +164,29 @@ def get_card(request, symbol=None, database=None):
 
     try:
         card_node    = query_node(symbol, database)
-        card_node.get_domains()
-        nodes, edges = card_node.get_graphelements()
-        graph        = GraphCytoscape()
-        graph.add_elements(nodes)
-        graph.add_elements(edges)
+        if database != "Human":
+            card_node.get_domains()
+            nodes, edges = card_node.get_graphelements()
+            graph        = GraphCytoscape()
+            graph.add_elements(nodes)
+            graph.add_elements(edges)
+        else:
+            homologs = card_node.get_homologs()
     except (NodeNotFound, IncorrectDatabase):
         return render(request, 'NetExplorer/404.html')
 
     if request.is_ajax():
-        response = {
-            'node'      : card_node,
-            'json_graph': graph.to_json(),
-            'domains'   : card_node.domains_to_json()
-        }
+        if database != "Human":
+            response = {
+                'node'      : card_node,
+                'json_graph': graph.to_json(),
+                'domains'   : card_node.domains_to_json()
+            }
+        else:
+            response = {
+                'node' : card_node,
+                'homologs': homologs
+            }
         return render(request, 'NetExplorer/gene_card.html', response)
     else:
         return render(request, 'NetExplorer/gene_card_fullscreen.html', { 'node': card_node })

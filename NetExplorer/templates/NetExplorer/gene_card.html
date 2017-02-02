@@ -20,7 +20,11 @@
 
                 {% if node.database == "Human" %}
                 <!--HUMAN CARD -->
-                    <h2>Show xrefs here :)</h2>
+                    <h2>Homologs</h2>
+                    <hr>
+                    {% for hom in homologs %}
+                        {{ hom.prednode.symbol }} <br>
+                    {% endfor %}
 
                 {% else %}
                 <!--PREDICTED NODE CARD -->
@@ -176,18 +180,9 @@
                         <h3>No interactions</h3>
                     {% endif %}
 
-
-
-
-                {% endif %}
+                {% endif %} <!-- If Human or PredictedNode -->
     </body>
-<!--
-    <script src="{% static 'js/jquery-min.js' %}"></script>
-    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
-
-    NOT NECESSARY-->
     <script src="{% static 'js/jquery-data-tables-min.js' %}"></script>
     <script>
         $('.card-link').click(function() {
