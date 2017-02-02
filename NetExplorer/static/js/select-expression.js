@@ -54,7 +54,7 @@ $("#map-expression-btn-submit").on("click", function(){
     } else {
         $.ajax({
             type: "GET",
-            url: "/PlanNET/map_expression",
+            url: "/map_expression",
             cache: true,
             data: {
                 'experiment': $("#select-expression").val(),

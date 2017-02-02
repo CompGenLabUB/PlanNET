@@ -15,6 +15,23 @@ function displayHomologs(cyobj) {
             }
         }
     });
+
+    cyobj.filter(function(i, element){
+        if ( element.isEdge() ) {
+            if (! element.data("type")) {
+                // Not an homology edge
+                var selector_1 = 'node[id = "' + element.data("source") + '"]';
+                var selector_2 = 'node[id = "' + element.data("target") + '"]';
+                var source = cy.filter(selector_1);
+                var target = cy.filter(selector_2);
+                if (element.data("pathlength") == 1) {
+                    var homologIntEdge   = { "data" : { id: source.data("homolog") + "-" + target.data("homolog"), type: "homologyInt", probability: 1, source: source.data("homolog"), target: target.data("homolog") , colorEDGE: "#6785d0"} };
+                    elementsToAdd.edges.push(homologIntEdge);
+                }
+            }
+
+        }
+    });
     var added = cyobj.add(elementsToAdd);
     var layout = added.makeLayout({
         name: 'grid'

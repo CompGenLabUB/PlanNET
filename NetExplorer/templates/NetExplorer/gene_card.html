@@ -22,8 +22,49 @@
                 <!--HUMAN CARD -->
                     <h2>Homologs</h2>
                     <hr>
-                    {% for hom in homologs %}
-                        {{ hom.prednode.symbol }} <br>
+                    {% for db, list  in homologs.items %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{ db }} </div>
+                            <div class="panel-body">
+                                <table class="table hom-table">
+                                    <thead>
+                                        <th>Symbol</th>
+                                        <th>EggNOG e-value</th>
+                                        <th>EggNOG BRH</th>
+                                        <th>BLAST e-value</th>
+                                        <th>BLAST coverage</th>
+                                        <th>BLAST BRH</th>
+                                        <th>Pfam M.A. score</th>
+                                        <th>Pfam M.A. BRH</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for hom in list %}
+                                            <tr>
+                                                <td>
+                                                    <a
+                                                        class="card-link"
+                                                        current="{{ node.symbol }}"
+                                                        currentDB="{{ node.database }}"
+                                                        target="{{ hom.prednode.symbol }}"
+                                                        targetDB="{{ hom.prednode.database }}">{{ hom.prednode.symbol }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ hom.nog_eval }}</td>
+                                                <td>{{ hom.nog_brh }}</td>
+                                                <td>{{ hom.blast_eval }}</td>
+                                                <td>{{ hom.blast_cov }}</td>
+                                                <td>{{ hom.blast_brh }}</td>
+                                                <td>{{ hom.pfam_sc }}</td>
+                                                <td>{{ hom.pfam_brh }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
                     {% endfor %}
 
                 {% else %}

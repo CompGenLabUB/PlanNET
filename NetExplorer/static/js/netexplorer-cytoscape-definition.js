@@ -34,6 +34,11 @@ var stylesheet = cytoscape.stylesheet()
             'content': '',
             'opacity': 0.8
         })
+    .selector('edge[type = "homologyInt"]')
+        .css({
+            'content': '',
+            'opacity': 0.8
+        })
     .selector('node[database = "Human"]')
         .css({
             'shape': 'diamond',

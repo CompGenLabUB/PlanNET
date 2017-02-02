@@ -151,6 +151,7 @@
 #pfam-line-table {
     width: 100%;
     font-size: 12px;
+    color: #777777;
 }
 
 .pfam-line-table-tr {
@@ -469,7 +470,7 @@
     top: 0%;
     left: 0%;
     width: 25%;
-    height: 25%;
+    z-index: 1000000;
 }
 
 #cyt-controls {
@@ -519,6 +520,10 @@
     top: 1%;
     position: relative;
     display: block;
+}
+
+.netexplorer-form {
+    width: 100%;
 }
 
 #controls-container {
@@ -724,6 +729,10 @@ input[type="file"] {
 }
 
 #dialog-confirm {
+    display: none;
+}
+
+#dialog-unconnected {
     display: none;
 }
 
@@ -999,15 +1008,23 @@ input[type="file"] {
 .ui-tooltip {
     z-index: 10000000 !important;
     white-space: pre-line !important;
-    min-width:150px;
+    min-width:130px;
 }
 
 .pfam-line-tooltip {
     cursor: pointer;
 }
-
+.pfam-line-tooltip-subtitle {
+    font-size: 12px;
+    font-style: italic;
+}
 
 .pfam-line-tooltip:hover {
     cursor: pointer;
     opacity: 0.5;
+}
+
+.hom-table {
+    font-size: 12px;
+    color: #777777;
 }

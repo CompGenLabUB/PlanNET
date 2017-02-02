@@ -8,7 +8,7 @@ from py2neo import Graph
 import json
 import logging
 
-graph     = Graph("https://192.168.0.2:7473/db/data/")
+graph     = Graph("http://127.0.0.1:7474/db/data/")
 DATABASES = set(["Cthulhu", "Dresden", "Consolidated"])
 
 
@@ -372,21 +372,25 @@ class HumanNode(Node):
         pass
 
 
-    def get_homologs(self):
+    def get_homologs(self, database=None):
         """
         Gets all homologs of the specified database. Returns a LIST of Homology objects.
         """
-        homologs = list()
-        for database in DATABASES:
+        homologs = dict()
+        database_to_look = DATABASES
+        if database is not None:
+            database_to_look = set([database])
+        for database in database_to_look:
+            homologs[database] = list()
             query = HOMOLOGS_QUERY % (database, self.symbol)
             logging.info(query)
             results  = graph.run(query)
             results  = results.data()
-            homologs = list()
             if results:
                 for row in results:
                     try:
                         homolog_node = PredictedNode(row['homolog'], database)
+
                     except:
                         continue
                     homolog_rel    = Homology(
@@ -400,8 +404,9 @@ class HumanNode(Node):
                         blast_brh  = row['blast_brh'],
                         pfam_brh   = row['pfam_brh']
                     )
-                    homologs.append(homolog_rel)
+                    homologs[database].append(homolog_rel)
         if homologs:
+            print(homologs)
             return homologs
         else:
             logging.info("NO HOMOLOGS")

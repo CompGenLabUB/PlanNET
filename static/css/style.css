@@ -1023,3 +1023,8 @@ input[type="file"] {
     cursor: pointer;
     opacity: 0.5;
 }
+
+.hom-table {
+    font-size: 12px;
+    color: #777777;
+}
