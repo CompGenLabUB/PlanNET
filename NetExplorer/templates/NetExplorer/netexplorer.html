@@ -140,13 +140,13 @@
                     <form id="add_node" class= "form" method="GET" action="{% url net_explorer %}">
                         {% csrf_token %}
                         <div class="form-group">
-                            <input type="text" class="form-control" name="genesymbol" placeholder="Enter Symbol">
+                            <input type="text" class="form-control netexplorer-form" name="genesymbol" placeholder="Enter Symbol">
 
-                            <select name="database" class="selectpicker">
+                            <select name="database" class="selectpicker" data-width="100%">
                                 <option value="" selected disabled>Select Database</option>
-                                <option value="Human">Human</option>
                                 <option value="Cthulhu">Cthulhu</option>
                                 <option value="Consolidated">Consolidated</option>
+                                <option value="Dresden">Dresden</option>
                             </select>
                             <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
                         </div>
@@ -206,7 +206,21 @@
             </button> <a class="info-tooltip" title="
                 This button will show all the interactions between the nodes displayed on the screen.
             "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+            <br><br>
+            <!-- REMOVE UNCONNECTED  -->
+            <button id="remove-unconnected" class="btn btn-default">
+                Remove unconnected
+            </button> <a class="info-tooltip" title="
+                This button will remove all the nodes without a visible interaction (homology relationships included).
+            "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+            <div id="dialog-unconnected" title="Delete Unconnected nodes?">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+                    All the nodes without a visible interaction will be removed. Are you sure you want to delete these nodes?
+                </p>
+            </div>
             <hr>
+
         </div>
 
 

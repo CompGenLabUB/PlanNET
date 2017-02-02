@@ -6,10 +6,10 @@ from __future__ import unicode_literals
 from django.db import models
 from py2neo import Graph
 import json
+import logging
 
-
-graph = Graph("https://192.168.0.2:7473/db/data/")
-
+graph     = Graph("https://192.168.0.2:7473/db/data/")
+DATABASES = set(["Cthulhu", "Dresden", "Consolidated"])
 
 
 # QUERIES
@@ -184,7 +184,7 @@ class Node(object):
             return paths
         else:
             # No results
-            print("No paths")
+            logging.info("No paths")
             return None
 
     def get_domains(self):
@@ -368,36 +368,43 @@ class HumanNode(Node):
         else:
             raise NodeNotFound(self.symbol, self.database)
 
-    def get_homologs(self, database):
+    def get_neighbours(self):
+        pass
+
+
+    def get_homologs(self):
         """
         Gets all homologs of the specified database. Returns a LIST of Homology objects.
         """
-        query = HOMOLOGS_QUERY % (database, self.symbol)
-
-        results  = graph.run(query)
-        results  = results.data()
         homologs = list()
-        if results:
-            for row in results:
-                try:
-                    homolog_node = PredictedNode(row['homolog'], database)
-                except:
-                    continue
-                homolog_rel    = Homology(
-                    prednode   = homolog_node,
-                    human      = self.symbol,
-                    blast_cov  = row['blast_cov'],
-                    blast_eval = row['blast_eval'],
-                    nog_brh    = row['nog_brh'],
-                    pfam_sc    = row['pfam_sc'],
-                    nog_eval   = row['nog_eval'],
-                    blast_brh  = row['blast_brh'],
-                    pfam_brh   = row['pfam_brh']
-                )
-                homologs.append(homolog_rel)
+        for database in DATABASES:
+            query = HOMOLOGS_QUERY % (database, self.symbol)
+            logging.info(query)
+            results  = graph.run(query)
+            results  = results.data()
+            homologs = list()
+            if results:
+                for row in results:
+                    try:
+                        homolog_node = PredictedNode(row['homolog'], database)
+                    except:
+                        continue
+                    homolog_rel    = Homology(
+                        prednode   = homolog_node,
+                        human      = self.symbol,
+                        blast_cov  = row['blast_cov'],
+                        blast_eval = row['blast_eval'],
+                        nog_brh    = row['nog_brh'],
+                        pfam_sc    = row['pfam_sc'],
+                        nog_eval   = row['nog_eval'],
+                        blast_brh  = row['blast_brh'],
+                        pfam_brh   = row['pfam_brh']
+                    )
+                    homologs.append(homolog_rel)
+        if homologs:
             return homologs
         else:
-            print("NO HOMOLOGS")
+            logging.info("NO HOMOLOGS")
             return None
 
 
@@ -406,7 +413,7 @@ class PredictedNode(Node):
     """
     Class for planarian nodes.
     """
-    allowed_databases = set(["Cthulhu", "Consolidated"])
+    allowed_databases = set(["Cthulhu", "Consolidated", "Dresden"])
 
     def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False):
         super(PredictedNode, self).__init__(symbol, database)
@@ -461,7 +468,7 @@ class PredictedNode(Node):
                     pfam_brh   = row['pfam_brh']
                 )
         else:
-            print("NOTFOUND")
+            logging.info("NOTFOUND")
             raise NodeNotFound(self.symbol, self.database)
 
     def to_jsondict(self):

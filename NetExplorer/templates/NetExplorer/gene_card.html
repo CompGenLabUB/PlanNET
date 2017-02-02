@@ -20,7 +20,11 @@
 
                 {% if node.database == "Human" %}
                 <!--HUMAN CARD -->
-                    <h2>Show xrefs here :)</h2>
+                    <h2>Homologs</h2>
+                    <hr>
+                    {% for hom in homologs %}
+                        {{ hom.prednode.symbol }} <br>
+                    {% endfor %}
 
                 {% else %}
                 <!--PREDICTED NODE CARD -->
@@ -176,11 +180,9 @@
                         <h3>No interactions</h3>
                     {% endif %}
 
-
-
-
-                {% endif %}
+                {% endif %} <!-- If Human or PredictedNode -->
     </body>
+<<<<<<< HEAD
 <!--
     <script src="{% static 'js/jquery-min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
@@ -188,6 +190,9 @@
 
 
     NOT NECESSARY-->
+=======
+
+>>>>>>> df52fb64543431c155046def0cfbf3d17f18ccdd
     <script src="{% static 'js/jquery-data-tables-min.js' %}"></script>
     <script>
         $('.card-link').click(function() {
@@ -267,8 +272,9 @@
             function domainTooltip(acc, id,  s_start, s_end, p_start, p_end, perc) {
                 // Html of the domain tooltip when hovering over domain line/square
                 return [
-                    "'<strong>", acc, "</strong>\n",
-                    "<i>",       id,  "</i>",
+                    "'<strong>", id, "</strong>\n",
+                    "<div class=\"pfam-line-tooltip-subtitle\">", acc,  "</div>",
+
                     "<hr>",
                     "<table class=\"domain-table\">",
                         "<tr>",
@@ -305,23 +311,40 @@
                 ].join('');
             };
 
-            function domainRowTemplate(acc, id, s_start, s_end, p_start, p_end, perc, seq_length) {
+            function domainRowTemplate(acc, id, s_start, s_end, p_start, p_end, perc, seq_length, mlength) {
                 // This function returns the HTML code of a pfam domain row in the
                 // visual representation of the domains over a reference line.
                 newcoords = toNewScale(s_start, s_end, seq_length);
+                newcoords['width']    -= 0.4;   // We remove 2x0.2% from the width to have start/ending imgs
+                newcoords['newstart'] += 0.2; // We add 0.2% from newstart/offset to allow space for the start img
+                starting = "";
+                ending   = "";
+                if (p_start == 1) {
+                    starting = "'{% static 'Images/pfam-line-end.png' %}'";
+                } else {
+                    starting = "'{% static 'Images/pfam-line.png' %}'";
+                }
+
+                if (p_end == mlength) {
+                    ending = "'{% static 'Images/pfam-line-end.png' %}'";
+                } else {
+                    ending = "'{% static 'Images/pfam-line.png' %}'";
+                }
+
                 return [
                     "<tr class='pfam-line-table-tr'>",
                         "<td class='pfam-line-table-td-name'>",
                             "<a href='http://pfam.xfam.org/family/", acc, " '",
-                                " target='_blank' title='Open on PFAM site'>", acc,
+                                " target='_blank' title='Open on PFAM site'>", id,
                             "</a>",
                         "</td>",
-                        "<td class='pfam-line-table-td-line'>",
-                            "<img class='pfam-line-tooltip' ",
-                                "title=", domainTooltip(acc, id, s_start, s_end, p_start, p_end, perc),
-                                 "src='{% static 'Images/pfam-line.png' %}' ",
-                                 "style='width:", newcoords['width'], "%; margin-left:", newcoords['newstart'], "%; height:12px;'",
+                        "<td class='pfam-line-table-td-line pfam-line-tooltip' ",
+                            "title=", domainTooltip(acc, id, s_start, s_end, p_start, p_end, perc), ">",
+                            "<img src=", starting, " style='width: 0.2%; height:12px; margin-left:", newcoords['newstart'], "%; '/>",
+                            "<img src='{% static 'Images/pfam-line.png' %}' ",
+                                 "style='width:", newcoords['width'], "%; height:12px;'",
                             "/>",
+                            "<img src=", ending, " style='height:12px; width:0.2%;'/>",
                         "</td>",
                     "</tr>"
                 ].join('');
@@ -340,20 +363,36 @@
                     return rule_html;
                 }
                 // Get 50 nucleotides in rule scale as percentage
-                binsize += 1; // We add 1 to have binsize characters from 1 to binsize
-                var rule_bins   = toNewScale(1, binsize, length);
+                 // We add 1 to have binsize characters from 1 to binsize
+                var rule_bins   = toNewScale(1, binsize +1, length);
                 var num_of_bins = Math.floor(100 / rule_bins['width']);
                 var bin_width   = rule_bins['width'] - 0.5; // The breaks will be 0.5% wide.
                 var percentage = 0; // Percentage of the sequence already drawn.
                 for (var i = 0; i <num_of_bins; i++) {
+                    s_rule = i*binsize;
+                    e_rule = (i+1)*binsize;
+                    if (i != 0) {
+                        s_rule +=1;
+                    }
                     percentage += bin_width + 0.5;
-                    rule_html  += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:" + bin_width + "%;height:12px;'>";
+                    rule_html  += "<img class='pfam-line-tooltip' " +
+                                  "src='{% static 'Images/pfam-line-rule.png' %}'"  +
+                                  " style='width:" + bin_width + "%;height:12px;' " +
+                                  "title='<table class=\"domain-table\">" +
+                                      "<tr><td>From: </td><td>" + s_rule + "</td></tr>" +
+                                      "<tr><td>To: </td><td>"   + e_rule + "</td></tr>"+
+                                  "</table>'" + ">";
                     rule_html  += "<img src='{% static 'Images/pfam-line-rule-break.png' %}' style ='width:0.5%; height:12px;'>";
                 }
                 // Draw the last bin, which could be less than binsize characters
                 var remaining = 100 - percentage;
                 if (percentage != 0) {
-                    rule_html    += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:" + remaining + "%;height:12px;'>";
+                    rule_html    += "<img class='pfam-line-tooltip' " +
+                                    "src='{% static 'Images/pfam-line-rule.png' %}' " +
+                                    "style='width:" + remaining + "%;height:12px;' "  +
+                                    "title='<table class=\"domain-table\">" +
+                                        "<tr><td>From: </td><td>" + num_of_bins * binsize + "</td></tr>" +
+                                        "<tr><td>To: </td><td>"   + length + "</td></tr></table>'" + ">";
                 }
 
                 // Close table
@@ -364,7 +403,30 @@
             var doms        = {{ domains|safe }};
             var seq_length  = {{ node.orflength }};
             var newhtml = "<table id='pfam-line-table'><tbody>";
-            newhtml     += drawRule(seq_length, 50);
+            var binsize = 0;
+
+            // Seq length of the sequence and decide how many aa per break in rule
+            //binsize = Math.ceil((seq_length/10)/25) * 25;
+            if (seq_length <= 100) {
+                binsize = 10;
+            } else if (seq_length <= 200) {
+                binsize = 20;
+            } else if (seq_length <= 500) {
+                binsize = 50;
+            } else if (seq_length <= 1000) {
+                binsize = 100;
+            } else if (seq_length <= 1500) {
+                binsize = 150;
+            } else if (seq_length <= 2000) {
+                binsize = 200;
+            } else if (seq_length <= 3000){
+                binsize = 300;
+            } else if (seq_length <= 4000){
+                binsize = 400;
+            } else {
+                binsize = 500;
+            }
+            newhtml     += drawRule(seq_length, binsize);
 
             for (var i in doms){
                 newhtml += domainRowTemplate(
@@ -375,7 +437,8 @@
                     doms[i]["p_start"],
                     doms[i]["p_end"],
                     doms[i]["perc"],
-                    seq_length
+                    seq_length,
+                    doms[i]["mlength"]
                 );
             }
             newhtml += "</tbody></table>"
