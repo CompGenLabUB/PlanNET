@@ -36,6 +36,7 @@ def query_node(symbol, database):
     node   = None
     symbol = symbol.replace(" ", "")
     if database == "Human":
+        symbol = symbol.upper()
         node = HumanNode(symbol, database)
     else:
         node = PredictedNode(symbol, database)
