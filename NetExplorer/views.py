@@ -94,8 +94,9 @@ def substitute_human_symbols(symbols, database):
                 symbol = symbol.upper()
                 human_node = HumanNode(symbol, "Human")
                 homologs   = human_node.get_homologs(database)
-                for hom in homologs:
-                    newsymbols.append(hom.prednode.symbol)
+                for db in homologs:
+                    for hom in homologs[db]:
+                        newsymbols.append(hom.prednode.symbol)
             except (NodeNotFound, IncorrectDatabase):
                 # Node is not a human node :_(
                 logging.info("Node is not a human node, try next symbol")
