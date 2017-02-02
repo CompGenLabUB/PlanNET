@@ -386,11 +386,12 @@
                 // the length of the sequence and the binsize in characters.
 
                 // Basic HTML
-                var rule_html = "<tr class='pfam-line-table-tr'>";
-                rule_html    += "<td class='pfam-line-table-td-name'><strong>Reference</strong></td>";
-                rule_html    += "<td class='pfam-line-table-td-line'>";
+                var rule_html = [];
+                rule_html.reference = "<tr class='pfam-line-table-tr'>";
+                rule_html.reference    += "<td class='pfam-line-table-td-name'><strong>Reference</strong></td>";
+                rule_html.reference    += "<td class='pfam-line-table-td-line'>";
                 if (length <= binsize) {
-                    rule_html  += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:100%;height:12px;'>";
+                    rule_html.reference  += "<img src='{% static 'Images/pfam-line-rule.png' %}' style='width:100%;height:12px;'>";
                     return rule_html;
                 }
                 // Get 50 nucleotides in rule scale as percentage
@@ -399,26 +400,38 @@
                 var num_of_bins = Math.floor(100 / rule_bins['width']);
                 var bin_width   = rule_bins['width'] - 0.5; // The breaks will be 0.5% wide.
                 var percentage = 0; // Percentage of the sequence already drawn.
+
+                // Draw scale for the rule
+                var scale_offset = 100 - bin_width - 1; // -1 because we remove the two breaks
+                rule_html.scale = "<tr class='pfam-line-table-tr'>" +
+                                      "<td class='pfam-line-table-td-name'></td>" +
+                                      "<td class='pfam-line-table-td-line'>" +
+                                          "<div class='pfam-line-table-td-text' style='width:" + (bin_width + 1) + "%;" +
+                                          "margin-left:" + scale_offset + "%;'>" + binsize + " aa</div>" +
+                                      "</td>" +
+                                   "</tr>";
+                rule_html.scale += "<tr class='pfam-line-table-tr'><td class='pfam-line-table-td-name'></td><td class='pfam-line-table-td-line'>" +
+                                      "<img class='pfam-line-table-td-scale' src='{% static 'Images/pfam-line-rule-break.png' %}' style ='width:0.5%; height:12px;" + "margin-left:"  + scale_offset + "%;'>" +
+                                      "<img src='{% static 'Images/pfam-line-rule.png' %}'" + " style='width:" + bin_width + "%;height:12px;'>" +
+                                      "<img src='{% static 'Images/pfam-line-rule-break.png' %}' style ='width:0.5%; height:12px;'>" +
+                                      "</td></tr>";
                 for (var i = 0; i <num_of_bins; i++) {
-                    s_rule = i*binsize;
+                    s_rule = i*binsize + 1;
                     e_rule = (i+1)*binsize;
-                    if (i != 0) {
-                        s_rule +=1;
-                    }
                     percentage += bin_width + 0.5;
-                    rule_html  += "<img class='pfam-line-tooltip' " +
+                    rule_html.reference  += "<img class='pfam-line-tooltip' " +
                                   "src='{% static 'Images/pfam-line-rule.png' %}'"  +
                                   " style='width:" + bin_width + "%;height:12px;' " +
                                   "title='<table class=\"domain-table\">" +
                                       "<tr><td>From: </td><td>" + s_rule + "</td></tr>" +
                                       "<tr><td>To: </td><td>"   + e_rule + "</td></tr>"+
                                   "</table>'" + ">";
-                    rule_html  += "<img src='{% static 'Images/pfam-line-rule-break.png' %}' style ='width:0.5%; height:12px;'>";
+                    rule_html.reference  += "<img src='{% static 'Images/pfam-line-rule-break.png' %}' style ='width:0.5%; height:12px;'>";
                 }
                 // Draw the last bin, which could be less than binsize characters
                 var remaining = 100 - percentage;
                 if (percentage != 0) {
-                    rule_html    += "<img class='pfam-line-tooltip' " +
+                    rule_html.reference    += "<img class='pfam-line-tooltip' " +
                                     "src='{% static 'Images/pfam-line-rule.png' %}' " +
                                     "style='width:" + remaining + "%;height:12px;' "  +
                                     "title='<table class=\"domain-table\">" +
@@ -426,8 +439,8 @@
                                         "<tr><td>To: </td><td>"   + length + "</td></tr></table>'" + ">";
                 }
 
-                // Close table
-                rule_html    += "</td></tr>";
+                // Close row
+                rule_html.reference    += "</td></tr>";
                 return rule_html;
             }
 
@@ -457,7 +470,10 @@
             } else {
                 binsize = 500;
             }
-            newhtml     += drawRule(seq_length, binsize);
+
+
+            var rule =  drawRule(seq_length, binsize);
+            newhtml     += rule.reference;
 
             for (var i in doms){
                 newhtml += domainRowTemplate(
@@ -472,6 +488,9 @@
                     doms[i]["mlength"]
                 );
             }
+
+            // Draw the scale for the rule
+            newhtml += rule.scale;
             newhtml += "</tbody></table>"
             $('#pfam-domains-line-table').html(newhtml);
         </script>

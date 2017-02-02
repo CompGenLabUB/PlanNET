@@ -1028,3 +1028,13 @@ input[type="file"] {
     font-size: 12px;
     color: #777777;
 }
+
+
+.pfam-line-table-td-scale {
+    margin-right: 0 !important;
+}
+
+.pfam-line-table-td-text {
+    text-align: center;
+    margin-right: 0 !important;
+}
