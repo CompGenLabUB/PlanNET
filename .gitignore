@@ -1,1 +1,3 @@
-*.pyc
+*pyc
+NetExplorer/*pyc
+PlanNET/*pyc
