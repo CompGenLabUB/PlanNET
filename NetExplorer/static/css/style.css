@@ -466,10 +466,9 @@
 
 #loading {
     display: none;
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    width: 25%;
+    margin-top: 0;
+    margin-left: 0;
+    width: auto;
     z-index: 1000000;
 }
 
