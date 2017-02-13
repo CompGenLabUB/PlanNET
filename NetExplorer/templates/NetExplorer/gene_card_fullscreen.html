@@ -20,7 +20,49 @@
                 </a>
                 {% if node.database == "Human" %}
                 <!--HUMAN CARD -->
-                    <h2>Show xrefs here :)</h2>
+                    <h2>Homologs</h2>
+                    <hr>
+                    {% for db, list  in homologs.items %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{ db }} </div>
+                            <div class="panel-body">
+                                <table class="table table-hover hom-table">
+                                    <thead>
+                                        <th>Symbol</th>
+                                        <th>EggNOG e-value</th>
+                                        <th>EggNOG BRH</th>
+                                        <th>BLAST e-value</th>
+                                        <th>BLAST coverage</th>
+                                        <th>BLAST BRH</th>
+                                        <th>Pfam M.A. score</th>
+                                        <th>Pfam M.A. BRH</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for hom in list %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url card_fullscreen hom.prednode.database hom.prednode.symbol %}">
+                                                        {{ hom.prednode.symbol }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ hom.nog_eval }}</td>
+                                                <td>{{ hom.nog_brh }}</td>
+                                                <td>{{ hom.blast_eval }}</td>
+                                                <td>{{ hom.blast_cov }}</td>
+                                                <td>{{ hom.blast_brh }}</td>
+                                                <td>{{ hom.pfam_sc }}</td>
+                                                <td>{{ hom.pfam_brh }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    {% endfor %}
+
 
                 {% else %}
                 <!--PREDICTED NODE CARD -->
@@ -55,7 +97,7 @@
                         <h2>Homolog</h2>
                         <hr>
                         <h4><strong>Symbol:</strong>
-                            <a href="/gene_card/Human/{{ node.homolog.human.symbol }}">{{ node.homolog.human.symbol }}</a>
+                            <a href="{% url card_fullscreen 'Human' node.homolog.human.symbol %}">{{ node.homolog.human.symbol }}</a>
                         </h4>
 
                             <ul>
@@ -180,7 +222,7 @@
                             <tbody>
                         {% for int in node.neighbours %}
                             <tr>
-                                <td><a href="/gene_card/{{ int.target.database }}/{{ int.target.symbol }}">{{ int.target.symbol }}</a>
+                                <td><a href="{% url card_fullscreen int.target.database int.target.symbol %}">{{ int.target.symbol }}</a>
                                 </td>
                                 <td>{{ int.parameters.int_prob }}</td>
                                 <td>{{ int.parameters.path_length }}</td>

@@ -177,21 +177,21 @@ def get_card(request, symbol=None, database=None):
     except (NodeNotFound, IncorrectDatabase):
         return render(request, 'NetExplorer/404.html')
 
+    if database != "Human":
+        response = {
+        'node'      : card_node,
+        'json_graph': graph.to_json(),
+        'domains'   : card_node.domains_to_json()
+        }
+    else:
+        response = {
+        'node' : card_node,
+        'homologs': homologs
+        }
     if request.is_ajax():
-        if database != "Human":
-            response = {
-                'node'      : card_node,
-                'json_graph': graph.to_json(),
-                'domains'   : card_node.domains_to_json()
-            }
-        else:
-            response = {
-                'node' : card_node,
-                'homologs': homologs
-            }
         return render(request, 'NetExplorer/gene_card.html', response)
     else:
-        return render(request, 'NetExplorer/gene_card_fullscreen.html', { 'node': card_node })
+        return render(request, 'NetExplorer/gene_card_fullscreen.html', response)
 
 
 # ------------------------------------------------------------------------------
