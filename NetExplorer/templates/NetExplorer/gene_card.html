@@ -170,20 +170,27 @@
 
                     <!-- PRINT THE TABLE WITH THE DOMAINS REPRESENTED AS LINES -->
                     <div id="pfam-domains-line-table"></div>
+                    <br><br>
 
-
-                    <br>
-                    <h2>Interactions</h2>
-                    <hr>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
-                        <form method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
-                            <input type="hidden" name="json_text" value='{{ json_graph|safe }}' />
-                            <button id="netexplorer-mini" class="btn btn-default netexplorer-view" type="submit">
-                                <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
-                            </button>
-                        </form>
-                    </a>
+                    <!-- INTERACTIONS -->
+                    <div class="row row-eq-height">
+                        <div class="col-sm-10">
+                            <h2>Interactions</h2>
+                            <hr>
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="#" class="view-on-netexplorer" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
+                                <form class="view-on-netexplorer" method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
+                                    <input type="hidden" name="json_text" value='{{ json_graph|safe }}' />
+                                    <button id="netexplorer-mini" class="btn btn-default netexplorer-view view-on-netexplorer-btn" type="submit">
+                                        <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+                                    </button>
+                                </form>
+                            </a>
+                        </div>
+                    </div>
                     {% if node.neighbours %}
+                    <br>
                     <div class="int-table-container">
                         <table id="int-table" class="table table-hover int-table-class">
                             <thead>

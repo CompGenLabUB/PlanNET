@@ -185,6 +185,16 @@
 
 }
 
+.view-on-netexplorer {
+    margin-bottom: 0;
+    height: 100%;
+}
+
+.view-on-netexplorer-btn {
+    position: absolute;
+    bottom: 12;
+}
+
 
 /* OVERLAY THINGS */
 .card-overlay {
@@ -465,9 +475,9 @@
 }
 
 #loading {
-    display: none;
-    margin-top: 0;
-    margin-left: 0;
+    /*display: none;*/
+    margin-top: 0px;
+    margin-left: 0px;
     width: auto;
     z-index: 1000000;
 }

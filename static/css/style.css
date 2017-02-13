@@ -185,6 +185,16 @@
 
 }
 
+.view-on-netexplorer {
+    margin-bottom: 0;
+    height: 100%;
+}
+
+.view-on-netexplorer-btn {
+    position: absolute;
+    bottom: 12;
+}
+
 
 /* OVERLAY THINGS */
 .card-overlay {
@@ -465,11 +475,10 @@
 }
 
 #loading {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 25%;
+    /*display: none;*/
+    margin-top: 0px;
+    margin-left: 0px;
+    width: auto;
     z-index: 1000000;
 }
 
@@ -1028,6 +1037,7 @@ input[type="file"] {
     font-size: 12px;
     color: #777777;
 }
+
 
 .pfam-line-table-td-scale {
     margin-right: 0 !important;
