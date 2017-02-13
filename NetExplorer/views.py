@@ -19,7 +19,7 @@ import logging
 # -----------------------
 # CONSTANTS
 # -----------------------
-BLAST_DB_DIR    = "/home/sergio/code/PlaNET/blast/"
+BLAST_DB_DIR    = "/home/compgen/scastillo/PlanNET/blast/"
 MAX_NUMSEQ      = 50
 MAX_CHAR_LENGTH = 25000
 
