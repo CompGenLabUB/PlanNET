@@ -475,7 +475,7 @@
 }
 
 #loading {
-    /*display: none;*/
+    display: none;
     margin-top: 0px;
     margin-left: 0px;
     width: auto;
