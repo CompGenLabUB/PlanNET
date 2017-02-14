@@ -542,10 +542,14 @@ class PredictedNode(Node):
 
                 # Add interaction to list of neighbours
                 self.neighbours.append(interaction)
+        else:
+            self.neighbours = None
+            self.degree     = 0
 
-        # Sort interactions by probability
-        self.neighbours = sorted(self.neighbours, key=lambda k: k.parameters['int_prob'], reverse=True)
-        self.degree     = int(len(self.neighbours))
+        if self.neighbours is not None:
+            # Sort interactions by probability
+            self.neighbours = sorted(self.neighbours, key=lambda k: k.parameters['int_prob'], reverse=True)
+            self.degree     = int(len(self.neighbours))
         return self.neighbours
 
     def get_expression(self, experiment, sample):

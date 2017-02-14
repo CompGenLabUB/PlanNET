@@ -475,6 +475,7 @@
 }
 
 #loading {
+    position: absolute;
     display: none;
     margin-top: 0px;
     margin-left: 0px;
