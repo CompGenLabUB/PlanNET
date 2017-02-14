@@ -303,6 +303,27 @@
     display: table;
 }
 
+.card-subtitle {
+    text-align: center;
+    background-color: #F7F7F7;
+    margin-left: 35%;
+    width: 30%;
+    height: 6%;
+    display: table;
+}
+
+.card-subtitle a {
+    color: #777777;
+    font-style: normal;
+}
+
+.card-subtitle h3 {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: #777777
+}
+
 .card-title h1 {
     display: table-cell;
     vertical-align: middle;
