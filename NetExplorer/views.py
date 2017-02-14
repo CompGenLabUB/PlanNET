@@ -6,7 +6,7 @@ from django.shortcuts   import render
 from django.shortcuts   import render_to_response
 from django.http        import HttpResponse
 from django.template    import RequestContext
-from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase, GraphCytoscape
+from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase, NoExpressionData, GraphCytoscape
 from subprocess import Popen, PIPE, STDOUT
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import tempfile
@@ -399,10 +399,17 @@ def map_expression(request):
         expression = dict()
         for node_id, database in zip(nodes, databases):
             node = query_node(node_id, database)
-            expression[node_id] = node.get_expression(experiment, sample)
-        json_data = json.dumps(expression)
-        logging.info(json_data)
-        return HttpResponse(json_data, content_type="application/json")
+            try:
+                expression[node_id] = node.get_expression(experiment, sample)
+            except NoExpressionData:
+                print("No exp data for %s %s and %s" %(node.symbol, experiment, sample))
+                continue
+        if not expression:
+            response = "no-expression"
+            return HttpResponse(response, content_type='text/plain; charset=utf8')
+        else:
+            json_data = json.dumps(expression)
+            return HttpResponse(json_data, content_type="application/json")
     else:
         return render(request, 'NetExplorer/404.html')
 

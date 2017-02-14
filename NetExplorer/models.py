@@ -31,6 +31,14 @@ PREDNODE_QUERY = """
 """
 
 # ------------------------------------------------------------------------------
+EXPRESSION_QUERY = """
+    MATCH (n:%s)-[r:HAS_EXPRESSION]-(m:Experiment)
+    WHERE n.symbol = "%s"
+    AND m.id = "%s"
+    RETURN r.%s as exp
+"""
+
+# ------------------------------------------------------------------------------
 HUMANNODE_QUERY = """
     MATCH (n:%s)
     WHERE n.symbol = "%s"
@@ -430,7 +438,6 @@ class PredictedNode(Node):
         self.length         = None
         self.orflength      = None
         self.degree         = None
-        self.expression     = None
 
         if sequence is None:
             self.__query_node()
@@ -556,8 +563,16 @@ class PredictedNode(Node):
         """
         Gets expression data for a particular node, a particular experiment and a particular sample
         """
-        self.expression = experiment, sample
-        return self.expression
+        expression = None
+        query = EXPRESSION_QUERY % (self.database, self.symbol, experiment, sample)
+        results = graph.run(query)
+        results = results.data()
+        if results:
+            for row in results:
+                expression = row["exp"]
+        else:
+            raise NoExpressionData(self.symbol, self.database, experiment, sample)
+        return expression
 
     def get_graphelements(self, including=None):
         """
@@ -696,6 +711,18 @@ class NodeNotFound(Exception):
         self.symbol = symbol
     def __str__(self):
         return "Symbol %s not found in database %s." % (self.pnode.symbol, self.pnode.database)
+
+# ------------------------------------------------------------------------------
+class NoExpressionData(Exception):
+    """Exception node has no expression data"""
+    def __init__(self, symbol, database, experiment, sample):
+        self.symbol     = symbol
+        self.database   = database
+        self.experiment = experiment
+        self.sample     = sample
+    def __str__(self):
+        return "Expression for experiment %s and sample %s not found for node %s of database %s" % (self.experiment, self.sample, self.symbol, self.database)
+
 
 # ------------------------------------------------------------------------------
 class NoHomologFound(Exception):

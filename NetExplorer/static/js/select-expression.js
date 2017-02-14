@@ -69,10 +69,22 @@ $("#map-expression-btn-submit").on("click", function(){
             },
             success : function(data) {
                 $('#loading').hide();
-                $('#map-expression-dialog').slideToggle(250);
-                // Change cytoscape node colors
+                if (data === "no-expression") {
+                    alert("MEC");
+                    $("#map-expression-error-msg").html("No expression available for nodes in graph");
+                    $('#map-expression-error').slideToggle(200);
+                    setTimeout(function () {
+                        $('#map-expression-error').hide(200);
+                    }, ERRORTIME);
+                } else {
+                    // At least one node has expression
+                    // Change cytoscape node colors
+                    $('#map-expression-dialog').slideToggle(250);
+                    alert("EXITO");
+                }
             },
             error : function(err) {
+                alert("AJAX ERROR");
                 $('#loading').hide();
             }
         });

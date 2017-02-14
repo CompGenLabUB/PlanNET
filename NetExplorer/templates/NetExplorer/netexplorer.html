@@ -61,7 +61,7 @@
                 <hr>
                 <select id="select-expression" name="expression" class="selectpicker">
                     <option value="" selected disabled>Select Expression data</option>
-                    <option value="Experiment 1">Experiment 1</option>
+                    <option value="DGE">DGE</option>
                     <option value="Experiment 2">Experiment 2</option>
                     <option value="Experiment 3">Experiment 3</option>
                 </select>
@@ -80,25 +80,31 @@
                         <div class="tab-content ">
                             <div class="tab-pane active" id="1">
                                 <select id="select-sample" name="samples" class="selectpicker">
+                                    <!--
+                                        Will have to create a function that queries the database and
+                                        returns all the available samples for the 'selected' experiment, and then
+                                        fills this select section with the different <options>. For now, I will
+                                        work only with X1,X2 and Xin from the DGE experiment
+                                    -->
                                     <option value="" selected disabled>Select samples</option>
-                                    <option value="Sample 1">Sample 1</option>
-                                    <option value="Sample 2">Sample 2</option>
-                                    <option value="Sample 3">Sample 3</option>
+                                    <option value="X1">X1</option>
+                                    <option value="X2">X2</option>
+                                    <option value="Xin">Xin</option>
                                 </select>
                             </div>
                             <div class="tab-pane" id="2">
                                 <select id="select-sample1" name="samples" class="selectpicker">
                                     <option value="" selected disabled>Select samples</option>
-                                    <option value="Sample 1">Sample 1</option>
-                                    <option value="Sample 2">Sample 2</option>
-                                    <option value="Sample 3">Sample 3</option>
+                                    <option value="X1">X1</option>
+                                    <option value="X2">X2</option>
+                                    <option value="Xin">Xin</option>
                                 </select>
 
                                 <select id="select-sample2" name="samples" class="selectpicker">
                                     <option value="" selected disabled>Select samples</option>
-                                    <option value="Sample 1">Sample 1</option>
-                                    <option value="Sample 2">Sample 2</option>
-                                    <option value="Sample 3">Sample 3</option>
+                                    <option value="Sample 1">X1</option>
+                                    <option value="Sample 2">X2</option>
+                                    <option value="Sample 3">Xin</option>
                                 </select>
                             </div>
                         </div>
