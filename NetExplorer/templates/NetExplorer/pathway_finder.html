@@ -60,6 +60,17 @@
                     </div>
                 {% endif %}
 
+                {% if noplen %}
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h2>No nodes specified</h2>
+                        </div>
+                        <div class="panel-body">
+                            Please, select one <strong>Pathway length</strong>.
+                        </div>
+                    </div>
+                {% endif %}
+
                 {% if noresults %}
                     <div class="panel panel-warning">
                         <div class="panel-heading">
@@ -70,9 +81,8 @@
                             <div id="search-param-pathway">
                                 <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
                                 <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
+                                <img class="pfind-form-icon" src="{% static 'Images/plen.png' %}"/> Path Length: <strong>{{ plen }}</strong> <br>
                                 <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
-                                <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
-                                <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
                             </div>
                         </div>
                     </div>
@@ -84,9 +94,8 @@
                         <div class="panel-body">
                             <h2>Possible causes</h2>
                             <ul>
+                                <li>There is no Path of length {{ plen }} between the specified nodes in the interactome.</li>
                                 <li>The identifiers were not correctly spelled.</li>
-                                <li>If an including or an excluding node was specified, there are no paths between the two nodes that match this criteria.</li>
-                                <li>There is no path connecting the start node and the end node in the specified database.</li>
                             </ul>
                         </div>
                     </div>
@@ -104,11 +113,8 @@
                                 <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/> Database:  <strong>{{ database }} </strong><br>
                                 <img class="pfind-form-icon" src="{% static 'Images/starting-node-icon.png' %}"/> Starting Node: <strong>{{ snode }}</strong> <br>
                                 <img class="pfind-form-icon" src="{% static 'Images/ending-node-icon.png' %}"/> Final Node: <strong>{{ enode }}</strong> <br>
-                                <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including: <strong> </strong> <br>
-                                <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding: <strong> </strong> <br>
                             </div>
                             <h4> <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Number of Pathways: <strong>{{ numpath }}</strong></h4>
-                            <h4><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Path Length: <strong>{{ plen }}</strong></h4>
                         </div>
                     </div>
 
@@ -186,7 +192,6 @@
                     <option value="Dresden">Dresden</option>
                 </select>
 
-
                 <!-- START -->
                 <div class="panel panel-warning pfind-form-element">
                     <div class="panel-heading pfind-input-header">
@@ -196,6 +201,16 @@
                         <input type="text" class="form-control" name="start" placeholder="Enter Symbol">
                     </div>
                 </div>
+
+                <!-- PATH LENGTH -->
+                <img class="pfind-form-icon" src="{% static 'Images/plen.png' %}"/>
+                <select name="plen" class="selectpicker" title="Select Path Length">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
 
                 <!-- END -->
                 <div class="panel panel-warning pfind-form-element">
@@ -207,7 +222,16 @@
                     </div>
                 </div>
 
-                <!-- INCLUDING -->
+                <!-- SUBMIT BUTTON -->
+                <br>
+                <button id="pfind-btn" type="submit" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    Find
+                </button>
+
+
+                <!--
+                INCLUDING
                 <div class="panel panel-warning pfind-form-element">
                     <div class="panel-heading pfind-input-header">
                         <img class="pfind-form-icon" src="{% static 'Images/check.png' %}"/> Including
@@ -217,7 +241,7 @@
                     </div>
                 </div>
 
-                <!-- EXCLUDING -->
+                EXCLUDING
                 <div class="panel panel-warning pfind-form-element">
                     <div class="panel-heading pfind-input-header">
                         <img class="pfind-form-icon" src="{% static 'Images/uncheck.png' %}"/> Excluding
@@ -233,6 +257,7 @@
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     Find
                 </button>
+                -->
             </form>
 
 

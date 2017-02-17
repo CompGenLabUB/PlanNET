@@ -46,7 +46,7 @@ def query_node(symbol, database):
 
 
 # ------------------------------------------------------------------------------
-def get_shortest_paths(startnodes, endnodes, including, excluding):
+def get_shortest_paths(startnodes, endnodes, plen):
     '''
     This function gets all the possible shortest paths between the specified nodes.
     Returns a json string with all the nodes and edges, the length of the paths and
@@ -54,11 +54,9 @@ def get_shortest_paths(startnodes, endnodes, including, excluding):
     '''
     graphelements = list()
     numpath = 0
-    plen    = 0
     for snode in startnodes:
         for enode in endnodes:
-            paths = snode.path_to_node(enode, including, excluding)
-            plen = len(paths[0]['graph'].edges)
+            paths = snode.path_to_node(enode, plen)
             if paths is None:
                 # Return no-path that matches the query_node
                 continue
@@ -69,7 +67,7 @@ def get_shortest_paths(startnodes, endnodes, including, excluding):
                     graphelements[numpath].add_elements(path['graph'].edges)
                     graphelements[numpath] = (graphelements[numpath].to_json, round(path['score'], 2))
                     numpath += 1
-    return graphelements, plen, numpath
+    return graphelements, numpath
 
 
 # ------------------------------------------------------------------------------
@@ -428,20 +426,15 @@ def path_finder(request):
             return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True})
         if not request.GET['start'] or not request.GET['end']:
             return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True})
+        if not request.GET['plen']:
+            return render(request, 'NetExplorer/pathway_finder.html', {"noplen": True})
 
         # Search
         # Valid search
-        database = request.GET['database']
+        database   = request.GET['database']
+        plen       = request.GET['plen']
         startnodes = list()
         endnodes   = list()
-        including  = None
-        excluding  = None
-
-        if request.GET['including']:
-            including = request.GET['including'].split(",")
-        if request.GET['excluding']:
-            excluding = request.GET['excluding'].split(",")
-
         start_nodes_symbols = substitute_human_symbols([request.GET['start']], database)
         end_nodes_symbols   = substitute_human_symbols([request.GET['end']],   database)
 
@@ -461,23 +454,22 @@ def path_finder(request):
                 continue
 
         # Get shortest paths
-        graphelements, plen, numpath = get_shortest_paths(
+        graphelements, numpath = get_shortest_paths(
             startnodes,
             endnodes,
-            including,
-            excluding
+            plen
         )
         response = dict()
         response['database'] = database
         response['snode']    = request.GET['start']
         response['enode']    = request.GET['end']
+        response["plen"]     = plen
 
         if graphelements:
             # We have graphelements to display (there are paths)
             graphelements = sorted(graphelements, key=lambda k: k[1], reverse=True)
             response["pathways"] = graphelements
             response["numpath"]  = numpath
-            response["plen"]     = plen
             return render(request, 'NetExplorer/pathway_finder.html', response)
         else:
             # No results

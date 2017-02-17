@@ -8,7 +8,7 @@ from py2neo import Graph
 import json
 import logging
 
-graph     = Graph("https://192.168.0.2:7473/db/data/")
+graph     = Graph("https://192.168.0.2:7473/db/data/", password="5961")
 DATABASES = set(["Cthulhu", "Dresden", "Consolidated"])
 
 
@@ -82,8 +82,8 @@ NEIGHBOURS_QUERY = """
 """
 
 # ------------------------------------------------------------------------------
-SHORTESTPATH_QUERY = """
-    MATCH p=allShortestPaths( (n:%s)-[:INTERACT_WITH*]-(m:%s) )
+PATH_QUERY = """
+    MATCH p=( (n:%s)-[:INTERACT_WITH*..%s]-(m:%s) )
     WHERE n.symbol = '%s'
     AND m.symbol = '%s'
 """
@@ -141,7 +141,7 @@ class Node(object):
         """
 
 
-    def path_to_node(self, target, including=None, excluding=None):
+    def path_to_node(self, target, plen):
         """
         Given a target node object, this method finds all the shortest paths to that node,
         if there aren't any, it returns None.
@@ -149,14 +149,13 @@ class Node(object):
             'graph': GraphCytoscape object with the graph of the path
             'score': Score of the given path.
         """
-        query = SHORTESTPATH_QUERY % (self.database, target.database, self.symbol, target.symbol)
+        query = PATH_QUERY % (self.database, plen, target.database, self.symbol, target.symbol)
         query += """RETURN DISTINCT p,
                     reduce(int_prob = 0.0, r IN relationships(p) | int_prob + toFloat(r.int_prob))/length(p) AS total_prob"""
         results = graph.run(query).data()
 
         if results:
             paths = list()
-
             for path in results:
                 nodes_obj_in_path = list()
                 rels_obj_in_path  = list()
