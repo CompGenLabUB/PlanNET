@@ -195,6 +195,7 @@ $(document).ready(function(){
                 },
                 "Delete nodes": function() {
                     var slider_value = $('#sl1').val();
+                    $( this ).dialog( "close" );
                     cy.filter(function(i, element){
                         if ( element.isNode() ) {
                             var selector = "[probability>=" + slider_value + "]";
@@ -205,7 +206,6 @@ $(document).ready(function(){
                             }
                         }
                     });
-                    $( this ).dialog( "close" );
                 }
             }
         });
