@@ -4,11 +4,13 @@ Models of PlanNet
 
 from __future__ import unicode_literals
 from django.db import models
-from py2neo import Graph
+from py2neo import Graph, authenticate
 import json
 import logging
 
-graph     = Graph("https://192.168.0.2:7473/db/data/", password="5961")
+
+authenticate("192.168.0.2:7473", "neo4j", "5961")
+graph     = Graph("https://192.168.0.2:7473/db/data/", bolt=False)
 DATABASES = set(["Cthulhu", "Dresden", "Consolidated"])
 
 
