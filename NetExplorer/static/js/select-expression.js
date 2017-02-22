@@ -69,8 +69,8 @@ $("#map-expression-btn-submit").on("click", function(){
             },
             success : function(data) {
                 $('#loading').hide();
-                if (data === "no-expression") {
-                    alert("MEC");
+                if (data.status === "no-expression") {
+                    alert("No Expression response");
                     $("#map-expression-error-msg").html("No expression available for nodes in graph");
                     $('#map-expression-error').slideToggle(200);
                     setTimeout(function () {
@@ -79,8 +79,9 @@ $("#map-expression-btn-submit").on("click", function(){
                 } else {
                     // At least one node has expression
                     // Change cytoscape node colors
+                    alert("Expression retrieved");
                     $('#map-expression-dialog').slideToggle(250);
-                    alert("EXITO");
+                    console.log(data);
                 }
             },
             error : function(err) {

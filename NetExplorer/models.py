@@ -31,6 +31,13 @@ PREDNODE_QUERY = """
         r.blast_brh AS blast_brh,
         r.pfam_brh AS pfam_brh LIMIT 1
 """
+# ------------------------------------------------------------------------------
+
+EXPERIMENT_QUERY = """
+    MATCH (n:Experiment)
+    WHERE n.id = "%s"
+    RETURN n.id as identifier, n.maxexp as maxexp, n.minexp as minexp, n.reference as reference
+"""
 
 # ------------------------------------------------------------------------------
 EXPRESSION_QUERY = """
@@ -565,14 +572,14 @@ class PredictedNode(Node):
         Gets expression data for a particular node, a particular experiment and a particular sample
         """
         expression = None
-        query = EXPRESSION_QUERY % (self.database, self.symbol, experiment, sample)
+        query = EXPRESSION_QUERY % (self.database, self.symbol, experiment.id, sample)
         results = graph.run(query)
         results = results.data()
         if results:
             for row in results:
                 expression = row["exp"]
         else:
-            raise NoExpressionData(self.symbol, self.database, experiment, sample)
+            raise NoExpressionData(self.symbol, self.database, experiment.id, sample)
         return expression
 
     def get_graphelements(self, including=None):
@@ -596,6 +603,46 @@ class PredictedNode(Node):
                 added_elements.add((self.symbol, interaction.target.symbol))
                 edges.append( interaction )
         return nodes, edges
+
+# ------------------------------------------------------------------------------
+class Experiment(object):
+    """
+    Class for gene expresssion experiments
+    """
+    def __init__(self, identifier):
+        self.id        = identifier
+        self.reference = None
+        self.minexp    = None
+        self.maxexp    = None
+        if not self.__get_minmax():
+            raise ExperimentNotFound(identifier)
+
+    def __get_minmax(self):
+        """
+        Checks if the specified experiment exists in the database and gets the max and min expression
+        ranges defined aswell as the reference.
+        """
+        query   = EXPERIMENT_QUERY % (self.id)
+        results = graph.run(query)
+        results = results.data()
+        if results:
+            self.maxexp    = results[0]["maxexp"]
+            self.minexp    = results[0]["minexp"]
+            self.reference = results[0]["reference"]
+            return True
+        else:
+            return False
+
+    def to_json(self):
+        """
+        Returns a json string with the info about the experiment
+        """
+        json_dict = dict()
+        json_dict['id']        = self.id
+        json_dict['reference'] = self.reference
+        json_dict['minexp']    = self.minexp
+        json_dict['maxexp']    = self.maxexp
+        return json.dumps(json_dict)
 
 # ------------------------------------------------------------------------------
 class GraphCytoscape(object):
@@ -724,6 +771,24 @@ class NoExpressionData(Exception):
     def __str__(self):
         return "Expression for experiment %s and sample %s not found for node %s of database %s" % (self.experiment, self.sample, self.symbol, self.database)
 
+# ------------------------------------------------------------------------------
+class ExperimentNotFound(Exception):
+    """
+    Exception thrown when trying to create a experiment object that was not found on the DB
+    """
+    def __init__(self, experiment):
+        self.experiment = experiment
+    def __str__(self):
+        return "Experiment %s not found in database" % self.experiment
+
+# ------------------------------------------------------------------------------
+class SampleNotAvailable(Exception):
+    """Exception raised when a specified sample is not found for a particular experiment"""
+    def __init__(self, experiment, sample):
+        self.experiment = experiment
+        self.sample     = sample
+    def __str__(self):
+        return "Sample %s not found for experiment %s in database" % (self.sample, self.experiment)
 
 # ------------------------------------------------------------------------------
 class NoHomologFound(Exception):

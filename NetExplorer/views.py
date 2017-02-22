@@ -6,7 +6,7 @@ from django.shortcuts   import render
 from django.shortcuts   import render_to_response
 from django.http        import HttpResponse
 from django.template    import RequestContext
-from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase, NoExpressionData, GraphCytoscape
+from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase, NoExpressionData, GraphCytoscape, Experiment, ExperimentNotFound, SampleNotAvailable
 from subprocess import Popen, PIPE, STDOUT
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import tempfile
@@ -388,9 +388,21 @@ def map_expression(request):
     if request.is_ajax():
         nodes       = request.GET['nodes'].split(",")
         databases   = request.GET['databases'].split(",")
-        experiment  = request.GET['experiment']
         sample      = request.GET['sample']
         comp_type   = request.GET['type'] # Can be 'one-sample' or 'two-sample'
+        # Check if experiment is in DB
+        response = dict()
+        response['status']     = ""
+        response['experiment'] = ""
+        response['expression']       = ""
+        try:
+            experiment  = Experiment(request.GET['experiment'])
+            response['experiment'] = experiment.to_json()
+        except ExperimentNotFound as err:
+            print(err)
+            response['status'] = "no-expression"
+            response = json.dumps(response)
+            return HttpResponse(response, content_type='application/json; charset=utf8')
         if comp_type == "two-sample":
             # We have to samples to compare
             sample = sample.split(":")
@@ -400,14 +412,16 @@ def map_expression(request):
             try:
                 expression[node_id] = node.get_expression(experiment, sample)
             except NoExpressionData:
-                print("No exp data for %s %s and %s" %(node.symbol, experiment, sample))
+                print("No exp data for %s %s and %s" %(node.symbol, experiment.id, sample))
                 continue
         if not expression:
-            response = "no-expression"
-            return HttpResponse(response, content_type='text/plain; charset=utf8')
+            response['status'] = "no-expression"
+            response = json.dumps(response)
+            return HttpResponse(response, content_type='application/json; charset=utf8')
         else:
-            json_data = json.dumps(expression)
-            return HttpResponse(json_data, content_type="application/json")
+            response['expression']       = json.dumps(expression)
+            response = json.dumps(response)
+            return HttpResponse(response, content_type="application/json")
     else:
         return render(request, 'NetExplorer/404.html')
 
