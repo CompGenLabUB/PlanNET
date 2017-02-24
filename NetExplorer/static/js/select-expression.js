@@ -79,8 +79,18 @@ $("#map-expression-btn-submit").on("click", function(){
                 } else {
                     // At least one node has expression
                     // Change cytoscape node colors
-                    alert("Expression retrieved");
+                    var expression = jQuery.parseJSON(data.expression);
                     $('#map-expression-dialog').slideToggle(250);
+                    // Iterate through nodes
+                    cy.filter(function(i, element){
+                        if ( element.isNode() && element.data("database") != "Human") {
+                            if (element.data("id") in expression) {
+                                element.css("background-color", expression[element.data("id")])
+                            } else {
+                                element.css("background-color", "#000")
+                            }
+                        }
+                    });
                     console.log(data);
                 }
             },

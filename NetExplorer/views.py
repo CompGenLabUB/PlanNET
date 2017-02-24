@@ -397,7 +397,7 @@ def map_expression(request):
         response['expression']       = ""
         try:
             experiment = Experiment(request.GET['experiment'])
-            experiment.color_gradient("#ca4d00","#0d5591", 5)
+            experiment.color_gradient("#fff","#0d5591")
             response['experiment'] = experiment.to_json()
         except ExperimentNotFound as err:
             print(err)
@@ -413,8 +413,9 @@ def map_expression(request):
             try:
                 color = ""
                 for bin_exp in experiment.gradient:
-                    if node.get_expression(experiment, sample) >= bin_exp[0]:
+                    if node.get_expression(experiment, sample) <= bin_exp[0]:
                         color = bin_exp[1]
+                        break
                     else:
                         continue
                 expression[node_id] = color
