@@ -39,10 +39,23 @@ var stylesheet = cytoscape.stylesheet()
             'content': '',
             'opacity': 0.8
         })
+    .selector('node[database = "Cthulhu"]')
+        .css({
+            'shape': 'circle',
+        })
+    .selector('node[database = "Consolidated"]')
+        .css({
+            'shape': 'triangle',
+        })
+    .selector('node[database = "Dresden"]')
+        .css({
+            'shape': 'pentagon',
+        })
     .selector('node[database = "Human"]')
         .css({
             'shape': 'diamond',
         });
+
 
 // Cytoscape variable definition
 var cy = cytoscape({
