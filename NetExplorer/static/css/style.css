@@ -867,6 +867,7 @@ input[type="file"] {
 }
 .pfind-form-icon {
     height: 40px;
+    width: auto;
     margin-right: 2%;
     vertical-align: middle;
 }

@@ -862,8 +862,12 @@ input[type="file"] {
     border-radius:20px;
 }
 
+#pfind-btn:hover {
+    opacity: 0.7;
+}
 .pfind-form-icon {
     height: 40px;
+    width: auto;
     margin-right: 2%;
     vertical-align: middle;
 }
@@ -894,6 +898,12 @@ input[type="file"] {
     margin-left: 6%;
 }
 
+#pfind-btn {
+    width: 250px;
+    height: auto;
+    border: 0;
+
+}
 
 
 
