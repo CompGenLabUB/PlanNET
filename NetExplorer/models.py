@@ -7,6 +7,8 @@ from django.db import models
 from py2neo import Graph, authenticate
 import json
 import logging
+from colour import Color
+import math
 
 
 authenticate("192.168.0.2:7473", "neo4j", "5961")
@@ -614,6 +616,7 @@ class Experiment(object):
         self.reference = None
         self.minexp    = None
         self.maxexp    = None
+        self.gradient  = None
         if not self.__get_minmax():
             raise ExperimentNotFound(identifier)
 
@@ -642,7 +645,35 @@ class Experiment(object):
         json_dict['reference'] = self.reference
         json_dict['minexp']    = self.minexp
         json_dict['maxexp']    = self.maxexp
+        json_dict['gradient']  = dict()
+        for tup in self.gradient:
+            json_dict['gradient'][tup[0]] = tup[1]
         return json.dumps(json_dict)
+
+    def color_gradient(self, from_color, to_color, bins):
+        """
+        This method returns a color gradient of length bins from "from_color" to "to_color".
+        It will divide the range from minexp to maxexp in bins number of bins, and then assign
+        a color to each bin.
+        """
+        if bins < 1:
+            logging.info("Wrong number of bins to create color gradient for experiment %s." % self.id)
+        # Get the binsize in order to have bins number of bins.
+        range_exp = ((self.maxexp - self.minexp + 1) / (bins - 1))
+        if self.maxexp % range_exp != 0:
+            # If we can't divide the range in "bins" of size range_exp, we add 1 to range_exp in order
+            # to always have the maxexp inside the range of colors
+            range_exp += 1
+        s_color = Color(from_color)
+        e_color = Color(to_color)
+        range_colors = list(s_color.range_to(e_color, bins))
+        range_colors.reverse()
+        exp_to_color = list()
+        for i in range(self.minexp, self.maxexp, range_exp):
+            exp_to_color.append((i,  range_colors.pop().get_hex()))
+        exp_to_color.append((self.maxexp,  range_colors.pop().get_hex()))
+        self.gradient = exp_to_color
+
 
 # ------------------------------------------------------------------------------
 class GraphCytoscape(object):
