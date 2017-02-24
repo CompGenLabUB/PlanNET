@@ -71,6 +71,18 @@ $(document).ready(function(){
     });
 
 
+    // MOUSEOVER ON NODES
+    cy.on('mouseover', 'node', function (evt) {
+        $('html,body').css('cursor', 'pointer');
+        this.css("opacity", "0.85");
+    } );
+
+    cy.on('mouseout', 'node', function (evt) {
+        $('html,body').css('cursor', 'default');
+        this.css("opacity", "1");
+    });
+
+
 
     // FILTER edges with probability below threshold
     $('#sl1').slider().on('slideStop', function(ev){
@@ -195,6 +207,7 @@ $(document).ready(function(){
                 },
                 "Delete nodes": function() {
                     var slider_value = $('#sl1').val();
+                    $( this ).dialog( "close" );
                     cy.filter(function(i, element){
                         if ( element.isNode() ) {
                             var selector = "[probability>=" + slider_value + "]";
@@ -205,7 +218,6 @@ $(document).ready(function(){
                             }
                         }
                     });
-                    $( this ).dialog( "close" );
                 }
             }
         });
