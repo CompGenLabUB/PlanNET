@@ -54,7 +54,7 @@ $("#map-expression-btn-submit").on("click", function(){
     } else {
         $.ajax({
             type: "GET",
-            url: "/map_expression",
+            url: "/PlanNET/map_expression",
             cache: true,
             data: {
                 'experiment': $("#select-expression").val(),
@@ -79,6 +79,7 @@ $("#map-expression-btn-submit").on("click", function(){
                 } else {
                     // At least one node has expression
                     // Change cytoscape node colors
+                    console.log(data);
                     var expression = jQuery.parseJSON(data.expression);
                     $('#map-expression-dialog').slideToggle(250);
                     // Iterate through nodes
