@@ -54,7 +54,7 @@ $("#map-expression-btn-submit").on("click", function(){
     } else {
         $.ajax({
             type: "GET",
-            url: "/PlanNET/map_expression",
+            url: "/map_expression",
             cache: true,
             data: {
                 'experiment': $("#select-expression").val(),
@@ -69,10 +69,33 @@ $("#map-expression-btn-submit").on("click", function(){
             },
             success : function(data) {
                 $('#loading').hide();
-                $('#map-expression-dialog').slideToggle(250);
-                // Change cytoscape node colors
+                if (data.status === "no-expression") {
+                    alert("No Expression response");
+                    $("#map-expression-error-msg").html("No expression available for nodes in graph");
+                    $('#map-expression-error').slideToggle(200);
+                    setTimeout(function () {
+                        $('#map-expression-error').hide(200);
+                    }, ERRORTIME);
+                } else {
+                    // At least one node has expression
+                    // Change cytoscape node colors
+                    var expression = jQuery.parseJSON(data.expression);
+                    $('#map-expression-dialog').slideToggle(250);
+                    // Iterate through nodes
+                    cy.filter(function(i, element){
+                        if ( element.isNode() && element.data("database") != "Human") {
+                            if (element.data("id") in expression) {
+                                element.css("background-color", expression[element.data("id")])
+                            } else {
+                                element.css("background-color", "#404040")
+                            }
+                        }
+                    });
+                    console.log(data);
+                }
             },
             error : function(err) {
+                alert("AJAX ERROR");
                 $('#loading').hide();
             }
         });

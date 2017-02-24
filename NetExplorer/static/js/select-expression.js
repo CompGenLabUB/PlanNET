@@ -87,7 +87,7 @@ $("#map-expression-btn-submit").on("click", function(){
                             if (element.data("id") in expression) {
                                 element.css("background-color", expression[element.data("id")])
                             } else {
-                                element.css("background-color", "#000")
+                                element.css("background-color", "#404040")
                             }
                         }
                     });
