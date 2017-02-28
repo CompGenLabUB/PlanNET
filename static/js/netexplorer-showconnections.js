@@ -5,7 +5,7 @@ $("#show_connections").on("click", function(){
 
     $.ajax({
         type: "GET",
-        url: "/show_connections",
+        url: "/PlanNET/show_connections",
         cache: true,
         data: {
             'nodes': elements.node_ids,
