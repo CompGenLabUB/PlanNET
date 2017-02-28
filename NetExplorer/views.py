@@ -386,9 +386,10 @@ def map_expression(request):
     View to handle a possible ajax request to map expression onto graph
     """
     if request.is_ajax():
-        nodes       = request.GET['nodes'].split(",")
-        databases   = request.GET['databases'].split(",")
-        sample      = request.GET['sample']
+        nodes          = request.GET['nodes'].split(",")
+        databases      = request.GET['databases'].split(",")
+        sample         = request.GET['sample']
+        selected_color = request.GET['color']
         comp_type   = request.GET['type'] # Can be 'one-sample' or 'two-sample'
         # Check if experiment is in DB
         response = dict()
@@ -397,7 +398,7 @@ def map_expression(request):
         response['expression']       = ""
         try:
             experiment = Experiment(request.GET['experiment'])
-            experiment.color_gradient("#fff","#0d5591")
+            experiment.color_gradient(selected_color)
             response['experiment'] = experiment.to_json()
         except ExperimentNotFound as err:
             print(err)

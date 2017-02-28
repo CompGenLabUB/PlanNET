@@ -652,14 +652,16 @@ class Experiment(object):
             json_dict['gradient'][tup[0]] = tup[1]
         return json.dumps(json_dict)
 
-    def color_gradient(self, from_color, to_color):
+    def color_gradient(self, to_color):
         """
         This method returns a color gradient of length bins from "from_color" to "to_color".
         It will divide the range from minexp to maxexp in bins number of bins, and then assign
         a color to each bin.
         """
-        s_color = Color(from_color)
         e_color = Color(to_color)
+        s_color = Color(to_color)
+        s_color.saturation = 0.01
+        s_color.luminance = 1
         range_colors = list(s_color.range_to(e_color, 20))
         range_colors.reverse()
         exp_to_color = list()

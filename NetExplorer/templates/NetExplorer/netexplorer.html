@@ -47,7 +47,12 @@
         </div>
         {% endif %}
 
-        <div id="cyt"><img src="{% static 'Images/loading.gif' %}" id="loading"/></div>
+        <div id="cyt">
+            <img src="{% static 'Images/loading.gif' %}" id="loading"/>
+            <div id="color-gradient">
+
+            </div>
+        </div>
 
         <!-- Map expression div -->
         <div id="map-expression-dialog">
@@ -106,6 +111,37 @@
                                     <option value="Sample 2">X2</option>
                                     <option value="Sample 3">Xin</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <h2>Select Colors</h2>
+                <div class="color-picker-container">
+                    <div class="row control-row">
+                        <div class="col-sm-3 pick-color">
+                            <div class="pick-color-group group-selected">
+                                <div class="pick-color-select">&nbsp</div>
+                                <div class="pick-color-select-blue pick-color-select-color">&nbsp</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 pick-color">
+                            <div class="pick-color-group">
+                                <div class="pick-color-select">&nbsp</div>
+                                <div class="pick-color-select-purple pick-color-select-color">&nbsp</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 pick-color">
+                            <div class="pick-color-group">
+                                <div class="pick-color-select">&nbsp</div>
+                                <div class="pick-color-select-green pick-color-select-color">&nbsp</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 pick-color">
+                            <div class="pick-color-group">
+                                <div class="pick-color-select">&nbsp</div>
+                                <div class="pick-color-select-red pick-color-select-color">&nbsp</div>
                             </div>
                         </div>
                     </div>

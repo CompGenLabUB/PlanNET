@@ -7,7 +7,7 @@ function getCard(card_data) {
     elementID = "card-overlay";
     $.ajax({
         type: "GET",
-        url: "/PlanNET/info_card",
+        url: "/info_card",
         data: {
             'target'    : card_data.target,
             'targetDB'  : card_data.targetDB,

@@ -683,7 +683,7 @@
 #map-expression-dialog-header {
     background-color: #E9E9E9;
     width: 99%;
-    height: 4%;
+    height: 40px;
     margin-left: 0.5%;
     margin-top: 0.5%;
     padding: 1%;
@@ -1078,4 +1078,103 @@ input[type="file"] {
 .pfam-line-table-td-text {
     text-align: center;
     margin-right: 0 !important;
+}
+
+/* COLOR GRADIENT */
+#color-gradient {
+    display: none;
+    margin-left: 10px;
+    margin-top: 10px;
+    position: absolute;
+    z-index: 10000;
+}
+
+#color-gradient-table {
+    background-color: white;
+    margin: 0 auto;
+}
+
+#gradient-title {
+    text-align: center;
+    color: #777777;
+}
+
+.subtitle {
+    font-size: 10px;
+    color: #777777;
+}
+.color-gradient-td-color {
+    width: 25px;
+    border: solid 1px #777777;
+}
+
+.color-gradient-td-color-empty {
+    width: 25px;
+    border: solid 1px white;
+}
+
+
+.color-picker-container {
+    width: 80%;
+    height: auto;
+}
+
+.pick-color {
+    padding: 1%;
+    text-align: center;
+}
+
+.pick-color-select {
+    background-color: white;
+    border: solid 1px #777777;
+}
+
+.pick-color-select-color {
+
+}
+
+.pick-color-select-blue {
+    background-color: #0029ff;
+    border: solid 1px #777777;
+}
+
+.pick-color-select-red {
+    background-color: #ff0000;
+    border: solid 1px #777777;
+}
+
+.pick-color-select-green {
+    background-color: #00ff12;
+    border: solid 1px #777777;
+}
+
+.pick-color-select-purple {
+    background-color: #dd1697;
+    border: solid 1px #777777;
+}
+
+.pick-color-group {
+    display: inline-block;
+    opacity: 0.4;
+    width: 25%;
+}
+.pick-color-group:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.pick-color-group.group-selected {
+    opacity: 1;
+    border: solid 2px black !important;
+}
+
+.select-color {
+    display: none;
+}
+
+.color-gradient-td {
+    text-align: center;
+    font-size: 12px;
+    padding-left: 5px;
+    color: #777777;
 }
