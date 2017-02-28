@@ -18,7 +18,7 @@ $("#map-expression-error").hide();
 // Function to change the colors of the nodes depending on expression files
 
 $(".pick-color-group").on("click", function() {
-    $(".pick-color-group").removeClass("group-selected");
+    $(".pick-color-group.group-selected").removeClass("group-selected");
     $(this).addClass("group-selected");
 });
 
@@ -108,9 +108,9 @@ $("#map-expression-btn-submit").on("click", function(){
                     cy.filter(function(i, element){
                         if ( element.isNode() && element.data("database") != "Human") {
                             if (element.data("id") in expression) {
-                                element.css("background-color", expression[element.data("id")])
+                                element.css("background-color", expression[element.data("id")]);
                             } else {
-                                element.css("background-color", "#404040")
+                                element.css("background-color", "#404040");
                             }
                         }
                     });
@@ -119,7 +119,7 @@ $("#map-expression-btn-submit").on("click", function(){
                     gradient_html += "<table id='color-gradient-table'>";
                     console.log(data);
                     console.log(experiment);
-                    var sorted_keys = Object.keys(experiment.gradient).sort(function(a,b) { return b - a; } )
+                    var sorted_keys = Object.keys(experiment.gradient).sort(function(a,b) { return b - a; } );
                     var previous = sorted_keys[0];
 
                     for (var bin in sorted_keys) {
