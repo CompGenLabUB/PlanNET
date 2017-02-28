@@ -672,7 +672,7 @@
     margin: 5%;
     width: 60%;
     height: 80%;
-    z-index: 80;
+    z-index: 1000000000;
     position: fixed;
     background-color: white;
     border-color: #D4D4D4;
