@@ -1115,7 +1115,7 @@ input[type="file"] {
 
 
 .color-picker-container {
-    width: 80%;
+    width: 50%;
     height: auto;
 }
 
@@ -1144,7 +1144,7 @@ input[type="file"] {
 }
 
 .pick-color-select-green {
-    background-color: #00ff12;
+    background-color: #42d242;
     border: solid 1px #777777;
 }
 
@@ -1156,7 +1156,7 @@ input[type="file"] {
 .pick-color-group {
     display: inline-block;
     opacity: 0.4;
-    width: 25%;
+    width: 40%;
 }
 .pick-color-group:hover {
     cursor: pointer;
@@ -1165,7 +1165,7 @@ input[type="file"] {
 
 .pick-color-group.group-selected {
     opacity: 1;
-    border: solid 2px black !important;
+    border: solid 2px #777777 !important;
 }
 
 .select-color {
@@ -1177,4 +1177,29 @@ input[type="file"] {
     font-size: 12px;
     padding-left: 5px;
     color: #777777;
+}
+
+#legend {
+    margin-left: 10px;
+    bottom: 10px;
+    position: absolute;
+    z-index: 100;
+}
+
+.legend-tooltip {
+    color: #404040;
+}
+
+.legend-tooltip:hover {
+    color: #404040;
+    opacity: 0.7;
+}
+
+.legend-icon {
+    font-size: 50px;
+}
+
+.legend-db {
+    width: 30px;
+    height: auto;
 }
