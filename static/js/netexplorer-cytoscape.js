@@ -187,6 +187,7 @@ $(document).ready(function(){
                 "Delete graph": function() {
                     cy.nodes().remove();
                     $( this ).dialog( "close" );
+                    $('#color-gradient').hide();
                 }
             }
         });
