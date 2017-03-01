@@ -15,6 +15,7 @@ import json
 import re
 import sys
 import logging
+import math
 
 # -----------------------
 # CONSTANTS
@@ -69,6 +70,27 @@ def get_shortest_paths(startnodes, endnodes, plen):
                     numpath += 1
     return graphelements, numpath
 
+# ------------------------------------------------------------------------------
+def get_expression_data(nodes, databases, experiment, samples):
+    """
+    Gets a list of nodes and returns expression data for a given sample as a dictionary.
+        expression_data[node.symbol][sample]
+    """
+    expression_data = dict()
+    for node_id, database in zip(nodes, databases):
+        try:
+            node = query_node(node_id, database)
+            expression_data[node.symbol] = dict()
+            for sample in samples:
+                # Get expression for each node and each sample
+                try:
+                    expression_data[node.symbol][sample] = node.get_expression(experiment, sample)
+                except NoExpressionData as err:
+                    print(err)
+                    expression_data.pop(node.symbol, None)
+        except NodeNotFound as err:
+            print(err)
+    return expression_data
 
 # ------------------------------------------------------------------------------
 def substitute_human_symbols(symbols, database):
@@ -386,11 +408,12 @@ def map_expression(request):
     View to handle a possible ajax request to map expression onto graph
     """
     if request.is_ajax():
-        nodes          = request.GET['nodes'].split(",")
-        databases      = request.GET['databases'].split(",")
-        sample         = request.GET['sample']
-        selected_color = request.GET['color']
-        comp_type   = request.GET['type'] # Can be 'one-sample' or 'two-sample'
+        nodes      = request.GET['nodes'].split(",")
+        databases  = request.GET['databases'].split(",")
+        sample     = request.GET['sample']
+        to_color   = request.GET['to_color']
+        from_color = request.GET['from_color']
+        comp_type  = request.GET['type'] # Can be 'one-sample' or 'two-sample'
         # Check if experiment is in DB
         response = dict()
         response['status']     = ""
@@ -398,42 +421,54 @@ def map_expression(request):
         response['expression']       = ""
         try:
             experiment = Experiment(request.GET['experiment'])
-            experiment.color_gradient(selected_color)
+            experiment.color_gradient(from_color, to_color, comp_type)
             response['experiment'] = experiment.to_json()
         except ExperimentNotFound as err:
-            print(err)
+            logging.info(err)
             response['status'] = "no-expression"
             response = json.dumps(response)
             return HttpResponse(response, content_type='application/json; charset=utf8')
         if comp_type == "two-sample":
             # We have to samples to compare
             sample = sample.split(":")
-        expression = dict()
-        for node_id, database in zip(nodes, databases):
-            node = query_node(node_id, database)
-            try:
-                color = ""
-                for bin_exp in experiment.gradient:
-                    if node.get_expression(experiment, sample) <= bin_exp[0]:
-                        color = bin_exp[1]
-                        break
-                    else:
-                        continue
-                expression[node_id] = color
-            except NoExpressionData:
-                print("No exp data for %s %s and %s" %(node.symbol, experiment.id, sample))
-                continue
-        if not expression:
+        else:
+            sample = [sample]
+        expression_data = get_expression_data(nodes, databases, experiment, sample)
+        print("HELLO")
+        response['expression'] = dict()
+        if comp_type == "two-sample":
+            foldchange = dict()
+            for node in expression_data:
+                exp_sample1 = expression_data[node][sample[0]]
+                exp_sample2 = expression_data[node][sample[1]]
+                if exp_sample1 == 0 or exp_sample2 == 0:
+                    # Don't know how to deal with zeros
+                    continue
+                foldchange[node] = dict()
+                foldchange[node]["foldchange"] = math.log10(exp_sample2 / exp_sample1) / math.log10(2)
+            # Now remove samples from list sample and add new key to expression_data dictionary with
+            # fold changes.
+            sample = list()
+            sample.append("foldchange")
+            expression_data = foldchange
+
+        for node in expression_data:
+            for bin_exp in experiment.gradient:
+                if expression_data[node][sample[0]] >= bin_exp[0]:
+                    response['expression'][node] = bin_exp[1] # Color
+                else:
+                    continue
+        if not response['expression']:
             response['status'] = "no-expression"
             response = json.dumps(response)
             return HttpResponse(response, content_type='application/json; charset=utf8')
         else:
-            response['expression']       = json.dumps(expression)
+            response['expression']  = json.dumps(response['expression'])
+            response['type']        = comp_type
             response = json.dumps(response)
             return HttpResponse(response, content_type="application/json")
     else:
         return render(request, 'NetExplorer/404.html')
-
 
 # ------------------------------------------------------------------------------
 def path_finder(request):

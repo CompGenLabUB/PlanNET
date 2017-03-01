@@ -47,6 +47,8 @@
         </div>
         {% endif %}
 
+
+        <!-- CYTOSCAPE DIV -->
         <div id="cyt">
             <img src="{% static 'Images/loading.gif' %}" id="loading"/>
             <div id="color-gradient"></div>
@@ -68,7 +70,7 @@
             </div>
         </div>
 
-        <!-- Map expression div -->
+        <!-- MAP EXPRESSION DIV -->
         <div id="map-expression-dialog">
             <div id="map-expression-dialog-header">
                 <div id="close-map-expression" title="Close">
@@ -88,99 +90,141 @@
                 <hr>
                 <div class="sample-container">
                     <div id="exTab2" class="container">
-                    <ul class="nav nav-tabs">
-                    	<li id="one-sample" class="active">
-                            <a  href="#1" data-toggle="tab">One Sample</a>
-                    	</li>
-                    	<li id="two-sample">
-                            <a href="#2" data-toggle="tab">Two Samples</a>
-                    	</li>
-                    </ul>
-                        <div class="tab-content ">
-                            <div class="tab-pane active" id="1">
-                                <select id="select-sample" name="samples" class="selectpicker">
-                                    <!--
-                                        Will have to create a function that queries the database and
-                                        returns all the available samples for the 'selected' experiment, and then
-                                        fills this select section with the different <options>. For now, I will
-                                        work only with X1,X2 and Xin from the DGE experiment
-                                    -->
-                                    <option value="" selected disabled>Select samples</option>
-                                    <option value="X1">X1</option>
-                                    <option value="X2">X2</option>
-                                    <option value="Xin">Xin</option>
-                                </select>
-                            </div>
-                            <div class="tab-pane" id="2">
-                                <select id="select-sample1" name="samples" class="selectpicker">
-                                    <option value="" selected disabled>Select samples</option>
-                                    <option value="X1">X1</option>
-                                    <option value="X2">X2</option>
-                                    <option value="Xin">Xin</option>
-                                </select>
+                        <ul class="nav nav-tabs">
+                        	<li id="one-sample" class="active">
+                                <a  id="one-sample-toggle" href="#1" data-toggle="tab">One Sample</a>
+                        	</li>
+                        	<li id="two-sample">
+                                <a id="two-sample-toggle" href="#2" data-toggle="tab">Two Samples</a>
+                        	</li>
+                        </ul>
+                            <div class="tab-content ">
+                                <div class="tab-pane active" id="1">
+                                    <!-- PANEL ONE -->
+                                    <select id="select-sample" name="samples" class="selectpicker">
+                                        <!--
+                                            Will have to create a function that queries the database and
+                                            returns all the available samples for the 'selected' experiment, and then
+                                            fills this select section with the different <options>. For now, I will
+                                            work only with X1,X2 and Xin from the DGE experiment
+                                        -->
+                                        <option value="" selected disabled>Select samples</option>
+                                        <option value="X1">X1</option>
+                                        <option value="X2">X2</option>
+                                        <option value="Xin">Xin</option>
+                                    </select>
 
-                                <select id="select-sample2" name="samples" class="selectpicker">
-                                    <option value="" selected disabled>Select samples</option>
-                                    <option value="Sample 1">X1</option>
-                                    <option value="Sample 2">X2</option>
-                                    <option value="Sample 3">Xin</option>
-                                </select>
+                                    <br><br>
+                                    <h4>Select Colors</h4>
+                                    <hr>
+                                    <div class="color-picker-container">
+                                        <div class="row control-row">
+                                            <div class="col-sm-3 pick-color">
+                                                <div class="pick-color-group group-selected default-1">
+                                                    <div class="pick-color-select-blue pick-color-select-tocolor">&nbsp</div>
+                                                    <div class="pick-color-select-bluestart pick-color-select-fromcolor">&nbsp</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 pick-color">
+                                                <div class="pick-color-group">
+                                                    <div class="pick-color-select-purple pick-color-select-tocolor">&nbsp</div>
+                                                    <div class="pick-color-select-purplestart pick-color-select-fromcolor">&nbsp</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 pick-color">
+                                                <div class="pick-color-group">
+                                                    <div class="pick-color-select-green pick-color-select-tocolor">&nbsp</div>
+                                                    <div class="pick-color-select-greenstart pick-color-select-fromcolor">&nbsp</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 pick-color">
+                                                <div class="pick-color-group">
+                                                    <div class="pick-color-select-red pick-color-select-tocolor">&nbsp</div>
+                                                    <div class="pick-color-select-redstart pick-color-select-fromcolor">&nbsp</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="2">
+                                    <!-- PANEL TWO -->
+                                    <select id="select-sample1" name="samples" class="selectpicker">
+                                        <option value="" selected disabled>Select samples</option>
+                                        <option value="X1">X1</option>
+                                        <option value="X2">X2</option>
+                                        <option value="Xin">Xin</option>
+                                    </select>
+
+                                    <select id="select-sample2" name="samples" class="selectpicker">
+                                        <option value="" selected disabled>Select samples</option>
+                                        <option value="X1">X1</option>
+                                        <option value="X2">X2</option>
+                                        <option value="Xin">Xin</option>
+                                    </select>
+
+                                    <br><br>
+                                    <h4>Select Colors</h4>
+                                    <hr>
+                                    <div class="color-picker-container">
+                                        <div class="row control-row">
+                                            <div class="col-sm-3 pick-color">
+                                                <div class="pick-color-group group-selected default-2">
+                                                    <div class="pick-color-select-green pick-color-select-tocolor">&nbsp</div>
+                                                    <div class="pick-color-select-white">&nbsp</div>
+                                                    <div class="pick-color-select-red pick-color-select-fromcolor">&nbsp</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 pick-color">
+                                                <div class="pick-color-group group-selected">
+                                                    <div class="pick-color-select-blue pick-color-select-tocolor">&nbsp</div>
+                                                    <div class="pick-color-select-white">&nbsp</div>
+                                                    <div class="pick-color-select-red pick-color-select-fromcolor">&nbsp</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 pick-color">
+                                                <div class="pick-color-group group-selected">
+                                                    <div class="pick-color-select-green pick-color-select-tocolor">&nbsp</div>
+                                                    <div class="pick-color-select-white">&nbsp</div>
+                                                    <div class="pick-color-select-blue pick-color-select-fromcolor">&nbsp</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 pick-color">
+                                                <div class="pick-color-group group-selected">
+                                                    <div class="pick-color-select-blue pick-color-select-tocolor">&nbsp</div>
+                                                    <div class="pick-color-select-white">&nbsp</div>
+                                                    <div class="pick-color-select-yellow pick-color-select-fromcolor">&nbsp</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <h2>Select Colors</h2>
+
+
+            <div id="map-expression-dialog-send">
+                <div id="map-expression-error" class="panel panel-danger">
+                    <div class="panel-heading">
+                        Error
+                    </div>
+                    <div class="panel-body" id="map-expression-error-msg">
+                    </div>
+                </div>
                 <hr>
-                <div class="color-picker-container">
-                    <div class="row control-row">
-                        <div class="col-sm-3 pick-color">
-                            <div class="pick-color-group group-selected">
-                                <div class="pick-color-select">&nbsp</div>
-                                <div class="pick-color-select-blue pick-color-select-color">&nbsp</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3 pick-color">
-                            <div class="pick-color-group">
-                                <div class="pick-color-select">&nbsp</div>
-                                <div class="pick-color-select-purple pick-color-select-color">&nbsp</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3 pick-color">
-                            <div class="pick-color-group">
-                                <div class="pick-color-select">&nbsp</div>
-                                <div class="pick-color-select-green pick-color-select-color">&nbsp</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3 pick-color">
-                            <div class="pick-color-group">
-                                <div class="pick-color-select">&nbsp</div>
-                                <div class="pick-color-select-red pick-color-select-color">&nbsp</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="map-expression-dialog-send">
-                    <div id="map-expression-error" class="panel panel-danger">
-                        <div class="panel-heading">
-                            Error
-                        </div>
-                        <div class="panel-body" id="map-expression-error-msg">
-                        </div>
-                    </div>
-                    <hr>
-                    <button class="btn btn-default map-expression-btn" id="map-expression-btn-cancel">
-                        Cancel
-                    </button>
-                    <button class="btn btn-success map-expression-btn" id="map-expression-btn-submit">
-                        OK
-                    </button>
-                </div>
+                <button class="btn btn-default map-expression-btn" id="map-expression-btn-cancel">
+                    Cancel
+                </button>
+                <button class="btn btn-success map-expression-btn" id="map-expression-btn-submit">
+                    OK
+                </button>
             </div>
         </div>
 
 
+        <!-- CYTOSCAPE CONTROLS -->
         <div id="cyt-controls">
             <div id="cyt-controls-header">
 

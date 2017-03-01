@@ -1,47 +1,75 @@
-
+// Behaviour of the map expression dialog
 $("#map-expression-btn").on("click", function(){
     $("#map-expression-dialog").slideToggle(250);
 });
-
 $("#close-map-expression").on("click", function(){
     $("#map-expression-dialog").hide();
 });
-
 $("#map-expression-btn-cancel").on("click", function(){
     $("#map-expression-dialog").hide();
 });
-
-
 $("#map-expression-error").hide();
 
-
-// Function to change the colors of the nodes depending on expression files
-
+// -----------------------
+// Choose colors for the gradient when click on color div
 $(".pick-color-group").on("click", function() {
     $(".pick-color-group.group-selected").removeClass("group-selected");
     $(this).addClass("group-selected");
 });
 
+// -----------------------
+// Transform from rgb to hex
 var hexDigits = new Array
         ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
-
-
 function hex(x) {
   return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
  }
-
-//Function to convert rgb color to hex format
 function rgb2hex(rgb) {
     rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
 
+// -----------------------
+// Select default color when clicking on one-sample or two-sample
+$("#one-sample-toggle").on("click", function(){
+    $(".pick-color-group.group-selected").removeClass("group-selected");
+    $(".default-1").addClass("group-selected");
+});
+$("#two-sample-toggle").on("click", function(){
+    $(".pick-color-group.group-selected").removeClass("group-selected");
+    $(".default-2").addClass("group-selected");
+});
+
+// -----------------------
+/*
+    Function that gets expression data from DB, calling the view map_expression
+    through an AJAX request. It will receive a JSON with all the data needed to
+    change the color of the nodes depending on the expression and to create the
+    legend for the expression.
+
+    Object:
+        "experiment":
+            "gradient":
+                "bin1": "color",
+                "bin2": "color"
+                ...
+            "maxexp": num
+            "minexp": num
+            "reference": "string"
+        "expression":
+            "symbol": "color"
+            ...
+        "status": "something"
+        "type": "one-sample" | "two-sample"
+*/
 $("#map-expression-btn-submit").on("click", function(){
     var elements   = get_graphelements(cy);
     var experiment = $("#select-expression").val();
     var sample     = $("#select-sample").val();
-    var color      = $(".pick-color-group.group-selected .pick-color-select-color").css("background-color");
-    color          = rgb2hex(color);
+    var from_color = $(".pick-color-group.group-selected .pick-color-select-fromcolor").css("background-color");
+    var to_color   = $(".pick-color-group.group-selected .pick-color-select-tocolor").css("background-color");
+    from_color = rgb2hex(from_color);
+    to_color   = rgb2hex(to_color);
     var type       = $('.active').attr('id');
     var ERRORTIME  = 3000;
     if (type === "two-sample") {
@@ -49,7 +77,16 @@ $("#map-expression-btn-submit").on("click", function(){
             // One of the two samples missing in two-sample mode!
             sample = "";
         } else {
-            sample = $("#select-sample1").val() + ":" + $("#select-sample2").val();
+            if ($("#select-sample1").val() == $("#select-sample2").val()) {
+                $("#map-expression-error-msg").html("Please, select different samples.");
+                $('#map-expression-error').slideToggle(200);
+                setTimeout(function () {
+                    $('#map-expression-error').hide(200);
+                }, ERRORTIME);
+                return;
+            } else {
+                sample = $("#select-sample1").val() + ":" + $("#select-sample2").val();
+            }
         }
     }
 
@@ -77,12 +114,13 @@ $("#map-expression-btn-submit").on("click", function(){
             url: "/map_expression",
             cache: true,
             data: {
-                'experiment': $("#select-expression").val(),
-                'sample'    : sample,
-                'type'      : type,
-                'color'     : color,
-                'nodes'     : elements.node_ids,
-                'databases' : elements.databases,
+                'experiment' : $("#select-expression").val(),
+                'sample'     : sample,
+                'type'       : type,
+                'from_color' : from_color,
+                'to_color'   : to_color,
+                'nodes'      : elements.node_ids,
+                'databases'  : elements.databases,
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             beforeSend: function() {
@@ -91,7 +129,6 @@ $("#map-expression-btn-submit").on("click", function(){
             success : function(data) {
                 $('#loading').hide();
                 if (data.status === "no-expression") {
-                    alert("No Expression response");
                     $("#map-expression-error-msg").html("No expression available for nodes in graph");
                     $('#map-expression-error').slideToggle(200);
                     setTimeout(function () {
@@ -120,24 +157,16 @@ $("#map-expression-btn-submit").on("click", function(){
                     console.log(experiment);
                     var sorted_keys = Object.keys(experiment.gradient).sort(function(a,b) { return b - a; } );
                     var previous = sorted_keys[0];
-
                     for (var bin in sorted_keys) {
-                        var percentile = (100 - (bin * 5));
-                        //var next;
-                        //if (bin == sorted_keys.length - 1) {
-                        //    // Last element!
-                        //    next = 0;
-                        //} else if (bin == 0) {
-                        //    // First element
-                        //    previous = "+";
-                        //    next     = sorted_keys[bin];
-                        //} else {
-                        //    // Not last element
-                        //    next = sorted_keys[bin];
-                        //}
+                        var percentile;
+                        if (data.type == "one-sample") {
+                            percentile = (100 - (bin * 5)) + "%";
+                        } else {
+                            percentile = sorted_keys[bin];
+                        }
                         gradient_html += "<tr><td class='color-gradient-td-color' bgcolor='" +
                                          experiment.gradient[sorted_keys[bin]] + "'>&nbsp</td><td class='color-gradient-td'> " +
-                                         percentile + "%" + "</td></tr>";
+                                         percentile + "</td></tr>";
 
                     }
                     gradient_html += `<tr>
@@ -164,12 +193,9 @@ $("#map-expression-btn-submit").on("click", function(){
                 }
             },
             error : function(err) {
-                alert("AJAX ERROR");
                 $('#loading').hide();
             }
         });
     }
-
-
 
 });

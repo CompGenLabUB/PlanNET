@@ -652,22 +652,36 @@ class Experiment(object):
             json_dict['gradient'][tup[0]] = tup[1]
         return json.dumps(json_dict)
 
-    def color_gradient(self, to_color):
+    def color_gradient(self, from_color, to_color, comp_type):
         """
         This method returns a color gradient of length bins from "from_color" to "to_color".
-        It will divide the range from minexp to maxexp in bins number of bins, and then assign
-        a color to each bin.
         """
-        e_color = Color(to_color)
-        s_color = Color(to_color)
-        s_color.saturation = 0.01
-        s_color.luminance = 1
-        range_colors = list(s_color.range_to(e_color, 20))
-        range_colors.reverse()
+        bins         = list()
         exp_to_color = list()
-        for i in self.percentiles:
+        range_colors = list()
+        s_color = Color(from_color)
+        e_color = Color(to_color)
+        if comp_type == "one-sample":
+            # We assign a color to each percentile
+            bins = self.percentiles
+            range_colors = list(s_color.range_to(e_color, len(bins)))
+            range_colors.reverse()
+        else:
+            # We assign a color to each number from -10 to +10
+            white_starting = Color(from_color)
+            white_ending   = Color(to_color)
+            white_starting.saturation = 0.1
+            white_starting.luminance  = 0.9
+            white_ending.saturation = 0.1
+            white_ending.luminance  = 0.9
+            bins = range(-10,+11)
+            half_colors = int(math.ceil(len(bins) / 2.0))
+            range_colors.extend(list(s_color.range_to(white_starting, half_colors))[1:half_colors])
+            range_colors.append(Color("white"))
+            range_colors.extend(list(white_ending.range_to(e_color, half_colors))[1:half_colors])
+            range_colors.reverse()
+        for i in bins:
             exp_to_color.append((i,  range_colors.pop().get_hex()))
-        print(exp_to_color)
         self.gradient = exp_to_color
 
 

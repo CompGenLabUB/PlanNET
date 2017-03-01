@@ -1128,17 +1128,33 @@ input[type="file"] {
     text-align: center;
 }
 
-.pick-color-select {
-    background-color: white;
-    border: solid 1px #777777;
+
+
+.pick-color-select-fromcolor {
+
 }
 
-.pick-color-select-color {
+.pick-color-select-tocolor {
 
+}
+
+.pick-color-select-bluestart {
+    background-color: #f7f8ff;
+    border: solid 1px #777777;
 }
 
 .pick-color-select-blue {
     background-color: #0029ff;
+    border: solid 1px #777777;
+}
+
+.pick-color-select-yellow {
+    background-color: #ffe600;
+    border: solid 1px #777777;
+}
+
+.pick-color-select-redstart {
+    background-color: #fffafa;
     border: solid 1px #777777;
 }
 
@@ -1147,13 +1163,32 @@ input[type="file"] {
     border: solid 1px #777777;
 }
 
+
+
+
+.pick-color-select-greenstart {
+    background-color: #f9fff9;
+    border: solid 1px #777777;
+}
+
 .pick-color-select-green {
     background-color: #42d242;
     border: solid 1px #777777;
 }
 
+
+.pick-color-select-purplestart {
+    background-color: #fffafd;
+    border: solid 1px #777777;
+}
+
 .pick-color-select-purple {
     background-color: #dd1697;
+    border: solid 1px #777777;
+}
+
+.pick-color-select-white {
+    background-color: white;
     border: solid 1px #777777;
 }
 
