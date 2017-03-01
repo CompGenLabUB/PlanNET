@@ -140,6 +140,10 @@
 .glyphicon-print {
     font-size: 30px;
 }
+
+.interactions-title {
+    height: 100px;
+}
 .small-searchpanel {
     height: 10%;
     overflow: hidden;
