@@ -94,7 +94,7 @@ NEIGHBOURS_QUERY = """
 
 # ------------------------------------------------------------------------------
 PATH_QUERY = """
-    MATCH p=( (n:%s)-[r:INTERACT_WITH*..%s]-(m:%s) )
+    MATCH p=( (n:%s)-[r:INTERACT_WITH*%s]-(m:%s) )
     WHERE n.symbol = '%s' AND m.symbol = '%s'
     RETURN extract(nod IN nodes(p) | nod.symbol)                       AS symbols,
            extract(rel IN relationships(p) | toInt(rel.path_length))   AS path_length,
