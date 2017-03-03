@@ -94,9 +94,15 @@ NEIGHBOURS_QUERY = """
 
 # ------------------------------------------------------------------------------
 PATH_QUERY = """
-    MATCH p=( (n:%s)-[:INTERACT_WITH*..%s]-(m:%s) )
-    WHERE n.symbol = '%s'
-    AND m.symbol = '%s'
+    MATCH p=( (n:%s)-[r:INTERACT_WITH*..%s]-(m:%s) )
+    WHERE n.symbol = '%s' AND m.symbol = '%s'
+    RETURN extract(nod IN nodes(p) | nod.symbol)                       AS symbols,
+           extract(rel IN relationships(p) | toInt(rel.path_length))   AS path_length,
+           extract(rel IN relationships(p) | toFloat(rel.int_prob))    AS int_prob,
+           extract(rel IN relationships(p) | toFloat(rel.cellcom_nto)) AS cellcom_nto,
+           extract(rel IN relationships(p) | toFloat(rel.molfun_nto))  AS molfun_nto,
+           extract(rel IN relationships(p) | toFloat(rel.bioproc_nto)) AS bioproc_nto,
+           extract(rel IN relationships(p) | toFloat(rel.dom_int_sc))  AS dom_int_sc
 """
 
 # ------------------------------------------------------------------------------
@@ -161,44 +167,34 @@ class Node(object):
             'score': Score of the given path.
         """
         query = PATH_QUERY % (self.database, plen, target.database, self.symbol, target.symbol)
-        query += """RETURN DISTINCT p,
-                    reduce(int_prob = 0.0, r IN relationships(p) | int_prob + toFloat(r.int_prob))/length(p) AS total_prob"""
-        results = graph.run(query).data()
+        results = graph.run(query)
+        results = results.data()
 
         if results:
             paths = list()
             for path in results:
-                nodes_obj_in_path = list()
-                rels_obj_in_path  = list()
-                nodes_in_path     = path['p'].nodes()
-                rels_in_path      = path['p'].relationships()
-                path_score        = path['total_prob']
-                rel_properties    = None
-
-                for idx, node in enumerate(nodes_in_path):
-                    symbol   = node.properties['symbol']
-                    current_node = PredictedNode(
-                                symbol   = symbol,
-                                database = self.database,
-                    )
-                    nodes_obj_in_path.append(current_node)
-                    if idx > 0:
-                        # Add relationship between node[idx] and node[idx - 1]
-                        rels_obj_in_path.append(PredInteraction(
-                            source_symbol = nodes_obj_in_path[idx - 1].symbol,
-                            target        = current_node,
+                nodes_in_path  = [ PredictedNode(node, self.database) for node in path['symbols']]
+                relationships  = list()
+                path_graph_obj = GraphCytoscape()
+                for idx, val in enumerate(path['molfun_nto']):
+                    parameters = dict()
+                    parameters['int_prob']    = path['int_prob'][idx]
+                    parameters['path_length'] = path['path_length'][idx]
+                    parameters['cellcom_nto'] = path['cellcom_nto'][idx]
+                    parameters['molfun_nto']  = path['molfun_nto'][idx]
+                    parameters['bioproc_nto'] = path['bioproc_nto'][idx]
+                    parameters['dom_int_sc']  = path['dom_int_sc'][idx]
+                    relationships.append(
+                        PredInteraction(
                             database      = self.database,
-                            parameters    = rel_properties
-                        ))
-
-                    if idx < len(rels_in_path):
-                        rel_properties = rels_in_path[idx]
-                        rel_properties['path_length'] = int(rel_properties['path_length'])
-                graphobj = GraphCytoscape()
-                graphobj.add_elements(nodes_obj_in_path)
-                graphobj.add_elements(rels_obj_in_path)
-                paths.append({'graph': graphobj, 'score': path_score })
-            # Sort paths by score
+                            source_symbol = path['symbols'][idx],
+                            target        = nodes_in_path[idx + 1],
+                            parameters    = parameters
+                        )
+                    )
+                path_graph_obj.add_elements(nodes_in_path)
+                path_graph_obj.add_elements(relationships)
+                paths.append(Pathway(graph=path_graph_obj))
             return paths
         else:
             # No results
@@ -424,7 +420,6 @@ class HumanNode(Node):
                     )
                     homologs[database].append(homolog_rel)
         if homologs:
-            print(homologs)
             return homologs
         else:
             logging.info("NO HOMOLOGS")
@@ -697,7 +692,7 @@ class GraphCytoscape(object):
     def add_elements(self, elements):
         """
         Method that takes a list of node or PredInteraction objects and adds them
-        to the grah.
+        to the graph.
         """
         for element in elements:
             if isinstance(element, Node):
@@ -766,6 +761,18 @@ class GraphCytoscape(object):
         self.nodes = nodes_to_keep
         self.edges = edges_to_keep
         return
+
+# ------------------------------------------------------------------------------
+class Pathway(object):
+    """
+    Class for pathways. They are basically GraphCytoscape objects with more attributes.
+    """
+    def __init__(self, graph):
+        self.graph = graph
+        self.score = 0
+        for edge in self.graph.edges:
+            self.score += edge.parameters['int_prob']
+        self.score = self.score / len(self.graph.edges)
 
 # ------------------------------------------------------------------------------
 class Document(models.Model):
