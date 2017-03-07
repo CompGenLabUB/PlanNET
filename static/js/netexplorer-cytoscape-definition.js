@@ -7,13 +7,13 @@ var stylesheet = cytoscape.stylesheet()
             'content': 'data(name)',
             'text-valign': 'bottom',
             'text-halign': 'center',
-            'background-color': 'data(colorNODE)',
+            'background-color': '#404040',
             "font-size": 8,
             'text-outline-width': 2,
             "text-outline-color": "#FFFFFF",
             "color": "#404040",
-            "border-color": "#404040",
-            "border-width": 1,
+            "border-color": "data(colorNODE)",
+            "border-width": 2,
         })
     .selector('edge')
         .css({
@@ -56,7 +56,9 @@ var stylesheet = cytoscape.stylesheet()
     .selector('node[database = "Human"]')
         .css({
             'shape': 'diamond',
+            'background-color': '#6785d0',
         });
+
 
 
 // Cytoscape variable definition
