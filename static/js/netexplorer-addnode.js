@@ -42,6 +42,7 @@ function addNode(symbol, database, cyobj) {
                 }
                 // Not an edge
             });
+            countNodes(cyobj);
         },
         error : function() {
             $('#loading').hide();

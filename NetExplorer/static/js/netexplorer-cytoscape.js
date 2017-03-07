@@ -27,7 +27,6 @@ $(document).ready(function(){
       $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
     });
 
-
     // Show homologs toggle
     $('#show-homologs').change(function () {
         checkHomologs(this, cy);
@@ -46,7 +45,6 @@ $(document).ready(function(){
     });
 
     // Info card/expand on click
-
     cy.on( 'click', 'node', function() {
          // Change color of clicked node
         node = this;
@@ -66,6 +64,7 @@ $(document).ready(function(){
             addNode(card_data.target, card_data.targetDB, cy);
         } else if (behaviour == "delete") {
             node.remove();
+            countNodes(cy);
         }
 
     });
@@ -186,6 +185,7 @@ $(document).ready(function(){
                 },
                 "Delete graph": function() {
                     cy.nodes().remove();
+                    countNodes(cy);
                     $( this ).dialog( "close" );
                     $('#color-gradient').hide();
                 }
@@ -215,7 +215,7 @@ $(document).ready(function(){
                             var edge_collection = element.connectedEdges(selector);
                             if (! edge_collection.data()) {
                                 cy.remove(element);
-
+                                countNodes(cy);
                             }
                         }
                     });

@@ -52,21 +52,27 @@
         <div id="cyt">
             <img src="{% static 'Images/loading.gif' %}" id="loading"/>
             <div id="color-gradient"></div>
-            <div id="legend">
-                <a class="info-tooltip legend-tooltip" title="
-                <h4>Legend<hr></h4>
-                <img class='legend-db' src='{% static 'Images/legend-human.png' %}'/> Human
-                <img class='legend-db' src='{% static 'Images/legend-cthulhu.png' %}'/> Cthulhu
-                <img class='legend-db' src='{% static 'Images/legend-consolidated.png' %}'/> Consolidated
-                <img class='legend-db' src='{% static 'Images/legend-dresden.png' %}'/> Dresden
-                <hr>
-                <img class='legend-db' src='{% static 'Images/legend-int1.png' %}'/> Interaction also found in Human
-                <img class='legend-db' src='{% static 'Images/legend-int2.png' %}'/> Interaction <strong>not</strong> found in Human
-                <img class='legend-db' src='{% static 'Images/legend-int4.png' %}'/> Homology relationship
-                <img class='legend-db' src='{% static 'Images/legend-int3.png' %}'/> Interaction between homologs
-                ">
-                    <span class="glyphicon glyphicon-info-sign legend-icon" aria-hidden="true"></span>
-                </a>
+
+            <div id="legend-nodecount-wrapper" class="row">
+                <div id="legend" class="col-sm-4">
+                    <a class="info-tooltip legend-tooltip" title="
+                    <h4>Legend<hr></h4>
+                    <img class='legend-db' src='{% static 'Images/legend-human.png' %}'/> Human
+                    <img class='legend-db' src='{% static 'Images/legend-cthulhu.png' %}'/> Cthulhu
+                    <img class='legend-db' src='{% static 'Images/legend-consolidated.png' %}'/> Consolidated
+                    <img class='legend-db' src='{% static 'Images/legend-dresden.png' %}'/> Dresden
+                    <hr>
+                    <img class='legend-db' src='{% static 'Images/legend-int1.png' %}'/> Interaction also found in Human
+                    <img class='legend-db' src='{% static 'Images/legend-int2.png' %}'/> Interaction <strong>not</strong> found in Human
+                    <img class='legend-db' src='{% static 'Images/legend-int4.png' %}'/> Homology relationship
+                    <img class='legend-db' src='{% static 'Images/legend-int3.png' %}'/> Interaction between homologs
+                    ">
+                        <span class="glyphicon glyphicon-info-sign legend-icon" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div id="node-counter" class="col-sm-8">
+                    Node Count: <span id="node-count">0</span>
+                </div>
             </div>
         </div>
 
@@ -509,6 +515,7 @@
         <script src="{% static 'js/jquery-min.js' %}"></script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
         <script src="{% static 'js/netexplorer-cytoscape-definition.js' %}"></script>
+        <script src="{% static 'js/netexplorer-countnodes.js' %}"></script>
         <script src="{% static 'js/netexplorer-showhomologs.js' %}"></script>
         <script src="{% static 'js/get-card.js' %}"></script>
         <script src="{% static 'js/netexplorer-addnode.js' %}"></script>
