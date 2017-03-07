@@ -103,6 +103,7 @@ def substitute_human_symbols(symbols, database):
         "Dresden":      "dd_Smed",
     }
     newsymbols = list()
+
     for symbol in symbols:
         symbol = symbol.replace(" ", "")
         if re.match(symbol_regexp[database], symbol):
@@ -112,11 +113,7 @@ def substitute_human_symbols(symbols, database):
             # WILD CARDS
             print(symbol)
             wildcard_symbols = list()
-            if "*" in symbol:
-                wildcard_symbols.extend( get_wildcard_symbols(symbol, "Human") )
-            else:
-                wildcard_symbols.append(symbol)
-            print(wildcard_symbols)
+            wildcard_symbols.extend( substitue_wildcards([symbol]) )
             for final_symbol in wildcard_symbols:
                 try:
                     symbol = final_symbol.upper()
@@ -133,13 +130,17 @@ def substitute_human_symbols(symbols, database):
     return newsymbols
 
 # ------------------------------------------------------------------------------
-def get_wildcard_symbols(search, database):
+def substitue_wildcards(symbols):
     """
-    This will return a list of symbols that match the specified wild card search.
+    Gets a list of human symbols and returns another list of human symbols that match the specified REGEX.
     """
-    query = WildCard(search, database)
-    print(query)
-    return query.get_symbols()
+    wildcard_symbols = list()
+    for symbol in symbols:
+        if "*" in symbol:
+            wildcard_symbols.extend( WildCard(symbol, "Human").get_symbols() )
+        else:
+            wildcard_symbols.append(symbol)
+    return wildcard_symbols
 
 # -----------------------
 # VIEWS
@@ -248,7 +249,12 @@ def gene_search(request):
             if database is None: # No database selected
                 search_error = 2
                 return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error } )
-            symbols = substitute_human_symbols(symbols, database)
+
+            if database == "Human":
+                symbols = substitue_wildcards(symbols)
+            else:
+                symbols = substitute_human_symbols(symbols, database)
+
             for genesymbol in symbols:
                 try:
                     search_node = query_node(genesymbol, database)
