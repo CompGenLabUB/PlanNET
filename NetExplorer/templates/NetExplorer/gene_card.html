@@ -240,15 +240,15 @@
     <script>
         $('.card-link').click(function() {
             var card_data = {
-                div_id    : $(this).closest('.card-overlay').attr("id"),
-                current   : $(this).attr("current"),
-                currentDB: $(this).attr("currentDB"),
-                target    : $(this).attr("target"),
-                targetDB : $(this).attr("targetDB"),
+                div_id      : $(this).closest('.card-overlay').attr("id"),
+                current     : $(this).attr("current"),
+                currentDB   : $(this).attr("currentDB"),
+                target      : $(this).attr("target"),
+                targetDB    : $(this).attr("targetDB"),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
+            history.pushState(card_data, null, "/PlanNET{% url index_view %}gene_card/" + card_data.targetDB + "/" + card_data.target);
 
-            history.pushState(card_data, null, "{% url index_view %}gene_card/" + card_data.targetDB + "/" + card_data.target);
             // Load Get request html on current card-overlay
             $.ajax({
                 type: "GET",
@@ -291,9 +291,18 @@
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success : function(data) {
+                        if ( $(".card-overlay").is(':hidden')  ){
+                            $('[id="card-overlay"]').slideToggle(450);
+                            $('.close-overlay').slideToggle(450);
+                            $('.full-screen-card').slideToggle(450);
+                        }
                         $('.card-overlay:visible').html(data)
                     }
                 });
+            } else {
+                $('.card-overlay').hide(250);
+                $('.close-overlay').hide();
+                $('.full-screen-card').hide();
             }
         };
 

@@ -19,6 +19,7 @@ $(document).keyup(function(e) {
     }
 });
 
+
 $('html').click(function() {
     $('.card-overlay').hide(250);
     $('.close-overlay').hide();
