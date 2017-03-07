@@ -93,6 +93,13 @@ NEIGHBOURS_QUERY = """
 """
 
 # ------------------------------------------------------------------------------
+WILDCARD_QUERY = """
+    MATCH (n:%s)
+    WHERE n.symbol =~ "%s"
+    RETURN n.symbol AS symbol
+"""
+
+# ------------------------------------------------------------------------------
 PATH_QUERY = """
     MATCH p=( (n:%s)-[r:INTERACT_WITH*%s]-(m:%s) )
     WHERE n.symbol = '%s' AND m.symbol = '%s'
@@ -404,7 +411,6 @@ class HumanNode(Node):
                 for row in results:
                     try:
                         homolog_node = PredictedNode(row['homolog'], database)
-
                     except:
                         continue
                     homolog_rel    = Homology(
@@ -423,6 +429,30 @@ class HumanNode(Node):
             return homologs
         else:
             logging.info("NO HOMOLOGS")
+            return None
+
+# ------------------------------------------------------------------------------
+class WildCard(object):
+    """
+    Class for wildcard searches. Returns a list of symbols.
+    """
+    def __init__(self, search, database):
+        search = search.upper()
+        self.search   = search.replace("*", ".*")
+        self.database = database
+
+    def get_symbols(self):
+        query   = WILDCARD_QUERY % (self.database, self.search)
+        results = graph.run(query)
+        results = results.data()
+        if results:
+            list_of_symbols = list()
+
+            for row in results:
+                list_of_symbols.append(row['symbol'])
+            print(list_of_symbols)
+            return list_of_symbols
+        else:
             return None
 
 

@@ -6,7 +6,7 @@ from django.shortcuts   import render
 from django.shortcuts   import render_to_response
 from django.http        import HttpResponse
 from django.template    import RequestContext
-from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, IncorrectDatabase, NoExpressionData, GraphCytoscape, Experiment, ExperimentNotFound, SampleNotAvailable
+from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, WildCard, IncorrectDatabase, NoExpressionData, GraphCytoscape, Experiment, ExperimentNotFound, SampleNotAvailable
 from subprocess import Popen, PIPE, STDOUT
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import tempfile
@@ -42,7 +42,6 @@ def query_node(symbol, database):
     else:
         node = PredictedNode(symbol, database)
         node.get_summary()
-
     return node
 
 
@@ -103,7 +102,6 @@ def substitute_human_symbols(symbols, database):
         "Consolidated": "OX_Smed",
         "Dresden":      "dd_Smed",
     }
-
     newsymbols = list()
     for symbol in symbols:
         symbol = symbol.replace(" ", "")
@@ -111,21 +109,37 @@ def substitute_human_symbols(symbols, database):
             newsymbols.append(symbol)
         else:
             # Human node!
-            try:
-                symbol = symbol.upper()
-                human_node = HumanNode(symbol, "Human")
-                homologs   = human_node.get_homologs(database)
-                for db in homologs:
-                    for hom in homologs[db]:
-                        newsymbols.append(hom.prednode.symbol)
-            except (NodeNotFound, IncorrectDatabase):
-                # Node is not a human node :_(
-                logging.info("Node is not a human node, try next symbol")
-                continue
-
+            # WILD CARDS
+            print(symbol)
+            wildcard_symbols = list()
+            if "*" in symbol:
+                wildcard_symbols.extend( get_wildcard_symbols(symbol, "Human") )
+            else:
+                wildcard_symbols.append(symbol)
+            print(wildcard_symbols)
+            for final_symbol in wildcard_symbols:
+                try:
+                    symbol = final_symbol.upper()
+                    human_node = HumanNode(symbol, "Human")
+                    homologs   = human_node.get_homologs(database)
+                    for db in homologs:
+                        for hom in homologs[db]:
+                            newsymbols.append(hom.prednode.symbol)
+                except (NodeNotFound, IncorrectDatabase):
+                    # Node is not a human node :_(
+                    logging.info("Node is not a human node, try next symbol")
+                    continue
             logging.info("%s does not match %s" %(symbol, symbol_regexp[database]))
     return newsymbols
 
+# ------------------------------------------------------------------------------
+def get_wildcard_symbols(search, database):
+    """
+    This will return a list of symbols that match the specified wild card search.
+    """
+    query = WildCard(search, database)
+    print(query)
+    return query.get_symbols()
 
 # -----------------------
 # VIEWS
@@ -234,7 +248,7 @@ def gene_search(request):
             if database is None: # No database selected
                 search_error = 2
                 return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error } )
-
+            symbols = substitute_human_symbols(symbols, database)
             for genesymbol in symbols:
                 try:
                     search_node = query_node(genesymbol, database)
@@ -266,8 +280,8 @@ def net_explorer(request):
         else:
             logging.info("NO DATABASE")
 
-        symbols       = substitute_human_symbols(symbols, database)
-        graphobject   = GraphCytoscape()
+        symbols = substitute_human_symbols(symbols, database)
+        graphobject = GraphCytoscape()
         if database is not None:
             for symbol in symbols:
                 try:
