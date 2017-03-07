@@ -1217,11 +1217,31 @@ input[type="file"] {
     padding-left: 5px;
     color: #777777;
 }
-
-#legend {
+#legend-nodecount-wrapper {
     margin-left: 10px;
     bottom: 10px;
     position: absolute;
+    z-index: 100;
+    width: 40%;
+}
+
+
+#legend {
+    margin-left: 10px;
+    height: 50px !important;
+    width:  50px !important;
+    bottom: 10px;
+    z-index: 100;
+}
+
+#node-counter {
+    margin-left: 25px;
+    vertical-align: middle;
+    line-height: 50px;
+    color: #777777;
+    font-size: 18px;
+    height: 50px !important;
+    bottom: 10px;
     z-index: 100;
 }
 
