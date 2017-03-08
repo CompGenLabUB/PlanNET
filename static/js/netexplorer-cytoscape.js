@@ -5,6 +5,7 @@
 $(document).ready(function(){
     if (upload_json) {
         cy.add(upload_json);
+        countNodes(cy);
         if (no_layout) {
             cy.layout({
                 name: 'cola',
