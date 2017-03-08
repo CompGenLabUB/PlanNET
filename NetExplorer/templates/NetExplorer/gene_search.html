@@ -14,7 +14,7 @@
 
 <!-- FORM -->
 
-    <div class="panel panel-info" >
+    <div class="panel panel-info genesearch-panel" >
         <div class="panel-heading"><h2>Gene Search</h2></div>
         <div id="search-wrapper">
             <img class="app-icon-inside" src="{% static 'Images/gene-finder-icon.png' %}"/>
@@ -34,6 +34,25 @@
                         <button type="submit" value=" Send" class="btn btn-info" id="submit">Search</button>
                     </div>
                 </form>
+                <br>
+                <div class="genesearch-minitutorial">
+                    <ul>
+                        <li>Input query protein symbols or PFAM identifiers and select the desired database to search.</li>
+                        <li>Search multiple symbols separating them by commas: THOC2,NCBP1</li>
+                        <li>You can search on planarian databases using contig identifiers or Human symbols.</li>
+                        <li>Use wild cards when searching human symbols (on any database), like so: HOX<strong>*</strong></li>
+                    </ul>
+                </div>
+
+                <br><br>
+                <a class="tutorial-icon-link" href="{% url tutorial %}#genesearch">
+                    <div class="genesearch-gototutorial">
+                        <span class="glyphicon glyphicon-info-sign legend-icon" aria-hidden="true"></span>
+                        <br>Go to tutorial
+                    </div>
+                </a>
+
+
             </div>
         </div>
     </div>
@@ -55,10 +74,20 @@
                  target="{{ node.symbol }}"
                  targetDB="{{ node.database }}">
 
-                <div class="panel-heading">{{ node.symbol }}</div>
-                <div class="panel-body app-panel">
-                    <p>Database: {{ node.database }}</p>
+                <div class="panel-heading">
+                    <div class="symbol-small-searchpanel">
+                        {{ node.symbol }}
+                    </div>
+                    <div class="database-small-searchpanel">
+                        <img class='legend-db' src="{% static 'Images/' %}legend-{{ node.database }}.png"/>
+                        {{ node.database }}
+                    </div>
                 </div>
+                {% if node.database != "Human" %}
+                    <div class="panel-body app-panel">
+                            <p>Homolog: {{ node.homolog.human.symbol }}</p>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
 

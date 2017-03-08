@@ -152,10 +152,41 @@
     margin: 5%;
 }
 
+.tutorial-icon-link {
+    color: #777777;
+}
+
+.tutorial-icon-link:hover {
+    color: #777777;
+    opacity: 0.8;
+}
+
+.database-small-searchpanel {
+    float: right;
+    position: relative;
+}
+
+.symbol-small-searchpanel {
+    float: left;
+    position: relative;
+}
+
+.small-searchpanel .panel-heading {
+    min-height: 40px;
+}
+
+.genesearch-panel .panel-body {
+    text-align: center;
+}
 #pfam-line-table {
     width: 100%;
     font-size: 12px;
     color: #777777;
+}
+
+.genesearch-minitutorial{
+    text-align: left;
+    display: inline-block;
 }
 
 .pfam-line-table-tr {
@@ -163,6 +194,19 @@
     height: 20px;
     width: 100%;
 }
+
+.genesearch-gototutorial {
+    display: inline-block;
+    width: 20%;
+    min-width: 200px;
+}
+
+.genesearch-gototutorial-text {
+    font-size: 16px;
+    vertical-align: middle;
+    line-height: 40px;
+}
+
 
 .pfam-line-table-tr:hover {
     background-color: #F7F7F7;
