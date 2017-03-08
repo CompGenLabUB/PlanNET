@@ -14,6 +14,7 @@ var stylesheet = cytoscape.stylesheet()
             "color": "#404040",
             "border-color": "data(colorNODE)",
             "border-width": 2,
+            "min-zoomed-font-size": 6,
         })
     .selector('edge')
         .css({
@@ -28,7 +29,8 @@ var stylesheet = cytoscape.stylesheet()
             'text-border-width': 0.1,
             'text-border-opacity': 0.5,
             'line-color': 'data(colorEDGE)',
-            'target-arrow-color': 'data(colorEDGE)'
+            'target-arrow-color': 'data(colorEDGE)',
+            "min-zoomed-font-size": 6,
         })
     .selector('edge[type = "homology"]')
         .css({
