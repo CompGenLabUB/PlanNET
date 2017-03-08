@@ -6,7 +6,7 @@ from django.shortcuts   import render
 from django.shortcuts   import render_to_response
 from django.http        import HttpResponse
 from django.template    import RequestContext
-from NetExplorer.models import PredictedNode, HumanNode, Document, NodeNotFound, WildCard, IncorrectDatabase, NoExpressionData, GraphCytoscape, Experiment, ExperimentNotFound, SampleNotAvailable
+from NetExplorer.models import *
 from subprocess import Popen, PIPE, STDOUT
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import tempfile
@@ -315,7 +315,10 @@ def net_explorer(request):
         render_to_return = upload_graph(request, json_text)
         return render_to_return
     else:
-        return render(request, 'NetExplorer/netexplorer.html')
+        # Get experiment data to put it on the Map Expression dialog Form
+        all_experiments = ExperimentList()
+        print(all_experiments.experiments)
+        return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments} )
 
 
 # ------------------------------------------------------------------------------

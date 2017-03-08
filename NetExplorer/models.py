@@ -42,6 +42,12 @@ EXPERIMENT_QUERY = """
 """
 
 # ------------------------------------------------------------------------------
+ALL_EXPERIMENTS_QUERY = """
+    MATCH (n:Experiment)-[r]-(m)
+    RETURN distinct keys(r) as samples, n.id as identifier
+"""
+
+# ------------------------------------------------------------------------------
 EXPRESSION_QUERY = """
     MATCH (n:%s)-[r:HAS_EXPRESSION]-(m:Experiment)
     WHERE n.symbol = "%s"
@@ -791,6 +797,33 @@ class GraphCytoscape(object):
         self.nodes = nodes_to_keep
         self.edges = edges_to_keep
         return
+
+# ------------------------------------------------------------------------------
+class ExperimentList(object):
+    """
+    Maps a list of experiment objects with all its available samples in the DB
+    """
+    def __init__(self):
+        self.experiments = set()
+        self.samples   = dict()
+        query   = ALL_EXPERIMENTS_QUERY
+        # Add all the samples for each experiment
+        results = graph.run(query)
+        results = results.data()
+        if results:
+            for row in results:
+                if 'identifier' not in self.samples:
+                    self.samples[ row['identifier'] ] = set()
+                self.samples[ row['identifier'] ].update(row['samples'])
+                self.experiments.add(row['identifier'])
+            for exp in self.samples:
+                self.samples[exp] = sorted(self.samples[exp])
+    def get_samples(self, experiment):
+        """ Returns a set for the given experiment """
+        if experiment in self.samples:
+            return self.samples[experiment]
+        else:
+            raise ExperimentNotFound
 
 # ------------------------------------------------------------------------------
 class Pathway(object):

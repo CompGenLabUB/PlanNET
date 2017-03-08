@@ -17,6 +17,16 @@ $(".pick-color-group").on("click", function() {
     $(this).addClass("group-selected");
 });
 
+//------------------------
+// Form management
+$(".sample-option").hide();
+$("#select-expression").on("change", function(){
+    $(".sample-option").hide();
+    $(".sample-warning").hide();
+    var to_show = ".sample-option." + $("#select-expression").val();
+    $(to_show).show();
+});
+
 // -----------------------
 // Transform from rgb to hex
 var hexDigits = new Array

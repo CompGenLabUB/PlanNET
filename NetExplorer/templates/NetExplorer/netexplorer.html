@@ -88,9 +88,9 @@
                 <hr>
                 <select id="select-expression" name="expression" class="selectpicker">
                     <option value="" selected disabled>Select Expression data</option>
-                    <option value="DGE">DGE</option>
-                    <option value="Experiment 2">Experiment 2</option>
-                    <option value="Experiment 3">Experiment 3</option>
+                    {% for experiment in experiments.experiments %}
+                        <option value="{{ experiment }}">{{ experiment }}</option>
+                    {% endfor %}
                 </select>
                 <h2>Select Samples</h2>
                 <hr>
@@ -115,9 +115,12 @@
                                             work only with X1,X2 and Xin from the DGE experiment
                                         -->
                                         <option value="" selected disabled>Select samples</option>
-                                        <option value="X1">X1</option>
-                                        <option value="X2">X2</option>
-                                        <option value="Xin">Xin</option>
+                                        <option class="sample-warning" value="" disabled>Please, select an Experiment</option>
+                                        {% for experiment, samples in experiments.samples.items %}
+                                            {% for sample in samples %}
+                                                <option value="{{ sample }}" class="sample-option {{ experiment }}">{{ sample }}</option>
+                                            {% endfor %}
+                                        {% endfor %}
                                     </select>
 
                                     <br><br>
@@ -156,16 +159,22 @@
                                     <!-- PANEL TWO -->
                                     <select id="select-sample1" name="samples" class="selectpicker">
                                         <option value="" selected disabled>Select samples</option>
-                                        <option value="X1">X1</option>
-                                        <option value="X2">X2</option>
-                                        <option value="Xin">Xin</option>
+                                        <option class="sample-warning" value="" disabled>Please, select an Experiment</option>
+                                        {% for experiment, samples in experiments.samples.items %}
+                                            {% for sample in samples %}
+                                                <option value="{{ sample }}" class="sample-option {{ experiment }} ">{{ sample }}</option>
+                                            {% endfor %}
+                                        {% endfor %}
                                     </select>
 
                                     <select id="select-sample2" name="samples" class="selectpicker">
                                         <option value="" selected disabled>Select samples</option>
-                                        <option value="X1">X1</option>
-                                        <option value="X2">X2</option>
-                                        <option value="Xin">Xin</option>
+                                        <option class="sample-warning" value="" disabled>Please, select an Experiment</option>
+                                        {% for experiment, samples in experiments.samples.items %}
+                                            {% for sample in samples %}
+                                                <option value="{{ sample }}" class="sample-option {{ experiment }} ">{{ sample }}</option>
+                                            {% endfor %}
+                                        {% endfor %}
                                     </select>
 
                                     <br><br>
