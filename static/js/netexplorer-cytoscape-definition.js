@@ -55,6 +55,10 @@ var stylesheet = cytoscape.stylesheet()
         .css({
             'shape': 'pentagon',
         })
+    .selector('node[database = "Graveley"]')
+        .css({
+            'shape': 'vee',
+        })
     .selector('node[database = "Human"]')
         .css({
             'shape': 'diamond',

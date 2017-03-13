@@ -256,7 +256,7 @@ def gene_search(request):
             symbols = symbols.split(",")
             if database is None: # No database selected
                 search_error = 2
-                return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error } )
+                return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': DATABASES } )
 
             if database == "Human":
                 symbols = substitue_wildcards(symbols)
@@ -272,12 +272,12 @@ def gene_search(request):
                     # No search results...
                     search_error = 1
 
-            return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error } )
+            return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': DATABASES } )
 
         # Render when user enters the page
-        return render(request, 'NetExplorer/gene_search.html' )
+        return render(request, 'NetExplorer/gene_search.html', {'databases': DATABASES })
     else:
-        return render(request, 'NetExplorer/gene_search.html')
+        return render(request, 'NetExplorer/gene_search.html', {'databases': DATABASES })
 
 
 # ------------------------------------------------------------------------------

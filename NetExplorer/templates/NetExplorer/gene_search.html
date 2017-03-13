@@ -26,10 +26,9 @@
 
                         <select name="database" class="selectpicker" title="Select Database">
                             <option value="Human">Human</option>
-                            <option value="Cthulhu">Cthulhu</option>
-                            <option value="Consolidated">Consolidated</option>ç
-                            <option value="Dresden">Dresden</option>
-                            <option value="PFAM">PFAM</option>
+                            {% for db in databases %}
+                                <option value="{{ db }}">{{ db }}</option>
+                            {% endfor %}
                         </select>
                         <button type="submit" value=" Send" class="btn btn-info" id="submit">Search</button>
                     </div>
