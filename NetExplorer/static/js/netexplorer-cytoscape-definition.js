@@ -43,6 +43,11 @@ var stylesheet = cytoscape.stylesheet()
             'content': '',
             'opacity': 0.8
         })
+    .selector('node[database != "Human"]')
+        .css({
+            'width': 'mapData(degree, 1, 200, 20, 50)',
+            'height': 'mapData(degree, 1, 200, 20, 50)',
+        })
     .selector('node[database = "Cthulhu"]')
         .css({
             'shape': 'circle',

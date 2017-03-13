@@ -67,35 +67,36 @@ PREDINTERACTION_QUERY = """
     MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)
     WHERE n.symbol = '%s' AND m.symbol = '%s'
     RETURN r.int_prob     AS int_prob,
-        r.path_length  AS path_length,
-        r.cellcom_nto  AS cellcom_nto,
-        r.molfun_nto   AS molfun_nto,
-        r.bioproc_nto  AS bioproc_nto,
-        r.dom_int_sc   AS dom_int_sc
-        LIMIT 1
+           r.path_length  AS path_length,
+           r.cellcom_nto  AS cellcom_nto,
+           r.molfun_nto   AS molfun_nto,
+           r.bioproc_nto  AS bioproc_nto,
+           r.dom_int_sc   AS dom_int_sc
+           LIMIT 1
 """
 
 # ------------------------------------------------------------------------------
 NEIGHBOURS_QUERY = """
-    MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)-[s:HOMOLOG_OF]-(l:Human)
+    MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)-[s:HOMOLOG_OF]-(l:Human), (m)-[t:INTERACT_WITH*0..1]-(other)
     WHERE  n.symbol = '%s'
     RETURN m.symbol         AS target,
-        m.orf            AS torf,
-        m.sequence       AS tsequence,
-        l.symbol         AS human,
-        r.int_prob       AS int_prob,
-        r.path_length    AS path_length,
-        r.cellcom_nto    AS cellcom_nto,
-        r.molfun_nto     AS molfun_nto,
-        r.bioproc_nto    AS bioproc_nto,
-        r.dom_int_sc     AS dom_int_sc,
-        s.blast_cov      AS blast_cov,
-        s.blast_eval     AS blast_eval,
-        s.nog_brh        AS nog_brh,
-        s.pfam_sc        AS pfam_sc,
-        s.nog_eval       AS nog_eval,
-        s.blast_brh      AS blast_brh,
-        s.pfam_brh       AS pfam_brh
+           m.orf            AS torf,
+           m.sequence       AS tsequence,
+           count(t)         AS tdegree,
+           l.symbol         AS human,
+           r.int_prob       AS int_prob,
+           r.path_length    AS path_length,
+           r.cellcom_nto    AS cellcom_nto,
+           r.molfun_nto     AS molfun_nto,
+           r.bioproc_nto    AS bioproc_nto,
+           r.dom_int_sc     AS dom_int_sc,
+           s.blast_cov      AS blast_cov,
+           s.blast_eval     AS blast_eval,
+           s.nog_brh        AS nog_brh,
+           s.pfam_sc        AS pfam_sc,
+           s.nog_eval       AS nog_eval,
+           s.blast_brh      AS blast_brh,
+           s.pfam_brh       AS pfam_brh
 """
 
 # ------------------------------------------------------------------------------
@@ -469,16 +470,16 @@ class PredictedNode(Node):
     """
     allowed_databases = DATABASES
 
-    def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False):
+    def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False, degree=None):
         super(PredictedNode, self).__init__(symbol, database)
         self.sequence       = sequence
         self.orf            = orf
         self.homolog        = homolog
         self.important      = important
+        self.degree         = degree
         self.gccont         = None
         self.length         = None
         self.orflength      = None
-        self.degree         = None
 
         if sequence is None:
             self.__query_node()
@@ -574,7 +575,7 @@ class PredictedNode(Node):
                 target = PredictedNode(
                     symbol   = row['target'],    database = self.database,
                     sequence = row['tsequence'], orf      = row['torf'],
-                    homolog  = thomolog
+                    homolog  = thomolog,         degree   = row['tdegree']
                 )
 
                 # Add prednode to homology object
