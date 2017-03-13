@@ -45,8 +45,8 @@ var stylesheet = cytoscape.stylesheet()
         })
     .selector('node[database != "Human"]')
         .css({
-            'width': 'mapData(degree, 1, 200, 20, 50)',
-            'height': 'mapData(degree, 1, 200, 20, 50)',
+            'width': 'mapData(degree, 1, 200, 10, 30)',
+            'height': 'mapData(degree, 1, 200, 10, 30)',
         })
     .selector('node[database = "Cthulhu"]')
         .css({
