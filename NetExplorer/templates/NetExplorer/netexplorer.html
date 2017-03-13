@@ -58,9 +58,8 @@
                     <a class="info-tooltip legend-tooltip" title="
                     <h4>Legend<hr></h4>
                     <img class='legend-db' src='{% static 'Images/legend-Human.png' %}'/> Human
-                    <img class='legend-db' src='{% static 'Images/legend-Cthulhu.png' %}'/> Cthulhu
-                    <img class='legend-db' src='{% static 'Images/legend-Consolidated.png' %}'/> Consolidated
-                    <img class='legend-db' src='{% static 'Images/legend-Dresden.png' %}'/> Dresden
+                    {% for db in databases %}<img class='legend-db' src='{% static 'Images/legend-' %}{{ db }}.png'/>{{ db }}
+                    {% endfor %}
                     <hr>
                     <img class='legend-db' src='{% static 'Images/legend-int1.png' %}'/> Interaction also found in Human
                     <img class='legend-db' src='{% static 'Images/legend-int2.png' %}'/> Interaction <strong>not</strong> found in Human

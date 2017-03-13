@@ -88,10 +88,10 @@ def get_expression_data(nodes, databases, experiment, samples):
                 try:
                     expression_data[node.symbol][sample] = node.get_expression(experiment, sample)
                 except NoExpressionData as err:
-                    print(err)
+                    logging.info(err)
                     expression_data.pop(node.symbol, None)
         except NodeNotFound as err:
-            print(err)
+            logging.info(err)
     return expression_data
 
 # ------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ def substitute_human_symbols(symbols, database):
         else:
             # Human node!
             # WILD CARDS
-            print(symbol)
+            logging.info(symbol)
             wildcard_symbols = list()
             wildcard_symbols.extend( substitue_wildcards([symbol]) )
             for final_symbol in wildcard_symbols:
@@ -132,9 +132,9 @@ def substitute_human_symbols(symbols, database):
                             newsymbols.append(hom.prednode.symbol)
                 except (NodeNotFound, IncorrectDatabase):
                     # Node is not a human node :_(
-                    logging.info("Node is not a human node, try next symbol")
+                    logging.info("ERROR: NodeNotFound or IncorrectDatabase in substitute_human_symbols")
                     continue
-            logging.info("%s does not match %s" %(symbol, symbol_regexp[database]))
+            logging.info("SEARCH INFO: %s does not match %s" %(symbol, symbol_regexp[database]))
     return newsymbols
 
 # ------------------------------------------------------------------------------
@@ -268,6 +268,7 @@ def gene_search(request):
                     search_node = query_node(genesymbol, database)
                     nodes.append(search_node)
                 except (NodeNotFound, IncorrectDatabase):
+                    logging.info("ERROR: NodeNotFound or IncorrectDatabase in gene_search")
                     # No search results...
                     search_error = 1
 
@@ -292,7 +293,7 @@ def net_explorer(request):
         if "database" in request.GET:
             database     = request.GET['database']
         else:
-            logging.info("NO DATABASE")
+            logging.info("ERROR: No database in net_explorer")
         symbols   = substitute_human_symbols(symbols, database)
         graphobject = GraphCytoscape()
         if database is not None:
@@ -302,7 +303,8 @@ def net_explorer(request):
                     nodes, edges = search_node.get_graphelements()
                     graphobject.add_elements(nodes)
                     graphobject.add_elements(edges)
-                except (NodeNotFound, IncorrectDatabase):
+                except (NodeNotFound, IncorrectDatabase) as err:
+                    logging.info("ERROR: NodeNotFound or IncorrectDatabase in net_e")
                     continue
         if graphobject.is_empty():
             return HttpResponse(status_code=400)
@@ -366,10 +368,10 @@ def upload_graph(request, json_text):
         try: # Check if JSON is a graph declaration
             json_graph[u'nodes']
         except KeyError:
-            logging.info("Json is not a graph declaration (no nodes)")
+            logging.info("ERROR: Json is not a graph declaration (no nodes) in upload_graph")
             return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': DATABASES})
     except ValueError as err:
-        logging.info("Not a valid Json File %s\n" % (err))
+        logging.info("ERROR: Not a valid Json File %s in upload_graph\n" % (err))
         return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': DATABASES})
 
     return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout,'databases': DATABASES})
@@ -463,7 +465,6 @@ def map_expression(request):
         else:
             sample = [sample]
         expression_data = get_expression_data(nodes, databases, experiment, sample)
-        print("HELLO")
         response['expression'] = dict()
         if comp_type == "two-sample":
             foldchange = dict()
