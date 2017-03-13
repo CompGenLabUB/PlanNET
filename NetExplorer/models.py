@@ -13,7 +13,7 @@ import math
 
 authenticate("192.168.0.2:7473", "neo4j", "5961")
 graph     = Graph("https://192.168.0.2:7473/db/data/", bolt=False)
-DATABASES = set(sorted(["Cthulhu", "Dresden", "Consolidated", "Newmark", "Graveley", "Illuminaplus"]))
+DATABASES = set(["Cthulhu", "Dresden", "Consolidated", "Newmark", "Graveley", "Illuminaplus"])
 
 
 # QUERIES

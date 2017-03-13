@@ -256,7 +256,7 @@ def gene_search(request):
             symbols = symbols.split(",")
             if database is None: # No database selected
                 search_error = 2
-                return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': DATABASES } )
+                return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': sorted(DATABASES) } )
 
             if database == "Human":
                 symbols = substitue_wildcards(symbols)
@@ -272,12 +272,12 @@ def gene_search(request):
                     # No search results...
                     search_error = 1
 
-            return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': DATABASES } )
+            return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': sorted(DATABASES) } )
 
         # Render when user enters the page
-        return render(request, 'NetExplorer/gene_search.html', {'databases': DATABASES })
+        return render(request, 'NetExplorer/gene_search.html', {'databases': sorted(DATABASES) })
     else:
-        return render(request, 'NetExplorer/gene_search.html', {'databases': DATABASES })
+        return render(request, 'NetExplorer/gene_search.html', {'databases': sorted(DATABASES) })
 
 
 # ------------------------------------------------------------------------------
@@ -324,7 +324,7 @@ def net_explorer(request):
     else:
         # Get experiment data to put it on the Map Expression dialog Form
         all_experiments = ExperimentList()
-        return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments, 'databases': DATABASES} )
+        return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments, 'databases': sorted(DATABASES)} )
 
 
 # ------------------------------------------------------------------------------
@@ -372,12 +372,12 @@ def upload_graph(request, json_text):
             json_graph[u'nodes']
         except KeyError:
             logging.info("ERROR: Json is not a graph declaration (no nodes) in upload_graph")
-            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': DATABASES})
+            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': sorted(DATABASES)})
     except ValueError as err:
         logging.info("ERROR: Not a valid Json File %s in upload_graph\n" % (err))
-        return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': DATABASES})
+        return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': sorted(DATABASES)})
 
-    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout,'databases': DATABASES})
+    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout,'databases': sorted(DATABASES)})
 
 
 # ------------------------------------------------------------------------------
@@ -514,11 +514,11 @@ def path_finder(request):
     if 'start' in request.GET and 'end' in request.GET:
         # We have a search
         if not request.GET['database']:
-            return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True, 'databases': DATABASES})
+            return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True, 'databases': sorted(DATABASES)})
         if not request.GET['start'] or not request.GET['end']:
-            return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True, 'databases': DATABASES})
+            return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True, 'databases': sorted(DATABASES)})
         if not request.GET['plen']:
-            return render(request, 'NetExplorer/pathway_finder.html', {"noplen": True, 'databases': DATABASES})
+            return render(request, 'NetExplorer/pathway_finder.html', {"noplen": True, 'databases': sorted(DATABASES)})
 
         # Search
         # Valid search
@@ -555,7 +555,7 @@ def path_finder(request):
         response['snode']     = request.GET['start']
         response['enode']     = request.GET['end']
         response["plen"]      = plen
-        response["databases"] = DATABASES
+        response["databases"] = sorted(DATABASES)
 
         if graphelements:
             # We have graphelements to display (there are paths)
@@ -570,7 +570,7 @@ def path_finder(request):
     else:
         # Not a search
         response = dict()
-        response["databases"] = DATABASES
+        response["databases"] = sorted(DATABASES)
         return render(request, 'NetExplorer/pathway_finder.html', response)
 
 
