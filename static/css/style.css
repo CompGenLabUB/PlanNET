@@ -611,6 +611,10 @@
     margin: auto;
 }
 
+.btn-netexplorer {
+    width: 180px;
+}
+
 
 #cyto-button-container {
     position: relative;
