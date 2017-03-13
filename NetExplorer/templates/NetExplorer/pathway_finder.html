@@ -187,10 +187,9 @@
                 <!-- Select Database -->
                 <img class="pfind-form-icon" src="{% static 'Images/database-icon.png' %}"/>
                 <select name="database" class="selectpicker" title="Select Database">
-                    <option value="Human">Human</option>
-                    <option value="Cthulhu">Cthulhu</option>
-                    <option value="Consolidated">Consolidated</option>
-                    <option value="Dresden">Dresden</option>
+                    {% for db in databases %}
+                        <option value="{{ db }}">{{ db }}</option>
+                    {% endfor %}
                 </select>
 
                 <!-- START -->

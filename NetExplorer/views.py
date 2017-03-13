@@ -510,11 +510,11 @@ def path_finder(request):
     if 'start' in request.GET and 'end' in request.GET:
         # We have a search
         if not request.GET['database']:
-            return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True})
+            return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True, 'databases': DATABASES})
         if not request.GET['start'] or not request.GET['end']:
-            return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True})
+            return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True, 'databases': DATABASES})
         if not request.GET['plen']:
-            return render(request, 'NetExplorer/pathway_finder.html', {"noplen": True})
+            return render(request, 'NetExplorer/pathway_finder.html', {"noplen": True, 'databases': DATABASES})
 
         # Search
         # Valid search
@@ -547,10 +547,11 @@ def path_finder(request):
             plen
         )
         response = dict()
-        response['database'] = database
-        response['snode']    = request.GET['start']
-        response['enode']    = request.GET['end']
-        response["plen"]     = plen
+        response['database']  = database
+        response['snode']     = request.GET['start']
+        response['enode']     = request.GET['end']
+        response["plen"]      = plen
+        response["databases"] = DATABASES
 
         if graphelements:
             # We have graphelements to display (there are paths)
@@ -564,7 +565,9 @@ def path_finder(request):
             return render(request, 'NetExplorer/pathway_finder.html', response)
     else:
         # Not a search
-        return render(request, 'NetExplorer/pathway_finder.html')
+        response = dict()
+        response["databases"] = DATABASES
+        return render(request, 'NetExplorer/pathway_finder.html', response)
 
 
 # ------------------------------------------------------------------------------
