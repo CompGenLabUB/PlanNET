@@ -63,8 +63,13 @@ function addNode(symbol, database, cyobj) {
             },
         },
         error : function() {
-
-        }
+            $('#loading').hide();
+            $('.node-not-found-err').html("Server Error");
+            $('#node-not-found').slideToggle(200);
+            setTimeout(function () {
+                $('#node-not-found').hide(200);
+            }, 3000);
+        },
 
     });
 }
