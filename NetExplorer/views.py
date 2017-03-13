@@ -294,6 +294,8 @@ def net_explorer(request):
             database     = request.GET['database']
         else:
             logging.info("ERROR: No database in net_explorer")
+            return HttpResponse(status=400)
+
         symbols   = substitute_human_symbols(symbols, database)
         graphobject = GraphCytoscape()
         if database is not None:
@@ -307,7 +309,8 @@ def net_explorer(request):
                     logging.info("ERROR: NodeNotFound or IncorrectDatabase in net_e")
                     continue
         if graphobject.is_empty():
-            return HttpResponse(status_code=400)
+            print("net_explorer: GraphObject is empty.")
+            return HttpResponse(status=404)
         else:
             graphobject.define_important(set(symbols))
             json_data = graphobject.to_json()
