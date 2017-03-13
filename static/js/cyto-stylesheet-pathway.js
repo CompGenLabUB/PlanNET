@@ -36,23 +36,31 @@ var stylesheet = cytoscape.stylesheet()
         .css({
             'shape': 'diamond',
         })
-        .selector('node[database = "Cthulhu"]')
-            .css({
-                'shape': 'circle',
-            })
-        .selector('node[database = "Consolidated"]')
-            .css({
-                'shape': 'triangle',
-            })
-        .selector('node[database = "Dresden"]')
-            .css({
-                'shape': 'pentagon',
-            })
-        .selector('node[database = "Graveley"]')
-            .css({
-                'shape': 'vee',
-            })
-        .selector('node[database = "Human"]')
-            .css({
-                'shape': 'diamond',
-            });
+    .selector('node[database = "Cthulhu"]')
+        .css({
+            'shape': 'circle',
+        })
+    .selector('node[database = "Consolidated"]')
+        .css({
+            'shape': 'triangle',
+        })
+    .selector('node[database = "Dresden"]')
+        .css({
+            'shape': 'pentagon',
+        })
+    .selector('node[database = "Graveley"]')
+        .css({
+            'shape': 'vee',
+        })
+    .selector('node[database = "Illuminaplus"]')
+        .css({
+            'shape': 'rhomboid',
+        })
+    .selector('node[database = "Newmark"]')
+        .css({
+            'shape': 'hexagon',
+        })
+    .selector('node[database = "Smed454"]')
+        .css({
+            'shape': 'rectangle',
+        });

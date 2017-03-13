@@ -59,6 +59,18 @@ var stylesheet = cytoscape.stylesheet()
         .css({
             'shape': 'vee',
         })
+    .selector('node[database = "Illuminaplus"]')
+        .css({
+            'shape': 'rhomboid',
+        })
+    .selector('node[database = "Newmark"]')
+        .css({
+            'shape': 'hexagon',
+        })
+    .selector('node[database = "Smed454"]')
+        .css({
+            'shape': 'rectangle',
+        })
     .selector('node[database = "Human"]')
         .css({
             'shape': 'diamond',
