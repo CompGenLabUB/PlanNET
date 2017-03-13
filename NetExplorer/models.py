@@ -13,7 +13,7 @@ import math
 
 authenticate("192.168.0.2:7473", "neo4j", "5961")
 graph     = Graph("https://192.168.0.2:7473/db/data/", bolt=False)
-DATABASES = set(["Cthulhu", "Dresden", "Consolidated"])
+DATABASES = set(sorted(["Cthulhu", "Dresden", "Consolidated", "Newmark", "Graveley", "Illuminaplus"]))
 
 
 # QUERIES
@@ -467,7 +467,7 @@ class PredictedNode(Node):
     """
     Class for planarian nodes.
     """
-    allowed_databases = set(["Cthulhu", "Consolidated", "Dresden"])
+    allowed_databases = DATABASES
 
     def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False):
         super(PredictedNode, self).__init__(symbol, database)

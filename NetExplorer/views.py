@@ -101,9 +101,12 @@ def substitute_human_symbols(symbols, database):
     the "homologs" of the specified database. It will return the "new" list of symbols
     """
     symbol_regexp = {
-        "Cthulhu":      "cth1_",
-        "Consolidated": "OX_Smed",
-        "Dresden":      "dd_Smed",
+        "Cthulhu":      r"cth1_",
+        "Consolidated": r"OX_Smed",
+        "Dresden":      r"dd_Smed",
+        "Graveley":     r"CUFF\.\d+\.\d+",
+        "Newmark":      r"Contig\d+",
+        "Illuminaplus": r"Gene_\d+_.+"
     }
     newsymbols = list()
 
@@ -290,8 +293,7 @@ def net_explorer(request):
             database     = request.GET['database']
         else:
             logging.info("NO DATABASE")
-
-        symbols = substitute_human_symbols(symbols, database)
+        symbols   = substitute_human_symbols(symbols, database)
         graphobject = GraphCytoscape()
         if database is not None:
             for symbol in symbols:
@@ -317,8 +319,7 @@ def net_explorer(request):
     else:
         # Get experiment data to put it on the Map Expression dialog Form
         all_experiments = ExperimentList()
-        print(all_experiments.experiments)
-        return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments} )
+        return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments, 'databases': DATABASES} )
 
 
 # ------------------------------------------------------------------------------
@@ -366,12 +367,12 @@ def upload_graph(request, json_text):
             json_graph[u'nodes']
         except KeyError:
             logging.info("Json is not a graph declaration (no nodes)")
-            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True})
+            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': DATABASES})
     except ValueError as err:
         logging.info("Not a valid Json File %s\n" % (err))
-        return render(request, 'NetExplorer/netexplorer.html', {'json_err': True})
+        return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': DATABASES})
 
-    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout})
+    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout,'databases': DATABASES})
 
 
 # ------------------------------------------------------------------------------
