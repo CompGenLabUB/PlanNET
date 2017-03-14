@@ -594,7 +594,7 @@ def about(request):
     """
     View for about
     """
-    return render(request, 'NetExplorer/about.html')
+    return render(request, 'NetExplorer/about.html', {'databases': sorted(DATABASES)})
 
 # ------------------------------------------------------------------------------
 def handler404(request):

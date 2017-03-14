@@ -1008,6 +1008,66 @@ input[type="file"] {
     width: 40%;
 }
 
+/* ABOUT */
+.about-title {
+    color: #777777;
+}
+
+.about-title:hover {
+    color: #777777;
+    text-decoration: none;
+}
+
+.about-button-container {
+    top: 100px !important;
+}
+
+.about-overlay-close {
+    background-color: #F5F5F5;
+}
+
+.about-overlay {
+    width: 1000px;
+    height: 800px;
+    top: 100px;
+    right: 18%;
+}
+
+.transcriptome-table {
+    color: #77777;
+    font-size: 12px;
+    width: 20% !important;
+}
+
+.plot-btns {
+    width: 300px;
+    display: inline-block;
+}
+
+.plot-img {
+    width: auto;
+    height: 100%;
+}
+
+.plot-img-png {
+    height: 100%;
+    width: auto;
+}
+
+.view-interactome-plots:hover {
+    cursor: pointer;
+}
+
+.plot-viewer {
+    margin-top: 30px;
+    width: 80%;
+    height: 80%;
+    display: inline-block;
+}
+
+.about-overlay-body {
+    text-align: center;
+}
 
 /* TUTORIAL */
 .tutorial-title {
