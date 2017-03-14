@@ -4,14 +4,13 @@ $(document).ready(function () {
     alldivs.each(function(){
         var transcriptome = $( this ).attr("data-id");
         if (! divs[transcriptome]) {
-            $( this ).show()
+            $( this ).show();
             divs[transcriptome] = [];
         } else {
-            $( this ).hide()
+            $( this ).hide();
         }
         divs[transcriptome].push(this);
     });
-    console.log(divs);
     var now = {};
     $('.plot-viewer').each(function(){
         now[ $( this ).attr("data-id") ] = 0;
@@ -34,4 +33,16 @@ $(document).ready(function () {
         $( divs[transcriptome] ).eq(now[transcriptome]).show(); // or .css('display','block');
         //console.log(divs.length, now);
     });
+});
+
+
+
+$(".plot-bigger").on("click", function(event){
+    var transcriptome = $(this).attr("data-id");
+    var selector = "." + transcriptome + ".plot-img-png:visible";
+    var new_src  = $(selector).attr("src");
+    $(".img-bigger").attr("src", new_src);
+    $('.card-overlay').slideToggle(450);
+    $('.close-overlay').slideToggle(450);
+    event.stopPropagation();
 });

@@ -1039,6 +1039,11 @@ input[type="file"] {
     width: 100% !important;
 }
 
+.img-bigger {
+    width: 100%;
+    height: auto;
+    display: inline-block;
+}
 .plot-btns {
     width: 300px;
     display: inline-block;
@@ -1058,6 +1063,11 @@ input[type="file"] {
     cursor: pointer;
 }
 
+.plot-bigger:hover {
+    opacity: 0.75;
+    cursor: pointer;
+}
+
 .plot-viewer {
     margin-top: 30px;
     width: 100%;
@@ -1072,6 +1082,8 @@ input[type="file"] {
 
 .about-overlay-body {
     text-align: center;
+    width: 80%;
+    height: 80%;
 }
 
 /* TUTORIAL */

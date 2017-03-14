@@ -9,6 +9,20 @@
     <h2>Transcriptomes</h2>
     <hr>
 
+    <!-- Overlay for bigger images -->
+    <div id="button-container" class="about-button-container">
+        <div class="close-overlay about-overlay-close" title="Close card">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div id="card-overlay" class="card-overlay about-overlay">
+        <div class="about-overlay-body">
+            <img class="img-bigger" src="" data-id="{% static 'Images' %}"/>
+        </div>
+    </div>
+
+
+
     <!-- TRANSCRIPTOMES DIVS -->
     {% for db in databases %}
         <div class="panel panel-default">
@@ -52,44 +66,66 @@
                         </div>
                         <div class="{{ db }} plot-viewer" data-id="{{ db }}">
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/sequence-length.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/sequence-length.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/longest-orfs.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/longest-orfs.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/transcriptome-brh-venn.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/transcriptome-brh-venn.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/subject-brh-venn.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/subject-brh-venn.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/blast-brh-coverage.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/blast-brh-coverage.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/nogs-brh-coverage.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/nogs-brh-coverage.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-path-length.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-path-length.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-domain-int-score.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-domain-int-score.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-cellcom-nto.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-cellcom-nto.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-molfun-nto.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-molfun-nto.png"/>
+                                </a>
                             </div>
                             <div class="plot-img" data-id="{{ db }}">
-                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-bioproc-nto.png"/>
+                                <a class="plot-bigger" title="View" data-id="{{ db }}">
+                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-bioproc-nto.png"/>
+                                </a>
                             </div>
 
                         </div>
                     </div>
+                </div>
             </div>
         </div>
-    </div>
     {% endfor %}
 
 {% endblock content %}
@@ -103,5 +139,4 @@
         $("#navbar-about").toggleClass('inactive active')
     </script>
     <script src="{% static 'js/about-interactome-plots.js' %}"></script>
-
 {% endblock scripts%}
