@@ -1,47 +1,37 @@
 $(document).ready(function () {
-    var divs = $('.plot-viewer>div');
-    now = 0; // currently shown div
-    divs.hide().first().show();
+    var alldivs = $('.plot-viewer>div');
+    var divs    = {};
+    alldivs.each(function(){
+        var transcriptome = $( this ).attr("data-id");
+        if (! divs[transcriptome]) {
+            $( this ).show()
+            divs[transcriptome] = [];
+        } else {
+            $( this ).hide()
+        }
+        divs[transcriptome].push(this);
+    });
+    console.log(divs);
+    var now = {};
+    $('.plot-viewer').each(function(){
+        now[ $( this ).attr("data-id") ] = 0;
+    });
+
     $("div[name=next]").click(function (e) {
-        divs.eq(now).hide();
-        now = (now + 1 < divs.length) ? now + 1 : 0;
-        var newtitle = divs.eq(now).attr("data-id");
-        $(".plot-title").html(newtitle);
-        divs.eq(now).show(); // show next
+        var transcriptome = $( this ).attr("data-id");
+        $( divs[transcriptome] ).eq(now[transcriptome]).hide();
+        now[transcriptome] = (now[transcriptome] + 1 < divs[transcriptome].length) ? now[transcriptome] + 1 : 0;
+        var newtitle = $( divs[transcriptome] ).eq(now[transcriptome]).attr("data-id");
+        //$(".plot-title").html(newtitle);
+        $( divs[transcriptome] ).eq(now[transcriptome]).show(); // show next
     });
     $("div[name=prev]").click(function (e) {
-        divs.eq(now).hide();
-        now = (now > 0) ? now - 1 : divs.length - 1;
-        var newtitle = divs.eq(now).attr("data-id");
-        $(".plot-title").html(newtitle);
-        divs.eq(now).show(); // or .css('display','block');
+        var transcriptome = $( this ).attr("data-id");
+        $( divs[transcriptome] ).eq(now[transcriptome]).hide();
+        now[transcriptome] = (now[transcriptome] > 0) ? now[transcriptome] - 1 : divs[ transcriptome ].length - 1;
+        var newtitle = $( divs[transcriptome] ).eq(now[transcriptome]).attr("data-id");
+        //$(".plot-title").html(newtitle);
+        $( divs[transcriptome] ).eq(now[transcriptome]).show(); // or .css('display','block');
         //console.log(divs.length, now);
     });
-});
-
-
-$(".view-interactome-plots").on("click", function(event){
-    // Get back to first image when opening overlay
-    var divs = $('.plot-viewer>div');
-    now = 0;
-    divs.hide().first().show();
-    // Show the hidden div
-    var transcriptome = $( this ).attr("data-id");
-    var static_url    = $(".plot-viewer").attr("data-id") + transcriptome + "/";
-    $( ".plot-img>img" ).each(function() {
-        var img_name = $( this ).attr("data-id");
-        var new_src  = static_url + img_name;
-        $(this).attr("src", new_src);
-    });
-    $('.transcriptome-replace').html(transcriptome);
-    $('.plot-title').html("Sequence Length");
-    //$('[id="card-overlay"]').html("");
-
-    // Show overlay
-    $('[id="card-overlay"]').slideToggle(450);
-    $('.close-overlay').slideToggle(450);
-
-    // Prevent JS to close the overlay because some html element (the link) was clicked.
-    event.stopPropagation();
-
 });

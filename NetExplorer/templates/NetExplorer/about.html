@@ -8,62 +8,6 @@
 {% block content %}
     <h2>Transcriptomes</h2>
     <hr>
-    <!--OVERLAY FOR PLOTS -->
-    <div id="button-container" class="about-button-container">
-        <div class="close-overlay about-overlay-close" title="Close">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        </div>
-    </div>
-    <div class="card-overlay about-overlay" id="card-overlay">
-        <div class="about-overlay-body">
-            <h2>Plots for <span class="transcriptome-replace"></span></h2>
-            <h4>
-                <span class="plot-title"></span>
-            </h4>
-            <br>
-            <div class="row plot-btns">
-                <div class="col-sm-6 btn btn-default" name="prev">Prev</div>
-                <div class="col-sm-6 btn btn-default" name="next">Next</div>
-            </div>
-            <br>
-            <div class="plot-viewer" data-id="{% static 'Images/' %}">
-                <div class="plot-img" data-id="Sequence length">
-                    <img src="" data-id="sequence-length.png" class="plot-img-png sequence-length"/>
-                </div>
-                <div class="plot-img" data-id="Longest ORFs">
-                    <img src="" data-id="longest-orfs.png" class="plot-img-png longest-orfs"/>
-                </div>
-                <div class="plot-img" data-id="Transcriptome BRHs">
-                    <img src="" data-id="transcriptome-brh-venn.png" class="plot-img-png transcriptome-brh-venn"/>
-                </div>
-                <div class="plot-img" data-id="Subject BRHs">
-                    <img src="" data-id="subject-brh-venn.png" class="plot-img-png subject-brh-venn"/>
-                </div>
-                <div class="plot-img" data-id="BLAST BRHs coverage">
-                    <img src="" data-id="blast-brh-coverage.png" class="plot-img-png blast-brh-coverage"/>
-                </div>
-                <div class="plot-img" data-id="EggNogs BRHs coverage">
-                    <img src="" data-id="nogs-brh-coverage.png" class="plot-img-png nogs-brh-coverage"/>
-                </div>
-                <div class="plot-img" data-id="Predictions path length">
-                    <img src="" data-id="predictions-path-length.png" class="plot-img-png predictions-path-length"/>
-                </div>
-                <div class="plot-img" data-id="Predictions domain interaction score">
-                    <img src="" data-id="predictions-domain-int-score.png" class="plot-img-png predictions-domain-int-score"/>
-                </div>
-                <div class="plot-img" data-id="Predictions Cellullar Component NTO">
-                    <img src="" data-id="predictions-cellcom-nto.png" class="plot-img-png predictions-cellcom-nto"/>
-                </div>
-                <div class="plot-img" data-id="Predictions Molecular Function NTO">
-                    <img src="" data-id="predictions-molfun-nto.png" class="plot-img-png predictions-molfun-nto"/>
-                </div>
-                <div class="plot-img" data-id="Predictions Biological Process NTO">
-                    <img src="" data-id="predictions-bioproc-nto.png" class="plot-img-png predictions-bioproc-nto"/>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
     <!-- TRANSCRIPTOMES DIVS -->
     {% for db in databases %}
@@ -74,28 +18,78 @@
                 </a>
             </div>
             <div class="panel-body">
-                <table class="table table-hove transcriptome-table">
-                    <thead>
-                        <th></th>
-                        <th></th>
-                    <thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-right">Year</td> <td>culo</td>
-                        <tr>
-                            <td class="text-right">Publication</td> <td>culo</td>
-                        <tr>
-                            <td class="text-right">Number of contigs</td> <td>culo</td>
-                        <tr>
-                            <td class="text-right">Average contig length</td> <td>culo</td>
-                        <tr>
-                            <td class="text-right">Number of predicted interactions</td> <td>culo</td>
-                        <tr>
-                            <td class="text-right"><a class="view-interactome-plots" data-id="{{ db }}">View plots for interactome prediction</a></td> <td>culo</td>
-                    </tbody>
-                </table>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <table class="table table-hove transcriptome-table">
+                            <thead>
+                                <th></th>
+                                <th></th>
+                            <thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-right"><strong>Year</strong></td> <td>culo</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><strong>Publication</strong></td> <td>culo</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><strong>Number of contigs</strong></td> <td>culo</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><strong>Average contig length</strong></td> <td>culo</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><strong>Number of predicted interactions</strong></td> <td>culo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-sm-9 plot-wrapper">
+                        <div class="row plot-btns">
+                            <div class="col-sm-6 btn btn-default" data-id="{{ db }}"  name="prev">Prev</div>
+                            <div class="col-sm-6 btn btn-default" data-id="{{ db }}" name="next">Next</div>
+                        </div>
+                        <div class="{{ db }} plot-viewer" data-id="{{ db }}">
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/sequence-length.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/longest-orfs.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/transcriptome-brh-venn.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/subject-brh-venn.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/blast-brh-coverage.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/nogs-brh-coverage.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-path-length.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-domain-int-score.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-cellcom-nto.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-molfun-nto.png"/>
+                            </div>
+                            <div class="plot-img" data-id="{{ db }}">
+                                <img class="plot-img-png" src="{% static 'Images' %}/{{ db }}/predictions-bioproc-nto.png"/>
+                            </div>
+
+                        </div>
+                    </div>
             </div>
         </div>
+    </div>
     {% endfor %}
 
 {% endblock content %}
