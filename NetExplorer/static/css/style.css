@@ -1033,10 +1033,20 @@ input[type="file"] {
     right: 18%;
 }
 
-.transcriptome-table {
-    color: #77777;
-    font-size: 12px;
+.transcriptome-table-div {
     width: 100% !important;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.transcriptome-table {
+    color: #777777;
+    font-size: 12px;
+}
+.transcriptome-row .col-sm-5 { /* transcriptome table column */
+    text-align: center;
 }
 
 .img-bigger {
@@ -1049,13 +1059,18 @@ input[type="file"] {
 }
 
 .plot-img {
+    position: relative;
     width: auto;
     height: 100%;
+    border: solid 1px;
+    border-color:  rgba(0, 0, 0, .15);
+    padding: 1%;
 }
 
 .plot-img-png {
-    height: 300px;
-    width: auto;
+    position: relative;
+    height: 95%;
+    width: 40%;
 }
 
 .view-interactome-plots:hover {
@@ -1068,13 +1083,12 @@ input[type="file"] {
 }
 
 .plot-viewer {
-    margin-top: 30px;
+    position: relative;
     width: 100%;
-    height: 90%;
-    display: inline-block;
+    height: 80%;
 }
 
-.plot-wrapper {
+.transcriptome-row .col-sm-7 {
     width: 100%;
     text-align: center;
 }
@@ -1090,6 +1104,14 @@ input[type="file"] {
     width: 80%;
     display: inline-block;
 }
+.transcriptome-col {
+    height: 400px !important;
+}
+
+.transcriptome-row {
+    height: 100%;
+}
+
 
 /* TUTORIAL */
 .tutorial-title {

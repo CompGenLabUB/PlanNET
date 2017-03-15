@@ -19,13 +19,16 @@ $(document).ready(function () {
     $("div[name=next]").click(function (e) {
         var transcriptome = $( this ).attr("data-id");
         $( divs[transcriptome] ).eq(now[transcriptome]).hide();
-        now[transcriptome] = (now[transcriptome] + 1 < divs[transcriptome].length) ? now[transcriptome] + 1 : 0;
-        var title_selector = "." + transcriptome + ".plot-title";
-        var title          = $( divs[transcriptome] ).eq(now[transcriptome]).data("title");
-        var newtitle       = $( divs[transcriptome] ).eq(now[transcriptome]).data("title");
+        now[transcriptome]      = (now[transcriptome] + 1 < divs[transcriptome].length) ? now[transcriptome] + 1 : 0;
+        var title_selector      = "." + transcriptome + ".plot-title";
+        var title               = $( divs[transcriptome] ).eq(now[transcriptome]).data("title");
+        var newtitle            = $( divs[transcriptome] ).eq(now[transcriptome]).data("title");
+        var newcounter          = now[transcriptome] +  1;
+        var newcounter_selector = "." + transcriptome + ".image-counter";
         $(title_selector).html(newtitle);
         $(".overlay.plot-title").html(newtitle);
         $( divs[transcriptome] ).eq(now[transcriptome]).show(); // show next
+        $(newcounter_selector).html(newcounter);
     });
     $("div[name=prev]").click(function (e) {
         var transcriptome = $( this ).attr("data-id");
@@ -34,9 +37,12 @@ $(document).ready(function () {
         var title_selector = "." + transcriptome + ".plot-title";
         var title          = $( divs[transcriptome] ).eq(now[transcriptome]).data("title");
         var newtitle       = $( divs[transcriptome] ).eq(now[transcriptome]).data("title");
+        var newcounter     = now[transcriptome] +  1;
+        var newcounter_selector = "." + transcriptome + ".image-counter";
         $(title_selector).html(newtitle);
         $(".overlay.plot-title").html(newtitle);
         $( divs[transcriptome] ).eq(now[transcriptome]).show(); // or .css('display','block');
+        $(newcounter_selector).html(newcounter);
     });
 });
 
