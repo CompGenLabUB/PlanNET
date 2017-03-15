@@ -1008,6 +1008,88 @@ input[type="file"] {
     width: 40%;
 }
 
+/* ABOUT */
+.about-title {
+    color: #777777;
+}
+
+.about-title:hover {
+    color: #777777;
+    text-decoration: none;
+}
+
+.about-button-container {
+    top: 100px !important;
+}
+
+.about-overlay-close {
+    background-color: #F5F5F5;
+}
+
+.about-overlay {
+    width: 1000px;
+    height: 800px;
+    top: 100px;
+    right: 18%;
+}
+
+.transcriptome-table {
+    color: #77777;
+    font-size: 12px;
+    width: 100% !important;
+}
+
+.img-bigger {
+    width: auto;
+    height: 100%;
+}
+.plot-btns {
+    width: 300px;
+    display: inline-block;
+}
+
+.plot-img {
+    width: auto;
+    height: 100%;
+}
+
+.plot-img-png {
+    height: 300px;
+    width: auto;
+}
+
+.view-interactome-plots:hover {
+    cursor: pointer;
+}
+
+.plot-bigger:hover {
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.plot-viewer {
+    margin-top: 30px;
+    width: 100%;
+    height: 90%;
+    display: inline-block;
+}
+
+.plot-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.about-overlay-body {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.about-overlay-img-wrapper {
+    height: 80%;
+    width: 80%;
+    display: inline-block;
+}
 
 /* TUTORIAL */
 .tutorial-title {
