@@ -590,6 +590,14 @@ def downloads(request):
     return render(request, 'NetExplorer/downloads.html')
 
 # ------------------------------------------------------------------------------
+def datasets(request):
+    """
+    View for datasets
+    """
+    return render(request, 'NetExplorer/datasets.html', {'databases': sorted(DATABASES)})
+
+
+# ------------------------------------------------------------------------------
 def about(request):
     """
     View for about

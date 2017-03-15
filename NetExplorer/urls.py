@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^show_connections', views.show_connections, name="show_connections"),
     url(r'^downloads', views.downloads, name="downloads"),
     url(r'^about', views.about, name="about"),
+    url(r'^datasets', views.datasets, name="datasets"),
 ]
