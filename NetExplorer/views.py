@@ -48,6 +48,15 @@ def query_node(symbol, database):
         node.get_summary()
     return node
 
+# ------------------------------------------------------------------------------
+def symbol_is_empty(symbol):
+    '''
+    Checks if the input symbol from the forms is empty or not
+    '''
+    if re.match(r"[a-zA-Z0-9]", symbol):
+        return False
+    else:
+        return True
 
 # ------------------------------------------------------------------------------
 def get_shortest_paths(startnodes, endnodes, plen):
@@ -118,11 +127,14 @@ def substitute_human_symbols(symbols, database):
         if re.match(symbol_regexp[database], symbol):
             newsymbols.append(symbol)
         else:
-            # Human node!
-            # WILD CARDS
-            logging.info(symbol)
             wildcard_symbols = list()
-            wildcard_symbols.extend( substitue_wildcards([symbol]) )
+            try:
+                wildcard_symbols = GeneOntology(symbol, human=True).human_nodes
+            except (NotGOAccession, NodeNotFound):
+                # Symbol must be Human, could be wildcard
+                wildcard_symbols.extend( substitue_wildcards([symbol]) )
+            # Human node!
+            print(wildcard_symbols)
             for final_symbol in wildcard_symbols:
                 try:
                     symbol = final_symbol.upper()
@@ -253,7 +265,7 @@ def gene_search(request):
         nodes        = list()
         search_error = False
 
-        if symbols: # If there is a search term
+        if symbol_is_empty(symbols) is False: # If there is a search term
             symbols = symbols.split(",")
             if database is None: # No database selected
                 search_error = 2
@@ -261,6 +273,7 @@ def gene_search(request):
 
             if database == "Human":
                 symbols = substitue_wildcards(symbols)
+
             else:
                 symbols = substitute_human_symbols(symbols, database)
 
@@ -288,6 +301,8 @@ def net_explorer(request):
     '''
     if request.method == "GET" and "genesymbol" in request.GET and request.is_ajax():
         symbols  = request.GET['genesymbol']
+        if symbol_is_empty(symbols):
+            return HttpResponse(status=400)
         symbols  = symbols.split(",")
         database = None
 
@@ -516,11 +531,10 @@ def path_finder(request):
         # We have a search
         if not request.GET['database']:
             return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True, 'databases': sorted(DATABASES)})
-        if not request.GET['start'] or not request.GET['end']:
+        if symbol_is_empty(request.GET['start']) or symbol_is_empty(request.GET['end']):
             return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True, 'databases': sorted(DATABASES)})
         if not request.GET['plen']:
             return render(request, 'NetExplorer/pathway_finder.html', {"noplen": True, 'databases': sorted(DATABASES)})
-
         # Search
         # Valid search
         database   = request.GET['database']

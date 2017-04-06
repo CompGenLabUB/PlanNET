@@ -55,7 +55,7 @@ function addNode(symbol, database, cyobj) {
             },
             400: function () {
                 $('#loading').hide();
-                $('.node-not-found-err').html("Select Database");
+                $('.node-not-found-err').html("Bad Request");
                 $('#node-not-found').slideToggle(200);
                 setTimeout(function () {
                     $('#node-not-found').hide(200);

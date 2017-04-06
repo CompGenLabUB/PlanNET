@@ -9,6 +9,7 @@ import json
 import logging
 from colour import Color
 import math
+import re
 
 
 authenticate("192.168.0.2:7473", "neo4j", "5961")
@@ -33,6 +34,21 @@ PREDNODE_QUERY = """
         r.blast_brh AS blast_brh,
         r.pfam_brh AS pfam_brh LIMIT 1
 """
+
+# ------------------------------------------------------------------------------
+GO_QUERY = """
+    MATCH (n:Go)
+    WHERE n.accession = "%s"
+    RETURN n.domain as domain
+"""
+
+# ------------------------------------------------------------------------------
+GO_HUMAN_NODE_QUERY = """
+    MATCH (n:Go)-[:HAS_GO]-(m:Human)
+    WHERE n.accession = "%s"
+    RETURN n.domain as domain, m.symbol as symbol
+"""
+
 # ------------------------------------------------------------------------------
 
 EXPERIMENT_QUERY = """
@@ -826,6 +842,64 @@ class ExperimentList(object):
         else:
             raise ExperimentNotFound
 
+
+# ------------------------------------------------------------------------------
+class GeneOntology(object):
+    """
+    Class for GeneOntology nodes
+    """
+    def __init__(self, accession, human=False):
+        self.accession   = accession
+        self.domain      = None
+        self.human_nodes = list()
+        self.go_regexp = r"GO:\d{7}"
+        if self.__check_go() is True:
+            if human is True:
+                self.__get_nodes()
+            else:
+                self.__query_go()
+        else:
+            raise NotGOAccession(self.accession)
+
+    def __query_go(self):
+        """
+        Query DB and get domain
+        """
+        query   = GO_QUERY % self.accession
+        results = graph.run(query)
+        results = results.data()
+        if results:
+            self.domain = results[0]['domain']
+        else:
+            raise NodeNotFound(self.accession, "Go")
+
+    def __check_go(self):
+        """
+        Checks if accession is a GO accession
+        """
+        if re.match(self.go_regexp, self.accession):
+            return True
+        else:
+            return False
+
+    def __get_nodes(self):
+        """
+        Gets Human nodes symbols with annotated GO
+        """
+        query   = GO_HUMAN_NODE_QUERY % self.accession
+        results = graph.run(query)
+
+        results = results.data()
+        if results:
+            print("YEP")
+            self.domain = results[0]['domain']
+            for row in results:
+                self.human_nodes.append(row['symbol'])
+            print(self.human_nodes)
+        else:
+            raise NodeNotFound(self.accession, "Go")
+
+
 # ------------------------------------------------------------------------------
 class Pathway(object):
     """
@@ -868,9 +942,10 @@ class WrongGraphObject(Exception):
 class NodeNotFound(Exception):
     """Exception raised when a node is not found on the db"""
     def __init__(self, symbol, database):
-        self.symbol = symbol
+        self.symbol   = symbol
+        self.database = database
     def __str__(self):
-        return "Symbol %s not found in database %s." % (self.pnode.symbol, self.pnode.database)
+        return "Symbol %s not found in database %s." % (self.symbol, self.database)
 
 # ------------------------------------------------------------------------------
 class NoExpressionData(Exception):
@@ -901,6 +976,14 @@ class SampleNotAvailable(Exception):
         self.sample     = sample
     def __str__(self):
         return "Sample %s not found for experiment %s in database" % (self.sample, self.experiment)
+
+# ------------------------------------------------------------------------------
+class NotGOAccession(Exception):
+    """Exception when GO accession provided to GO object is not a GO accession"""
+    def __init__(self, go_object):
+        self.go = go_object
+    def __str__(self):
+        return "GO accession: %s is not an allowed GO accession (GO:\\d{7})" % (self.go.accession)
 
 # ------------------------------------------------------------------------------
 class NoHomologFound(Exception):

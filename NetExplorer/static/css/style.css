@@ -1,7 +1,6 @@
 
 /* BASE HTML */
 /* ----------------------------- */
-
 /* BASE CONTAINERS */
 #page-container {
     position: absolute;
@@ -105,8 +104,6 @@
     margin-bottom: 5%;
     width: 180;
 }
-
-
 
 .app-icon-inside {
     margin-top: 4%;
