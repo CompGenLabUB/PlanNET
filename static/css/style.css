@@ -32,6 +32,10 @@
     padding-bottom: 12%;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: #777777;
+}
+
 #body-wrapper {
     margin-top: 5%;
     margin-left: 5%;
@@ -559,7 +563,12 @@
     border-width: 5px;
     background-color: #F8F8F8;
     border-color: #777777;
+    color: #777777;
     border-width: 4px;
+}
+
+#netexplorer-title {
+    color: rgb(52, 52, 52) !important;
 }
 
 #cyt-explorer-icon {
@@ -727,7 +736,10 @@
     border-color: #D4D4D4;
     border-style: solid;
     border-width: 2px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
+
 
 #map-expression-dialog-header {
     background-color: #E9E9E9;
@@ -743,6 +755,7 @@
     margin-left: 2.5%;
     padding: 1%;
     height: 80%;
+    color: #777777;
 }
 
 #map-expression-dialog-send {

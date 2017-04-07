@@ -85,12 +85,26 @@
             <div id="map-expression-dialog-body">
                 <h2>Select Experiment</h2>
                 <hr>
-                <select id="select-expression" name="expression" class="selectpicker">
-                    <option value="" selected disabled>Select Expression data</option>
-                    {% for experiment in experiments.experiments %}
-                        <option value="{{ experiment }}">{{ experiment }}</option>
-                    {% endfor %}
-                </select>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select id="select-expression" name="expression" class="selectpicker">
+                            <option value="" selected disabled>Select Expression data</option>
+                            {% for experiment in experiments.experiments %}
+                                <option value="{{ experiment }}">{{ experiment }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="available-datasets">
+                            <h4 class="available-for">Available for datasets:</h4>
+                            {% for experiment,datasets in experiments.datasets.items %}
+                                {% for dataset in datasets %}
+                                    <div class="available-for {{experiment}}"><img class='legend-db' src='{% static 'Images/legend-' %}{{ dataset }}.png'/>{{ dataset }}</div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
                 <h2>Select Samples</h2>
                 <hr>
                 <div class="sample-container">

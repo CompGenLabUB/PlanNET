@@ -63,15 +63,20 @@ GO_HUMAN_NODE_QUERY = """
 # ------------------------------------------------------------------------------
 
 EXPERIMENT_QUERY = """
-    MATCH (n:Experiment)
+    MATCH (n:Experiment)--(m)
     WHERE n.id = "%s"
-    RETURN n.id as identifier, n.maxexp as maxexp, n.minexp as minexp, n.reference as reference, n.percentiles as percentiles
+    RETURN
+        n.id as identifier,
+        n.maxexp as maxexp,
+        n.minexp as minexp,
+        n.reference as reference,
+        n.percentiles as percentiles
 """
 
 # ------------------------------------------------------------------------------
 ALL_EXPERIMENTS_QUERY = """
     MATCH (n:Experiment)-[r]-(m)
-    RETURN distinct keys(r) as samples, n.id as identifier
+    RETURN distinct keys(r) as samples, n.id as identifier, collect(distinct labels(m)) as datasets
 """
 
 # ------------------------------------------------------------------------------
@@ -700,9 +705,9 @@ class Experiment(object):
         results = GRAPH.run(query)
         results = results.data()
         if results:
-            self.maxexp    = results[0]["maxexp"]
-            self.minexp    = results[0]["minexp"]
-            self.reference = results[0]["reference"]
+            self.maxexp      = results[0]["maxexp"]
+            self.minexp      = results[0]["minexp"]
+            self.reference   = results[0]["reference"]
             self.percentiles = results[0]["percentiles"]
             return True
         else:
@@ -844,26 +849,43 @@ class ExperimentList(object):
     """
     def __init__(self):
         self.experiments = set()
-        self.samples   = dict()
+        self.samples    = dict()
+        self.datasets   = dict()
         query   = ALL_EXPERIMENTS_QUERY
         # Add all the samples for each experiment
         results = GRAPH.run(query)
         results = results.data()
         if results:
             for row in results:
-                if 'identifier' not in self.samples:
+                if row['identifier'] not in self.samples:
                     self.samples[ row['identifier'] ] = set()
                 self.samples[ row['identifier'] ].update(row['samples'])
                 self.experiments.add(row['identifier'])
+                if row['identifier'] not in self.datasets:
+                    self.datasets[ row['identifier'] ] = set()
+                self.datasets[ row['identifier'] ].update(row['datasets'][0])
             for exp in self.samples:
                 self.samples[exp] = sorted(self.samples[exp])
+
     def get_samples(self, experiment):
-        """ Returns a set for the given experiment """
+        """ Returns a set for the given experiment"""
         if experiment in self.samples:
             return self.samples[experiment]
         else:
             raise ExperimentNotFound
 
+    def get_datasets(self, experiment):
+        """ Returns a set for the given experiment"""
+        if experiment in self.samples:
+            return self.datasets[experiment]
+        else:
+            raise ExperimentNotFound
+
+    def __str__(self):
+        final_str = ""
+        for exp in self.experiments:
+            final_str += "Experiment: %s\n\tsamples: %s\n\tdatasets: %s\n" % (exp, ",".join(self.samples[exp]), ",".join(self.datasets[exp]))
+        return final_str
 
 # ------------------------------------------------------------------------------
 class GeneOntology(object):

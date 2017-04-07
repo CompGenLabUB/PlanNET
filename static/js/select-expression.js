@@ -20,11 +20,17 @@ $(".pick-color-group").on("click", function() {
 //------------------------
 // Form management
 $(".sample-option").hide();
+$(".available-for").hide();
 $("#select-expression").on("change", function(){
     $(".sample-option").hide();
     $(".sample-warning").hide();
     var to_show = ".sample-option." + $("#select-expression").val();
     $(to_show).show();
+
+    $(".available-for").hide();
+    var available = ".available-for." + $("#select-expression").val();
+    $(".available-for").show();
+    $(available).show();
 });
 
 // -----------------------

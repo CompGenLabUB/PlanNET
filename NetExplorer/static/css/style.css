@@ -736,7 +736,10 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #D4D4D4;
     border-style: solid;
     border-width: 2px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
+
 
 #map-expression-dialog-header {
     background-color: #E9E9E9;
@@ -752,6 +755,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-left: 2.5%;
     padding: 1%;
     height: 80%;
+    color: #777777;
 }
 
 #map-expression-dialog-send {
