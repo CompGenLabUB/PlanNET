@@ -76,6 +76,18 @@ var stylesheet = cytoscape.stylesheet()
         .css({
             'shape': 'rectangle',
         })
+    .selector('node[database = "Adamidi"]')
+        .css({
+            'shape': 'roundrectangle',
+        })
+    .selector('node[database = "Blythe"]')
+        .css({
+            'shape': 'heptagon',
+        })
+    .selector('node[database = "Pearson"]')
+        .css({
+            'shape': 'octagon',
+        })
     .selector('node[database = "Human"]')
         .css({
             'width': 20,
