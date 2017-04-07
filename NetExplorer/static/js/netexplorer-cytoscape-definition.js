@@ -78,6 +78,7 @@ var stylesheet = cytoscape.stylesheet()
         })
     .selector('node[database = "Human"]')
         .css({
+            'width': 20,
             'shape': 'diamond',
             'background-color': '#6785d0',
         });
