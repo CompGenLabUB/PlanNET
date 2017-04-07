@@ -116,7 +116,11 @@ def substitute_human_symbols(symbols, database):
         "Dresden":      r"dd_Smed",
         "Graveley":     r"CUFF\.\d+\.\d+",
         "Newmark":      r"Contig\d+",
-        "Illuminaplus": r"Gene_\d+_.+"
+        "Illuminaplus": r"Gene_\d+_.+",
+        "Adamidi":      r"contig\d+|isotig\d+",
+        "Blythe":       r"AAA\.454ESTABI\.\d+",
+        "Pearson":      r"BPKG\d+",
+        "Smed454":      r"90e_\d+|gnl\|UG\|Sme#S\d+/"
     }
     newsymbols = list()
 
