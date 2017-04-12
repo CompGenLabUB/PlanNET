@@ -344,8 +344,6 @@ def net_explorer(request):
     else:
         # Get experiment data to put it on the Map Expression dialog Form
         all_experiments = ExperimentList()
-        print("HOLA")
-        print(all_experiments)
         return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments, 'databases': sorted(DATABASES)} )
 
 

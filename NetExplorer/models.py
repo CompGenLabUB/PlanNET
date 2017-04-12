@@ -867,6 +867,10 @@ class ExperimentList(object):
                     self.datasets[ row['identifier'] ].update(item)
             for exp in self.samples:
                 self.samples[exp] = sorted(self.samples[exp])
+            # Sort datasets alphabetically
+            for exp in self.datasets:
+                self.datasets[exp] = sorted(list(self.datasets[exp]))
+            
 
     def get_samples(self, experiment):
         """ Returns a set for the given experiment"""
