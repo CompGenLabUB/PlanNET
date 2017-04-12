@@ -863,7 +863,8 @@ class ExperimentList(object):
                 self.experiments.add(row['identifier'])
                 if row['identifier'] not in self.datasets:
                     self.datasets[ row['identifier'] ] = set()
-                self.datasets[ row['identifier'] ].update(row['datasets'][0])
+                for item in row['datasets']:
+                    self.datasets[ row['identifier'] ].update(item)
             for exp in self.samples:
                 self.samples[exp] = sorted(self.samples[exp])
 
