@@ -324,7 +324,10 @@ class Domain(object):
     """
     Class for Pfam domains.
     """
-    def __init__(self, accession, description, identifier, mlength):
+    def __init__(self, accession, description=None, identifier=None, mlength=None):
+        pfam_regexp = r'PF\d{5}'
+        if not re.match(pfam_regexp, accession):
+            raise NotPFAMAccession(accession)
         self.accession   = accession
         self.description = description
         self.identifier  = identifier
@@ -1042,6 +1045,14 @@ class NotGOAccession(Exception):
         self.go = go_object
     def __str__(self):
         return "GO accession: %s is not an allowed GO accession (GO:\\d{7})" % (self.go.accession)
+
+# ------------------------------------------------------------------------------
+class NotPFAMAccession(Exception):
+    """Exception when PFAM accession provided to GO object is not a GO accession"""
+    def __init__(self, acc):
+        self.acc = acc
+    def __str__(self):
+        return "PFAM accession: %s is not an allowed PFAM accession (PFAM:\\d{7})" % (self.acc)
 
 # ------------------------------------------------------------------------------
 class NoHomologFound(Exception):
