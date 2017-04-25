@@ -21,7 +21,7 @@ from pprint import pprint
 # -----------------------
 # CONSTANTS
 # -----------------------
-BLAST_DB_DIR    = "/home/compgen/scastillo/PlanNET/blast/"
+BLAST_DB_DIR    = "/home/sergio/code/PlanNET/blast/"
 MAX_NUMSEQ      = 50
 MAX_CHAR_LENGTH = 25000
 
@@ -388,16 +388,16 @@ def upload_graph(request, json_text):
 
     try: # Check if file is a valid JSON
         json_graph = json.loads(graph_content)
+        all_experiments = ExperimentList()
         try: # Check if JSON is a graph declaration
             json_graph[u'nodes']
         except KeyError:
             logging.info("ERROR: Json is not a graph declaration (no nodes) in upload_graph")
-            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': sorted(DATABASES), 'experiments': all_experiments})
     except ValueError as err:
         logging.info("ERROR: Not a valid Json File %s in upload_graph\n" % (err))
         return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': sorted(DATABASES)})
-
-    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout,'databases': sorted(DATABASES)})
+    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout,'databases': sorted(DATABASES), 'experiments': all_experiments})
 
 
 # ------------------------------------------------------------------------------
