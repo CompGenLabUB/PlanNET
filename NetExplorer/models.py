@@ -503,7 +503,7 @@ class WildCard(object):
             print(list_of_symbols)
             return list_of_symbols
         else:
-            return None
+            return list()
 
 
 # ------------------------------------------------------------------------------
@@ -870,7 +870,7 @@ class ExperimentList(object):
             # Sort datasets alphabetically
             for exp in self.datasets:
                 self.datasets[exp] = sorted(list(self.datasets[exp]))
-            
+
 
     def get_samples(self, experiment):
         """ Returns a set for the given experiment"""

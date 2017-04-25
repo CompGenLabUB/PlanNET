@@ -132,13 +132,25 @@ def substitute_human_symbols(symbols, database):
             newsymbols.append(symbol)
         else:
             wildcard_symbols = list()
-            try:
-                wildcard_symbols = GeneOntology(symbol, human=True).human_nodes
-            except (NotGOAccession, NodeNotFound):
-                # Symbol must be Human, could be wildcard
-                wildcard_symbols.extend( substitue_wildcards([symbol]) )
-            # Human node!
-            print(wildcard_symbols)
+            if (re.match(go_regexp, symbol)):
+                # GO
+                try:
+                    wildcard_symbols.extend(GeneOntology(symbol, human=True).human_nodes)
+                except (NodeNotFound):
+                    continue
+            elif (re.match(pfam_regexp, symbol)):
+                # PFAM
+                domain = Domain(accession=symbol)
+                try:
+                    newsymbols.extend(domain.get_nodes(database))
+                except (NodeNotFound):
+                    continue
+            else:
+                # MUST BE HUMAN
+                try:
+                    wildcard_symbols.extend( substitue_wildcards([symbol]) )
+                except Exception as err:
+                    continue
             for final_symbol in wildcard_symbols:
                 try:
                     symbol = final_symbol.upper()
@@ -277,10 +289,11 @@ def gene_search(request):
 
             if database == "Human":
                 symbols = substitue_wildcards(symbols)
-
             else:
                 symbols = substitute_human_symbols(symbols, database)
-
+            if not symbols:
+                search_error = 1
+                return render(request,'NetExplorer/gene_search.html', {'search_error': search_error, 'databases': sorted(DATABASES) } )
             for genesymbol in symbols:
                 try:
                     search_node = query_node(genesymbol, database)
@@ -329,7 +342,6 @@ def net_explorer(request):
                     logging.info("ERROR: NodeNotFound or IncorrectDatabase in net_e")
                     continue
         if graphobject.is_empty():
-            print("net_explorer: GraphObject is empty.")
             return HttpResponse(status=404)
         else:
             graphobject.define_important(set(symbols))
