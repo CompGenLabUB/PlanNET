@@ -119,8 +119,6 @@ NEIGHBOURS_QUERY = """
     MATCH (n:%s)-[r:INTERACT_WITH]-(m:%s)-[s:HOMOLOG_OF]-(l:Human), (m)-[t:INTERACT_WITH*0..1]-(other)
     WHERE  n.symbol = '%s'
     RETURN m.symbol         AS target,
-           m.orf            AS torf,
-           m.sequence       AS tsequence,
            count(t)         AS tdegree,
            l.symbol         AS human,
            r.int_prob       AS int_prob,
@@ -227,7 +225,7 @@ class Node(object):
         if results:
             paths = list()
             for path in results:
-                nodes_in_path  = [ PredictedNode(node, self.database) for node in path['symbols']]
+                nodes_in_path  = [ PredictedNode(node, self.database, query=False) for node in path['symbols']]
                 relationships  = list()
                 path_graph_obj = GraphCytoscape()
                 for idx, val in enumerate(path['molfun_nto']):
@@ -476,7 +474,7 @@ class HumanNode(Node):
                 if database not in database_to_look:
                     continue
                 try:
-                    homolog_node = PredictedNode(row['homolog'], database)
+                    homolog_node = PredictedNode(row['homolog'], database, query=False)
                 except:
                     continue
                 homolog_rel    = Homology(
@@ -492,7 +490,6 @@ class HumanNode(Node):
                 )
                 homologs[database].append(homolog_rel)
         if homologs:
-            print("--- %s seconds ---" % (time.time() - start_time))
             return homologs
         else:
             logging.info("NO HOMOLOGS")
@@ -517,7 +514,6 @@ class WildCard(object):
 
             for row in results:
                 list_of_symbols.append(row['symbol'])
-            print(list_of_symbols)
             return list_of_symbols
         else:
             return list()
@@ -530,7 +526,7 @@ class PredictedNode(Node):
     """
     allowed_databases = DATABASES
 
-    def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False, degree=None):
+    def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False, degree=None, query=True):
         super(PredictedNode, self).__init__(symbol, database)
         self.sequence       = sequence
         self.orf            = orf
@@ -541,7 +537,7 @@ class PredictedNode(Node):
         self.length         = None
         self.orflength      = None
 
-        if sequence is None:
+        if sequence is None and query is True:
             self.__query_node()
             self.get_neighbours()
 
@@ -634,8 +630,7 @@ class PredictedNode(Node):
                 # Node Object
                 target = PredictedNode(
                     symbol   = row['target'],    database = self.database,
-                    sequence = row['tsequence'], orf      = row['torf'],
-                    homolog  = thomolog,         degree   = row['tdegree']
+                    homolog  = thomolog,         degree   = row['tdegree'], query=False
                 )
 
                 # Add prednode to homology object
@@ -648,7 +643,6 @@ class PredictedNode(Node):
                     database      = self.database,
                     parameters    = parameters
                 )
-
                 # Add interaction to list of neighbours
                 self.neighbours.append(interaction)
         else:
@@ -925,7 +919,7 @@ class GeneOntology(object):
             else:
                 self.__query_go()
         else:
-            raise NotGOAccession(self.accession)
+            raise NotGOAccession(self)
 
     def __query_go(self):
         """
@@ -957,11 +951,9 @@ class GeneOntology(object):
 
         results = results.data()
         if results:
-            print("YEP")
             self.domain = results[0]['domain']
             for row in results:
                 self.human_nodes.append(row['symbol'])
-            print(self.human_nodes)
         else:
             raise NodeNotFound(self.accession, "Go")
 
