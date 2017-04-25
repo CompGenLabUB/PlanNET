@@ -558,6 +558,7 @@ h1, h2, h3, h4, h5, h6 {
     overflow-x: hidden;
     height: 100%;
     width: 25%;
+    min-width: 300px;
     float: left;
     text-align: center;
     border-width: 5px;
@@ -759,9 +760,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #map-expression-dialog-send {
-    position: absolute;
-    bottom: 5%;
-    right: 5%;
+    float: right;
+    display: inline-block;
+    margin-top: 200px;
+    bottom: 0;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+#exTab2 {
+    display: inline-block;
 }
 
 .map-expression-btn {
