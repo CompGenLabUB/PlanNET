@@ -122,6 +122,8 @@ def substitute_human_symbols(symbols, database):
         "Pearson":      r"BPKG\d+",
         "Smed454":      r"90e_\d+|gnl\|UG\|Sme#S\d+/"
     }
+    go_regexp   = r"GO:\d{7}"
+    pfam_regexp = r'PF\d{5}'
     newsymbols = list()
 
     for symbol in symbols:
