@@ -10,6 +10,7 @@ import logging
 from colour import Color
 import math
 import re
+import time
 
 
 authenticate("192.168.0.2:7473", "neo4j", "5961")
@@ -61,7 +62,13 @@ GO_HUMAN_NODE_QUERY = """
 """
 
 # ------------------------------------------------------------------------------
+DOMAIN_NODES_QUERY = """
+    MATCH (n:%s)-[:HAS_DOMAIN]->(m:Pfam)
+    WHERE m.accession = "%s"
+    RETURN n.symbol as symbol
+"""
 
+# ------------------------------------------------------------------------------
 EXPERIMENT_QUERY = """
     MATCH (n:Experiment)--(m)
     WHERE n.id = "%s"
@@ -168,17 +175,18 @@ DOMAIN_QUERY = """
 
 # ------------------------------------------------------------------------------
 HOMOLOGS_QUERY = """
-    MATCH (n:Human)-[r:HOMOLOG_OF]-(m:%s)
+    MATCH (n:Human)-[r:HOMOLOG_OF]-(m)
     WHERE  n.symbol = "%s"
-    RETURN n.symbol AS human,
-        m.symbol AS homolog,
-        r.blast_cov AS blast_cov,
+    RETURN n.symbol  AS human,
+        m.symbol     AS homolog,
+        r.blast_cov  AS blast_cov,
         r.blast_eval AS blast_eval,
-        r.nog_brh AS nog_brh,
-        r.pfam_sc AS pfam_sc,
-        r.nog_eval AS nog_eval,
-        r.blast_brh AS blast_brh,
-        r.pfam_brh AS pfam_brh
+        r.nog_brh    AS nog_brh,
+        r.pfam_sc    AS pfam_sc,
+        r.nog_eval   AS nog_eval,
+        r.blast_brh  AS blast_brh,
+        r.pfam_brh   AS pfam_brh,
+        labels(m)    AS database
 """
 
 # NEO4J CLASSES
@@ -443,39 +451,48 @@ class HumanNode(Node):
         pass
 
 
-    def get_homologs(self, database=None):
+    def get_homologs(self, database="ALL"):
         """
         Gets all homologs of the specified database. Returns a LIST of Homology objects.
         """
-        homologs = dict()
-        database_to_look = DATABASES
-        if database is not None:
+        start_time = time.time()
+        # Initialize homologs dictionary
+        homologs         = dict()
+        database_to_look = set()
+        if database == "ALL":
+            database_to_look = set(DATABASES)
+        else:
             database_to_look = set([database])
-        for database in database_to_look:
-            homologs[database] = list()
-            query = HOMOLOGS_QUERY % (database, self.symbol)
-            logging.info(query)
-            results  = GRAPH.run(query)
-            results  = results.data()
-            if results:
-                for row in results:
-                    try:
-                        homolog_node = PredictedNode(row['homolog'], database)
-                    except:
-                        continue
-                    homolog_rel    = Homology(
-                        prednode   = homolog_node,
-                        human      = self.symbol,
-                        blast_cov  = row['blast_cov'],
-                        blast_eval = row['blast_eval'],
-                        nog_brh    = row['nog_brh'],
-                        pfam_sc    = row['pfam_sc'],
-                        nog_eval   = row['nog_eval'],
-                        blast_brh  = row['blast_brh'],
-                        pfam_brh   = row['pfam_brh']
-                    )
-                    homologs[database].append(homolog_rel)
+        for db in database_to_look:
+            homologs[db] = list()
+
+        # Get the homologs
+        query = HOMOLOGS_QUERY % (self.symbol)
+        results  = GRAPH.run(query)
+        results  = results.data()
+        if results:
+            for row in results:
+                database = row['database'][0]
+                if database not in database_to_look:
+                    continue
+                try:
+                    homolog_node = PredictedNode(row['homolog'], database)
+                except:
+                    continue
+                homolog_rel    = Homology(
+                    prednode   = homolog_node,
+                    human      = self.symbol,
+                    blast_cov  = row['blast_cov'],
+                    blast_eval = row['blast_eval'],
+                    nog_brh    = row['nog_brh'],
+                    pfam_sc    = row['pfam_sc'],
+                    nog_eval   = row['nog_eval'],
+                    blast_brh  = row['blast_brh'],
+                    pfam_brh   = row['pfam_brh']
+                )
+                homologs[database].append(homolog_rel)
         if homologs:
+            print("--- %s seconds ---" % (time.time() - start_time))
             return homologs
         else:
             logging.info("NO HOMOLOGS")

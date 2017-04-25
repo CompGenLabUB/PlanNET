@@ -236,6 +236,7 @@ def get_card(request, symbol=None, database=None):
         symbol    = request.GET['target']
         database  = request.GET['targetDB']
 
+    print("GET CARD")
     try:
         card_node    = query_node(symbol, database)
         if database != "Human":
@@ -245,6 +246,7 @@ def get_card(request, symbol=None, database=None):
             graph.add_elements(nodes)
             graph.add_elements(edges)
         else:
+            print("HEY")
             homologs = card_node.get_homologs()
     except (NodeNotFound, IncorrectDatabase):
         return render(request, 'NetExplorer/404.html')
