@@ -196,6 +196,10 @@ $(document).ready(function(){
     });
 
 
+    // Initialize slider when loading page.
+    $('#sl1').slider().slider('setValue', 0.6);
+
+    // Behaviour when on click
     $("#remove-unconnected").on("click", function() {
         // Remove unconnected nodes
         $( "#dialog-unconnected" ).dialog({
@@ -209,6 +213,9 @@ $(document).ready(function(){
                 },
                 "Delete nodes": function() {
                     var slider_value = $('#sl1').val();
+                    if (! slider_value) {
+                        slider_value = 0.6;
+                    }
                     $( this ).dialog( "close" );
                     cy.filter(function(i, element){
                         if ( element.isNode() ) {
