@@ -225,7 +225,7 @@ class Node(object):
         if results:
             paths = list()
             for path in results:
-                nodes_in_path  = [ PredictedNode(node, self.database, query=False) for node in path['symbols']]
+                nodes_in_path  = [ PredictedNode(node, self.database, query=True) for node in path['symbols']]
                 relationships  = list()
                 path_graph_obj = GraphCytoscape()
                 for idx, val in enumerate(path['molfun_nto']):
