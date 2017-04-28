@@ -48,27 +48,27 @@ function addNode(symbol, database, cyobj) {
             404: function () {
                 $('#loading').hide();
                 $('.node-not-found-err').html("Node not found");
-                $('#node-not-found').slideToggle(200);
+                $('#node-not-found').show();
                 setTimeout(function () {
                     $('#node-not-found').hide(200);
-                }, 3000);
+                }, 2000);
             },
             400: function () {
                 $('#loading').hide();
                 $('.node-not-found-err').html("Bad Request");
-                $('#node-not-found').slideToggle(200);
+                $('#node-not-found').show();
                 setTimeout(function () {
                     $('#node-not-found').hide(200);
-                }, 3000);
+                }, 2000);
             },
         },
         error : function() {
             $('#loading').hide();
             $('.node-not-found-err').html("Server Error");
-            $('#node-not-found').slideToggle(200);
+            $('#node-not-found').show();
             setTimeout(function () {
                 $('#node-not-found').hide(200);
-            }, 3000);
+            }, 2000);
         },
 
     });
