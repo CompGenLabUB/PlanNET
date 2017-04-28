@@ -95,6 +95,14 @@ EXPRESSION_QUERY = """
 """
 
 # ------------------------------------------------------------------------------
+EXPRESSION_QUERY_GRAPH = """
+    MATCH (n)-[r:HAS_EXPRESSION]-(m:Experiment)
+    WHERE n.symbol IN %s
+    AND m.id ="%s"
+    RETURN n.symbol AS symbol, labels(n) AS database, r.%s AS exp
+"""
+
+# ------------------------------------------------------------------------------
 HUMANNODE_QUERY = """
     MATCH (n:%s)
     WHERE n.symbol = "%s"
@@ -594,8 +602,10 @@ class PredictedNode(Node):
         element['data']['id']       = self.symbol
         element['data']['name']     = self.symbol
         element['data']['database'] = self.database
-        element['data']['homolog']  = self.homolog.human.symbol
-        element['data']['degree']   = self.degree
+        if self.homolog is not None:
+            element['data']['homolog']  = self.homolog.human.symbol
+        if self.degree is not None:
+            element['data']['degree']   = self.degree
         if self.important:
             element['data']['colorNODE'] = "#449D44"
         else:
@@ -855,6 +865,27 @@ class GraphCytoscape(object):
         self.nodes = nodes_to_keep
         self.edges = edges_to_keep
         return
+
+    def get_expression(self, experiment, samples):
+        """
+        Gets the expression for all the node objects in the graph.
+        Returns a dictionary: expression_data[node.symbol][sample]
+        """
+        node_list     = ",".join(map(lambda x: '"' + x + '"', [node.symbol for node in self.nodes ]))
+        node_selector = "[" + node_list + "]"
+        expression    = dict()
+        for sample in samples:
+            query = EXPRESSION_QUERY_GRAPH % (node_selector, experiment.id, sample)
+            results = GRAPH.run(query)
+            results = results.data()
+            for row in results:
+                if row['symbol'] not in expression:
+                    expression[row['symbol']] = dict()
+                expression[row['symbol']][sample] = row['exp']
+        return expression
+
+    def __str__(self):
+        return self.to_json()
 
 # ------------------------------------------------------------------------------
 class ExperimentList(object):

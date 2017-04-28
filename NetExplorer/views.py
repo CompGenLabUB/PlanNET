@@ -17,6 +17,7 @@ import sys
 import logging
 import math
 from pprint import pprint
+import time
 
 # -----------------------
 # CONSTANTS
@@ -81,28 +82,6 @@ def get_shortest_paths(startnodes, endnodes, plen):
                     graphelements[numpath] = (graphelements[numpath].to_json, round(path.score, 2))
                     numpath += 1
     return graphelements, numpath
-
-# ------------------------------------------------------------------------------
-def get_expression_data(nodes, databases, experiment, samples):
-    """
-    Gets a list of nodes and returns expression data for a given sample as a dictionary.
-        expression_data[node.symbol][sample]
-    """
-    expression_data = dict()
-    for node_id, database in zip(nodes, databases):
-        try:
-            node = query_node(node_id, database)
-            expression_data[node.symbol] = dict()
-            for sample in samples:
-                # Get expression for each node and each sample
-                try:
-                    expression_data[node.symbol][sample] = node.get_expression(experiment, sample)
-                except NoExpressionData as err:
-                    logging.info(err)
-                    expression_data.pop(node.symbol, None)
-        except NodeNotFound as err:
-            logging.info(err)
-    return expression_data
 
 # ------------------------------------------------------------------------------
 def substitute_human_symbols(symbols, database):
@@ -423,9 +402,9 @@ def blast(request):
     """
     if request.POST:
         if not request.POST['database']:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "No Database selected"})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No Database selected", 'databases': sorted(DATABASES)})
         if "type" not in  request.POST or not request.POST['type']:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "No valid BLAST application selected"})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No valid BLAST application selected",'databases': sorted(DATABASES)})
 
         fasta = str()
         database = request.POST['database'].lower()
@@ -440,7 +419,7 @@ def blast(request):
             fasta = request.POST['fasta_plain']
 
         if not fasta:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "No query"})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No query", 'databases': sorted(DATABASES)})
 
         # Check length of sequence/number of sequences
         joined_sequences = list()
@@ -455,9 +434,9 @@ def blast(request):
         joined_sequences = "".join(joined_sequences)
 
         if numseq > MAX_NUMSEQ:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "Too many query sequences (> 50)"})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "Too many query sequences (> 50)", 'databases': sorted(DATABASES)})
         elif len(joined_sequences) >  MAX_CHAR_LENGTH:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "Query sequence too long (> 25,000 characters)"})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "Query sequence too long (> 25,000 characters)", 'databases': sorted(DATABASES)})
 
         # Create temp file with the sequences
         with tempfile.NamedTemporaryFile() as temp:
@@ -468,9 +447,10 @@ def blast(request):
             pipe = Popen([request.POST['type'], "-db", BLAST_DB_DIR + database , "-query", temp.name, '-outfmt', '6'], stdout=PIPE, stderr=STDOUT)
             stdout, stderr = pipe.communicate()
             results = [ line.split("\t") for line in stdout.split("\n") if line ]
-        return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database })
+        return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database, 'databases': sorted(DATABASES) })
     else:
-        return render(request, 'NetExplorer/blast.html')
+        print(sorted(DATABASES))
+        return render(request, 'NetExplorer/blast.html',{'databases': sorted(DATABASES)})
 
 # ------------------------------------------------------------------------------
 def map_expression(request):
@@ -503,7 +483,10 @@ def map_expression(request):
             sample = sample.split(":")
         else:
             sample = [sample]
-        expression_data = get_expression_data(nodes, databases, experiment, sample)
+
+        newgraph = GraphCytoscape()
+        newgraph.add_elements([ PredictedNode(node, database, query=False) for node, database in zip(nodes, databases) ])
+        expression_data = newgraph.get_expression(experiment, sample)
         response['expression'] = dict()
         if comp_type == "two-sample":
             foldchange = dict()
