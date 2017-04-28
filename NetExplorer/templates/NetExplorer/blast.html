@@ -54,18 +54,19 @@
             <h2>Database</h2>
             <select id="database-selection" name="database" class="selectpicker" title="Select Database">
                 <option value="Human">Human</option>
-                <option value="Cthulhu">Cthulhu</option>
-                <option value="Consolidated">Consolidated</option>
+                {% for db in databases %}
+                    <option value="{{ db }}">{{ db }}</option>
+                {% endfor %}
             </select>
             <br><br>
             <hr>
             <h2>Application</h2>
             <select name="type" class="selectpicker" title="Select type of BLAST">
-                <option id="blastn"  value="blastn">BLASTn</option>
-                <option id="blastp"  value="blastp">BLASTp</option>
-                <option id="blastx"  value="blastx">BLASTx</option>
-                <option id="tblastx" value="tblastx">tBLASTx</option>
-                <option id="tblastn" value="tblastn">tBLASTn</option>
+                <option id="blastn"  value="blastn">BLASTn&nbsp&nbsp&nbsp&nbsp<i>(nucleotide → nucleotide) </i></option>
+                <option id="blastp"  value="blastp">BLASTp&nbsp&nbsp&nbsp&nbsp<i>(protein → protein)</i></option>
+                <option id="blastx"  value="blastx">BLASTx&nbsp&nbsp&nbsp&nbsp<i>(tr.nucleotide → protein)</i></option>
+                <option id="tblastx" value="tblastx">tBLASTx&nbsp&nbsp&nbsp<i>(tr.nucleotide → tr.nucleotide)</i></option>
+                <option id="tblastn" value="tblastn">tBLASTn&nbsp&nbsp&nbsp<i>(protein → tr.nucleotide)</i></option>
             </select>
             <button id="blast-btn" type="submit" class="btn btn-blast">
                  BLAST
