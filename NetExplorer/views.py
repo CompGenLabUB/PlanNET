@@ -217,7 +217,6 @@ def get_card(request, symbol=None, database=None):
         symbol    = request.GET['target']
         database  = request.GET['targetDB']
 
-    print("GET CARD")
     try:
         card_node    = query_node(symbol, database)
         if database != "Human":
@@ -230,18 +229,18 @@ def get_card(request, symbol=None, database=None):
             print("HEY")
             homologs = card_node.get_homologs()
     except (NodeNotFound, IncorrectDatabase):
-        return render(request, 'NetExplorer/404.html')
+        return render_to_response('NetExplorer/not_interactome.html')
 
     if database != "Human":
         response = {
-        'node'      : card_node,
-        'json_graph': graph.to_json(),
-        'domains'   : card_node.domains_to_json()
+            'node'      : card_node,
+            'json_graph': graph.to_json(),
+            'domains'   : card_node.domains_to_json()
         }
     else:
         response = {
-        'node' : card_node,
-        'homologs': homologs
+            'node' : card_node,
+            'homologs': homologs
         }
     if request.is_ajax():
         return render(request, 'NetExplorer/gene_card.html', response)
@@ -447,9 +446,8 @@ def blast(request):
             pipe = Popen([request.POST['type'], "-db", BLAST_DB_DIR + database , "-query", temp.name, '-outfmt', '6'], stdout=PIPE, stderr=STDOUT)
             stdout, stderr = pipe.communicate()
             results = [ line.split("\t") for line in stdout.split("\n") if line ]
-        return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database, 'databases': sorted(DATABASES) })
+        return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database.title(), 'databases': sorted(DATABASES) })
     else:
-        print(sorted(DATABASES))
         return render(request, 'NetExplorer/blast.html',{'databases': sorted(DATABASES)})
 
 # ------------------------------------------------------------------------------

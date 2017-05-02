@@ -81,61 +81,61 @@
 
 <div class="results-div">
     {% if results %}
-    <h2>Results</h2>
-    <br>
-        <table id="blast-results">
-            <thead>
-                <tr>
-                    <th>Query</th>
-                    <th>Subject</th>
-                    <th>Identity</th>
-                    <th>Al length</th>
-                    <th>Mismatches</th>
-                    <th>Gap opens</th>
-                    <th>Q start</th>
-                    <th>Q end</th>
-                    <th>S start</th>
-                    <th>S end</th>
-                    <th>E-value</th>
-                    <th>Bit score</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for line in results %}
+        <h2>Results</h2>
+        <br>
+            <table id="blast-results">
+                <thead>
                     <tr>
-                        {% for col in line %}
-                            {% if forloop.counter == 2 %}
-                                <td>
-                                    <a class="card-trigger"
-                                       title="Click to view info card"
-                                       target="{{ col }}"
-                                       targetDB="{{ database }}">
-                                       {{ col }}
-                                    </a>
-                                </td>
-                            {% else %}
-                                <td>{{ col }}</td>
-                            {% endif %}
-                        {% endfor %}
+                        <th>Query</th>
+                        <th>Subject</th>
+                        <th>Identity</th>
+                        <th>Al length</th>
+                        <th>Mismatches</th>
+                        <th>Gap opens</th>
+                        <th>Q start</th>
+                        <th>Q end</th>
+                        <th>S start</th>
+                        <th>S end</th>
+                        <th>E-value</th>
+                        <th>Bit score</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for line in results %}
+                        <tr>
+                            {% for col in line %}
+                                {% if forloop.counter == 2 %}
+                                    <td>
+                                        <a class="card-trigger"
+                                           title="Click to view info card"
+                                           target="{{ col }}"
+                                           targetDB="{{ database }}">
+                                           {{ col }}
+                                        </a>
+                                    </td>
+                                {% else %}
+                                    <td>{{ col }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-        <!-- HIDDEN CARD OVERLAY -->
-        <div id="button-container">
-            <div class="close-overlay" title="Close card">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            <!-- HIDDEN CARD OVERLAY -->
+            <div id="button-container">
+                <div class="close-overlay" title="Close card">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </div>
+                <div class="full-screen-card" title="Open in new window">
+                    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                </div>
             </div>
-            <div class="full-screen-card" title="Open in new window">
-                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
-            </div>
-        </div>
-        <div id="card-overlay" class="card-overlay">
-            <div class="card-title">
+            <div id="card-overlay" class="card-overlay">
+                <div class="card-title">
 
-            </div>
-       </div>
+                </div>
+           </div>
     {% endif %}
 </div>
 

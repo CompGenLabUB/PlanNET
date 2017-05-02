@@ -1,0 +1,18 @@
+{% load static %}
+<head>
+    <link rel="shortcut icon" href="{% static 'Images/mini-logo.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>PlaNet - Protein not found</title>
+</head>
+
+<body>
+    <div id="body-wrapper">
+        <div id="error404">
+            <img src="{% static 'Images/not_interactome.png' %}" id="img404">
+            <br>
+            <br>
+            <p>The specified symbol is not in any of the interactomes, that is, we don't have interaction information for this protein/contig</p>
+            <h4>Go back to <a href="/PlanNET">PlanNET</a></h4>
+        </div>
+    </div>
+</body>
