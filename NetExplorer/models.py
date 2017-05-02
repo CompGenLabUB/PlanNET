@@ -62,6 +62,13 @@ GO_HUMAN_NODE_QUERY = """
 """
 
 # ------------------------------------------------------------------------------
+GO_HUMAN_GET_GO_QUERY = """
+    MATCH (n:Go)-[:HAS_GO]-(m:Human)
+    WHERE m.symbol = "%s"
+    RETURN n.accession as accession, n.domain as domain ORDER BY n.domain
+"""
+
+# ------------------------------------------------------------------------------
 DOMAIN_NODES_QUERY = """
     MATCH (n:%s)-[:HAS_DOMAIN]->(m:Pfam)
     WHERE m.accession = "%s"
@@ -539,14 +546,15 @@ class PredictedNode(Node):
 
     def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False, degree=None, query=True):
         super(PredictedNode, self).__init__(symbol, database)
-        self.sequence       = sequence
-        self.orf            = orf
-        self.homolog        = homolog
-        self.important      = important
-        self.degree         = degree
-        self.gccont         = None
-        self.length         = None
-        self.orflength      = None
+        self.sequence        = sequence
+        self.orf             = orf
+        self.homolog         = homolog
+        self.important       = important
+        self.degree          = degree
+        self.gccont          = None
+        self.length          = None
+        self.orflength       = None
+        self.gene_ontologies = list()
 
         if sequence is None and query is True:
             self.__query_node()
@@ -567,6 +575,7 @@ class PredictedNode(Node):
 
         results = GRAPH.run(query)
         results = results.data()
+        print("ONCE: %s" % self.symbol )
 
         if results:
             for row in results:
@@ -704,6 +713,33 @@ class PredictedNode(Node):
                 added_elements.add((self.symbol, interaction.target.symbol))
                 edges.append( interaction )
         return nodes, edges
+
+    def get_geneontology(self):
+        """
+        Gets Gene Ontologies of the homologous human protein.
+        """
+        if self.homolog is None:
+            self.__query_node()
+
+        query = GO_HUMAN_GET_GO_QUERY % self.homolog.human.symbol
+        results = GRAPH.run(query)
+        if results:
+            for row in results:
+                print(row['accession'])
+                try:
+                    self.gene_ontologies.append(GeneOntology(accession=row['accession'], domain=row['domain'], query=False))
+                except Exception as err:
+                    print(err)
+
+                print("YEP")
+            print(results)
+        else:
+            self.gene_ontologies = list()
+
+
+
+
+
 
 # ------------------------------------------------------------------------------
 class Experiment(object):
@@ -942,18 +978,20 @@ class GeneOntology(object):
     """
     Class for GeneOntology nodes
     """
-    def __init__(self, accession, human=False):
+    def __init__(self, accession, domain=None, human=False, query=True):
         self.accession   = accession
-        self.domain      = None
+        self.domain      = domain
         self.human_nodes = list()
         self.go_regexp = r"GO:\d{7}"
-        if self.__check_go() is True:
-            if human is True:
-                self.__get_nodes()
+        if query is True:
+            if self.__check_go() is True:
+                if human is True:
+                    self.__get_nodes()
+                else:
+                    self.__query_go()
             else:
-                self.__query_go()
-        else:
-            raise NotGOAccession(self)
+                raise NotGOAccession(self)
+
 
     def __query_go(self):
         """

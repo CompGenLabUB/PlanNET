@@ -150,6 +150,25 @@
                                 </table>
                             {% endif %}
 
+                        <br>
+                        <h4>Gene Ontologies</h4>
+                        {% if not node.gene_ontologies %}
+                            No Gene Ontologies
+                        {% else %}
+                            <div class="gene-ontology-div">
+                                <table class="table table-hover homology-table">
+                                {% for go in node.gene_ontologies %}
+                                    <tr>
+                                        <td class="homology-table-header">
+                                            <a href="http://amigo.geneontology.org/amigo/term/{{ go.accession }}" target="_blank">{{ go.accession }}
+                                            </a>
+                                        </td>
+                                        <td>{{ go.domain }}</td>   </tr>
+                                {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+
                     {% endif %}
 
                     <br>
