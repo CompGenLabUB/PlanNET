@@ -1,281 +1,316 @@
 {% load static %}
+
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-<link rel="stylesheet" href="{% static 'css/jquery-data-tables.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
 <link rel="stylesheet" href="{% static 'css/bootstrap-min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-data-tables.css' %}">
+
 
 
 <html>
 
     <body>
-            <div id="content-fullscreen">
-
-                <div class="card-title">
-                    <h1>{{ node.symbol }}</h1>
-                </div>
-
-                <br>
-                <a href="javascript:window.print()">
-                    <span class="glyphicon glyphicon-print" title="print page"></span>
-                </a>
-                {% if node.database == "Human" %}
-                <!--HUMAN CARD -->
-                    <h2>Homologs</h2>
-                    <hr>
-                    {% for db, list  in homologs.items %}
-                        <div class="panel panel-default">
-                            <div class="panel-heading">{{ db }} </div>
-                            <div class="panel-body">
-                                <table class="table table-hover hom-table">
-                                    <thead>
-                                        <th>Symbol</th>
-                                        <th>EggNOG e-value</th>
-                                        <th>EggNOG BRH</th>
-                                        <th>BLAST e-value</th>
-                                        <th>BLAST coverage</th>
-                                        <th>BLAST BRH</th>
-                                        <th>Pfam M.A. score</th>
-                                        <th>Pfam M.A. BRH</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for hom in list %}
-                                            <tr>
-                                                <td>
-                                                    <a href="{% url card_fullscreen hom.prednode.database hom.prednode.symbol %}">
-                                                        {{ hom.prednode.symbol }}
-                                                    </a>
-                                                </td>
-                                                <td>{{ hom.nog_eval }}</td>
-                                                <td>{{ hom.nog_brh }}</td>
-                                                <td>{{ hom.blast_eval }}</td>
-                                                <td>{{ hom.blast_cov }}</td>
-                                                <td>{{ hom.blast_brh }}</td>
-                                                <td>{{ hom.pfam_sc }}</td>
-                                                <td>{{ hom.pfam_brh }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-
-                    {% endfor %}
-
-
-                {% else %}
-                <!--PREDICTED NODE CARD -->
-                    <h2>Sequence information</h2>
-                    <hr>
-
-                    <h3>Read sequence:</h3>
-                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=sequence">
-                        <div class="download-fasta-wrapper" title="Download FASTA file">
-                            <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
-                            Download FASTA
-                        </div>
+        <div class="full-screen-card-wrapper">
+            <div class="card-subtitle">
+                <h3>
+                    <a target="_blank" title="Information about the dataset" href="{% url datasets %}#{{ node.database }}">
+                        <img class='legend-db' src="{% static 'Images/' %}legend-{{ node.database }}.png"/>
+                        {{ node.database }}
                     </a>
-                    <div class="sequence-container">
-                        <p>>{{ node.symbol }}</p>
-                        <p>{{ node.sequence }}</p>
-                    </div>
+                </h3>
+            </div>
+            <div class="card-title">
+                <h1>{{ node.symbol }}</h1>
+            </div>
 
-                    <h3>Longest Orf sequence:</h3>
-                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=orf">
-                        <div class="download-fasta-wrapper" title="Download FASTA file">
-                            <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
-                            Download FASTA
-                        </div>
-                    </a>
-                    <div class="sequence-container">
-                        <p>>{{ node.symbol }}-orf</p>
-                        <p>{{ node.orf }}</p>
-                    </div>
-
-                    {% if node.homolog %}
-                        <h2>Homolog</h2>
+                    {% if node.database == "Human" %}
+                    <!--HUMAN CARD -->
+                        <h2>Homologs</h2>
                         <hr>
-                        <h4><strong>Symbol:</strong>
-                            <a href="{% url card_fullscreen 'Human' node.homolog.human.symbol %}">{{ node.homolog.human.symbol }}</a>
-                        </h4>
+                        {% for db, list  in homologs.items %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">{{ db }} </div>
+                                <div class="panel-body">
+                                    <table class="table table-hover hom-table">
+                                        {% if list %}
+                                            <thead>
+                                                <th>Symbol</th>
+                                                <th>EggNOG e-value</th>
+                                                <th>EggNOG BRH</th>
+                                                <th>BLAST e-value</th>
+                                                <th>BLAST coverage</th>
+                                                <th>BLAST BRH</th>
+                                                <th>Pfam M.A. score</th>
+                                                <th>Pfam M.A. BRH</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for hom in list %}
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{% url card_fullscreen hom.prednode.database hom.prednode.symbol %}"> hom.prednode.symbol</a>
+                                                        </td>
+                                                        <td>{{ hom.nog_eval }}</td>
+                                                        <td>{{ hom.nog_brh }}</td>
+                                                        <td>{{ hom.blast_eval }}</td>
+                                                        <td>{{ hom.blast_cov }}</td>
+                                                        <td>{{ hom.blast_brh }}</td>
+                                                        <td>{{ hom.pfam_sc }}</td>
+                                                        <td>{{ hom.pfam_brh }}</td>
+                                                    </tr>
+                                                {% endfor %}
 
-                            <ul>
-                                <li>
-                                    <a target="_blank" title="Search on HGNC" href="http://www.genenames.org/cgi-bin/gene_search?search={{ node.homolog.human.symbol }}&submit=Submit">
-                                        Search on HGNC
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a target="_blank" title="Search on Uniprot" href="http://www.uniprot.org/uniprot/?query=gene%3A{{ node.homolog.human.symbol }}+AND+organism%3Ahuman&sort=score">
-                                        Search on Uniprot
-                                    </a>
-                                </li>
-                            </ul>
-
-                        <br>
-                        <h4><strong>EggNOG alignment</strong></h4>
-                            {% if node.homolog.nog_eval == "10" %}
-                                No best hit.
-                                <br>
-                            {% else %}
-                                <table class="table table-hover homology-table">
-                                    <tr> <td class="homology-table-header">EggNOG e-value</td> <td>{{ node.homolog.nog_eval }}</td> </tr>
-                                    <tr> <td class="homology-table-header">EggNog BRH</td>     <td>{{ node.homolog.nog_brh }} </td> </tr>
-                                </table>
-                            {% endif %}
-
-                        <h4><strong>BLAST</strong></h4>
-                            {% if node.homolog.blast_eval == "10" %}
-                                No best hit.
-                                <br>
-                            {% else %}
-                                <table class="table table-hover homology-table">
-                                    <tr><td class="homology-table-header">BLAST e-value</td>         <td>{{ node.homolog.blast_eval }}</td> </tr>
-                                    <tr><td class="homology-table-header">BLAST query coverage</td>  <td>{{ node.homolog.blast_cov }} </td> </tr>
-                                    <tr><td class="homology-table-header">BLAST BRH</td>             <td>{{ node.homolog.blast_brh }} </td> </tr>
-                                </table>
-                            {% endif %}
-
-
-                        <h4><strong>PFAM meta-alignment</strong></h4>
-                            {% if node.homolog.pfam_sc == "0" %}
-                                No best hit.
-                                <br>
-                            {% else %}
-                                <table class="table table-hover homology-table">
-                                        <tr> <td class="homology-table-header">M.A. Score</td> <td>{{ node.homolog.pfam_sc }}</td>   </tr>
-                                        <tr> <td class="homology-table-header">M.A. BRH</td>   <td>{{ node.homolog.pfam_brh }}</td>  </tr>
-                                </table>
-                            {% endif %}
-
-                        <br>
-                        <h4>Gene Ontologies</h4>
-                        {% if not node.gene_ontologies %}
-                            No Gene Ontologies
-                        {% else %}
-                            <div class="gene-ontology-div">
-                                <table class="table table-hover homology-table">
-                                {% for go in node.gene_ontologies %}
-                                    <tr>
-                                        <td class="homology-table-header">
-                                            <a href="http://amigo.geneontology.org/amigo/term/{{ go.accession }}" target="_blank">{{ go.accession }}
-                                            </a>
-                                        </td>
-                                        <td>{{ go.domain }}</td>   </tr>
-                                {% endfor %}
-                                </table>
+                                        {% else %}
+                                            <tr><td><h4>No Homologs</h4></td></tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
+
+
+                        {% endfor %}
+
+                    {% else %}
+                    <!--PREDICTED NODE CARD -->
+                        <h2>Sequence information</h2>
+                        <hr>
+
+                        <h3>Read sequence:</h3>
+                        <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=sequence">
+                            <div class="download-fasta-wrapper" title="Download FASTA file">
+                                <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
+                                Download FASTA
+                            </div>
+                        </a>
+                        <div class="sequence-container">
+                            <p>>{{ node.symbol}}</p>
+                            <p>{{ node.sequence }}</p>
+                        </div>
+
+                        <h3>Longest Orf sequence:</h3>
+                        <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=orf">
+                            <div class="download-fasta-wrapper" title="Download FASTA file">
+                                <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
+                                Download FASTA
+                            </div>
+                        </a>
+                        <div class="sequence-container">
+                            <p>>{{ node.symbol}}-orf</p>
+                            <p>{{ node.orf }}</p>
+                        </div>
+
+                        {% if node.homolog %}
+                            <h2>Homolog</h2>
+                            <hr>
+                            <h4>
+                                <strong>Symbol:</strong>
+                                <a href="{% url card_fullscreen node.homolog.human.database node.homolog.human.symbol %}"> node.homolog.human.symbol</a>
+                            </h4>
+
+                                <ul>
+                                    <li>
+                                        <a target="_blank" title="Search on HGNC" href="http://www.genenames.org/cgi-bin/gene_search?search={{ node.homolog.human.symbol }}&submit=Submit">
+                                            Search on HGNC
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a target="_blank" title="Search on Uniprot" href="http://www.uniprot.org/uniprot/?query=gene%3A{{ node.homolog.human.symbol }}+AND+organism%3Ahuman&sort=score">
+                                            Search on Uniprot
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            <br>
+                            <h4><strong>EggNOG alignment</strong></h4>
+                                {% if node.homolog.nog_eval == "10" %}
+                                    No best hit.
+                                    <br>
+                                {% else %}
+                                    <table class="table table-hover homology-table">
+                                        <tr> <td class="homology-table-header">EggNOG e-value</td> <td>{{ node.homolog.nog_eval }}</td> </tr>
+                                        <tr> <td class="homology-table-header">EggNog BRH</td>     <td>
+                                            {% if node.homolog.nog_brh == "1" %}
+                                                True
+                                            {% else %}
+                                                False
+                                            {% endif %}
+                                        </td> </tr>
+                                    </table>
+                                {% endif %}
+
+                            <br>
+                            <h4><strong>BLAST</strong></h4>
+                                {% if node.homolog.blast_eval == "10" %}
+                                    No best hit.
+                                    <br>
+                                {% else %}
+                                    <table class="table table-hover homology-table">
+                                        <tr><td class="homology-table-header">BLAST e-value</td>         <td>{{ node.homolog.blast_eval }}</td> </tr>
+                                        <tr><td class="homology-table-header">BLAST query coverage</td>  <td>{{ node.homolog.blast_cov }} </td> </tr>
+                                        <tr><td class="homology-table-header">BLAST BRH</td>             <td>
+                                            {% if node.homolog.blast_brh == "1" %}
+                                                True
+                                            {% else %}
+                                                False
+                                            {% endif %}
+                                        </td> </tr>
+                                    </table>
+                                {% endif %}
+
+                            <br>
+                            <h4><strong>PFAM meta-alignment</strong></h4>
+                                {% if node.homolog.pfam_sc == "0" %}
+                                    No best hit.
+                                    <br>
+                                {% else %}
+                                    <table class="table table-hover homology-table">
+                                            <tr> <td class="homology-table-header">M.A. Score</td> <td>{{ node.homolog.pfam_sc }}</td>   </tr>
+                                            <tr> <td class="homology-table-header">M.A. BRH</td>   <td>
+                                                {% if node.homolog.pfam_brh == "1" %}
+                                                    True
+                                                {% else %}
+                                                    False
+                                                {% endif %}
+                                            </td>  </tr>
+                                    </table>
+                                {% endif %}
+
+                            <br>
+                            <h4>Gene Ontologies</h4>
+                            {% if not node.gene_ontologies %}
+                                No Gene Ontologies
+                            {% else %}
+                                <div class="gene-ontology-div">
+                                    <table class="table table-hover homology-table">
+                                    {% for go in node.gene_ontologies %}
+                                        <tr>
+                                            <td class="homology-table-header">
+                                                <a href="http://amigo.geneontology.org/amigo/term/{{ go.accession }}" target="_blank">{{ go.accession }}
+                                                </a>
+                                            </td>
+                                            <td>{{ go.domain }}</td>   </tr>
+                                    {% endfor %}
+                                    </table>
+                                </div>
+                            {% endif %}
                         {% endif %}
 
-                    {% endif %}
-
-                    <br>
-                    <h2>Domains</h2>
-                    <hr>
-                    {% if node.domains == None %}
-                        No domains.
-                    {% else %}
-                        <table class="table table-hover domain-table">
-                            <thead>
+                        <br>
+                        <h2>Domains</h2>
+                        <hr>
+                        {% if node.domains == None %}
+                            No domains.
+                        {% else %}
+                            <table class="table table-hover domain-table">
+                                <thead>
+                                    <tr>
+                                        <th>Accession</th>
+                                        <th>Identifier</th>
+                                        <th>Sequence Start</th>
+                                        <th>Sequence End</th>
+                                        <th>Pfam Start</th>
+                                        <th>Pfam End</th>
+                                        <th>% of Domain</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            {% for dom in node.domains %}
                                 <tr>
-                                    <th>Accession</th>
-                                    <th>Identifier</th>
-                                    <th>Sequence Start</th>
-                                    <th>Sequence End</th>
-                                    <th>Pfam Start</th>
-                                    <th>Pfam End</th>
-                                    <th>% of Domain</th>
+                                    <td><a href='http://pfam.xfam.org/family/{{ dom.domain.accession }}' target="_blank">{{ dom.domain.identifier }}</a></td>
+                                    <td>{{ dom.domain.identifier }}</td>
+                                    <td>{{ dom.s_start }}</td>
+                                    <td>{{ dom.s_end }}</td>
+                                    <td>{{ dom.p_start }}</td>
+                                    <td>{{ dom.p_end }}</td>
+                                    <td>{{ dom.perc }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                        {% for dom in node.domains %}
-                            <tr>
-                                <td>{{ dom.domain.accession }}</td>
-                                <td>{{ dom.domain.identifier }}</td>
-                                <td>{{ dom.s_start }}</td>
-                                <td>{{ dom.s_end }}</td>
-                                <td>{{ dom.p_start }}</td>
-                                <td>{{ dom.p_end }}</td>
-                                <td>{{ dom.perc }}</td>
-                            </tr>
 
-                        {% endfor %}
-                            </tbody>
-                        </table>
-                    {% endif %}
+                            {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
 
-
-                    <!-- INTERACTIONS -->
-                    <div class="row row-eq-height">
-                        <div class="col-sm-10">
-                            <h2>Interactions</h2>
-                            <hr>
+                        <!-- INTERACTIONS -->
+                        <div class="row row-eq-height interactions-title">
+                            <div class="col-sm-10">
+                                <h2>Interactions</h2>
+                                <hr>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="#" class="view-on-netexplorer" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
+                                    <form class="view-on-netexplorer" method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
+                                        <input type="hidden" name="json_text" value='{{ json_graph|safe }}' />
+                                        <button id="netexplorer-mini" class="btn btn-default netexplorer-view view-on-netexplorer-btn" type="submit">
+                                            <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+                                        </button>
+                                    </form>
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-sm-2">
-                            <a href="#" class="view-on-netexplorer" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
-                                <form class="view-on-netexplorer" method="POST" action="{% url net_explorer %}" target="_blank"> {% csrf_token %}
-                                    <input type="hidden" name="json_text" value='{{ json_graph|safe }}' />
-                                    <button id="netexplorer-mini" class="btn btn-default netexplorer-view view-on-netexplorer-btn" type="submit">
-                                        <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
-                                    </button>
-                                </form>
-                            </a>
-                        </div>
-                    </div>
-                    {% if node.neighbours %}
-                    <div class="int-table-container">
-                        <table id="int-table" class="table table-hover int-table-class">
-                            <thead>
+                        {% if node.neighbours %}
+                        <br>
+                        <div class="int-table-container">
+                            <table id="int-table" class="table table-hover int-table-class">
+                                <thead>
+                                    <tr>
+                                    <th>Symbol</th>
+                                    <th>Confidence</th>
+                                    <th>Path Length</th>
+                                    <th>Cellular Component NTO</th>
+                                    <th>Molecular Function NTO</th>
+                                    <th>Biological Process NTO</th>
+                                    <th>Domain Interaction Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            {% for int in node.neighbours %}
                                 <tr>
-                                <th>Symbol</th>
-                                <th>Probability</th>
-                                <th>Path Length</th>
-                                <th>Cellular Component NTO</th>
-                                <th>Molecular Function NTO</th>
-                                <th>Biological Process NTO</th>
-                                <th>Domain Interaction Score</th>
+                                    <td>
+                                        <a href="{% url card_fullscreen int.target.database int.target.symbol %}">{{ int.target.symbol}}</a>
+                                    </td>
+                                    <td>{{ int.parameters.int_prob }}</td>
+                                    <td>{{ int.parameters.path_length }}</td>
+                                    <td>{{ int.parameters.cellcom_nto }}</td>
+                                    <td>{{ int.parameters.molfun_nto }}</td>
+                                    <td>{{ int.parameters.bioproc_nto }}</td>
+                                    <td>{{ int.parameters.dom_int_sc }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                        {% for int in node.neighbours %}
-                            <tr>
-                                <td><a href="{% url card_fullscreen int.target.database int.target.symbol %}">{{ int.target.symbol }}</a>
-                                </td>
-                                <td>{{ int.parameters.int_prob }}</td>
-                                <td>{{ int.parameters.path_length }}</td>
-                                <td>{{ int.parameters.cellcom_nto }}</td>
-                                <td>{{ int.parameters.molfun_nto }}</td>
-                                <td>{{ int.parameters.bioproc_nto }}</td>
-                                <td>{{ int.parameters.dom_int_sc }}</td>
-                            </tr>
+                            {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                            <h3>No interactions</h3>
+                        {% endif %}
 
-                        {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% else %}
-                        <h3>No interactions</h3>
-                    {% endif %}
-
-
-                {% endif %}
+                    {% endif %} <!-- If Human or PredictedNode -->
         </div>
     </body>
 
-
-    <script src="{% static 'js/jquery-min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-min.js' %}"></script>
     <script src="{% static 'js/jquery-data-tables-min.js' %}"></script>
-
     <script>
+        $(document).ready(function(){
+            $('.int-table').DataTable({
+                "order": [[ 1, "desc" ]]
+            });
 
-    $(document).ready(function(){
-        $('#int-table').DataTable({
-            "order": [[ 1, "desc" ]]
         });
-    });
-
     </script>
+
 </html>
+
+<!--
+<table id='pfam-line-table' class='table table-hover'>
+    <tbody>
+        <tr class='pfam-line-table-row'>
+            <img src='/static/Images/pfam-line.png' style='width:254; margin-left:37'>
+        </tr>
+        <tr class='pfam-line-table-row'>
+            <img src='/static/Images/pfam-line.png' style='width:212; margin-left:68'>
+        </tr></tbody></table>
+-->

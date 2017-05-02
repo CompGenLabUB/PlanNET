@@ -316,6 +316,11 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
 }
 
+.full-screen-card-wrapper {
+    width: 80%;
+    margin-left: 10%;
+}
+
 .close-overlay:hover .glyphicon-remove:hover {
     color: #d1d1d1;
     opacity: 0.7;
