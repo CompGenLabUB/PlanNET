@@ -725,20 +725,11 @@ class PredictedNode(Node):
         results = GRAPH.run(query)
         if results:
             for row in results:
-                print(row['accession'])
-                try:
-                    self.gene_ontologies.append(GeneOntology(accession=row['accession'], domain=row['domain'], query=False))
-                except Exception as err:
-                    print(err)
-
-                print("YEP")
-            print(results)
+                self.gene_ontologies.append(
+                    GeneOntology(accession=row['accession'], domain=row['domain'], query=False)
+                )
         else:
             self.gene_ontologies = list()
-
-
-
-
 
 
 # ------------------------------------------------------------------------------

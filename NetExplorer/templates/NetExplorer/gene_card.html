@@ -144,7 +144,13 @@
                             {% else %}
                                 <table class="table table-hover homology-table">
                                     <tr> <td class="homology-table-header">EggNOG e-value</td> <td>{{ node.homolog.nog_eval }}</td> </tr>
-                                    <tr> <td class="homology-table-header">EggNog BRH</td>     <td>{{ node.homolog.nog_brh }} </td> </tr>
+                                    <tr> <td class="homology-table-header">EggNog BRH</td>     <td>
+                                        {% if node.homolog.nog_brh == "1" %}
+                                            True
+                                        {% else %}
+                                            False
+                                        {% endif %}
+                                    </td> </tr>
                                 </table>
                             {% endif %}
 
@@ -157,7 +163,13 @@
                                 <table class="table table-hover homology-table">
                                     <tr><td class="homology-table-header">BLAST e-value</td>         <td>{{ node.homolog.blast_eval }}</td> </tr>
                                     <tr><td class="homology-table-header">BLAST query coverage</td>  <td>{{ node.homolog.blast_cov }} </td> </tr>
-                                    <tr><td class="homology-table-header">BLAST BRH</td>             <td>{{ node.homolog.blast_brh }} </td> </tr>
+                                    <tr><td class="homology-table-header">BLAST BRH</td>             <td>
+                                        {% if node.homolog.blast_brh == "1" %}
+                                            True
+                                        {% else %}
+                                            False
+                                        {% endif %}
+                                    </td> </tr>
                                 </table>
                             {% endif %}
 
@@ -169,7 +181,13 @@
                             {% else %}
                                 <table class="table table-hover homology-table">
                                         <tr> <td class="homology-table-header">M.A. Score</td> <td>{{ node.homolog.pfam_sc }}</td>   </tr>
-                                        <tr> <td class="homology-table-header">M.A. BRH</td>   <td>{{ node.homolog.pfam_brh }}</td>  </tr>
+                                        <tr> <td class="homology-table-header">M.A. BRH</td>   <td>
+                                            {% if node.homolog.pfam_brh == "1" %}
+                                                True
+                                            {% else %}
+                                                False
+                                            {% endif %}
+                                        </td>  </tr>
                                 </table>
                             {% endif %}
 
