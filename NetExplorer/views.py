@@ -443,7 +443,7 @@ def blast(request):
             temp.flush()
 
             # Run BLAST
-            pipe = Popen([request.POST['type'], "-db", BLAST_DB_DIR + database , "-query", temp.name, '-outfmt', '6'], stdout=PIPE, stderr=STDOUT)
+            pipe = Popen([request.POST['type'], "-evalue", "1e-10", "-db", BLAST_DB_DIR + database , "-query", temp.name, '-outfmt', '6'], stdout=PIPE, stderr=STDOUT)
             stdout, stderr = pipe.communicate()
             results = [ line.split("\t") for line in stdout.split("\n") if line ]
         return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database.title(), 'databases': sorted(DATABASES) })
