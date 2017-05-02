@@ -51,7 +51,7 @@
                                                 {% for hom in list %}
                                                     <tr>
                                                         <td>
-                                                            <a href="{% url card_fullscreen hom.prednode.database hom.prednode.symbol %}"> hom.prednode.symbol</a>
+                                                            <a href="{% url card_fullscreen hom.prednode.database hom.prednode.symbol %}">{{hom.prednode.symbol}}</a>
                                                         </td>
                                                         <td>{{ hom.nog_eval }}</td>
                                                         <td>{{ hom.nog_brh }}</td>
