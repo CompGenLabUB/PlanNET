@@ -737,26 +737,30 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #D4D4D4;
     border-style: solid;
     border-width: 2px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+
 }
 
 
 #map-expression-dialog-header {
+    position: fixed;
     background-color: #E9E9E9;
-    width: 99%;
+    width: 58%;
     height: 40px;
     margin-left: 0.5%;
     margin-top: 0.5%;
+    margin-bottom: 40px;
     padding: 1%;
 }
 
 #map-expression-dialog-body {
     width: 95%;
     margin-left: 2.5%;
+    margin-top: 4%;
     padding: 1%;
-    height: 80%;
+    height: 95%;
     color: #777777;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #map-expression-dialog-send {
