@@ -41,7 +41,102 @@
       <div class="tutorial-panel panel panel-success">
         <div class="panel-heading"><a class="tutorial-title" name="netexplorer"><h3>Net Explorer</h3></a></div>
         <div class="panel-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi velit ante, volutpat eu tincidunt at, laoreet ut arcu. Fusce porttitor sem dui, sed facilisis augue tempus nec. Proin pharetra porta neque, vitae venenatis libero viverra at. Suspendisse mattis, est vitae dignissim volutpat, magna magna pulvinar nisi, non cursus tortor augue vestibulum tellus. Quisque fringilla augue at euismod laoreet. Vestibulum viverra sed dolor id tempus. Nunc eleifend ligula eu lacus rhoncus sodales. Fusce id tellus aliquam, vulputate ex ac, consectetur est. Nunc feugiat, urna nec ornare fringilla, urna turpis rhoncus eros, id efficitur neque tellus id augue. Vivamus id odio eu justo gravida ornare.
+            <p>
+                NetExplorer will allow you to explore the predicted networks dinamically, adding and removing nodes from several interactomes.
+                Use the menus on the right to manipulate the graph, which will display on the left side of the screen. Each node on the graph
+                will represent a contig (for planarian datasets) or a protein (for the Human reference dataset). These nodes will be connected by edges (lines),
+                and each type of them will have a different meaning:
+            </p>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/legend.png' %}"/>
+
+            <br>
+            <h4>Search functionality</h4>
+            <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
+            <br>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/search.png' %}"/>
+            <p>
+                In order to search for contigs, you have to select a Dataset (a planarian transcriptome for which we predicted an interactome), and then look for contigs.
+                You can use 4 types of symbols to do that:
+            </p>
+            <ul>
+                <li class="tutorial-li">
+                    Contig identifiers (which will be specific to each transcriptome). E.g. <i>cth1_Trc_comp11081_c0_seq1</i> (for dataset <i>Cthulhu</i>)
+                </li>
+
+                <li class="tutorial-li">
+                    Human protein symbols. This will retrieve all the homologous contigs to the specified human protein. E.g. <i>THOC2</i>.
+                    You can use the wildcard <i>*</i>. E.g. <i>THOC*</i> will display the nodes homologous to <i>THOC, THOC1, THOC2, THOC3, THOC4, THOCXX, etc.</i>
+                </li>
+
+                <li class="tutorial-li">
+                    Gene Ontology identifiers. This will display all the planarian contigs with a human homolog with the specified GO code.
+                    E.g. <i>GO:0000002</i>.
+                </li>
+
+                <li class="tutorial-li">
+                    PFAM identifiers. This will retrieve all the planarian contigs with the specified PFAM annotated through our protocol (that is, with HMMER with a e-value cutoff of 10^-10).
+                    E.g. <i>PF01369.15</i>.
+                </li>
+            </ul>
+
+            <p>
+                You can do multiple searches at once, using commas ',' to separate each item. You can mix the different types of symbols in the same search, e.g. <i>PF01369.15,GO:0000002</i>.
+            </p>
+            <p>
+                Once you have typed the symbols you want to look for, and have selected the appropiate dataset, click on the button <span class="tutorial-highlight-netexplorer">+Add</span>.
+                Note that you will not lose the network already displayed on the left, so you can add nodes individually without losing the visualization.
+            </p>
+
+            <br>
+            <h4>Basic controls</h4>
+            <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
+            <br>
+            <p>Something</p>
+
+            <br>
+            <h4>Click behaviour</h4>
+            <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
+            <br>
+
+            <p>
+                If you have nodes on the visualization, you can determine what the application will do when you click on them.
+                There are 3 possible behaviours, and you can change them by clicking on the appropiate one:
+            </p>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/behaviour.png' %}"/>
+
+            <h4>1. Card</h4>
+            <p>
+                When this behaviour is set, an information card for the clicked contig/protein will appear on the screen.
+                These cards are the same displayed in the <a href="#genesearch">Gene Search</a> application.
+            </p>
+
+            <br>
+            <h4>2. Expand</h4>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/expand.png' %}"/>
+            <p>
+                When clicking on nodes you will add all the interactions for such node.
+            </p>
+
+            <br>
+            <h4>3. Delete</h4>
+            <p>
+                Delete the clicked node and all its interactions. Note that all the other nodes displayed on the graph
+                will NOT be removed, even if they have no other interactions.
+            </p>
+
+
+            <br>
+            <h4>Expression Data</h4>
+            <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
+            <br>
+            <p>Something</p>
+
+            <br>
+            <h4>General Controls</h4>
+            <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
+            <br>
+            <p>Something</p>
+
         </div>
       </div>
 

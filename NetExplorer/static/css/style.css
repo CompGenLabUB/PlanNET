@@ -1449,3 +1449,30 @@ input[type="file"] {
     width: 30px;
     height: auto;
 }
+
+
+/* TUTORIAL */
+.tutorial-subtitle-netexplorer {
+    display: block;
+    width: 400px;
+    margin:0;
+    padding:0;
+    margin-bottom: 15px;
+}
+
+.tutorial-img {
+    margin-bottom: 15px;
+    max-width: 720px;
+}
+
+strong{
+    font-weight: bold;
+}
+
+.tutorial-li {
+  margin: 10px 0;
+}
+
+.tutorial-highlight-netexplorer {
+    background-color: #DFF0D8;
+}

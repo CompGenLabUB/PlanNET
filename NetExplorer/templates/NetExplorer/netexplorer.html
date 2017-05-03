@@ -352,6 +352,30 @@
 
         </div>
 
+        <!-- Filter interactions -->
+        <div id="slider-container">
+            <h3>Filter interactions <a class="info-tooltip" data-toggle="tooltip" data-placement="bottom" title="
+                With this slider you can filter the interactions depending on the probability. This probability is the proportion of votes reported by a Random Forest classifier, see: 'link to article'
+                "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+            </h3>
+            <h5>by confidence</h5>
+            <div class="slider-symbol-minus">-</div>
+            <div id="slider">
+                <input
+                    type="text"
+                    class="span2"
+                    id="sl1"
+                    data-slider-value="0.6"
+                    data-slider-min="0.6"
+                    data-slider-max="0.95"
+                    data-slider-step="0.05"
+                    data-slider-selection="after"
+                >
+            </div>
+            <div class="slider-symbol-plus">+</div>
+            <hr>
+        </div>
+
 
             <!--- "On click" Behaviour -->
             <div id="on-click-container">
@@ -389,30 +413,6 @@
                     data-onstyle="info"
                     data-offstyle="success"
                 > -->
-                <hr>
-            </div>
-
-            <!-- Filter interactions -->
-            <div id="slider-container">
-                <h3>Filter interactions <a class="info-tooltip" data-toggle="tooltip" data-placement="bottom" title="
-                    With this slider you can filter the interactions depending on the probability. This probability is the proportion of votes reported by a Random Forest classifier, see: 'link to article'
-                    "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-                </h3>
-                <h5>by confidence</h5>
-                <div class="slider-symbol-minus">-</div>
-                <div id="slider">
-                    <input
-                        type="text"
-                        class="span2"
-                        id="sl1"
-                        data-slider-value="0.6"
-                        data-slider-min="0.6"
-                        data-slider-max="0.95"
-                        data-slider-step="0.05"
-                        data-slider-selection="after"
-                    >
-                </div>
-                <div class="slider-symbol-plus">+</div>
                 <hr>
             </div>
 
