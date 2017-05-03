@@ -60,21 +60,21 @@
             </p>
             <ul>
                 <li class="tutorial-li">
-                    Contig identifiers (which will be specific to each transcriptome). E.g. <i>cth1_Trc_comp11081_c0_seq1</i> (for dataset <i>Cthulhu</i>)
+                    <strong>Contig identifiers</strong> (which will be specific to each transcriptome). E.g. <i>cth1_Trc_comp11081_c0_seq1</i> (for dataset <i>Cthulhu</i>)
                 </li>
 
                 <li class="tutorial-li">
-                    Human protein symbols. This will retrieve all the homologous contigs to the specified human protein. E.g. <i>THOC2</i>.
+                    <strong>Human protein symbols</strong>. This will retrieve all the homologous contigs to the specified human protein. E.g. <i>THOC2</i>.
                     You can use the wildcard <i>*</i>. E.g. <i>THOC*</i> will display the nodes homologous to <i>THOC, THOC1, THOC2, THOC3, THOC4, THOCXX, etc.</i>
                 </li>
 
                 <li class="tutorial-li">
-                    Gene Ontology identifiers. This will display all the planarian contigs with a human homolog with the specified GO code.
+                    <strong>Gene Ontology identifiers</strong>. This will display all the planarian contigs with a human homolog with the specified GO code.
                     E.g. <i>GO:0000002</i>.
                 </li>
 
                 <li class="tutorial-li">
-                    PFAM identifiers. This will retrieve all the planarian contigs with the specified PFAM annotated through our protocol (that is, with HMMER with a e-value cutoff of 10^-10).
+                    <strong>PFAM identifiers</strong>. This will retrieve all the planarian contigs with the specified PFAM annotated through our protocol (that is, with HMMER with a e-value cutoff of 10^-10).
                     E.g. <i>PF01369.15</i>.
                 </li>
             </ul>
@@ -86,14 +86,53 @@
                 Once you have typed the symbols you want to look for, and have selected the appropiate dataset, click on the button <span class="tutorial-highlight-netexplorer">+Add</span>.
                 Note that you will not lose the network already displayed on the left, so you can add nodes individually without losing the visualization.
             </p>
+            <p>
+                All the nodes for which you have searched (either using this search function or by "expanding" them, see below) will be outlined in green,
+                so that you can remember them.
+            </p>
 
             <br>
             <h4>Basic controls</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
-            <p>Something</p>
 
+            <h4>1. Layout</h4>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/layout.png' %}"/>
+            <p>Using this dropdown menu you can select the layout of the network. When you select it, the layout will be run on the display,
+                and the positions of the nodes will change. Take note that some layouts will change each time you run them. There are 6 available layouts right now:</p>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/layouts.png' %}"/>
             <br>
+            <hr>
+            <h4>2. Show homologs</h4>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/homologs.png' %}"/>
+            <p>
+                When changing this switch to "ON", the homologs of the displayed planarian contigs will be drawn on the visualization.
+                They will appear as blue diamonds. They behave as all the other nodes, but with the exception that you can't "Expand" them.
+                Turning this option ON or OFF will <strong>not</strong> change the layout of the planarian nodes.
+            </p>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/homolog.png' %}"/>
+            <br>
+            <hr>
+            <h4>3. Connections manipulation</h4>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/connections.png' %}"/>
+            <p>Something</p>
+            <br>
+            <hr>
+            <h4>4. Filter interactions</h4>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/filter.png' %}"/>
+            <p>
+                With this slider you can hide the interactions using the percentage of votes of the random forest classifier as a cut-off.
+                Note that the hidden interactions are not removed, so you can get them back by using another cut-off.
+            </p>
+            <p>
+                Right now, the only available cut-offs are: <i>0.6, 0.65, 0.70, 0.75, 0.8, 0.85, 0.9</i> and <i>0.95</i>.
+                You can use this function in conjuction with the "Remove Unconnected" button to filter the graphs; first filtering the
+                interactions by the desired cut-off, and then removing all the unconnected nodes.
+                This is useful when wanting to work with a more accurate network, or when the nodes displayed on the visualization is too high.
+            </p>
+            <br>
+
+
             <h4>Click behaviour</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
@@ -103,20 +142,20 @@
                 There are 3 possible behaviours, and you can change them by clicking on the appropiate one:
             </p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/behaviour.png' %}"/>
-
+            <hr>
             <h4>1. Card</h4>
             <p>
                 When this behaviour is set, an information card for the clicked contig/protein will appear on the screen.
                 These cards are the same displayed in the <a href="#genesearch">Gene Search</a> application.
             </p>
-
+            <hr>
             <br>
             <h4>2. Expand</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/expand.png' %}"/>
             <p>
-                When clicking on nodes you will add all the interactions for such node.
+                When clicking on nodes you will add all the interactions for such node to the visualization.
             </p>
-
+            <hr>
             <br>
             <h4>3. Delete</h4>
             <p>
@@ -124,14 +163,15 @@
                 will NOT be removed, even if they have no other interactions.
             </p>
 
-
+            <hr>
             <br>
             <h4>Expression Data</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
             <p>Something</p>
-
             <br>
+
+
             <h4>General Controls</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
