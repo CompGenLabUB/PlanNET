@@ -35,20 +35,15 @@ $("#pathway-filter").submit(function(e){
         nodes:
         for (var j = 0; j < graphobj.nodes.length; j++) {
             var id      = graphobj.nodes[j].data.id.toUpperCase();
-            var homolog = graphobj.nodes[j].data.homolog.toUpperCase();
 
             if (symbol_list.indexOf(id) > -1) {
                 //Node id in the path
                 needed[id] = 1;
-            } else if (symbol_list.indexOf(homolog) > -1) {
-                //Node homolog in the path
-                needed[homolog] = 1;
             } else {
                 //Node not in the path. Hide the div and go to next div.
                 continue nodes;
             }
         }
-
         // Check if all the elements were found
         needed:
         for (var nsym in needed) {
@@ -62,10 +57,10 @@ $("#pathway-filter").submit(function(e){
             }
         }
 
-
         panels[i].style.display = "block";
         numshown += 1;
     }
+
 
     // Change number of elements displayed text
     document.getElementById("numfiltered").textContent=numshown;
