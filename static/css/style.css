@@ -908,7 +908,7 @@ input[type="file"] {
 #pfind-results {
     height: 100%;
     float: left;
-    width: 70%;
+    width: 75%;
     overflow-y: scroll;
 }
 
@@ -917,7 +917,8 @@ input[type="file"] {
 #pfind-form {
     position: absolute;
     height: 100%;
-    width: 30%;
+    width: 25%;
+    min-width: 300px;
     text-align: center;
     background-color: #F8F8F8;
     right: 0;
