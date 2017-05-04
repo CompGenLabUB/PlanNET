@@ -110,8 +110,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .app-icon-inside {
+    position: relative;
     margin-top: 4%;
     width: 180;
+    right: -15px;
 }
 
 .panel-blast {
@@ -580,9 +582,6 @@ h1, h2, h3, h4, h5, h6 {
     border-width: 4px;
 }
 
-#netexplorer-title {
-    color: rgb(52, 52, 52) !important;
-}
 
 #cyt-explorer-icon {
     display: inline-block;
@@ -1237,7 +1236,7 @@ input[type="file"] {
 
 .ui-tooltip {
     z-index: 10000000 !important;
-    white-space: pre-line !important;
+    white-space: initial !important;
     min-width:130px;
 }
 
@@ -1481,4 +1480,31 @@ strong{
     background-color: white;
     font-weight: bold;
     color: #777777;
+}
+
+.glyphicon-question-sign {
+    font-size: 30px;
+    color: #404040;
+}
+.glyphicon-question-sign:hover {
+    opacity: 0.7;
+}
+
+.glyphicon-home {
+    font-size: 30px;
+    color: #404040;
+}
+
+.glyphicon-home:hover {
+    opacity: 0.7;
+}
+
+.back-div {
+    float: right;
+    margin-right: 15px;
+    margin-top: 15px;
+}
+
+.app-title{
+    color: #777777 !important;
 }

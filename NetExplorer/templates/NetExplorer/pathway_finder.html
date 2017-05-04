@@ -176,9 +176,15 @@
         <!-- FORM -->
         <div id="pfind-form">
             <div id="pfind-form-header">
+                <div class="back-div">
+                    <a href="{% url index_view %}" class="info-tooltip"
+                    title="Back to PlanNET"><span class="glyphicon glyphicon-home"></span></a>
+                    <br>
+                    <a target="_blank" href="{% url tutorial %}#pathwayfinder" class="info-tooltip"
+                    title="Go to Tutorial"><span class="glyphicon glyphicon-question-sign"></span></a>
+                </div>
                 <img src="{% static 'Images/pathway-icon.png' %}" class="app-icon-inside"/>
-                <h2>Pathway Finder</h2>
-                <a href="{% url index_view %}">Back to PlanNET</a>
+                <div class="app-title"><h2>Pathway Finder</h2></div>
             </div>
             <hr>
 

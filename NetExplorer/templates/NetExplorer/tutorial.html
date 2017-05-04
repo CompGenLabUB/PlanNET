@@ -41,6 +41,26 @@
       <div class="tutorial-panel panel panel-success">
         <div class="panel-heading"><a class="tutorial-title" name="netexplorer"><h3>Net Explorer</h3></a></div>
         <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Table of Contents
+                </div>
+                <div class="panel-body">
+                    <ol>
+                        <li class="tutorial-li"><a href="#netexplorer-search">Search Functionality</a></li>
+                        <li class="tutorial-li"><a href="#netexplorer-basiccontrols">Basic Controls</a></li>
+                            <ol>
+                                <li class="tutorial-li"><a href="#netexplorer-basiccontrols-layout">Layout</a></li>
+                                <li class="tutorial-li"><a href="#netexplorer-basiccontrols-homologs">Show homologs</a></li>
+                                <li class="tutorial-li"><a href="#netexplorer-basiccontrols-connections">Connections manipulation</a></li>
+                                <li class="tutorial-li"><a href="#netexplorer-basiccontrols-filter">Filter interactions</a></li>
+                            </ol>
+                        <li class="tutorial-li"><a href="#netexplorer-click">Click Behaviour</a></li>
+                        <li class="tutorial-li"><a href="#netexplorer-expression">Expression Data</a></li>
+                        <li class="tutorial-li"><a href="#netexplorer-controls">General Controls</a></li>
+                    </ol>
+                </div>
+            </div>
             <p>
                 NetExplorer will allow you to explore the predicted networks dinamically, adding and removing nodes from several interactomes.
                 Use the menus on the right to manipulate the graph, which will display on the left side of the screen. Each node on the graph
@@ -50,7 +70,7 @@
             <img class="tutorial-img" src="{% static 'Images/tutorial/legend.png' %}"/>
 
             <br>
-            <h4>Search functionality</h4>
+            <h4 id="netexplorer-search">Search functionality</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
             <img class="tutorial-img" src="{% static 'Images/tutorial/search.png' %}"/>
@@ -92,18 +112,18 @@
             </p>
 
             <br>
-            <h4>Basic controls</h4>
+            <h4 id="netexplorer-basiccontrols">Basic controls</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
 
-            <h4>1. Layout</h4>
+            <h4 id="netexplorer-basiccontrols-layout">1. Layout</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/layout.png' %}"/>
             <p>Using this dropdown menu you can select the layout of the network. When you select it, the layout will be run on the display,
                 and the positions of the nodes will change. Take note that some layouts will change each time you run them. There are 6 available layouts right now:</p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/layouts.png' %}"/>
             <br>
             <hr>
-            <h4>2. Show homologs</h4>
+            <h4 id="netexplorer-basiccontrols-homologs">2. Show homologs</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/homologs.png' %}"/>
             <p>
                 When changing this switch to <kbd class="tutorial-highlight-netexplorer">On</kbd>, the homologs of the displayed planarian contigs will be drawn on the visualization.
@@ -113,7 +133,7 @@
             <img class="tutorial-img" src="{% static 'Images/tutorial/homolog.png' %}"/>
             <br>
             <hr>
-            <h4>3. Connections manipulation</h4>
+            <h4 id="netexplorer-basiccontrols-connections">3. Connections manipulation</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/connections.png' %}"/>
                  <br>
                 <kbd class="tutorial-highlight-button">Show connections</kbd>: <br>
@@ -130,7 +150,7 @@
             <br>
 
             <hr>
-            <h4>4. Filter interactions</h4>
+            <h4 id="netexplorer-basiccontrols-filter">4. Filter interactions</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/filter.png' %}"/>
             <p>
                 With this slider you can hide the interactions using the percentage of votes of the random forest classifier as a cut-off.
@@ -145,7 +165,7 @@
             <br>
 
 
-            <h4>Click behaviour</h4>
+            <h4 id="netexplorer-click">Click behaviour</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
 
@@ -177,7 +197,7 @@
 
             <hr>
             <br>
-            <h4>Expression Data</h4>
+            <h4 id="netexplorer-expression">Expression Data</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
             <img class="tutorial-img" src="{% static 'Images/tutorial/mapexpression.png' %}"/>
@@ -217,7 +237,7 @@
             <br>
 
 
-            <h4>General Controls</h4>
+            <h4 id="netexplorer-controls">General Controls</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
             <img class="tutorial-img" src="{% static 'Images/tutorial/controls.png' %}"/>

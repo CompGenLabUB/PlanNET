@@ -57,14 +57,14 @@
                 <div id="legend" class="col-sm-4">
                     <a class="info-tooltip legend-tooltip" title="
                     <h4>Legend<hr></h4>
-                    <img class='legend-db' src='{% static 'Images/legend-Human.png' %}'/> Human
-                    {% for db in databases %}<img class='legend-db' src='{% static 'Images/legend-' %}{{ db }}.png'/>{{ db }}
+                    <img class='legend-db' src='{% static 'Images/legend-Human.png' %}'/> Human<br>
+                    {% for db in databases %}<img class='legend-db' src='{% static 'Images/legend-' %}{{ db }}.png'/>{{ db }}<br>
                     {% endfor %}
                     <hr>
-                    <img class='legend-db' src='{% static 'Images/legend-int1.png' %}'/> Interaction also found in Human
-                    <img class='legend-db' src='{% static 'Images/legend-int2.png' %}'/> Interaction <strong>not</strong> found in Human
-                    <img class='legend-db' src='{% static 'Images/legend-int4.png' %}'/> Homology relationship
-                    <img class='legend-db' src='{% static 'Images/legend-int3.png' %}'/> Interaction between homologs
+                    <img class='legend-db' src='{% static 'Images/legend-int1.png' %}'/> Interaction also found in Human<br>
+                    <img class='legend-db' src='{% static 'Images/legend-int2.png' %}'/> Interaction <strong>not</strong> found in Human<br>
+                    <img class='legend-db' src='{% static 'Images/legend-int4.png' %}'/> Homology relationship<br>
+                    <img class='legend-db' src='{% static 'Images/legend-int3.png' %}'/> Interaction between homologs<br>
                     ">
                         <span class="glyphicon glyphicon-info-sign legend-icon" aria-hidden="true"></span>
                     </a>
@@ -258,11 +258,15 @@
             <div id="cyt-controls-header">
 
 
+                <div class="back-div">
+                    <a href="{% url index_view %}" class="info-tooltip"
+                    title="Back to PlanNET"><span class="glyphicon glyphicon-home"></span></a>
+                    <br>
+                    <a target="_blank" href="{% url tutorial %}#netexplorer" class="info-tooltip"
+                    title="Go to Tutorial"><span class="glyphicon glyphicon-question-sign"></span></a>
+                </div>
                 <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
-                <h2>Net Explorer</h2>
-                <a href="{% url index_view %}">Back to PlanNET</a>
-
-
+                <div class="app-title"><h2 id="netexplorer-title">Net Explorer</h2></div>
 
                 <!-- Add Node Form-->
                 <div id="add-node-container">
@@ -382,12 +386,11 @@
                 <h3>On Click <a  class="info-tooltip"
                 title="
                     This option will determine what happens when you click on a node.
-
-                    - Card: An information card for the node will appear.
-
-                    - Expand: All the elements interacting with the node will be added to the graph.
-
-                    - Delete: The node and all its interactions will be removed from the graph.
+                    <ul>
+                        <li>Card: An information card for the node will appear.</li>
+                        <li>Expand: All the elements interacting with the node will be added to the graph.</li>
+                        <li>Delete: The node and all its interactions will be removed from the graph.</li>
+                    </ul>
                 "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a></h3>
 
                 <fieldset>
