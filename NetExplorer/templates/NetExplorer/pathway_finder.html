@@ -179,7 +179,7 @@
                 <div class="back-div">
                     <a href="{% url index_view %}" class="info-tooltip"
                     title="Back to PlanNET"><span class="glyphicon glyphicon-home"></span></a>
-                    <br>
+                    <hr>
                     <a target="_blank" href="{% url tutorial %}#pathwayfinder" class="info-tooltip"
                     title="Go to Tutorial"><span class="glyphicon glyphicon-question-sign"></span></a>
                 </div>
@@ -331,9 +331,14 @@
                             getCard(card_data);
                         });
 
-                        // Behaviour when mousover
-                        cy.on( 'mousover', 'node', function() {
-                            // show card message
+                        cy.on('mouseover', 'node', function (evt) {
+                            $('html,body').css('cursor', 'pointer');
+                            this.css("opacity", "0.85");
+                        } );
+
+                        cy.on('mouseout', 'node', function (evt) {
+                            $('html,body').css('cursor', 'default');
+                            this.css("opacity", "1");
                         });
 
                         // Center to graph

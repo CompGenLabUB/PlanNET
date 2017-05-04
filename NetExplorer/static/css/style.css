@@ -113,7 +113,7 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     margin-top: 4%;
     width: 180;
-    right: -15px;
+    right: -30px;
 }
 
 .panel-blast {
@@ -1484,7 +1484,7 @@ strong{
 }
 
 .glyphicon-question-sign {
-    font-size: 30px;
+    font-size: 20px;
     color: #777777;
 }
 .glyphicon-question-sign:hover {
@@ -1492,7 +1492,7 @@ strong{
 }
 
 .glyphicon-home {
-    font-size: 30px;
+    font-size: 20px;
     color: #777777;
 }
 
@@ -1501,9 +1501,15 @@ strong{
 }
 
 .back-div {
+    padding: 8px;
+    background-color: white;
     float: right;
     margin-right: 15px;
     margin-top: 15px;
+    border-color: #cccccc;
+    border-width: 1;
+    border-style: solid;
+    border-radius:4px;
 }
 
 .app-title{
