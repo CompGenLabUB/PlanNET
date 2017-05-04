@@ -74,7 +74,7 @@
                 </li>
 
                 <li class="tutorial-li">
-                    <strong>PFAM identifiers</strong>. This will retrieve all the planarian contigs with the specified PFAM annotated through our protocol (that is, with HMMER with a e-value cutoff of 10^-10).
+                    <strong>PFAM identifiers</strong>. This will retrieve all the planarian contigs with the specified PFAM annotated through our protocol (that is, with HMMER with a e-value cutoff of 10<sup>-10</sup>).
                     E.g. <i>PF01369.15</i>.
                 </li>
             </ul>
@@ -83,7 +83,7 @@
                 You can do multiple searches at once, using commas ',' to separate each item. You can mix the different types of symbols in the same search, e.g. <i>PF01369.15,GO:0000002</i>.
             </p>
             <p>
-                Once you have typed the symbols you want to look for, and have selected the appropiate dataset, click on the button <span class="tutorial-highlight-netexplorer">+Add</span>.
+                Once you have typed the symbols you want to look for, and have selected the appropiate dataset, click on the button <kbd class="tutorial-highlight-netexplorer">+ Add</kbd>.
                 Note that you will not lose the network already displayed on the left, so you can add nodes individually without losing the visualization.
             </p>
             <p>
@@ -106,17 +106,29 @@
             <h4>2. Show homologs</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/homologs.png' %}"/>
             <p>
-                When changing this switch to "ON", the homologs of the displayed planarian contigs will be drawn on the visualization.
-                They will appear as blue diamonds. They behave as all the other nodes, but with the exception that you can't "Expand" them.
-                Turning this option ON or OFF will <strong>not</strong> change the layout of the planarian nodes.
+                When changing this switch to <kbd class="tutorial-highlight-netexplorer">On</kbd>, the homologs of the displayed planarian contigs will be drawn on the visualization.
+                They will appear as blue diamonds. They behave as all the other nodes, but with the exception that you can't <kbd class="tutorial-highlight-netexplorer">Expand</kbd> them.
+                Turning this option <kbd class="tutorial-highlight-netexplorer">On</kbd> or <kbd class="tutorial-highlight-netexplorer">Off</kbd> will <strong>not</strong> change the layout of the planarian nodes.
             </p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/homolog.png' %}"/>
             <br>
             <hr>
             <h4>3. Connections manipulation</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/connections.png' %}"/>
-            <p>Something</p>
+                 <br>
+                <kbd class="tutorial-highlight-button">Show connections</kbd>: <br>
+                    <p>
+                        This button will add all the interactions between the nodes displayed on the visualization. It will NOT add any node.
+                    </p>
+                <br>
+                <kbd class="tutorial-highlight-button">Remove Unconnected</kbd>: <br>
+                    <p>
+                        Activating this button will remove all the nodes without a <strong>visible</strong> connection.
+                        Note that this applies to all types of connection (homology or interactions).
+                        Use together with <kbd class="tutorial-highlight-button">Filter interactions</kbd> to filter networks.
+                    </p>
             <br>
+
             <hr>
             <h4>4. Filter interactions</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/filter.png' %}"/>
@@ -126,7 +138,7 @@
             </p>
             <p>
                 Right now, the only available cut-offs are: <i>0.6, 0.65, 0.70, 0.75, 0.8, 0.85, 0.9</i> and <i>0.95</i>.
-                You can use this function in conjuction with the "Remove Unconnected" button to filter the graphs; first filtering the
+                You can use this function in conjuction with the <kbd class="tutorial-highlight-button">Remove Unconnected</kbd> button to filter the graphs; first filtering the
                 interactions by the desired cut-off, and then removing all the unconnected nodes.
                 This is useful when wanting to work with a more accurate network, or when the nodes displayed on the visualization is too high.
             </p>
@@ -137,11 +149,11 @@
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
 
+            <img class="tutorial-img" src="{% static 'Images/tutorial/behaviour.png' %}"/>
             <p>
                 If you have nodes on the visualization, you can determine what the application will do when you click on them.
                 There are 3 possible behaviours, and you can change them by clicking on the appropiate one:
             </p>
-            <img class="tutorial-img" src="{% static 'Images/tutorial/behaviour.png' %}"/>
             <hr>
             <h4>1. Card</h4>
             <p>
@@ -168,14 +180,85 @@
             <h4>Expression Data</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
-            <p>Something</p>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/mapexpression.png' %}"/>
+            <p>
+                If you click on the <kbd class="tutorial-highlight-button">Map Expression</kbd> button, the dialog showed on the above image will appear.
+                Using this dialgo, you will be able to select a Expression experiment and map the expression values over the displayed nodes on the visualization.
+                There are two ways in which you can do this: mapping the values of one sample as a color gradient, or mapping the logFC of two samples as a divergent color gradient.
+                Make sure you are selecting two different samples in the <kbd class="tutorial-highlight-button">Two Samples</kbd> mode.
+            </p>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/samples.png' %}"/>
+            <p>
+                Finally, select a color gradient from the available presets and click <kbd class="tutorial-highlight-netexplorer">OK</kbd>.
+                The process of fetching the expression values and coloring the nodes may take a while depending on the number of nodes displayed.
+                None of this will change the layout of the nodes, so feel free to experiment with the colors and the samples.
+                When the process is done, a legend will appear on the visualization:
+            </p>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/expressionlegend.png' %}"/>
+            <p>
+                If you are in <kbd class="tutorial-highlight-button">One Sample</kbd> mode, each color will represent the percentil
+                to which the expression value belongs; for example, the color for the percentil 10% indicates that the nodes colored like that
+                have a expression value lower than 95% to 90% of the genes in the gene expression experiment.
+            </p>
+
+            <p>
+                If you are in <kbd class="tutorial-highlight-button">Two Samples</kbd> mode, each color will represent the log2FoldChange between
+                the selected <i>sample 1</i> and <i>sample 2</i>.
+            </p>
+
+            <p>
+                In either case, the nodes colored as NA are contigs for which there is no expression information for that particular experiment and sample.
+            </p>
+            <p>
+                When a expression experiment has been mapped onto the visualization you can keep ading nodes normally. However, if you want the expression
+                to be mapped to the new added nodes, you have to open the dialog again and re-run the process. Don't expect new nodes to be colored according to
+                the expression information previously mapped.
+            </p>
             <br>
 
 
             <h4>General Controls</h4>
             <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-netexplorer.png' %}"/>
             <br>
-            <p>Something</p>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/controls.png' %}"/>
+            <p>
+                These simple buttons will allow the user to save, import and export the visualization in several formats, as well as centering it to the screen.
+            </p>
+
+            <kbd class="tutorial-highlight-button">
+                <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+            </kbd>&nbsp;&nbsp; Center the visualization when clicked.
+            <br><br>
+
+            <kbd class="tutorial-highlight-button">
+                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+            </kbd>&nbsp;&nbsp; Saves a png image of the visualization. Please, take note that the expression legend will NOT be saved, as it is not part of the visualization.
+            <br><br>
+
+            <kbd class="tutorial-highlight-button">
+                <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+            </kbd>&nbsp;&nbsp; Exports the graph (nodes and edges) as a tabular file. This graph can then be imported to Cytoscape, or Gephi, or other programs to perform
+            further analyses.
+            <br><br>
+
+            <kbd class="tutorial-highlight-button">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+            </kbd>&nbsp;&nbsp; Saves the graph as a JSON file. This is the format used by NetExplorer. If you want to save a particular visualization to work on it later in
+            NetExplorer, use this button. All the positions, colors, nodes and edges will be saved and they can be restored.
+            <br><br>
+
+            <kbd class="tutorial-highlight-button">
+                <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+            </kbd>&nbsp;&nbsp; Imports a JSON file (exported by using the previous button). All the visualization will be restored. Any network on the visualization previous
+            to importing the JSON file will be lost, so please be careful.
+            <br><br>
+
+            <kbd class="tutorial-highlight-button">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </kbd>&nbsp;&nbsp; Remove everything (nodes, edges, colors, legends) from the visualization. This process is <strong>irreversible</strong>.
+            <br><br>
+
+
 
         </div>
       </div>

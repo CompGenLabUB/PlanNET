@@ -656,7 +656,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .glyphicon-open {
     font-size: 26;
-    padding-right: 2%;
 }
 
 .glyphicon-share {
@@ -1474,5 +1473,12 @@ strong{
 }
 
 .tutorial-highlight-netexplorer {
-    background-color: #DFF0D8;
+    background-color: #5CB85C;
+    font-weight: bold;
+}
+
+.tutorial-highlight-button {
+    background-color: white;
+    font-weight: bold;
+    color: #777777;
 }
