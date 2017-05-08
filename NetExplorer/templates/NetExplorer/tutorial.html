@@ -38,7 +38,7 @@
       </div>
 
        <!-- NETEXPLORER TUTORIAL -->
-      <div class="tutorial-panel panel panel-success">
+    <div class="tutorial-panel panel panel-success">
         <div class="panel-heading"><a class="tutorial-title" name="netexplorer"><h3>Net Explorer</h3></a></div>
         <div class="panel-body">
             <div class="panel panel-default">
@@ -103,7 +103,7 @@
                 You can do multiple searches at once, using commas ',' to separate each item. You can mix the different types of symbols in the same search, e.g. <i>PF01369.15,GO:0000002</i>.
             </p>
             <p>
-                Once you have typed the symbols you want to look for, and have selected the appropiate dataset, click on the button <kbd class="tutorial-highlight-netexplorer">+ Add</kbd>.
+                Once you have typed the symbols you want to look for, and have selected the appropiate dataset, click on the button <div class="tutorial-btn tutorial-highlight-netexplorer">+ Add</div>.
                 Note that you will not lose the network already displayed on the left, so you can add nodes individually without losing the visualization.
             </p>
             <p>
@@ -126,9 +126,9 @@
             <h4 id="netexplorer-basiccontrols-homologs">2. Show homologs</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/homologs.png' %}"/>
             <p>
-                When changing this switch to <kbd class="tutorial-highlight-netexplorer">On</kbd>, the homologs of the displayed planarian contigs will be drawn on the visualization.
-                They will appear as blue diamonds. They behave as all the other nodes, but with the exception that you can't <kbd class="tutorial-highlight-netexplorer">Expand</kbd> them.
-                Turning this option <kbd class="tutorial-highlight-netexplorer">On</kbd> or <kbd class="tutorial-highlight-netexplorer">Off</kbd> will <strong>not</strong> change the layout of the planarian nodes.
+                When changing this switch to <div class="tutorial-btn tutorial-highlight-netexplorer">On</div>, the homologs of the displayed planarian contigs will be drawn on the visualization.
+                They will appear as blue diamonds. They behave as all the other nodes, but with the exception that you can't <div class="tutorial-btn tutorial-highlight-netexplorer">Expand</div> them.
+                Turning this option <div class="tutorial-btn tutorial-highlight-netexplorer">On</div> or <div class="tutorial-btn tutorial-highlight-netexplorer">Off</div> will <strong>not</strong> change the layout of the planarian nodes.
             </p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/homolog.png' %}"/>
             <br>
@@ -136,16 +136,16 @@
             <h4 id="netexplorer-basiccontrols-connections">3. Connections manipulation</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/connections.png' %}"/>
                  <br>
-                <kbd class="tutorial-highlight-button">Show connections</kbd>: <br>
+                <div class="tutorial-btn"  class="tutorial-highlight-button">Show connections</div>: <br>
                     <p>
                         This button will add all the interactions between the nodes displayed on the visualization. It will NOT add any node.
                     </p>
                 <br>
-                <kbd class="tutorial-highlight-button">Remove Unconnected</kbd>: <br>
+                <div class="tutorial-btn"  class="tutorial-highlight-button">Remove Unconnected</div>: <br>
                     <p>
                         Activating this button will remove all the nodes without a <strong>visible</strong> connection.
                         Note that this applies to all types of connection (homology or interactions).
-                        Use together with <kbd class="tutorial-highlight-button">Filter interactions</kbd> to filter networks.
+                        Use together with <div class="tutorial-btn"  class="tutorial-highlight-button">Filter interactions</div> to filter networks.
                     </p>
             <br>
 
@@ -158,7 +158,7 @@
             </p>
             <p>
                 Right now, the only available cut-offs are: <i>0.6, 0.65, 0.70, 0.75, 0.8, 0.85, 0.9</i> and <i>0.95</i>.
-                You can use this function in conjuction with the <kbd class="tutorial-highlight-button">Remove Unconnected</kbd> button to filter the graphs; first filtering the
+                You can use this function in conjuction with the <div class="tutorial-btn"  class="tutorial-highlight-button">Remove Unconnected</div> button to filter the graphs; first filtering the
                 interactions by the desired cut-off, and then removing all the unconnected nodes.
                 This is useful when wanting to work with a more accurate network, or when the nodes displayed on the visualization is too high.
             </p>
@@ -202,27 +202,27 @@
             <br>
             <img class="tutorial-img" src="{% static 'Images/tutorial/mapexpression.png' %}"/>
             <p>
-                If you click on the <kbd class="tutorial-highlight-button">Map Expression</kbd> button, the dialog showed on the above image will appear.
+                If you click on the <div class="tutorial-btn"  class="tutorial-highlight-button">Map Expression</div> button, the dialog showed on the above image will appear.
                 Using this dialgo, you will be able to select a Expression experiment and map the expression values over the displayed nodes on the visualization.
                 There are two ways in which you can do this: mapping the values of one sample as a color gradient, or mapping the logFC of two samples as a divergent color gradient.
-                Make sure you are selecting two different samples in the <kbd class="tutorial-highlight-button">Two Samples</kbd> mode.
+                Make sure you are selecting two different samples in the <div class="tutorial-btn"  class="tutorial-highlight-button">Two Samples</div> mode.
             </p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/samples.png' %}"/>
             <p>
-                Finally, select a color gradient from the available presets and click <kbd class="tutorial-highlight-netexplorer">OK</kbd>.
+                Finally, select a color gradient from the available presets and click <div class="tutorial-btn tutorial-highlight-netexplorer">OK</div>.
                 The process of fetching the expression values and coloring the nodes may take a while depending on the number of nodes displayed.
                 None of this will change the layout of the nodes, so feel free to experiment with the colors and the samples.
                 When the process is done, a legend will appear on the visualization:
             </p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/expressionlegend.png' %}"/>
             <p>
-                If you are in <kbd class="tutorial-highlight-button">One Sample</kbd> mode, each color will represent the percentil
+                If you are in <div class="tutorial-btn"  class="tutorial-highlight-button">One Sample</div> mode, each color will represent the percentil
                 to which the expression value belongs; for example, the color for the percentil 10% indicates that the nodes colored like that
                 have a expression value lower than 95% to 90% of the genes in the gene expression experiment.
             </p>
 
             <p>
-                If you are in <kbd class="tutorial-highlight-button">Two Samples</kbd> mode, each color will represent the log2FoldChange between
+                If you are in <div class="tutorial-btn"  class="tutorial-highlight-button">Two Samples</div> mode, each color will represent the log2FoldChange between
                 the selected <i>sample 1</i> and <i>sample 2</i>.
             </p>
 
@@ -230,7 +230,7 @@
                 In either case, the nodes colored as NA are contigs for which there is no expression information for that particular experiment and sample.
             </p>
             <p>
-                When a expression experiment has been mapped onto the visualization you can keep ading nodes normally. However, if you want the expression
+                When a expression experiment has been mapped onto the visualization you can keep adding nodes normally. However, if you want the expression
                 to be mapped to the new added nodes, you have to open the dialog again and re-run the process. Don't expect new nodes to be colored according to
                 the expression information previously mapped.
             </p>
@@ -245,52 +245,120 @@
                 These simple buttons will allow the user to save, import and export the visualization in several formats, as well as centering it to the screen.
             </p>
 
-            <kbd class="tutorial-highlight-button">
+            <div class="tutorial-btn"  class="tutorial-highlight-button">
                 <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-            </kbd>&nbsp;&nbsp; Center the visualization when clicked.
+            </div>&nbsp;&nbsp; Center the visualization when clicked.
             <br><br>
 
-            <kbd class="tutorial-highlight-button">
+            <div class="tutorial-btn"  class="tutorial-highlight-button">
                 <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-            </kbd>&nbsp;&nbsp; Saves a png image of the visualization. Please, take note that the expression legend will NOT be saved, as it is not part of the visualization.
+            </div>&nbsp;&nbsp; Saves a png image of the visualization. Please, take note that the expression legend will NOT be saved, as it is not part of the visualization.
             <br><br>
 
-            <kbd class="tutorial-highlight-button">
+            <div class="tutorial-btn"  class="tutorial-highlight-button">
                 <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
-            </kbd>&nbsp;&nbsp; Exports the graph (nodes and edges) as a tabular file. This graph can then be imported to Cytoscape, or Gephi, or other programs to perform
+            </div>&nbsp;&nbsp; Exports the graph (nodes and edges) as a tabular file. This graph can then be imported to Cytoscape, or Gephi, or other programs to perform
             further analyses.
             <br><br>
 
-            <kbd class="tutorial-highlight-button">
+            <div class="tutorial-btn"  class="tutorial-highlight-button">
                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-            </kbd>&nbsp;&nbsp; Saves the graph as a JSON file. This is the format used by NetExplorer. If you want to save a particular visualization to work on it later in
+            </div>&nbsp;&nbsp; Saves the graph as a JSON file. This is the format used by NetExplorer. If you want to save a particular visualization to work on it later in
             NetExplorer, use this button. All the positions, colors, nodes and edges will be saved and they can be restored.
             <br><br>
 
-            <kbd class="tutorial-highlight-button">
+            <div class="tutorial-btn"  class="tutorial-highlight-button">
                 <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
-            </kbd>&nbsp;&nbsp; Imports a JSON file (exported by using the previous button). All the visualization will be restored. Any network on the visualization previous
+            </div>&nbsp;&nbsp; Imports a JSON file (exported by using the previous button). All the visualization will be restored. Any network on the visualization previous
             to importing the JSON file will be lost, so please be careful.
             <br><br>
 
-            <kbd class="tutorial-highlight-button">
+            <div class="tutorial-btn"  class="tutorial-highlight-button">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-            </kbd>&nbsp;&nbsp; Remove everything (nodes, edges, colors, legends) from the visualization. This process is <strong>irreversible</strong>.
+            </div>&nbsp;&nbsp; Remove everything (nodes, edges, colors, legends) from the visualization. This process is <strong>irreversible</strong>.
             <br><br>
 
 
 
         </div>
-      </div>
+    </div>
 
        <!-- PATHWAY FINDER TUTORIAL -->
-      <div class="tutorial-panel panel panel-warning">
+    <div class="tutorial-panel panel panel-warning">
         <div class="panel-heading"><a class="tutorial-title"  name="pathwayfinder"><h3>Pathway Finder</h3></a></div>
         <div class="panel-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi velit ante, volutpat eu tincidunt at, laoreet ut arcu. Fusce porttitor sem dui, sed facilisis augue tempus nec. Proin pharetra porta neque, vitae venenatis libero viverra at. Suspendisse mattis, est vitae dignissim volutpat, magna magna pulvinar nisi, non cursus tortor augue vestibulum tellus. Quisque fringilla augue at euismod laoreet. Vestibulum viverra sed dolor id tempus. Nunc eleifend ligula eu lacus rhoncus sodales. Fusce id tellus aliquam, vulputate ex ac, consectetur est. Nunc feugiat, urna nec ornare fringilla, urna turpis rhoncus eros, id efficitur neque tellus id augue. Vivamus id odio eu justo gravida ornare.
-        </div>
-      </div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Table of Contents
+                    </div>
+                    <div class="panel-body">
+                        <ol>
+                            <li class="tutorial-li"><a href="#pathwayfinder-form">Search Form</a></li>
+                            <li class="tutorial-li"><a href="#pathwayfinder-results">Results</a></li>
+                        </ol>
+                    </div>
+                </div>
+            <p>
+                PathwayFinder lets you select two (or more) nodes and retrieve all the possible paths of a given length between them in
+                a particular interactome. Right now, due to performance issues on the client side, the user can only select up to 5 edges
+                separating the given nodes.
+            </p>
+            <br>
+            <h4 id="pathwayfinder-form">Search Form</h4>
+            <img class="tutorial-subtitle-pathfinder" src="{% static 'Images/tutorial/underline-pathfinder.png' %}"/>
+            <br>
+            <img class="tutorial-img tutorial-float" src="{% static 'Images/tutorial/pfind-form.png' %}"/>
+            <p>
+                With this form you can select the <div class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/starting-node-icon.png' %}"/>StartingNode</div> and the <div class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/ending-node-icon.png' %}"/>FinalNode</div>.
+            </p>
+            <p>
+                As in other searches in PlanNET, you can use:
+                <ul>
+                    <li class="tutorial-li">Contig identifiers.</li>
+                    <li class="tutorial-li">Human protein symbols (including <i>*</i> wildcards)-.</li>
+                    <li class="tutorial-li">PFAM accession codes.</li>
+                    <li class="tutorial-li">GeneOntology codes.</li>
+                </ul>
+                Be aware that you can end up with several <div class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/starting-node-icon.png' %}"/>StartingNodes</div> and <div class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/ending-node-icon.png' %}"/>FinalNodes</div>.
+                This will increase the potential number of results. Because each pathway will be a different visualization, be aware that the performance will depend on the computer power on the client side.
+                For that reason, it is advisable to first select a small Path Length and try higher lengths depending on the results.
+            </p>
+            <p>
+                Once everything is selected, press the button <div class="tutorial-btn tutorial-highlight-pathfinder">FIND</div>. The results will appear on the left.
+            </p>
+            <br><br><br>
 
+            <br>
+            <h4 id="pathwayfinder-results">Results</h4>
+            <img class="tutorial-subtitle-pathfinder" src="{% static 'Images/tutorial/underline-pathfinder.png' %}"/>
+            <br>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/pfind-results.png' %}"/><br>
+            <p>
+                On the top of the screen will appear a summary of the search and the number of results (in this case, 508 pathways).
+            </p>
+            <p>
+                All the pathways will be sorted by the mean of the votes of all the interactions in it. That is, by the confidence.
+            </p>
+            <p>
+                You can filter the pathways with specific contigs using the above search box and by clicking on <div class="tutorial-btn tutorial-highlight-pathfinder">Filter</div>.
+                You can use multiple contig identifiers by using commas ','. You can <strong>only</strong> use planarian contig identifiers here.
+            </p>
+            <p>
+                There are two buttons on top of each pathway:
+            </p>
+            <div class="tutorial-btn"  class="tutorial-highlight-button">
+                <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+            </div>&nbsp;&nbsp; Center the path on the visualization.
+            <br><br>
+            <div class="tutorial-btn"  class="tutorial-highlight-button">
+                <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+            </div>&nbsp;&nbsp; Open a new tab with the pathway on NetExplorer.
+            <br><br>
+            <p>
+                You can click on the nodes to display an information card.
+            </p>
+        </div>
 
     </div>
 </div>
