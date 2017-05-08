@@ -19,7 +19,17 @@
         <div id="page-container">
             <div id="content">
                 <div id="logo-container">
-                    <a href="{% url index_view %}"> <img id="logoheader" src="{% static 'Images/logo-new-version2.png' %}"/> </a>
+                    <div class="row row-eq-height">
+                        <div class="col-sm-8">
+                            <a href="{% url index_view %}"> <img id="logoheader" src="{% static 'Images/logo-new-version2.png' %}"/> </a>
+                        </div>
+                        <div class="col-sm-4 company-logo-container-parent">
+                            <div class="company-logo-container">
+                                <a href="http://www.ub.edu/web/ub/en/index.html"><img class="company-logo" src="{% static 'Images/ub_logo.png' %}"/></a>
+                                <a href="http://www.ub.edu/ibub/en/index.html"><img class="company-logo" src="{% static 'Images/logo_ibub.png' %}"/></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <nav class="navbar navbar-default">
@@ -39,6 +49,7 @@
                                 </ul>
                             </li>
                             <li id="navbar-datasets"><a href="{% url datasets %}">Datasets</a></li>
+                            <li id="navbar-downloads"><a href="{% url downloads %}">Downloads</a></li>
                             <li id="navbar-about"><a href="{% url about %}">About</a></li>
                         </ul>
                     </div>
