@@ -50,10 +50,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .company-logo {
-    width: 50%;
+    width: 60%;
     display: inline-block;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .company-logo:hover {
@@ -62,13 +62,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .company-logo-container-parent {
     text-align: center;
-    border-left: 1px solid #ebebeb;
+    border-left: 2px solid #ebebeb;
     padding: 1%;
     display: inline-flex;
 }
 
 .company-logo-container {
     margin: auto 5px;
+    margin-top: 50px;
 }
 
 .social-icon {
@@ -88,7 +89,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #logoheader {
-    width: 400px;
+    height: 220px;
     margin-top: 1%;
 }
 
