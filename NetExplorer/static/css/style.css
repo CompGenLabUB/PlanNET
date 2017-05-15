@@ -970,7 +970,7 @@ input[type="file"] {
 
 #pfind-btn {
     font-size: 40px;
-    width: 70%;
+    width: 50%;
     height: 8%;
     border-radius:20px;
 }
@@ -1012,7 +1012,7 @@ input[type="file"] {
 }
 
 #pfind-btn {
-    width: 250px;
+    width: 200px;
     height: auto;
     border: 0;
 
