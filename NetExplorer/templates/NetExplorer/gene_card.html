@@ -294,8 +294,9 @@
                 targetDB    : $(this).attr("targetDB"),
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             }
-            history.pushState(card_data, null, "/PlanNET{% url index_view %}gene_card/" + card_data.targetDB + "/" + card_data.target);
-
+            
+            var new_url = '{% url index_view %}gene_card/' + card_data.targetDB + "/" + card_data.target;
+            history.pushState(card_data, null, new_url);
             // Load Get request html on current card-overlay
             $.ajax({
                 type: "GET",
