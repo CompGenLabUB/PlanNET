@@ -11,7 +11,6 @@
     <nav class="col-sm-2" id="myScrollspy">
         <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
             <li><a href="#genesearch">Gene Search</a></li>
-            <li><a href="#blast">BLAST</a></li>
             <li><a href="#netexplorer">NetExplorer</a></li>
             <li><a href="#pathwayfinder">Pathway Finder</a></li>
             <hr>
@@ -25,15 +24,87 @@
       <div class="tutorial-panel panel panel-info">
         <div class="panel-heading"><a class="tutorial-title" name="genesearch"><h3>Gene Search</h3></a></div>
         <div class="panel-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi velit ante, volutpat eu tincidunt at, laoreet ut arcu. Fusce porttitor sem dui, sed facilisis augue tempus nec. Proin pharetra porta neque, vitae venenatis libero viverra at. Suspendisse mattis, est vitae dignissim volutpat, magna magna pulvinar nisi, non cursus tortor augue vestibulum tellus. Quisque fringilla augue at euismod laoreet. Vestibulum viverra sed dolor id tempus. Nunc eleifend ligula eu lacus rhoncus sodales. Fusce id tellus aliquam, vulputate ex ac, consectetur est. Nunc feugiat, urna nec ornare fringilla, urna turpis rhoncus eros, id efficitur neque tellus id augue. Vivamus id odio eu justo gravida ornare.
-        </div>
-      </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Table of Contents
+                </div>
+                <div class="panel-body">
+                    <ol>
+                        <li class="tutorial-li"><a href="#genesearch-search">Search form</a></li>
+                        <li class="tutorial-li"><a href="#genesearch-results">Results</a></li>
+                        <li class="tutorial-li"><a href="#genesearch-card">Information card</a></li>
+                    </ol>
+                </div>
+            </div>
 
-       <!-- BLAST TUTORIAL -->
-      <div class="tutorial-panel panel panel-blast">
-        <div class="panel-heading"><a class="tutorial-title" name="blast"><h3>BLAST</h3></a></div>
-        <div class="panel-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi velit ante, volutpat eu tincidunt at, laoreet ut arcu. Fusce porttitor sem dui, sed facilisis augue tempus nec. Proin pharetra porta neque, vitae venenatis libero viverra at. Suspendisse mattis, est vitae dignissim volutpat, magna magna pulvinar nisi, non cursus tortor augue vestibulum tellus. Quisque fringilla augue at euismod laoreet. Vestibulum viverra sed dolor id tempus. Nunc eleifend ligula eu lacus rhoncus sodales. Fusce id tellus aliquam, vulputate ex ac, consectetur est. Nunc feugiat, urna nec ornare fringilla, urna turpis rhoncus eros, id efficitur neque tellus id augue. Vivamus id odio eu justo gravida ornare.
+            <p>
+                <strong>GeneSearch</strong> allows users to look for proteins/contigs across the different planarian transcriptomes and Human reference interactome.
+            </p>
+            <br>
+            <h4 id="genesearch-search">Search form</h4>
+            <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-genesearch.png' %}"/>
+            <br>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/genesearch-form.png' %}"/>
+            <br>
+            <p>
+                In order to search contigs/proteins, you have to select one of the available datasets (planarian or Human). Then, write one of the following types of symbols:
+            </p>
+
+            <ul>
+                <li class="tutorial-li">
+                    <strong>Contig identifiers</strong> (which will be specific to each transcriptome). E.g. <i>cth1_Trc_comp11081_c0_seq1</i> (for dataset <i>Cthulhu</i>)
+                </li>
+
+                <li class="tutorial-li">
+                    <strong>Human protein symbols</strong>. This will retrieve all the homologous contigs to the specified human protein. E.g. <i>THOC2</i>.
+                    You can use the wildcard <i>*</i>. E.g. <i>THOC*</i> will display the nodes homologous to <i>THOC, THOC1, THOC2, THOC3, THOC4, THOCXX, etc.</i>
+                </li>
+
+                <li class="tutorial-li">
+                    <strong>Gene Ontology identifiers</strong>. This will display all the planarian contigs with a human homolog with the specified GO code.
+                    E.g. <i>GO:0000002</i>.
+                </li>
+
+                <li class="tutorial-li">
+                    <strong>PFAM identifiers</strong>. This will retrieve all the planarian contigs with the specified PFAM annotated through our protocol (that is, with HMMER with a e-value cutoff of 10<sup>-10</sup>).
+                    E.g. <i>PF01369.15</i>.
+                </li>
+            </ul>
+
+            <p>
+                You can do multiple searches at once, using commas ',' to separate each item. You can mix the different types of symbols in the same search, e.g. <i>PF01369.15,GO:0000002</i>.
+            </p>
+
+            <br>
+            <h4 id="genesearch-results">Results</h4>
+            <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-genesearch.png' %}"/>
+            <br>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/genesearch-results.png' %}"/>
+            <p>
+                If there are proteins/contigs in the selected dataset that satisfy the search criteria, you will get a list of symbols inside blue boxes (see image). The symbol on the top right of each box always represents the database to which the symbol belongs. If the selected dataset was a Planarian transcriptome, the Human homolog will be specified inside the box, as can be seen in the image.
+            </p>
+
+            <p>
+                Click on any of the boxes to get an <strong>information card</strong>, which will contain a summary of the information stored for that particular protein or contig.
+            </p>
+
+            <br>
+            <h4 id="genesearch-card">Information card</h4>
+            <img class="tutorial-subtitle-netexplorer" src="{% static 'Images/tutorial/underline-genesearch.png' %}"/>
+            <br>
+            <img class="tutorial-img" src="{% static 'Images/tutorial/genesearch-card1.png' %}"/>
+            <br>
+            <p>
+                An information card is a brief summary of a contig or protein stored in any of our interactomes. Here, you will be able to download FASTA sequences, look for the annotated homolog for each contig, look for annotated PFAM domains, GO codes, and predicted interactions.
+            </p>
+            <p>
+                You can navigate through different contigs/proteins without losing the results from GeneSearch, NetExplorer or PathwayFinder: only the information card will change. You can also navigate back using your browser's back button <span class="tutorial-btn">←</span>.
+            </p>
+            <p>
+                Close the card using your <span class="tutorial-btn">Esc</span> key or the <span class="tutorial-btn tutorial-highlight-genesearch">x</span> button on the top right. If you want to see the card in full-screen mode in a new tab (for example, to print it), click on <span class="tutorial-btn tutorial-highlight-genesearch"><span class="glyphicon glyphicon-new-window"></span></span>.
+            </p>
+
+
         </div>
       </div>
 
@@ -62,7 +133,7 @@
                 </div>
             </div>
             <p>
-                NetExplorer will allow you to explore the predicted networks dinamically, adding and removing nodes from several interactomes.
+                NetExplorer allows users to explore the predicted networks dinamically, adding and removing nodes from several interactomes.
                 Use the menus on the right to manipulate the graph, which will display on the left side of the screen. Each node on the graph
                 will represent a contig (for planarian datasets) or a protein (for the Human reference dataset). These nodes will be connected by edges (lines),
                 and each type of them will have a different meaning:
@@ -103,7 +174,7 @@
                 You can do multiple searches at once, using commas ',' to separate each item. You can mix the different types of symbols in the same search, e.g. <i>PF01369.15,GO:0000002</i>.
             </p>
             <p>
-                Once you have typed the symbols you want to look for, and have selected the appropiate dataset, click on the button <div class="tutorial-btn tutorial-highlight-netexplorer">+ Add</div>.
+                Once you have typed the symbols you want to look for, and have selected the appropiate dataset, click on the button <span class="tutorial-btn tutorial-highlight-netexplorer">+ Add</span>.
                 Note that you will not lose the network already displayed on the left, so you can add nodes individually without losing the visualization.
             </p>
             <p>
@@ -126,9 +197,9 @@
             <h4 id="netexplorer-basiccontrols-homologs">2. Show homologs</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/homologs.png' %}"/>
             <p>
-                When changing this switch to <div class="tutorial-btn tutorial-highlight-netexplorer">On</div>, the homologs of the displayed planarian contigs will be drawn on the visualization.
-                They will appear as blue diamonds. They behave as all the other nodes, but with the exception that you can't <div class="tutorial-btn tutorial-highlight-netexplorer">Expand</div> them.
-                Turning this option <div class="tutorial-btn tutorial-highlight-netexplorer">On</div> or <div class="tutorial-btn tutorial-highlight-netexplorer">Off</div> will <strong>not</strong> change the layout of the planarian nodes.
+                When changing this switch to <span class="tutorial-btn tutorial-highlight-netexplorer">On</span>, the homologs of the displayed planarian contigs will be drawn on the visualization.
+                They will appear as blue diamonds. They behave as all the other nodes, but with the exception that you can't <span class="tutorial-btn tutorial-highlight-netexplorer">Expand</span> them.
+                Turning this option <span class="tutorial-btn tutorial-highlight-netexplorer">On</span> or <span class="tutorial-btn tutorial-highlight-netexplorer">Off</span> will <strong>not</strong> change the layout of the planarian nodes.
             </p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/homolog.png' %}"/>
             <br>
@@ -136,16 +207,16 @@
             <h4 id="netexplorer-basiccontrols-connections">3. Connections manipulation</h4>
             <img class="tutorial-img" src="{% static 'Images/tutorial/connections.png' %}"/>
                  <br>
-                <div class="tutorial-btn"  class="tutorial-highlight-button">Show connections</div>: <br>
+                <span class="tutorial-btn"  class="tutorial-highlight-button">Show connections</span>: <br>
                     <p>
                         This button will add all the interactions between the nodes displayed on the visualization. It will NOT add any node.
                     </p>
                 <br>
-                <div class="tutorial-btn"  class="tutorial-highlight-button">Remove Unconnected</div>: <br>
+                <span class="tutorial-btn"  class="tutorial-highlight-button">Remove Unconnected</span>: <br>
                     <p>
                         Activating this button will remove all the nodes without a <strong>visible</strong> connection.
                         Note that this applies to all types of connection (homology or interactions).
-                        Use together with <div class="tutorial-btn"  class="tutorial-highlight-button">Filter interactions</div> to filter networks.
+                        Use together with <span class="tutorial-btn"  class="tutorial-highlight-button">Filter interactions</span> to filter networks.
                     </p>
             <br>
 
@@ -158,7 +229,7 @@
             </p>
             <p>
                 Right now, the only available cut-offs are: <i>0.6, 0.65, 0.70, 0.75, 0.8, 0.85, 0.9</i> and <i>0.95</i>.
-                You can use this function in conjuction with the <div class="tutorial-btn"  class="tutorial-highlight-button">Remove Unconnected</div> button to filter the graphs; first filtering the
+                You can use this function in conjuction with the <span class="tutorial-btn"  class="tutorial-highlight-button">Remove Unconnected</span> button to filter the graphs; first filtering the
                 interactions by the desired cut-off, and then removing all the unconnected nodes.
                 This is useful when wanting to work with a more accurate network, or when the nodes displayed on the visualization is too high.
             </p>
@@ -202,27 +273,27 @@
             <br>
             <img class="tutorial-img" src="{% static 'Images/tutorial/mapexpression.png' %}"/>
             <p>
-                If you click on the <div class="tutorial-btn"  class="tutorial-highlight-button">Map Expression</div> button, the dialog showed on the above image will appear.
+                If you click on the <span class="tutorial-btn"  class="tutorial-highlight-button">Map Expression</span> button, the dialog showed on the above image will appear.
                 Using this dialgo, you will be able to select a Expression experiment and map the expression values over the displayed nodes on the visualization.
                 There are two ways in which you can do this: mapping the values of one sample as a color gradient, or mapping the logFC of two samples as a divergent color gradient.
-                Make sure you are selecting two different samples in the <div class="tutorial-btn"  class="tutorial-highlight-button">Two Samples</div> mode.
+                Make sure you are selecting two different samples in the <span class="tutorial-btn"  class="tutorial-highlight-button">Two Samples</span> mode.
             </p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/samples.png' %}"/>
             <p>
-                Finally, select a color gradient from the available presets and click <div class="tutorial-btn tutorial-highlight-netexplorer">OK</div>.
+                Finally, select a color gradient from the available presets and click <span class="tutorial-btn tutorial-highlight-netexplorer">OK</span>.
                 The process of fetching the expression values and coloring the nodes may take a while depending on the number of nodes displayed.
                 None of this will change the layout of the nodes, so feel free to experiment with the colors and the samples.
                 When the process is done, a legend will appear on the visualization:
             </p>
             <img class="tutorial-img" src="{% static 'Images/tutorial/expressionlegend.png' %}"/>
             <p>
-                If you are in <div class="tutorial-btn"  class="tutorial-highlight-button">One Sample</div> mode, each color will represent the percentil
+                If you are in <span class="tutorial-btn"  class="tutorial-highlight-button">One Sample</span> mode, each color will represent the percentil
                 to which the expression value belongs; for example, the color for the percentil 10% indicates that the nodes colored like that
                 have a expression value lower than 95% to 90% of the genes in the gene expression experiment.
             </p>
 
             <p>
-                If you are in <div class="tutorial-btn"  class="tutorial-highlight-button">Two Samples</div> mode, each color will represent the log2FoldChange between
+                If you are in <span class="tutorial-btn"  class="tutorial-highlight-button">Two Samples</span> mode, each color will represent the log2FoldChange between
                 the selected <i>sample 1</i> and <i>sample 2</i>.
             </p>
 
@@ -242,7 +313,7 @@
             <br>
             <img class="tutorial-img" src="{% static 'Images/tutorial/controls.png' %}"/>
             <p>
-                These simple buttons will allow the user to save, import and export the visualization in several formats, as well as centering it to the screen.
+                These simple buttons allow users to save, import and export the visualization in several formats, as well as centering it to the screen.
             </p>
 
             <div class="tutorial-btn"  class="tutorial-highlight-button">
@@ -310,7 +381,7 @@
             <br>
             <img class="tutorial-img tutorial-float" src="{% static 'Images/tutorial/pfind-form.png' %}"/>
             <p>
-                With this form you can select the <div class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/starting-node-icon.png' %}"/>StartingNode</div> and the <div class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/ending-node-icon.png' %}"/>FinalNode</div>.
+                With this form you can select the <span class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/starting-node-icon.png' %}"/>StartingNode</span> and the <span class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/ending-node-icon.png' %}"/>FinalNode</span>.
             </p>
             <p>
                 As in other searches in PlanNET, you can use:
@@ -320,12 +391,12 @@
                     <li class="tutorial-li">PFAM accession codes.</li>
                     <li class="tutorial-li">GeneOntology codes.</li>
                 </ul>
-                Be aware that you can end up with several <div class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/starting-node-icon.png' %}"/>StartingNodes</div> and <div class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/ending-node-icon.png' %}"/>FinalNodes</div>.
+                Be aware that you can end up with several <span class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/starting-node-icon.png' %}"/>StartingNodes</span> and <span class="tutorial-btn"  class="tutorial-highlight-button"><img class="pfind-form-icon tutorial-flag" src="{% static 'Images/ending-node-icon.png' %}"/>FinalNodes</span>.
                 This will increase the potential number of results. Because each pathway will be a different visualization, be aware that the performance will depend on the computer power on the client side.
                 For that reason, it is advisable to first select a small Path Length and try higher lengths depending on the results.
             </p>
             <p>
-                Once everything is selected, press the button <div class="tutorial-btn tutorial-highlight-pathfinder">FIND</div>. The results will appear on the left.
+                Once everything is selected, press the button <span class="tutorial-btn tutorial-highlight-pathfinder">FIND</span>. The results will appear on the left.
             </p>
             <br><br><br>
 
@@ -341,7 +412,7 @@
                 All the pathways will be sorted by the mean of the votes of all the interactions in it. That is, by the confidence.
             </p>
             <p>
-                You can filter the pathways with specific contigs using the above search box and by clicking on <div class="tutorial-btn tutorial-highlight-pathfinder">Filter</div>.
+                You can filter the pathways with specific contigs using the above search box and by clicking on <span class="tutorial-btn tutorial-highlight-pathfinder">Filter</span>.
                 You can use multiple contig identifiers by using commas ','. You can <strong>only</strong> use planarian contig identifiers here.
             </p>
             <p>
@@ -361,6 +432,8 @@
         </div>
 
     </div>
+</div>
+</div>
 </div>
 
 
