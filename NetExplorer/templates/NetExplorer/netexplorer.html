@@ -61,6 +61,8 @@
                     {% for db in databases %}<img class='legend-db' src='{% static 'Images/legend-' %}{{ db }}.png'/>{{ db }}<br>
                     {% endfor %}
                     <hr>
+                    <img class='legend-db' src='{% static 'Images/legend-size.png' %}'/> Degree (No. of interactions)<br>
+                    <hr>
                     <img class='legend-db' src='{% static 'Images/legend-int1.png' %}'/> Interaction also found in Human<br>
                     <img class='legend-db' src='{% static 'Images/legend-int2.png' %}'/> Interaction <strong>not</strong> found in Human<br>
                     <img class='legend-db' src='{% static 'Images/legend-int4.png' %}'/> Homology relationship<br>
