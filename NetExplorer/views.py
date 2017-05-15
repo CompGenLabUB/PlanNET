@@ -40,6 +40,10 @@ def query_node(symbol, database):
     symbol = symbol.replace(" ", "")
     symbol = symbol.replace("'", "")
     symbol = symbol.replace('"', '')
+    symbol = symbol.replace("%7C", "|")
+        # Urls in django templates are double encoded for some reason
+        # Because we have identifiers with '|' symbols, they get encoded to %257, that gets decodeed
+        # to %7C. I have to re-decode it to '|'
 
     if database == "Human":
         symbol = symbol.upper()
