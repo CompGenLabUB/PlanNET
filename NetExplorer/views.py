@@ -450,7 +450,10 @@ def blast(request):
             pipe = Popen([request.POST['type'], "-evalue", "1e-10", "-db", BLAST_DB_DIR + database , "-query", temp.name, '-outfmt', '6'], stdout=PIPE, stderr=STDOUT)
             stdout, stderr = pipe.communicate()
             results = [ line.split("\t") for line in stdout.split("\n") if line ]
-        return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database.title(), 'databases': sorted(DATABASES) })
+        if results:
+            return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database.title(), 'databases': sorted(DATABASES) })
+        else:
+            return render(request, 'NetExplorer/blast.html', {'results': results, 'noresults': True, 'database': database.title(), 'databases': sorted(DATABASES) })
     else:
         return render(request, 'NetExplorer/blast.html',{'databases': sorted(DATABASES)})
 
