@@ -19,6 +19,7 @@ $(document).keyup(function(e) {
     }
 });
 
+
 $('html').click(function() {
     $('.card-overlay').hide(250);
     $('.close-overlay').hide();
@@ -36,5 +37,7 @@ $('html').click(function() {
 
  $('.full-screen-card').click(function(event){
     event.stopPropagation();
-    window.open(window.location.href);
+    var url_to_open = window.location.href;
+    url_to_open = url_to_open.replace("#", "%23");
+    window.open(url_to_open);
  });

@@ -53,7 +53,7 @@
                                                     <td>
                                                         <a
                                                             class="card-link"
-                                                            current="{{ node.symbol }}"
+                                                            current="{{ node.symbol|urlencode}}"
                                                             currentDB="{{ node.database }}"
                                                             target="{{ hom.prednode.symbol }}"
                                                             targetDB="{{ hom.prednode.database }}">{{ hom.prednode.symbol }}
@@ -86,7 +86,7 @@
                     <hr>
 
                     <h3>Read sequence:</h3>
-                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=sequence">
+                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol|urlencode }}&database={{ node.database }}&type=sequence">
                         <div class="download-fasta-wrapper" title="Download FASTA file">
                             <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
                             Download FASTA
@@ -98,7 +98,7 @@
                     </div>
 
                     <h3>Longest Orf sequence:</h3>
-                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=orf">
+                    <a href="{% url get_fasta %}?genesymbol={{ node.symbol|urlencode }}&database={{ node.database }}&type=orf">
                         <div class="download-fasta-wrapper" title="Download FASTA file">
                             <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
                             Download FASTA
@@ -115,7 +115,7 @@
                         <h4>
                             <strong>Symbol:</strong> <a
                             class="card-link"
-                            current="{{ node.symbol }}"
+                            current="{{ node.symbol|urlencode }}"
                             currentDB="{{ node.database }}"
                             target="{{ node.homolog.human.symbol }}"
                             targetDB="Human">{{ node.homolog.human.symbol }}</a>
@@ -259,7 +259,7 @@
                             <tr>
                                 <td><a
                                     class="card-link"
-                                    current="{{ node.symbol }}"
+                                    current="{{ node.symbol|urlencode}}"
                                     currentDB="{{ node.database }}"
                                     target="{{ int.target.symbol }}"
                                     targetDB="{{ int.target.database }}">{{ int.target.symbol }}</a>

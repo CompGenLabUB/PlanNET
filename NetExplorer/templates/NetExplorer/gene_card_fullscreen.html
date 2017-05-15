@@ -80,7 +80,7 @@
                         <hr>
 
                         <h3>Read sequence:</h3>
-                        <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=sequence">
+                        <a href="{% url get_fasta %}?genesymbol={{ node.symbol|urlencode }}&database={{ node.database }}&type=sequence">
                             <div class="download-fasta-wrapper" title="Download FASTA file">
                                 <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
                                 Download FASTA
@@ -92,7 +92,7 @@
                         </div>
 
                         <h3>Longest Orf sequence:</h3>
-                        <a href="{% url get_fasta %}?genesymbol={{ node.symbol }}&database={{ node.database }}&type=orf">
+                        <a href="{% url get_fasta %}?genesymbol={{ node.symbol|urlencode }}&database={{ node.database }}&type=orf">
                             <div class="download-fasta-wrapper" title="Download FASTA file">
                                 <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
                                 Download FASTA
@@ -271,7 +271,7 @@
                             {% for int in node.neighbours %}
                                 <tr>
                                     <td>
-                                        <a href="{% url card_fullscreen int.target.database int.target.symbol %}">{{ int.target.symbol}}</a>
+                                        <a href="{% filter urlencode %}{% url card_fullscreen int.target.database int.target.symbol %}{% endfilter %}">{{ int.target.symbol}}</a>
                                     </td>
                                     <td>{{ int.parameters.int_prob }}</td>
                                     <td>{{ int.parameters.path_length }}</td>
