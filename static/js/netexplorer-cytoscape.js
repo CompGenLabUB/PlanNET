@@ -61,7 +61,7 @@ $(document).ready(function(){
         if (behaviour == "card") {
             // Get the ID of the div to update
             getCard(card_data);
-        } else if (behaviour == "expand") {
+        } else if (behaviour == "expand" && node.data("database") != "Human") {
             $("#expand-node-degree").html(node.data("degree"));
             if (node.data("degree") >= 100) {
                 $( "#dialog-expand-node" ).dialog({
