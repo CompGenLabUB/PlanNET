@@ -50,7 +50,8 @@
 
         <!-- CYTOSCAPE DIV -->
         <div id="cyt">
-            <img src="{% static 'Images/loading.gif' %}" id="loading"/>
+            <div id="loading"><img class="loading-img" src="{% static 'Images/loading.gif' %}"/><img src="{% static 'Images/loading-background.png' %}" class="loading-background"/></div>
+
             <div id="color-gradient"></div>
 
             <div id="legend-nodecount-wrapper" class="row">
