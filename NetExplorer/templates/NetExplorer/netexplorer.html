@@ -455,7 +455,7 @@
                         <!--- Center to graph -->
                         <div id="center-to-graph-container" class="col-md-3">
                             <button class="btn btn-default" id="center-to-graph" type="button">
-                                <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
                             </button>
                             <h5>Center</h5>
                         </div>
@@ -525,6 +525,22 @@
                 </div>
             </div> <!--cyt-controls-->
 
+            <div id="dialog-delete-node" title="Delete Node?">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+                    The node will be permanently removed, are you sure?
+                </p>
+            </div>
+
+            <div id="dialog-expand-node" title="Expand Node?">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+                    This node has <span id="expand-node-degree"><strong>many</strong></span> interactions, it may affect the performance of the application.
+                </p>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Are you sure you want to do it?
+                </p>
+            </div>
 
         <!-- Get info Card on click -->
         <!-- Gene Card -->

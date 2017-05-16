@@ -703,7 +703,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 26;
 }
 
-.glyphicon-resize-small {
+.glyphicon-fullscreen {
     font-size: 26;
 }
 
@@ -872,6 +872,14 @@ input[type="file"] {
 }
 
 #dialog-confirm {
+    display: none;
+}
+
+#dialog-delete-node {
+    display: none;
+}
+
+#dialog-expand-node {
     display: none;
 }
 

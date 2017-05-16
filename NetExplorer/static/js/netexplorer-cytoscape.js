@@ -61,11 +61,50 @@ $(document).ready(function(){
             // Get the ID of the div to update
             getCard(card_data);
         } else if (behaviour == "expand") {
-            node.data("colorNODE", '#449D44');
-            addNode(card_data.target, card_data.targetDB, cy);
+            $("#expand-node-degree").html(node.data("degree"));
+            if (node.data("degree") >= 100) {
+                $( "#dialog-expand-node" ).dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: 400,
+                    modal: true,
+                    buttons: {
+                        Cancel: function() {
+                            $( this ).dialog( "close" );
+                        },
+                        "Expand node": function() {
+                            node.data("colorNODE", '#449D44');
+                            addNode(card_data.target, card_data.targetDB, cy);
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+            } else {
+                node.data("colorNODE", '#449D44');
+                addNode(card_data.target, card_data.targetDB, cy);
+            }
+
+
         } else if (behaviour == "delete") {
-            node.remove();
-            countNodes(cy);
+
+            $( "#dialog-delete-node" ).dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    Cancel: function() {
+                        $( this ).dialog( "close" );
+                    },
+                    "Delete node": function() {
+                        node.remove();
+                        countNodes(cy);
+                        $( this ).dialog( "close" );
+                    }
+                }
+            });
+
+
         }
 
     });
