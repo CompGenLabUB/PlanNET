@@ -21,6 +21,7 @@ $(".pick-color-group").on("click", function() {
 // Form management
 $(".sample-option").hide();
 $(".available-for").hide();
+$(".experiment-ref").hide();
 $("#select-expression").on("change", function(){
     $(".sample-option").hide();
     $(".sample-warning").hide();
@@ -31,6 +32,8 @@ $("#select-expression").on("change", function(){
     var available = ".available-for." + $("#select-expression").val();
     $(".available-for").show();
     $(available).show();
+    var exp_ref = ".experiment-ref." + $("#select-expression").val();
+    $(exp_ref).show();
 });
 
 // -----------------------

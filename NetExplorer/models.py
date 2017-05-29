@@ -77,20 +77,21 @@ DOMAIN_NODES_QUERY = """
 
 # ------------------------------------------------------------------------------
 EXPERIMENT_QUERY = """
-    MATCH (n:Experiment)--(m)
+    MATCH (n:Experiment)
     WHERE n.id = "%s"
     RETURN
         n.id as identifier,
         n.maxexp as maxexp,
         n.minexp as minexp,
         n.reference as reference,
+        n.url       as url,
         n.percentiles as percentiles
 """
 
 # ------------------------------------------------------------------------------
 ALL_EXPERIMENTS_QUERY = """
     MATCH (n:Experiment)-[r]-(m)
-    RETURN distinct keys(r) as samples, n.id as identifier, collect(distinct labels(m)) as datasets
+    RETURN distinct keys(r) as samples, n.id as identifier, n.url as url, n.reference as reference, collect(distinct labels(m)) as datasets
 """
 
 # ------------------------------------------------------------------------------
@@ -737,15 +738,16 @@ class Experiment(object):
     """
     Class for gene expresssion experiments
     """
-    def __init__(self, identifier):
+    def __init__(self, identifier, url=None, reference=None):
         self.id        = identifier
-        self.reference   = None
+        self.url         = url
+        self.reference   = reference
         self.minexp      = None
         self.maxexp      = None
         self.percentiles = None
         self.gradient    = None
-        if not self.__get_minmax():
-            raise ExperimentNotFound(identifier)
+        if self.url is None:
+            self.__get_minmax()
 
     def __get_minmax(self):
         """
@@ -753,16 +755,17 @@ class Experiment(object):
         ranges defined aswell as the reference.
         """
         query   = EXPERIMENT_QUERY % (self.id)
+        print(query)
         results = GRAPH.run(query)
         results = results.data()
         if results:
             self.maxexp      = results[0]["maxexp"]
             self.minexp      = results[0]["minexp"]
             self.reference   = results[0]["reference"]
+            self.url         = results[0]["url"]
             self.percentiles = results[0]["percentiles"]
-            return True
-        else:
-            return False
+
+        print("DONE")
 
     def to_json(self):
         """
@@ -771,6 +774,7 @@ class Experiment(object):
         json_dict = dict()
         json_dict['id']        = self.id
         json_dict['reference'] = self.reference
+        json_dict['url']       = self.url
         json_dict['minexp']    = self.minexp
         json_dict['maxexp']    = self.maxexp
         json_dict['gradient']  = dict()
@@ -921,17 +925,21 @@ class ExperimentList(object):
     """
     def __init__(self):
         self.experiments = set()
-        self.samples    = dict()
-        self.datasets   = dict()
+        self.samples     = dict()
+        self.datasets    = dict()
         query   = ALL_EXPERIMENTS_QUERY
         # Add all the samples for each experiment
         results = GRAPH.run(query)
         results = results.data()
+        added_experiments = set()
         if results:
             for row in results:
                 if row['identifier'] not in self.samples:
                     self.samples[ row['identifier'] ] = set()
                 self.samples[ row['identifier'] ].update(row['samples'])
+                if row['identifier'] not in added_experiments:
+                    self.experiments.add(Experiment( row['identifier'], url=row['url'], reference=row['reference'] ))
+                    added_experiments.add(row['identifier'])
                 self.experiments.add(row['identifier'])
                 if row['identifier'] not in self.datasets:
                     self.datasets[ row['identifier'] ] = set()

@@ -93,7 +93,7 @@
                         <select id="select-expression" name="expression" class="selectpicker">
                             <option value="" selected disabled>Select Expression data</option>
                             {% for experiment in experiments.experiments %}
-                                <option value="{{ experiment }}">{{ experiment }}</option>
+                                <option value="{{ experiment.id }}">{{ experiment.id }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -105,6 +105,15 @@
                                     <div class="available-for {{experiment}}"><img class='legend-db' src='{% static 'Images/legend-' %}{{ dataset }}.png'/>{{ dataset }}</div>
                                 {% endfor %}
                             {% endfor %}
+                                {% for experiment in experiments.experiments %}
+                                <div class="experiment-ref {{experiment.id }}">
+                                    <br>
+                                    <strong>Reference:</strong>
+                                    <a target="_blank" class="experiment-ref-url" href="{{ experiment.url }}">
+                                        <span class="experiment-ref-name">{{ experiment.reference }}</span>
+                                    </a>
+                                </div>
+                                {% endfor %}
                         </div>
                     </div>
                 </div>
