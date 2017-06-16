@@ -106,13 +106,13 @@
                                 {% endfor %}
                             {% endfor %}
                                 {% for experiment in experiments.experiments %}
-                                <div class="experiment-ref {{experiment.id }}">
-                                    <br>
-                                    <strong>Reference:</strong>
-                                    <a target="_blank" class="experiment-ref-url" href="{{ experiment.url }}">
-                                        <span class="experiment-ref-name">{{ experiment.reference }}</span>
-                                    </a>
-                                </div>
+                                    <div class="experiment-ref {{experiment.id }}">
+                                        <br>
+                                        <strong>Reference:</strong>
+                                        <a target="_blank" class="experiment-ref-url" href="{{ experiment.url }}">
+                                            <span class="experiment-ref-name">{{ experiment.reference }}</span>
+                                        </a>
+                                    </div>
                                 {% endfor %}
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                                             fills this select section with the different <options>. For now, I will
                                             work only with X1,X2 and Xin from the DGE experiment
                                         -->
-                                        <option value="" selected disabled>Select samples</option>
+                                        <option class="empty" value="" selected disabled>Select samples</option>
                                         <option class="sample-warning" value="" disabled>Please, select an Experiment</option>
                                         {% for experiment, samples in experiments.samples.items %}
                                             {% for sample in samples %}
@@ -293,6 +293,10 @@
                                     <option value="{{ db }}">{{ db }}</option>
                                 {% endfor %}
                             </select>
+                            <br>
+                            <label class="radio-inline"><input type="radio" class="netexplorer-form-type" name="type" value="node" checked>Nodes</label>
+                            <label class="radio-inline"><input type="radio" class="netexplorer-form-type" name="type" value="pathway">Pathway</label>
+                            <br>
                             <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
                         </div>
                     </form>

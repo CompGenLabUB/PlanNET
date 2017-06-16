@@ -41,7 +41,8 @@ $(document).ready(function(){
         $(dataArray).each(function(i, field){
             dataObj[field.name] = field.value;
         });
-        addNode(dataObj.genesymbol, dataObj.database, cy);
+        console.log(dataObj);
+        addNode(dataObj.genesymbol, dataObj.database, dataObj.type , cy);
         e.preventDefault(); // avoid to execute the actual submit of the form.
     });
 
@@ -74,14 +75,14 @@ $(document).ready(function(){
                         },
                         "Expand node": function() {
                             node.data("colorNODE", '#449D44');
-                            addNode(card_data.target, card_data.targetDB, cy);
+                            addNode(card_data.target, card_data.targetDB, "node", cy);
                             $( this ).dialog( "close" );
                         }
                     }
                 });
             } else {
                 node.data("colorNODE", '#449D44');
-                addNode(card_data.target, card_data.targetDB, cy);
+                addNode(card_data.target, card_data.targetDB, "node", cy);
             }
 
 

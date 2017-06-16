@@ -940,7 +940,6 @@ class ExperimentList(object):
                 if row['identifier'] not in added_experiments:
                     self.experiments.add(Experiment( row['identifier'], url=row['url'], reference=row['reference'] ))
                     added_experiments.add(row['identifier'])
-                self.experiments.add(row['identifier'])
                 if row['identifier'] not in self.datasets:
                     self.datasets[ row['identifier'] ] = set()
                 for item in row['datasets']:
@@ -950,7 +949,6 @@ class ExperimentList(object):
             # Sort datasets alphabetically
             for exp in self.datasets:
                 self.datasets[exp] = sorted(list(self.datasets[exp]))
-
 
     def get_samples(self, experiment):
         """ Returns a set for the given experiment"""

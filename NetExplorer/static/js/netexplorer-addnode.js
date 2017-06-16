@@ -1,7 +1,7 @@
 // ADD NODE WHEN CLICKING ON NODE IN CYTOSCAPE JS
 // Function to check if the toggle "show homologs is On or Off and do whatever needs to be done"
 
-function addNode(symbol, database, cyobj) {
+function addNode(symbol, database, type, cyobj) {
     // This function takes a symbol and a database and adds the node's neighbour nodes
     // to the cytoscape object. It does an ajax request to net_explorer to get the
     // neighbours as a JSON object.
@@ -12,6 +12,7 @@ function addNode(symbol, database, cyobj) {
         data: {
             'genesymbol': symbol,
             'database'  : database,
+            'type'      : type,
             'csrfmiddlewaretoken': '{{ csrf_token }}'
         },
         beforeSend: function() {

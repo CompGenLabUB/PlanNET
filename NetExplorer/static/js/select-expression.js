@@ -23,14 +23,20 @@ $(".sample-option").hide();
 $(".available-for").hide();
 $(".experiment-ref").hide();
 $("#select-expression").on("change", function(){
+    // Hide all the information relative to the experiment
     $(".sample-option").hide();
     $(".sample-warning").hide();
+    $(".available-for").hide();
+    $(".experiment-ref").hide();
+
+    // Clear the sample selection dropdowns
+    $(".empty").prop("selected", true);
+
+    // Show what to display for the new selected experiment
     var to_show = ".sample-option." + $("#select-expression").val();
     $(to_show).show();
-
-    $(".available-for").hide();
     var available = ".available-for." + $("#select-expression").val();
-    $(".available-for").show();
+    //$(".available-for").show();
     $(available).show();
     var exp_ref = ".experiment-ref." + $("#select-expression").val();
     $(exp_ref).show();
@@ -173,8 +179,6 @@ $("#map-expression-btn-submit").on("click", function(){
                     var gradient_html = "<div id='gradient-title'> <h4>" + experiment.id + "<h4>" +
                                             "<h6><i class='subtitle'>" + experiment.reference + "</i></h6>";
                     gradient_html += "<table id='color-gradient-table'>";
-                    console.log(data);
-                    console.log(experiment);
                     var sorted_keys = Object.keys(experiment.gradient).sort(function(a,b) { return b - a; } );
                     var previous = sorted_keys[0];
                     for (var bin in sorted_keys) {

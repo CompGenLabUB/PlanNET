@@ -13,11 +13,10 @@ import tempfile
 import textwrap
 import json
 import re
-import sys
 import logging
 import math
-from pprint import pprint
 import time
+import requests
 
 # -----------------------
 # CONSTANTS
@@ -150,6 +149,27 @@ def substitute_human_symbols(symbols, database):
                     continue
             logging.info("SEARCH INFO: %s does not match %s" %(symbol, symbol_regexp[database]))
     return newsymbols
+
+# ------------------------------------------------------------------------------
+def get_subgraph(nodes_including, databases):
+    """
+    Function that gets a list of nodes and datbases and returns a graph in json format ready to be
+    returned to netexplorer
+    """
+    graph           = GraphCytoscape()
+    for node_id, database in zip(nodes_including, databases):
+        try:
+            node = query_node(node_id, database)
+            nodes, edges = node.get_graphelements()
+            graph.add_elements(nodes)
+            graph.add_elements(edges)
+        except NodeNotFound:
+            # Requested node not in DB, go on
+            continue
+    graph.filter( set(nodes_including) )
+    graphelements = graph.to_json()
+    return graphelements
+
 
 # ------------------------------------------------------------------------------
 def substitue_wildcards(symbols):
@@ -315,24 +335,49 @@ def net_explorer(request):
             logging.info("ERROR: No database in net_explorer")
             return HttpResponse(status=400)
 
-        symbols   = substitute_human_symbols(symbols, database)
-        graphobject = GraphCytoscape()
-        if database is not None:
-            for symbol in symbols:
-                try:
-                    search_node  = query_node(symbol, database)
-                    nodes, edges = search_node.get_graphelements()
-                    graphobject.add_elements(nodes)
-                    graphobject.add_elements(edges)
-                except (NodeNotFound, IncorrectDatabase) as err:
-                    logging.info("ERROR: NodeNotFound or IncorrectDatabase in net_e")
-                    continue
-        if graphobject.is_empty():
-            return HttpResponse(status=404)
+        if request.GET['type'] == "node":
+            # ADDING NODES USING CONTIG_IDS, PROTEIN SYMBOLS, GO CODES OR PFAM IDENTIFIERS
+            symbols   = substitute_human_symbols(symbols, database)
+            graphobject = GraphCytoscape()
+            if database is not None:
+                for symbol in symbols:
+                    try:
+                        search_node  = query_node(symbol, database)
+                        nodes, edges = search_node.get_graphelements()
+                        graphobject.add_elements(nodes)
+                        graphobject.add_elements(edges)
+                    except (NodeNotFound, IncorrectDatabase) as err:
+                        logging.info("ERROR: NodeNotFound or IncorrectDatabase in net_e")
+                        continue
+            if graphobject.is_empty():
+                return HttpResponse(status=404)
+            else:
+                graphobject.define_important(set(symbols))
+                json_data = graphobject.to_json()
+                return HttpResponse(json_data, content_type="application/json")
         else:
-            graphobject.define_important(set(symbols))
-            json_data = graphobject.to_json()
-            return HttpResponse(json_data, content_type="application/json")
+            # ADDING A PATHWAY USING KEGG CODES
+            kegg_url = "http://togows.dbcls.jp/entry/pathway/%s/genes.json" % symbols[0]
+            # Try to connect to the web and extract its contents
+            r = requests.get(kegg_url)
+            if r.status_code == 200: # Success
+                if r.json():
+                    gene_list = [gene.split(";")[0] for gene in r.json()[0].values()]
+                    gene_list = substitute_human_symbols(gene_list, database)
+                    databases = [database] * len(gene_list)
+                    print(databases)
+                    graphelements = get_subgraph(gene_list, databases)
+                    print(graphelements)
+                    print("FINS AQUI")
+                    if graphelements:
+                        print("UEUEUEUE")
+                        return HttpResponse(graphelements, content_type="application/json")
+                    else:
+                        return HttpResponse(status=404)
+                else: # Empty json
+                    return HttpResponse(status=404)
+            else: # Something went wrong
+                return HttpResponse(status=404)
     elif request.method == "POST":
         json_text = None
         if 'json_text' in request.POST:
@@ -354,14 +399,7 @@ def show_connections(request):
     if request.is_ajax():
         nodes_including = request.GET['nodes'].split(",")
         databases       = request.GET['databases'].split(",")
-        graph           = GraphCytoscape()
-        for node_id, database in zip(nodes_including, databases):
-            node = query_node(node_id, database)
-            nodes, edges = node.get_graphelements()
-            graph.add_elements(nodes)
-            graph.add_elements(edges)
-        graph.filter( set(nodes_including) )
-        graphelements = graph.to_json()
+        graphelements   = get_subgraph(nodes_including, databases)
         return HttpResponse(graphelements, content_type="application/json")
     else:
         return render(request, 'NetExplorer/404.html')
