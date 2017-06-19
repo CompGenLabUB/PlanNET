@@ -920,6 +920,11 @@ input[type="file"] {
     display: none;
 }
 
+#dialog-toomany {
+    display: none;
+}
+
+
 
 #show-homologs-container {
     display: inline-block;
