@@ -22,6 +22,7 @@ function addNode(symbol, database, type, cyobj) {
             var layout_name = $('#select-layout li').text().toLowerCase();
             var newelements = cyobj.add(data);
             checkHomologs(document.getElementById( "show-homologs" ), cyobj); // Show homologs if necessary
+
             cyobj.layout({
                 name: 'cola',
                 maxSimulationTime: 3000,
@@ -43,6 +44,8 @@ function addNode(symbol, database, type, cyobj) {
                 }
                 // Not an edge
             });
+            // Show or hide edges depending on plen
+            checkPlen($('input[name=show-plen]:checked').val(), cyobj);
             countNodes(cyobj);
         },
         statusCode: {

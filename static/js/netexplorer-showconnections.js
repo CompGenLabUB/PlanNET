@@ -40,6 +40,8 @@ $("#show_connections").on("click", function(){
                 }
                 // Not an edge
             });
+            // Show or hide interactions depending on plen
+            checkPlen($('input[name=show-plen]:checked').val(), cy);
         },
         error : function(err) {
             $('#loading').hide();

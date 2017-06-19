@@ -33,6 +33,11 @@ $(document).ready(function(){
         checkHomologs(this, cy);
     });
 
+    // Show plen toggle
+    $('#show-plen input').change(function() {
+        checkPlen($('input[name=show-plen]:checked').val(), cy);
+    });
+
     // Add node text form
     $("#add_node").submit(function(e) {
         var formObj = {};
@@ -261,10 +266,15 @@ $(document).ready(function(){
                         if ( element.isNode() ) {
                             var selector = "[probability>=" + slider_value + "]";
                             var edge_collection = element.connectedEdges(selector);
+                            if ($('input[name=show-plen]:checked').val() == "hide") {
+                                // apply another filter (plen == 1)
+                                edge_collection = edge_collection.filter("[pathlength=1]");
+                            }
                             if (! edge_collection.data()) {
                                 cy.remove(element);
                                 countNodes(cy);
                             }
+
                         }
                     });
                 }

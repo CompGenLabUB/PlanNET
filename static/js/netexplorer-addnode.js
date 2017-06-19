@@ -43,6 +43,8 @@ function addNode(symbol, database, type, cyobj) {
                 }
                 // Not an edge
             });
+            // Show or hide edges depending on plen
+            checkPlen($('input[name=show-plen]:checked').val(), cyobj);
             countNodes(cyobj);
         },
         statusCode: {
