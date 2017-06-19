@@ -365,12 +365,8 @@ def net_explorer(request):
                     gene_list = [gene.split(";")[0] for gene in r.json()[0].values()]
                     gene_list = substitute_human_symbols(gene_list, database)
                     databases = [database] * len(gene_list)
-                    print(databases)
                     graphelements = get_subgraph(gene_list, databases)
-                    print(graphelements)
-                    print("FINS AQUI")
                     if graphelements:
-                        print("UEUEUEUE")
                         return HttpResponse(graphelements, content_type="application/json")
                     else:
                         return HttpResponse(status=404)

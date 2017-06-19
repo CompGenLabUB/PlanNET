@@ -755,7 +755,6 @@ class Experiment(object):
         ranges defined aswell as the reference.
         """
         query   = EXPERIMENT_QUERY % (self.id)
-        print(query)
         results = GRAPH.run(query)
         results = results.data()
         if results:
@@ -765,7 +764,6 @@ class Experiment(object):
             self.url         = results[0]["url"]
             self.percentiles = results[0]["percentiles"]
 
-        print("DONE")
 
     def to_json(self):
         """
