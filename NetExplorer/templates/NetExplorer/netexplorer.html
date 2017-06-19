@@ -294,8 +294,40 @@
                                 {% endfor %}
                             </select>
                             <br>
-                            <label class="radio-inline"><input type="radio" class="netexplorer-form-type" name="type" value="node" checked>Nodes</label>
-                            <label class="radio-inline"><input type="radio" class="netexplorer-form-type" name="type" value="pathway">Pathway</label>
+                            <!--
+                            <div class="funkyradio">
+                                <div class="funkyradio-success">
+                                    <label>
+                                        <input type="radio" class="netexplorer-form-type" name="type" value="node" checked>Nodes
+                                    </label>
+                                </div>
+                                <div class="funkyradio-success">
+                                    <label>
+                                        <input type="radio" class="netexplorer-form-type" name="type" value="pathway">Pathway
+                                    </label>
+                                </div>
+                            </div>
+                            -->
+                            <div class="funkyradio">
+                                <a class="info-tooltip" title="
+                                    Search protein/contigs using protein symbols, contig IDs, GO codes or PFAM accessions.
+                                ">
+                                    <div class="funkyradio-success">
+                                        <input  id="nodes-type" type="radio" class="netexplorer-form-type" name="type" value="node" checked/>
+                                        <label for="nodes-type">Nodes</label>
+                                    </div>
+                                </a>
+                                <a class="info-tooltip" title="
+                                    Search KEGG pathways using KEGG pathway identifiers, eg.: hsa04930.
+                                ">
+                                    <div class="funkyradio-success">
+
+                                        <input id="pathway-type" type="radio" class="netexplorer-form-type" name="type" value="pathway"/>
+                                        <label for="pathway-type">Pahtway</label>
+                                    </div>
+                                </a>
+
+                            </div>
                             <br>
                             <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
                         </div>
@@ -304,7 +336,6 @@
             </div>
             <div id="node-not-found"><div class="panel panel-danger"><div class="panel-heading node-not-found-err"> </div></div></div>
             <hr>
-
         <div id="layout-homologs-container">
             <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
