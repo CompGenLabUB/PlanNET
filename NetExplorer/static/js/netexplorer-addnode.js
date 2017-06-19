@@ -60,6 +60,11 @@ function addNode(symbol, database, type, cyobj) {
                     height: "auto",
                     width: 400,
                     modal: true,
+                    close: function( event, ui ) {
+                        $( this ).dialog( "close" );
+                        $('#loading').hide();
+                        return;
+                    },
                     buttons: {
                         Cancel: function() {
                             $( this ).dialog( "close" );
