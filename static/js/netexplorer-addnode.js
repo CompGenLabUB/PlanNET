@@ -19,8 +19,8 @@ function loadJsonGraph(data, cyobj) {
     var value = $('#sl1').val();
     var to_show_selector = "edge[probability>=" + value + "]";
     var to_hide_selector = "edge[probability<" + value + "]";
-    cy.elements(to_show_selector).show();
-    cy.elements(to_hide_selector).hide();
+    cyobj.elements(to_show_selector).show();
+    cyobj.elements(to_hide_selector).hide();
     checkPlen($('input[name=show-plen]:checked').val(), cyobj);
     countNodes(cyobj);
 }
