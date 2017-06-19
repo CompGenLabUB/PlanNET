@@ -17,17 +17,10 @@ function loadJsonGraph(data, cyobj) {
 
     // Show only edges above slider threshold
     var value = $('#sl1').val();
-    cyobj.filter(function(i, element){
-        if ( element.isEdge() ) {
-            if( element.data("probability") >= value ){
-                element.show();
-                return true;
-            }
-            element.hide();
-        }
-        // Not an edge
-    });
-    // Show or hide edges depending on plen
+    var to_show_selector = "edge[probability>=" + value + "]";
+    var to_hide_selector = "edge[probability<" + value + "]";
+    cy.elements(to_show_selector).show();
+    cy.elements(to_hide_selector).hide();
     checkPlen($('input[name=show-plen]:checked').val(), cyobj);
     countNodes(cyobj);
 }

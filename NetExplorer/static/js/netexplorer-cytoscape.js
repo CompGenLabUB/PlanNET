@@ -131,20 +131,12 @@ $(document).ready(function(){
 
     // FILTER edges with probability below threshold
     $('#sl1').slider().on('slideStop', function(ev){
-        //var value = $('#sl1').slider('getValue');
+        // Show only edges above slider threshold
         var value = $('#sl1').val();
-        cy.filter(function(i, element){
-            if ( element.isEdge() ) {
-                if( element.data("probability") >= value ){
-                    element.show();
-                    return true;
-                }
-                element.hide();
-            }
-            // Not an edge
-        });
-
-
+        var to_show_selector = "edge[probability>=" + value + "]";
+        var to_hide_selector = "edge[probability<" + value + "]";
+        cy.elements(to_show_selector).show();
+        cy.elements(to_hide_selector).hide();
     });
 
 
