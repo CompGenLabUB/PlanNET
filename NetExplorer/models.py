@@ -241,6 +241,7 @@ class Node(object):
         """
 
 
+
     def path_to_node(self, target, plen):
         """
         Given a target node object, this method finds all the shortest paths to that node,
@@ -370,7 +371,7 @@ class Domain(object):
         nodes = list()
         if results:
             for row in results:
-                nodes.append(row['symbol'])
+                nodes.append( PredictedNode(row['symbol'], database, query=False) )
             return nodes
         else:
             raise NodeNotFound(self.accession, "Pfam-%s" % database)
@@ -469,13 +470,13 @@ class HumanNode(Node):
 
     allowed_databases = set(["Human"])
 
-    def __init__(self, symbol, database):
+    def __init__(self, symbol, database, query=True):
         super(HumanNode, self).__init__(symbol, database)
-        self.__query_node()
+        if query is True:
+            self.__query_node()
 
     def __query_node(self):
         query = HUMANNODE_QUERY % (self.database, self.symbol)
-
         results = GRAPH.run(query)
         results = results.data()
         if results:
@@ -487,6 +488,13 @@ class HumanNode(Node):
     def get_neighbours(self):
         pass
 
+    def to_jsondict(self):
+        element                     = dict()
+        element['data']             = dict()
+        element['data']['id']       = self.symbol
+        element['data']['name']     = self.symbol
+        element['data']['database'] = self.database
+        return element
 
     def get_homologs(self, database="ALL"):
         """
@@ -518,7 +526,7 @@ class HumanNode(Node):
                     continue
                 homolog_rel    = Homology(
                     prednode   = homolog_node,
-                    human      = self.symbol,
+                    human      = self,
                     blast_cov  = row['blast_cov'],
                     blast_eval = row['blast_eval'],
                     nog_brh    = row['nog_brh'],
@@ -544,16 +552,15 @@ class WildCard(object):
         self.search   = search.replace("*", ".*")
         self.database = database
 
-    def get_symbols(self):
+    def get_nodes(self):
         query   = WILDCARD_QUERY % (self.database, self.search)
         results = GRAPH.run(query)
         results = results.data()
         if results:
-            list_of_symbols = list()
-
+            list_of_nodes = list()
             for row in results:
-                list_of_symbols.append(row['symbol'])
-            return list_of_symbols
+                list_of_nodes.append(HumanNode(row['symbol'], "Human", query=False))
+            return list_of_nodes
         else:
             return list()
 
@@ -965,8 +972,83 @@ class GraphCytoscape(object):
                 )
                 self.add_interaction(newinteraction)
 
+    def new_nodes(self, symbols, database):
+        """
+        Takes a list of symbols and return the necessary GraphCytoscape with Human or PredictedNode objects
+        """
+        symbol_regexp = {
+            "Cthulhu":      r"cth1_",     "Consolidated": r"OX_Smed",
+            "Dresden":      r"dd_Smed",   "Graveley":     r"CUFF\.\d+\.\d+",
+            "Newmark":      r"Contig\d+", "Illuminaplus": r"Gene_\d+_.+",
+            "Adamidi":      r"contig\d+|isotig\d+", "Blythe":       r"AAA\.454ESTABI\.\d+",
+            "Pearson":      r"BPKG\d+", "Smed454":      r"90e_\d+|gnl\|UG\|Sme#S\d+/"
+        }
+        go_regexp   = r"GO:\d{7}"
+        pfam_regexp = r'PF\d{5}'
+        newnodes = list()
+        for symbol in symbols:
+            symbol = symbol.replace(" ", "")
+            symbol = symbol.replace("'", "")
+            symbol = symbol.replace('"', '')
+
+            if database != "Human" and re.match(symbol_regexp[database], symbol):
+                # Matches the regexp for the given database
+                # Here we query the node!
+                try:
+                    self.add_node( PredictedNode(symbol, database) )
+                except NodeNotFound:
+                    continue
+            else:
+                if (re.match(go_regexp, symbol)):
+                    # GO
+                    try:
+                        newnodes.extend(GeneOntology(symbol, human=True).human_nodes)
+                    except NodeNotFound:
+                        continue
+                elif (re.match(pfam_regexp, symbol)):
+                    # PFAM
+                    domain = Domain(accession=symbol)
+                    try:
+                        self.add_elements(domain.get_nodes(database))
+                    except NodeNotFound:
+                        continue
+                else:
+                    # MUST BE HUMAN
+                    if "*" in symbol:
+                        newnodes.extend(WildCard(symbol, "Human").get_nodes())
+                    else:
+                        try:
+                            # HERE WE HAVE TO QUERY THE NODE TO SEE IF IT EXISTS IN THE DB!!
+                            newnodes.append(HumanNode(symbol.upper(), "Human"))
+                        except NodeNotFound:
+                            continue
+
+            if database == "Human":
+                self.add_elements(newnodes)
+            else:
+                # Now we have a list of HumanNode objects that we have to 'translate' to PredictedNode
+                for final_node in newnodes:
+                    try:
+                        homologs = final_node.get_homologs(database)
+                        for db in homologs:
+                            for hom in homologs[db]:
+                                hom.prednode.homolog = hom
+                                self.add_node(hom.prednode)
+                    except (NodeNotFound, IncorrectDatabase):
+                        # Node is not a human node :_(
+                        logging.info("ERROR: NodeNotFound or IncorrectDatabase in substitute_human_symbols")
+                        continue
+
+
     def __str__(self):
         return self.to_json()
+
+    def __bool__(self):
+        if self.nodes:
+            return True
+        else:
+            return False
+    __nonzero__=__bool__
 
 # ------------------------------------------------------------------------------
 class ExperimentList(object):
@@ -1072,7 +1154,7 @@ class GeneOntology(object):
         if results:
             self.domain = results[0]['domain']
             for row in results:
-                self.human_nodes.append(row['symbol'])
+                self.human_nodes.append(HumanNode(row['symbol'], "Human", query=False))
         else:
             raise NodeNotFound(self.accession, "Go")
 

@@ -86,99 +86,6 @@ def get_shortest_paths(startnodes, endnodes, plen):
                     numpath += 1
     return graphelements, numpath
 
-# ------------------------------------------------------------------------------
-def substitute_human_symbols(symbols, database):
-    """
-    This function will get a list of symbols and it will substitute all human symbols by
-    the "homologs" of the specified database. It will return the "new" list of symbols
-    """
-    symbol_regexp = {
-        "Cthulhu":      r"cth1_",
-        "Consolidated": r"OX_Smed",
-        "Dresden":      r"dd_Smed",
-        "Graveley":     r"CUFF\.\d+\.\d+",
-        "Newmark":      r"Contig\d+",
-        "Illuminaplus": r"Gene_\d+_.+",
-        "Adamidi":      r"contig\d+|isotig\d+",
-        "Blythe":       r"AAA\.454ESTABI\.\d+",
-        "Pearson":      r"BPKG\d+",
-        "Smed454":      r"90e_\d+|gnl\|UG\|Sme#S\d+/"
-    }
-    go_regexp   = r"GO:\d{7}"
-    pfam_regexp = r'PF\d{5}'
-    newsymbols = list()
-
-    for symbol in symbols:
-        symbol = symbol.replace(" ", "")
-        symbol = symbol.replace("'", "")
-        symbol = symbol.replace('"', '')
-        if re.match(symbol_regexp[database], symbol):
-            newsymbols.append(symbol)
-        else:
-            wildcard_symbols = list()
-            if (re.match(go_regexp, symbol)):
-                # GO
-                try:
-                    wildcard_symbols.extend(GeneOntology(symbol, human=True).human_nodes)
-                except (NodeNotFound):
-                    continue
-            elif (re.match(pfam_regexp, symbol)):
-                # PFAM
-                domain = Domain(accession=symbol)
-                try:
-                    newsymbols.extend(domain.get_nodes(database))
-                except (NodeNotFound):
-                    continue
-            else:
-                # MUST BE HUMAN
-                try:
-                    wildcard_symbols.extend( substitue_wildcards([symbol]) )
-                except Exception as err:
-                    continue
-            for final_symbol in wildcard_symbols:
-                try:
-                    symbol = final_symbol.upper()
-                    human_node = HumanNode(symbol, "Human")
-                    homologs   = human_node.get_homologs(database)
-                    for db in homologs:
-                        for hom in homologs[db]:
-                            newsymbols.append(hom.prednode.symbol)
-                except (NodeNotFound, IncorrectDatabase):
-                    # Node is not a human node :_(
-                    logging.info("ERROR: NodeNotFound or IncorrectDatabase in substitute_human_symbols")
-                    continue
-            logging.info("SEARCH INFO: %s does not match %s" %(symbol, symbol_regexp[database]))
-    return newsymbols
-
-# ------------------------------------------------------------------------------
-def get_subgraph(nodes_including, databases, query=False):
-    """
-    Function that gets a list of nodes and datbases and returns a graph in json format ready to be
-    returned to netexplorer.
-    If query is set to True, it will try to query the node to the database, and thus, retrieve the Human homolog
-    """
-    graph           = GraphCytoscape()
-    for node_id, database in zip(nodes_including, databases):
-        node = PredictedNode(node_id, database, query=query)
-        graph.add_node(node)
-    graph.get_connections()
-    #graph.filter( set(nodes_including) )
-    graphelements = graph.to_json()
-    return graphelements
-
-
-# ------------------------------------------------------------------------------
-def substitue_wildcards(symbols):
-    """
-    Gets a list of human symbols and returns another list of human symbols that match the specified REGEX.
-    """
-    wildcard_symbols = list()
-    for symbol in symbols:
-        if "*" in symbol:
-            wildcard_symbols.extend( WildCard(symbol, "Human").get_symbols() )
-        else:
-            wildcard_symbols.append(symbol)
-    return wildcard_symbols
 
 # -----------------------
 # VIEWS
@@ -290,23 +197,13 @@ def gene_search(request):
                 search_error = 2
                 return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': sorted(DATABASES) } )
 
-            if database == "Human":
-                symbols = substitue_wildcards(symbols)
-            else:
-                symbols = substitute_human_symbols(symbols, database)
-            if not symbols:
+            nodes_graph = GraphCytoscape()
+            nodes_graph.new_nodes(symbols, database)
+            if not nodes_graph:
                 search_error = 1
                 return render(request,'NetExplorer/gene_search.html', {'search_error': search_error, 'databases': sorted(DATABASES) } )
-            for genesymbol in symbols:
-                try:
-                    search_node = query_node(genesymbol, database)
-                    nodes.append(search_node)
-                except (NodeNotFound, IncorrectDatabase):
-                    logging.info("ERROR: NodeNotFound or IncorrectDatabase in gene_search")
-                    # No search results...
-                    search_error = 1
 
-            return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': sorted(DATABASES) } )
+            return render(request, 'NetExplorer/gene_search.html', {'res': nodes_graph.nodes, 'search_error': search_error, 'databases': sorted(DATABASES) } )
 
         # Render when user enters the page
         return render(request, 'NetExplorer/gene_search.html', {'databases': sorted(DATABASES) })
@@ -334,14 +231,15 @@ def net_explorer(request):
 
         if request.GET['type'] == "node":
             # ADDING NODES USING CONTIG_IDS, PROTEIN SYMBOLS, GO CODES OR PFAM IDENTIFIERS
-            symbols   = substitute_human_symbols(symbols, database)
             graphobject = GraphCytoscape()
+            graphobject.new_nodes(symbols, database)
+            # Clone the list of nodes to search for interactions
+            nodes_to_search = list(graphobject.nodes)
             if database is not None:
-                for symbol in symbols:
+                for node in nodes_to_search:
                     try:
-                        search_node  = query_node(symbol, database)
-                        search_node.get_neighbours()
-                        nodes, edges = search_node.get_graphelements()
+                        node.get_neighbours()
+                        nodes, edges = node.get_graphelements()
                         graphobject.add_elements(nodes)
                         graphobject.add_elements(edges)
                     except (NodeNotFound, IncorrectDatabase) as err:
@@ -361,9 +259,9 @@ def net_explorer(request):
             if r.status_code == 200: # Success
                 if r.json():
                     gene_list = [gene.split(";")[0] for gene in r.json()[0].values()]
-                    gene_list = substitute_human_symbols(gene_list, database)
-                    databases = [database] * len(gene_list)
-                    graphelements = get_subgraph(gene_list, databases, query=True)
+                    graphelements = GraphCytoscape()
+                    graphelements.new_nodes(gene_list, database)
+                    graphelements.get_connections()
                     if graphelements:
                         return HttpResponse(graphelements, content_type="application/json")
                     else:
@@ -393,7 +291,10 @@ def show_connections(request):
     if request.is_ajax():
         nodes_including = request.GET['nodes'].split(",")
         databases       = request.GET['databases'].split(",")
-        graphelements   = get_subgraph(nodes_including, databases)
+        graphelements   = GraphCytoscape()
+        for symbol, database in zip(nodes_including, databases):
+            graphelements.add_node( PredictedNode(symbol, database, query=False) )
+        graphelements.get_connections()
         return HttpResponse(graphelements, content_type="application/json")
     else:
         return render(request, 'NetExplorer/404.html')
@@ -579,30 +480,14 @@ def path_finder(request):
         # Valid search
         database   = request.GET['database']
         plen       = request.GET['plen']
-        startnodes = list()
-        endnodes   = list()
-        start_nodes_symbols = substitute_human_symbols([request.GET['start']], database)
-        end_nodes_symbols   = substitute_human_symbols([request.GET['end']],   database)
-
-        # Query all the nodes and get node objects
-        for symbol in start_nodes_symbols:
-            try:
-                node = query_node(symbol, database)
-                startnodes.append(node)
-            except (NodeNotFound, IncorrectDatabase):
-                continue
-
-        for symbol in end_nodes_symbols:
-            try:
-                node = query_node(symbol, database)
-                endnodes.append(node)
-            except (NodeNotFound, IncorrectDatabase):
-                continue
-
+        start_nodes = GraphCytoscape()
+        start_nodes.new_nodes([request.GET['start']], database)
+        end_nodes = GraphCytoscape()
+        end_nodes.new_nodes([request.GET['end']], database)
         # Get shortest paths
         graphelements, numpath = get_shortest_paths(
-            startnodes,
-            endnodes,
+            start_nodes.nodes,
+            end_nodes.nodes,
             plen
         )
         response = dict()
