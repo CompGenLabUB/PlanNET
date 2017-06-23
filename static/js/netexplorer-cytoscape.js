@@ -3,6 +3,9 @@
 
 
 $(document).ready(function(){
+
+
+// UPLOADING A JSON
     if (upload_json) {
         cy.add(upload_json);
         countNodes(cy);
@@ -17,7 +20,8 @@ $(document).ready(function(){
         }
     }
 
-    // CHANGE LAYOUT CONTROLS
+// --------------------------
+// CHANGE LAYOUT CONTROLS
     $('#select-layout li').on('click', function(){
         var newlayout = $(this).text().toLowerCase();
         cy.layout( { name: newlayout } );
@@ -28,17 +32,22 @@ $(document).ready(function(){
       $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
     });
 
-    // Show homologs toggle
+// --------------------------
+// SHOW HOMOLOGS TOGGLE
     $('#show-homologs').change(function () {
         checkHomologs(this, cy);
     });
 
-    // Show plen toggle
+
+// --------------------------
+// SHOW PLEN TOGGLE
     $('#show-plen input').change(function() {
         checkPlen($('input[name=show-plen]:checked').val(), cy);
     });
 
-    // Add node text form
+
+// --------------------------
+// ADD NODE FORM
     $("#add_node").submit(function(e) {
         var formObj = {};
         var dataArray = $("#add_node").serializeArray(),
@@ -51,7 +60,8 @@ $(document).ready(function(){
         e.preventDefault(); // avoid to execute the actual submit of the form.
     });
 
-    // Info card/expand on click
+// --------------------------
+// EXPAND ON CLICK
     cy.on( 'click', 'node', function() {
          // Change color of clicked node
         node = this;
@@ -68,31 +78,9 @@ $(document).ready(function(){
             getCard(card_data);
         } else if (behaviour == "expand" && node.data("database") != "Human") {
             $("#expand-node-degree").html(node.data("degree"));
-            if (node.data("degree") >= 100) {
-                $( "#dialog-expand-node" ).dialog({
-                    resizable: false,
-                    height: "auto",
-                    width: 400,
-                    modal: true,
-                    buttons: {
-                        Cancel: function() {
-                            $( this ).dialog( "close" );
-                        },
-                        "Expand node": function() {
-                            node.data("colorNODE", '#449D44');
-                            addNode(card_data.target, card_data.targetDB, "node", cy);
-                            $( this ).dialog( "close" );
-                        }
-                    }
-                });
-            } else {
                 node.data("colorNODE", '#449D44');
                 addNode(card_data.target, card_data.targetDB, "node", cy);
-            }
-
-
         } else if (behaviour == "delete") {
-
             $( "#dialog-delete-node" ).dialog({
                 resizable: false,
                 height: "auto",
@@ -109,14 +97,12 @@ $(document).ready(function(){
                     }
                 }
             });
-
-
         }
-
     });
 
 
-    // MOUSEOVER ON NODES
+// --------------------------
+// MOUSEOVER ON NODES
     cy.on('mouseover', 'node', function (evt) {
         $('html,body').css('cursor', 'pointer');
         this.css("opacity", "0.85");
@@ -128,8 +114,9 @@ $(document).ready(function(){
     });
 
 
-
-    // FILTER edges with probability below threshold
+// --------------------------
+// FILTER EDGES BY CONFIDENCE
+    $('#sl1').slider().slider('setValue', 0.6);
     $('#sl1').slider().on('slideStop', function(ev){
         // Show only edges above slider threshold
         var value = $('#sl1').val();
@@ -141,7 +128,8 @@ $(document).ready(function(){
 
 
 
-    // CYTOSCAPE CONTROLS
+// --------------------------
+// CYTOSCAPE CONTROLS
 
     $(".btn").mouseup(function(){
         $(this).blur();
@@ -153,14 +141,11 @@ $(document).ready(function(){
         cy.fit();
     });
 
-
     // Save png
-
     $("#save-image").on("click", function() {
         var graph_png = cy.png();
         $('#save-image-link').attr('href', graph_png);
     });
-
 
     // Export TBL
     $("#export-tbl").on("click", function(){
@@ -185,7 +170,6 @@ $(document).ready(function(){
         saveAs(blob, "graph-export.tbl");
     });
 
-
     // Save Graph
     $("#save-graph").on("click", function(){
         var jsonGraph = JSON.stringify(cy.json().elements);
@@ -193,7 +177,7 @@ $(document).ready(function(){
         saveAs(blob, "graph-export.json");
     });
 
-
+    // Cookies
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -229,14 +213,10 @@ $(document).ready(function(){
                 }
             }
         });
-
     });
 
-
-    // Initialize slider when loading page.
-    $('#sl1').slider().slider('setValue', 0.6);
-
-    // Behaviour when on click
+// --------------------------
+// REMOVE UNCONNECTED
     $("#remove-unconnected").on("click", function() {
         // Remove unconnected nodes
         $( "#dialog-unconnected" ).dialog({
@@ -276,8 +256,9 @@ $(document).ready(function(){
     });
 
 
+// --------------------------
+// ERROR MESSAGES
     $('#node-not-found').hide();
-
 
     $( "#dialog-jsonerr" ).dialog({
         resizable: false,
@@ -294,6 +275,7 @@ $(document).ready(function(){
 
 });
 
+// --------------------------
 // Function that returns the nodes and the databases of the elements in the graph
 // used in select-expression.js and netexplorer-showconnections.js
 function get_graphelements(cy) {
