@@ -151,22 +151,18 @@ def substitute_human_symbols(symbols, database):
     return newsymbols
 
 # ------------------------------------------------------------------------------
-def get_subgraph(nodes_including, databases):
+def get_subgraph(nodes_including, databases, query=False):
     """
     Function that gets a list of nodes and datbases and returns a graph in json format ready to be
-    returned to netexplorer
+    returned to netexplorer.
+    If query is set to True, it will try to query the node to the database, and thus, retrieve the Human homolog
     """
     graph           = GraphCytoscape()
     for node_id, database in zip(nodes_including, databases):
-        try:
-            node = query_node(node_id, database)
-            nodes, edges = node.get_graphelements()
-            graph.add_elements(nodes)
-            graph.add_elements(edges)
-        except NodeNotFound:
-            # Requested node not in DB, go on
-            continue
-    graph.filter( set(nodes_including) )
+        node = PredictedNode(node_id, database, query=query)
+        graph.add_node(node)
+    graph.get_connections()
+    #graph.filter( set(nodes_including) )
     graphelements = graph.to_json()
     return graphelements
 
@@ -244,6 +240,7 @@ def get_card(request, symbol=None, database=None):
     try:
         card_node    = query_node(symbol, database)
         if database != "Human":
+            card_node.get_neighbours()
             card_node.get_domains()
             card_node.get_geneontology()
             nodes, edges = card_node.get_graphelements()
@@ -343,6 +340,7 @@ def net_explorer(request):
                 for symbol in symbols:
                     try:
                         search_node  = query_node(symbol, database)
+                        search_node.get_neighbours()
                         nodes, edges = search_node.get_graphelements()
                         graphobject.add_elements(nodes)
                         graphobject.add_elements(edges)
@@ -365,7 +363,7 @@ def net_explorer(request):
                     gene_list = [gene.split(";")[0] for gene in r.json()[0].values()]
                     gene_list = substitute_human_symbols(gene_list, database)
                     databases = [database] * len(gene_list)
-                    graphelements = get_subgraph(gene_list, databases)
+                    graphelements = get_subgraph(gene_list, databases, query=True)
                     if graphelements:
                         return HttpResponse(graphelements, content_type="application/json")
                     else:

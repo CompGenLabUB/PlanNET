@@ -48,6 +48,21 @@ PREDNODE_QUERY = """
 """
 
 # ------------------------------------------------------------------------------
+GET_CONNECTIONS_QUERY = """
+    MATCH (n)-[r:INTERACT_WITH]-(m)
+    WHERE n.symbol IN %s
+    AND   m.symbol IN %s
+    RETURN n.symbol      AS nsymbol,
+           labels(n)     AS database,
+           r.path_length AS path_length,
+           r.int_prob    AS int_prob,
+           r.dom_int_sc  AS dom_int_sc,
+           r.cellcom_nto AS cellcom_nto,
+           r.bioproc_nto AS bioproc_nto,
+           r.molfun_nto  AS molfun_nto,
+           m.symbol      AS msymbol
+"""
+# ------------------------------------------------------------------------------
 GO_QUERY = """
     MATCH (n:Go)
     WHERE n.accession = "%s"
@@ -564,7 +579,6 @@ class PredictedNode(Node):
 
         if sequence is None and query is True:
             self.__query_node()
-            self.get_neighbours()
 
     def get_summary(self):
         '''
@@ -923,6 +937,33 @@ class GraphCytoscape(object):
                     expression[row['symbol']] = dict()
                 expression[row['symbol']][sample] = row['exp']
         return expression
+
+    def get_connections(self):
+        """
+        Function that looks for the edges between the nodes in the graph
+        """
+        node_q_string = str(list([str(node.symbol) for node in self.nodes]))
+        query = GET_CONNECTIONS_QUERY % (node_q_string, node_q_string)
+        results = GRAPH.run(query)
+        results = results.data()
+        if results:
+            for row in results:
+                parameters = dict()
+                parameters = {
+                    'int_prob'    : round(float(row['int_prob']), 3),
+                    'path_length' : round(float(row['path_length']), 3),
+                    'cellcom_nto' : round(float(row['cellcom_nto']), 3),
+                    'molfun_nto'  : round(float(row['molfun_nto']), 3),
+                    'bioproc_nto' : round(float(row['bioproc_nto']), 3),
+                    'dom_int_sc'  : round(float(row['dom_int_sc']), 3)
+                }
+                newinteraction = PredInteraction(
+                    database      = row['database'][0],
+                    source_symbol = row['nsymbol'],
+                    target        = PredictedNode(row['msymbol'], row['database'][0], query=False),
+                    parameters    = parameters
+                )
+                self.add_interaction(newinteraction)
 
     def __str__(self):
         return self.to_json()
