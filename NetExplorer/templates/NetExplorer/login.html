@@ -1,0 +1,43 @@
+{% extends 'NetExplorer/base.html' %}
+{% load static %}
+
+{% block title %}- Login{% endblock title %}
+
+
+
+{% block content %}
+    <h2>Login</h2>
+    <hr>
+    <div class="form-div">
+        <form id="login" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="usr">e-mail:</label>
+                <input type="text" class="form-control" name="usr" id="usr">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input type="password" class="form-control" name="pwd" id="pwd">
+            </div>
+            <button type="submit" value=" Send" class="btn btn-info" id="submit">Log In</button>
+        </form>
+    </div>
+    <p>
+        Don't have an account? <a href="mailto:s.cast.lara@gmail.com?Subject=PlanNET account request" target="_top">Request one here!</a>
+    </p>
+    <p>
+        By creating an account you will have the ability to send us your expression data and only <strong>you</strong> will be able to access it.
+    </p>
+
+{% endblock content %}
+
+
+
+{% block scripts %}
+    <!-- CHANGE ACTIVE NAVBAR BUTTON -->
+    <script>
+        $(".navbar-element").toggleClass('active inactive');
+        $("#navbar-login").toggleClass('inactive active')
+    </script>
+    <script src="{% static 'js/about-interactome-plots.js' %}"></script>
+{% endblock scripts%}
