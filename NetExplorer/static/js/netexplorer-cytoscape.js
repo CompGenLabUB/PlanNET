@@ -20,6 +20,9 @@ $(document).ready(function(){
         }
     }
 
+// set initial value of slider
+$('#sl1').slider('setValue', 0.6);
+
 // --------------------------
 // CHANGE LAYOUT CONTROLS
     $('#select-layout li').on('click', function(){
@@ -42,7 +45,11 @@ $(document).ready(function(){
 // --------------------------
 // SHOW PLEN TOGGLE
     $('#show-plen input').change(function() {
-        checkPlen($('input[name=show-plen]:checked').val(), cy, $('#sl1').val());
+        var confvalue = $('#sl1').val();
+        if (! confvalue) {
+            confvalue = 0.6
+        }
+        checkPlen($('input[name=show-plen]:checked').val(), cy, confvalue);
     });
 
 
@@ -131,7 +138,7 @@ $(document).ready(function(){
         cyobj.elements(to_show_selector).show();
         cyobj.elements(to_hide_selector).hide();
     }
-    $('#sl1').slider().slider('setValue', 0.6);
+
     $('#sl1').slider().on('slideStop', function(ev){
         // Show only edges above slider threshold
         var value = $('#sl1').val();
