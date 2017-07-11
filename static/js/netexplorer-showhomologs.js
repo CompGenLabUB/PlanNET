@@ -60,10 +60,10 @@ function checkHomologs(toggle, cyobj) {
 }
 
 
-
-function checkPlen(value, cyobj) {
+function checkPlen(value, cyobj, confvalue) {
     if (value == "show") {
-        cyobj.elements("edge[pathlength=2]").show();
+        var show_selector = "edge[pathlength=2]" + "[probability>=" + confvalue + "]";
+        cyobj.elements(show_selector).show();
     } else {
         cyobj.elements("edge[pathlength=2]").hide();
     }

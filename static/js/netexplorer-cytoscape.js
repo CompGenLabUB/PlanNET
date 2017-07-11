@@ -42,7 +42,7 @@ $(document).ready(function(){
 // --------------------------
 // SHOW PLEN TOGGLE
     $('#show-plen input').change(function() {
-        checkPlen($('input[name=show-plen]:checked').val(), cy);
+        checkPlen($('input[name=show-plen]:checked').val(), cy, $('#sl1').val());
     });
 
 
@@ -116,14 +116,26 @@ $(document).ready(function(){
 
 // --------------------------
 // FILTER EDGES BY CONFIDENCE
+    function filterByConfidence(confvalue, cyobj, plenval) {
+        var to_show_selector = "";
+        var to_hide_selector = "";
+        if (plenval == "hide") {
+            to_show_selector = "edge[pathlength=1][probability>=" + confvalue + "]";
+            to_hide_selector = "edge[probability<" + confvalue + "]";
+        } else {
+            to_show_selector = "edge[probability>=" + confvalue + "]";
+            to_hide_selector = "edge[probability<" + confvalue + "]";
+        }
+        // Take into account if check Plen is toggled
+        // Filter
+        cyobj.elements(to_show_selector).show();
+        cyobj.elements(to_hide_selector).hide();
+    }
     $('#sl1').slider().slider('setValue', 0.6);
     $('#sl1').slider().on('slideStop', function(ev){
         // Show only edges above slider threshold
         var value = $('#sl1').val();
-        var to_show_selector = "edge[probability>=" + value + "]";
-        var to_hide_selector = "edge[probability<" + value + "]";
-        cy.elements(to_show_selector).show();
-        cy.elements(to_hide_selector).hide();
+        filterByConfidence(value, cy, $('input[name=show-plen]:checked').val());
     });
 
 
