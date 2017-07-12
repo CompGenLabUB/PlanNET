@@ -52,6 +52,13 @@
                             <li id="navbar-downloads"><a href="{% url downloads %}">Downloads</a></li>
                             <li id="navbar-about"><a href="{% url about %}">About</a></li>
                         </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if user.is_authenticated %}
+                                <li id="navbar-login"><a href="{% url account %}"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
+                                <li id="navbar-logout"><a href="{% url logout %}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                            {% else %}
+                                <li id="navbar-login"><a href="{% url login %}"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+                            {% endif %}
                     </div>
                 </nav>
 

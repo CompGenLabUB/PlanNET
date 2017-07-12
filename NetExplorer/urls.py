@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^datasets', views.datasets, name="datasets"),
     url(r'^login', views.register, name="login"),
     url(r'^logout', views.logout_view, name="logout"),
+    url(r'^account', views.account_view, name="account"),
 ]

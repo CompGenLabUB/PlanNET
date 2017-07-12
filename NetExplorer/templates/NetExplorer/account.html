@@ -1,14 +1,16 @@
 {% extends 'NetExplorer/base.html' %}
 {% load static %}
 
-{% block title %}- Login{% endblock title %}
+{% block title %}- Account{% endblock title %}
 
 
 
 {% block content %}
-    <h2>Login</h2>
+    <h2>Hello, {{ user.username }} </h2>
     <hr>
 
+    <h3>Change password</h3>
+    <br>
     {% if error_msg %}
         <div class="error-login">
             <div class="panel panel-danger">
@@ -22,26 +24,38 @@
         </div>
     {% endif %}
 
+    {% if success_msg %}
+        <div class="error-login">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    Error
+                </div>
+                <div class="panel-body">
+                    {{ success_msg }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="form-div">
-        <form id="login" method="post">
+        <form id="change-password-form" method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <label for="usr">e-mail:</label>
-                <input type="text" class="form-control" name="usr" id="usr">
+                <label for="previous">Previous password</label>
+                <input type="password" class="form-control" name="previous" id="previous">
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="pwd1">New Password:</label>
+                <input type="password" class="form-control" name="pwd1" id="pwd1">
             </div>
             <div class="form-group">
-                <label for="pwd">Password:</label>
-                <input type="password" class="form-control" name="pwd" id="pwd">
+                <label for="pwd2">Repeat Password:</label>
+                <input type="password" class="form-control" name="pwd2" id="pwd2">
             </div>
             <button type="submit" value=" Send" class="btn btn-info" id="submit">Log In</button>
         </form>
     </div>
-    <p>
-        Don't have an account? <a href="mailto:s.cast.lara@gmail.com?Subject=PlanNET account request" target="_top">Request one here!</a>
-    </p>
-    <p>
-        By creating an account you will have the ability to send us your expression data and only <strong>you</strong> will be able to access it.
-    </p>
 
 {% endblock content %}
 

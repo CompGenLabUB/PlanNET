@@ -561,27 +561,55 @@ def about(request):
 # ------------------------------------------------------------------------------
 def register(request):
     """
-    Registration view
+    Login view
     """
     if 'usr' in request.POST and 'pwd' in request.POST:
         user = authenticate(username=request.POST['usr'], password=request.POST['pwd'])
         if user is not None:
-            if user is not None:
-                # A backend authenticated the credentials
-                login(request, user)
-                return render(request, 'NetExplorer/index.html')
-            else:
-                # No backend authenticated the credentials
-                pass
+            # A backend authenticated the credentials
+            login(request, user)
+            return render(request, 'NetExplorer/index.html')
+        else:
+            # No backend authenticated the credentials
+            return render(request, 'NetExplorer/login.html', {'error_msg': "Incorrect username or password"})
     return render(request, 'NetExplorer/login.html')
 
-
+# ------------------------------------------------------------------------------
 def logout_view(request):
     """
     Logout view
     """
     logout(request)
     return render(request, 'NetExplorer/index.html')
+
+
+# ------------------------------------------------------------------------------
+def account_view(request):
+    """
+    View for account options
+    """
+    if request.user.is_authenticated():
+        if request.method == "POST":
+            # Check that everything was sent
+            if "previous" in request.POST and "pwd1" in request.POST and "pwd2" in request.POST:
+                if request.POST['pwd1'] != request.POST['pwd2']:
+                    return render(request, 'NetExplorer/account.html', {'error_msg': "New passwords don't match!."})
+                if request.POST['pwd1'] == request.POST['previous']:
+                    return render(request, 'NetExplorer/account.html', {'error_msg': "New Password must be different to previous password."})
+                # Changing a password
+                if request.user.check_password(request.POST['previous']):
+                    # Everything is correct
+                    request.user.set_password(request.POST['pwd1'])
+                    request.user.save()
+                    return render(request, 'NetExplorer/account.html', {'success_msg': "Password changed successfully."})
+                else:
+                    return render(request, 'NetExplorer/account.html', {'error_msg': "Incorrect password!."})
+            else:
+                # Something was not introduced
+                return render(request, 'NetExplorer/account.html', {'error_msg': "Please, fill in the camps."})
+        return render(request, 'NetExplorer/account.html')
+    else:
+        return render(request, 'NetExplorer/login.html')
 
 # ------------------------------------------------------------------------------
 def handler404(request):
