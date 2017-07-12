@@ -289,8 +289,8 @@ def show_connections(request):
     all the interactions between those identifiers/nodes.
     """
     if request.is_ajax():
-        nodes_including = request.GET['nodes'].split(",")
-        databases       = request.GET['databases'].split(",")
+        nodes_including = request.POST['nodes'].split(",")
+        databases       = request.POST['databases'].split(",")
         graphelements   = GraphCytoscape()
         for symbol, database in zip(nodes_including, databases):
             graphelements.add_node( PredictedNode(symbol, database, query=False) )

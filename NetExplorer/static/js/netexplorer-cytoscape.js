@@ -121,24 +121,6 @@ $('#sl1').slider('setValue', 0.6);
     });
 
 
-// --------------------------
-// FILTER EDGES BY CONFIDENCE
-    function filterByConfidence(confvalue, cyobj, plenval) {
-        var to_show_selector = "";
-        var to_hide_selector = "";
-        if (plenval == "hide") {
-            to_show_selector = "edge[pathlength=1][probability>=" + confvalue + "]";
-            to_hide_selector = "edge[probability<" + confvalue + "]";
-        } else {
-            to_show_selector = "edge[probability>=" + confvalue + "]";
-            to_hide_selector = "edge[probability<" + confvalue + "]";
-        }
-        // Take into account if check Plen is toggled
-        // Filter
-        cyobj.elements(to_show_selector).show();
-        cyobj.elements(to_hide_selector).hide();
-    }
-
     $('#sl1').slider().on('slideStop', function(ev){
         // Show only edges above slider threshold
         var value = $('#sl1').val();

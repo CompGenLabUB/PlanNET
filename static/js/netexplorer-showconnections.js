@@ -1,16 +1,33 @@
 // Functionality to show connections between nodes in graph
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
 $("#show_connections").on("click", function(){
     var elements = get_graphelements(cy);
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "/PlanNET/show_connections",
         cache: true,
         data: {
             'nodes': elements.node_ids,
             'databases': elements.databases,
-            'csrfmiddlewaretoken': '{{ csrf_token }}'
+            'csrfmiddlewaretoken': csrftoken
         },
         beforeSend: function() {
             $('#loading').show();

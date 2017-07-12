@@ -58,13 +58,3 @@ function checkHomologs(toggle, cyobj) {
         cyobj.remove( toRemove );
     }
 }
-
-
-function checkPlen(value, cyobj, confvalue) {
-    if (value == "show") {
-        var show_selector = "edge" + "[probability>=" + confvalue + "]";
-        cyobj.elements(show_selector).show();
-    } else {
-        cyobj.elements("edge[pathlength=2]").hide();
-    }
-}
