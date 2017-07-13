@@ -9,6 +9,10 @@ from django.template    import RequestContext
 from NetExplorer.models import *
 from subprocess import Popen, PIPE, STDOUT
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.db import connection
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import tempfile
 import textwrap
 import json
@@ -500,8 +504,19 @@ def path_finder(request):
         if graphelements:
             # We have graphelements to display (there are paths)
             graphelements = sorted(graphelements, key=lambda k: k[1], reverse=True)
-            response["pathways"] = graphelements
+            #response["pathways"] = graphelements
             response["numpath"]  = numpath
+            paginator = Paginator(graphelements, 10) # Show 25 contacts per page
+            page = request.GET.get('page')
+            try:
+                graphs_for_page = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                graphs_for_page = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                graphs_for_page = paginator.page(paginator.num_pages)
+            response['pathways'] = graphs_for_page
             return render(request, 'NetExplorer/pathway_finder.html', response)
         else:
             # No results

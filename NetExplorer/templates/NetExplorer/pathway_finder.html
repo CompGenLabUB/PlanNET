@@ -128,7 +128,7 @@
                         </form>
                     </div>
 
-                    <h4>Showing <span id="numfiltered">{{ pathways|length }}</span> of {{ pathways|length }} pathways</h4>
+                    <h4>Showing <span id="numfiltered">{{ pathways|length }}</span> of {{ numpath }} pathways</h4>
 
                     <!-- PATHWAYS -->
                     {% for path in pathways %}
@@ -169,6 +169,48 @@
                     {% endfor %}
                 {% endif %}
             </div>
+            {% if pathways.has_other_pages %}
+                <ul class="pagination">
+                    {% if pathways.has_previous %}
+                        <li><a href="?database={{ database }}&start={{ snode }}&plen={{ plen }}&end={{ enode }}&page={{ pathways.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in pathways.paginator.page_range %}
+                        {% if pathways.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                            <li><a href="?database={{ database }}&start={{ snode }}&plen={{ plen }}&end={{ enode }}&page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if pathways.has_next %}
+                        <li><a href="?database={{ database }}&start={{ snode }}&plen={{ plen }}&end={{ enode }}&page={{ pathways.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+            <!--
+            <div class="pagination">
+                <span class="step-links">
+                    {% if pathways.has_previous %}
+                        <a href="?database={{ database }}&start={{ snode }}&plen={{ plen }}&end={{ enode }}">
+                            previous
+                        </a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ pathways.number }} of {{ pathways.paginator.num_pages }}.
+                    </span>
+
+                    {% if pathways.has_next %}
+                        <a href="?database={{ database }}&start={{ snode }}&plen={{ plen }}&end={{ enode }}&page={{ pathways.next_page_number }}">
+                            next
+                        </a>
+                    {% endif %}
+                </span>
+            </div>
+            -->
         </div>
 
 
@@ -262,7 +304,6 @@
                 </button>
                 -->
             </form>
-
 
 
         </div>

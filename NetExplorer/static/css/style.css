@@ -1750,3 +1750,19 @@ kbd {
   color: #fff;
   background-color: #5bc0de;
 }
+
+/* LOGIN-REGISTRATION */
+.form-div {
+    width: 30%;
+}
+
+
+/* PAGINATION */
+.example .pagination>li>a,
+.example .pagination>li>span {
+  border: 1px solid #f0ad4e;
+}
+.pagination>li.active>a {
+  background: #f0ad4e;
+  color: #fff;
+}
