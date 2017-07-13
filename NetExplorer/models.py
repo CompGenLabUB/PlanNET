@@ -11,6 +11,7 @@ from colour import Color
 import math
 import re
 import time
+from django.db import connection
 
 
 authenticate("192.168.0.2:7473", "neo4j", "5961")
@@ -119,7 +120,7 @@ EXPERIMENT_QUERY = """
 # ------------------------------------------------------------------------------
 ALL_EXPERIMENTS_QUERY = """
     MATCH (n:Experiment)-[r]-(m)
-    RETURN distinct keys(r) as samples, n.id as identifier, n.url as url, n.reference as reference, collect(distinct labels(m)) as datasets
+    RETURN distinct keys(r) as samples, n.id as identifier, n.url as url, toInt(n.private) as private, n.reference as reference, collect(distinct labels(m)) as datasets
 """
 
 # ------------------------------------------------------------------------------
@@ -1068,7 +1069,7 @@ class ExperimentList(object):
     """
     Maps a list of experiment objects with all its available samples in the DB
     """
-    def __init__(self):
+    def __init__(self, user):
         self.experiments = set()
         self.samples     = dict()
         self.datasets    = dict()
@@ -1077,12 +1078,32 @@ class ExperimentList(object):
         results = GRAPH.run(query)
         results = results.data()
         added_experiments = set()
+
+        # Check if user is authenticated to get private experiments
+        access_to = set()
+        if user.is_authenticated:
+            try:
+                cursor = connection.cursor()
+                cursor.execute('''
+                    SELECT auth_user.username, user_exp_permissions.experiment
+                    FROM auth_user
+                    INNER JOIN user_exp_permissions ON auth_user.id=user_exp_permissions.user_id
+                    WHERE auth_user.username = %s;
+                ''', [user.username])
+                rows = cursor.fetchall()
+                access_to.update([row[1] for row in rows])
+            except Exception:
+                pass
+
         if results:
             for row in results:
                 if row['identifier'] not in self.samples:
                     self.samples[ row['identifier'] ] = set()
                 self.samples[ row['identifier'] ].update(row['samples'])
                 if row['identifier'] not in added_experiments:
+                    if row['private'] == 1:
+                        if row['identifier'] not in access_to:
+                            continue
                     self.experiments.add(Experiment( row['identifier'], url=row['url'], reference=row['reference'] ))
                     added_experiments.add(row['identifier'])
                 if row['identifier'] not in self.datasets:

@@ -307,7 +307,7 @@ def net_explorer(request):
         return render_to_return
     else:
         # Get experiment data to put it on the Map Expression dialog Form
-        all_experiments = ExperimentList()
+        all_experiments = ExperimentList(request.user)
         return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments, 'databases': get_databases(request)} )
 
 
