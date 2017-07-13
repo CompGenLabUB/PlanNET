@@ -27,8 +27,17 @@ DATABASES = set([
     "Pearson",
 ])
 
-PRIVATE_DATABASES = set([
-    'Cthulhu'
+ALL_DATABASES = set([
+    "Dresden",
+    "Consolidated",
+    "Newmark",
+    "Graveley",
+    "Illuminaplus",
+    "Smed454",
+    "Adamidi",
+    "Blythe",
+    "Pearson",
+    'Cthulhu',
 ])
 
 
@@ -574,7 +583,7 @@ class PredictedNode(Node):
     """
     Class for planarian nodes.
     """
-    allowed_databases = DATABASES
+    allowed_databases = ALL_DATABASES
 
     def __init__(self, symbol, database, sequence=None, orf=None, homolog=None, important=False, degree=None, query=True):
         super(PredictedNode, self).__init__(symbol, database)
