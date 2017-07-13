@@ -16,7 +16,6 @@ import time
 authenticate("192.168.0.2:7473", "neo4j", "5961")
 GRAPH     = Graph("https://192.168.0.2:7473/db/data/", bolt=False)
 DATABASES = set([
-    "Cthulhu",
     "Dresden",
     "Consolidated",
     "Newmark",
@@ -27,6 +26,11 @@ DATABASES = set([
     "Blythe",
     "Pearson",
 ])
+
+PRIVATE_DATABASES = set([
+    'Cthulhu'
+])
+
 
 
 # QUERIES

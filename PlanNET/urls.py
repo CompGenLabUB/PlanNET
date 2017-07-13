@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf import settings
 
 handler500 = "NetExplorer.views.handler500"
 handler404 = "NetExplorer.views.handler404"
@@ -23,3 +24,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('NetExplorer.urls')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

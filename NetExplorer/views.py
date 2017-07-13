@@ -21,6 +21,7 @@ import logging
 import math
 import time
 import requests
+import time
 
 # -----------------------
 # CONSTANTS
@@ -33,6 +34,30 @@ MAX_CHAR_LENGTH = 25000
 # -----------------------
 # FUNCTIONS
 # -----------------------
+
+def get_databases(request):
+    '''
+    This function returns the databases allowed for the user to see
+    '''
+    if not request.user.is_authenticated():
+        return sorted(DATABASES)
+    else:
+        # User is logged in, get the allowed databases for the user
+        try:
+            cursor = connection.cursor()
+            cursor.execute('''
+                SELECT auth_user.username, user_db_permissions.database
+                FROM auth_user
+                INNER JOIN user_db_permissions ON auth_user.id=user_db_permissions.user_id
+                WHERE auth_user.username = %s;
+            ''', [request.user.username])
+            rows = cursor.fetchall()
+            user_databases = set(DATABASES)
+            user_databases.update([row[1] for row in rows])
+            return sorted(user_databases)
+        except Exception:
+            return sorted(DATABASES)
+
 
 def query_node(symbol, database):
     '''
@@ -199,20 +224,20 @@ def gene_search(request):
             symbols = symbols.split(",")
             if database is None: # No database selected
                 search_error = 2
-                return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': sorted(DATABASES) } )
+                return render(request, 'NetExplorer/gene_search.html', {'res': nodes, 'search_error': search_error, 'databases': get_databases(request) } )
 
             nodes_graph = GraphCytoscape()
             nodes_graph.new_nodes(symbols, database)
             if not nodes_graph:
                 search_error = 1
-                return render(request,'NetExplorer/gene_search.html', {'search_error': search_error, 'databases': sorted(DATABASES) } )
+                return render(request,'NetExplorer/gene_search.html', {'search_error': search_error, 'databases': get_databases(request) } )
 
-            return render(request, 'NetExplorer/gene_search.html', {'res': nodes_graph.nodes, 'search_error': search_error, 'databases': sorted(DATABASES) } )
+            return render(request, 'NetExplorer/gene_search.html', {'res': nodes_graph.nodes, 'search_error': search_error, 'databases': get_databases(request) } )
 
         # Render when user enters the page
-        return render(request, 'NetExplorer/gene_search.html', {'databases': sorted(DATABASES) })
+        return render(request, 'NetExplorer/gene_search.html', {'databases': get_databases(request) })
     else:
-        return render(request, 'NetExplorer/gene_search.html', {'databases': sorted(DATABASES) })
+        return render(request, 'NetExplorer/gene_search.html', {'databases': get_databases(request) })
 
 
 # ------------------------------------------------------------------------------
@@ -283,7 +308,7 @@ def net_explorer(request):
     else:
         # Get experiment data to put it on the Map Expression dialog Form
         all_experiments = ExperimentList()
-        return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments, 'databases': sorted(DATABASES)} )
+        return render(request, 'NetExplorer/netexplorer.html', { 'experiments': all_experiments, 'databases': get_databases(request)} )
 
 
 # ------------------------------------------------------------------------------
@@ -328,11 +353,11 @@ def upload_graph(request, json_text):
             json_graph[u'nodes']
         except KeyError:
             logging.info("ERROR: Json is not a graph declaration (no nodes) in upload_graph")
-            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': sorted(DATABASES), 'experiments': all_experiments})
+            return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': get_databases(request), 'experiments': all_experiments})
     except ValueError as err:
         logging.info("ERROR: Not a valid Json File %s in upload_graph\n" % (err))
-        return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': sorted(DATABASES)})
-    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout,'databases': sorted(DATABASES), 'experiments': all_experiments})
+        return render(request, 'NetExplorer/netexplorer.html', {'json_err': True,'databases': get_databases(request)})
+    return render(request, 'NetExplorer/netexplorer.html', {'upload_json': graph_content, 'no_layout': no_layout,'databases': get_databases(request), 'experiments': all_experiments})
 
 
 # ------------------------------------------------------------------------------
@@ -342,9 +367,9 @@ def blast(request):
     """
     if request.POST:
         if not request.POST['database']:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "No Database selected", 'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No Database selected", 'databases': get_databases(request)})
         if "type" not in  request.POST or not request.POST['type']:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "No valid BLAST application selected",'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No valid BLAST application selected",'databases': get_databases(request)})
 
         fasta = str()
         database = request.POST['database'].lower()
@@ -359,7 +384,7 @@ def blast(request):
             fasta = request.POST['fasta_plain']
 
         if not fasta:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "No query", 'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "No query", 'databases': get_databases(request)})
 
         # Check length of sequence/number of sequences
         joined_sequences = list()
@@ -374,9 +399,9 @@ def blast(request):
         joined_sequences = "".join(joined_sequences)
 
         if numseq > MAX_NUMSEQ:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "Too many query sequences (> 50)", 'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "Too many query sequences (> 50)", 'databases': get_databases(request)})
         elif len(joined_sequences) >  MAX_CHAR_LENGTH:
-            return render(request, 'NetExplorer/blast.html', {"error_msg": "Query sequence too long (> 25,000 characters)", 'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/blast.html', {"error_msg": "Query sequence too long (> 25,000 characters)", 'databases': get_databases(request)})
 
         # Create temp file with the sequences
         with tempfile.NamedTemporaryFile() as temp:
@@ -388,11 +413,11 @@ def blast(request):
             stdout, stderr = pipe.communicate()
             results = [ line.split("\t") for line in stdout.split("\n") if line ]
         if results:
-            return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database.title(), 'databases': sorted(DATABASES) })
+            return render(request, 'NetExplorer/blast.html', {'results': results, 'database': database.title(), 'databases': get_databases(request) })
         else:
-            return render(request, 'NetExplorer/blast.html', {'results': results, 'noresults': True, 'database': database.title(), 'databases': sorted(DATABASES) })
+            return render(request, 'NetExplorer/blast.html', {'results': results, 'noresults': True, 'database': database.title(), 'databases': get_databases(request) })
     else:
-        return render(request, 'NetExplorer/blast.html',{'databases': sorted(DATABASES)})
+        return render(request, 'NetExplorer/blast.html',{'databases': get_databases(request)})
 
 # ------------------------------------------------------------------------------
 def map_expression(request):
@@ -475,11 +500,11 @@ def path_finder(request):
     if 'start' in request.GET and 'end' in request.GET:
         # We have a search
         if not request.GET['database']:
-            return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True, 'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/pathway_finder.html', {"nodb": True, 'databases': get_databases(request)})
         if symbol_is_empty(request.GET['start']) or symbol_is_empty(request.GET['end']):
-            return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True, 'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/pathway_finder.html', {"nonodes": True, 'databases': get_databases(request)})
         if not request.GET['plen']:
-            return render(request, 'NetExplorer/pathway_finder.html', {"noplen": True, 'databases': sorted(DATABASES)})
+            return render(request, 'NetExplorer/pathway_finder.html', {"noplen": True, 'databases': get_databases(request)})
         # Search
         # Valid search
         database   = request.GET['database']
@@ -499,7 +524,7 @@ def path_finder(request):
         response['snode']     = request.GET['start']
         response['enode']     = request.GET['end']
         response["plen"]      = plen
-        response["databases"] = sorted(DATABASES)
+        response["databases"] = get_databases(request)
 
         if graphelements:
             # We have graphelements to display (there are paths)
@@ -525,7 +550,7 @@ def path_finder(request):
     else:
         # Not a search
         response = dict()
-        response["databases"] = sorted(DATABASES)
+        response["databases"] = get_databases(request)
         return render(request, 'NetExplorer/pathway_finder.html', response)
 
 
@@ -548,7 +573,7 @@ def datasets(request):
     """
     View for datasets
     """
-    return render(request, 'NetExplorer/datasets.html', {'databases': sorted(DATABASES)})
+    return render(request, 'NetExplorer/datasets.html', {'databases': get_databases(request)})
 
 
 # ------------------------------------------------------------------------------
@@ -556,7 +581,7 @@ def about(request):
     """
     View for about
     """
-    return render(request, 'NetExplorer/about.html', {'databases': sorted(DATABASES)})
+    return render(request, 'NetExplorer/about.html', {'databases': get_databases(request)})
 
 # ------------------------------------------------------------------------------
 def register(request):
