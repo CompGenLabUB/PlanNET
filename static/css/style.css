@@ -2,6 +2,8 @@
 /* BASE HTML */
 /* ----------------------------- */
 /* BASE CONTAINERS */
+
+body { font-size: 12px; }
 #page-container {
     position: absolute;
     background-color: #E7E7E7;
@@ -50,14 +52,57 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .company-logo {
-    width: 60%;
+    width: 50%;
     display: inline-block;
     margin-bottom: 5px;
     margin-top: 5px;
+    opacity: 0.70;
 }
 
+.bg-official {
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: #c45ca2;
+    color: white;
+    font-weight: bolder;
+    border-radius: 4px;
+}
+
+
+.bg-official-light {
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: #c45ca2;
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.bg-official-small {
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: #c45ca2;
+    font-size: 12px;
+    font-weight: bolder;
+}
+
+.bg-homolog {
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: #6785d0;
+    font-weight: bolder;
+}
+
+
 .company-logo:hover {
-    opacity: 0.5;
+    opacity: 1;
 }
 
 .company-logo-container-parent {
@@ -69,7 +114,19 @@ h1, h2, h3, h4, h5, h6 {
 
 .company-logo-container {
     margin: auto 5px;
-    margin-top: 50px;
+    margin-top: 25px;
+}
+
+
+@media only screen and (max-width: 870px) {
+    .company-logo-container-parent {
+        display: none;
+    }
+
+    #logoheader {
+        height: 120px !important;
+    }
+
 }
 
 .social-icon {
@@ -91,7 +148,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #logoheader {
-    height: 220px;
+    height: 166px;
     margin-top: 1%;
 }
 
@@ -102,6 +159,27 @@ h1, h2, h3, h4, h5, h6 {
 .navbar {
     margin-top: 0 !important;
 }
+
+
+.navbar-plannet{ 
+    background-color: white !important;
+}
+
+
+.navbar-plannet .navbar-nav>li>a {
+    color: #AAA;
+}
+.navbar-plannet .navbar-nav>li.active>a {
+    color: #444
+}
+.navbar-plannet { 
+    border: 1px solid #EBEBEB !important;
+    font-size: 16px;
+
+
+}
+
+
 
 /* PANELS */
 
@@ -118,41 +196,76 @@ h1, h2, h3, h4, h5, h6 {
 .app-container {
     text-align: center;
     float: left;
-    height: 300;
+    height: 300px;
     width: 100%;
+    background-color: #f4f4f4 !important;
+    border: solid 0px !important;
 }
 
 
-.app-button {
-    position:relative;
-    display: block;
-    margin: 0 auto;
-    margin-top: 4%;
-    margin-left: 2%;
-    width: 85px;
+
+.app-container .glyphicon-info-sign {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.app-btn:hover {
+    background-color: #eee !important;
+}
+.app-btn:hover ~ .app-icon {
+    opacity: 0.85;
+}
+.app-btn {
+    border: solid 2px #EBEBEB;
+    margin-bottom: 25px;
+    background-color: white !important;
+}
+
+.app-btn:active {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.app-btn:focus {
+    background-color: #e6e6e6;
+    border-color: #8c8c8c;
+}
+
+.app-btn:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
 }
 
 .app-icon {
-    margin-top: 7%;
-    margin-bottom: 5%;
-    width: 180;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    width: 150;
 }
+
 
 .app-icon-inside {
     position: relative;
     margin-top: 4%;
-    width: 180;
+    width: 150px;
     right: -30px;
 }
 
 .panel-blast {
-    border-color: #e7ccf6 !important;
     border-style: solid !important;
 }
 
 .panel-blast .panel-heading {
     background-color: #edd9f8 !important;
     border-color: #e7ccf6 !important;
+}
+
+.panel-planexp {
+    border-style: solid !important;
+}
+
+.panel-planexp .panel-heading {
+    background-color: #FDD4D4;
+    border-color: #FDD4D4;
 }
 
 .btn-blast:hover {
@@ -181,12 +294,20 @@ h1, h2, h3, h4, h5, h6 {
     overflow: hidden;
     cursor: pointer;
     width: 70%;
-    margin: 5%;
+    margin-top: 25px;
+    margin-bottom: 25px !important;
+    border-width: 4px !important;
+    color:#31708f;
 }
 
+.small-searchpanel .panel-body { background-color: white; }
 .tutorial-icon-link {
     color: #777777;
 }
+
+.molecular_function { background-color: #D5A0E4; padding: 4px; color:white; border-radius: 4px; }
+.cellular_component { background-color: #9DB9E6; padding: 4px; color:white; border-radius: 4px; }
+.biological_process { background-color: #D7A070; padding: 4px; color:white; border-radius: 4px; }
 
 .tutorial-icon-link:hover {
     color: #777777;
@@ -219,6 +340,18 @@ h1, h2, h3, h4, h5, h6 {
 .genesearch-minitutorial{
     text-align: left;
     display: inline-block;
+}
+
+#genesearch-genesymbol {
+    width: 300px;
+    height: 41px;
+}
+
+.genesearch-panel .btn { height: 41px;}
+
+#select-experiment-div .btn { height: 41px;}
+#genesearch-form {
+    margin-top: 3%;
 }
 
 .pfam-line-table-tr {
@@ -280,24 +413,29 @@ h1, h2, h3, h4, h5, h6 {
 .card-overlay {
     display: none;
     height: 90%;
-    width: 64%;
+    width: 54%;
     position: fixed;
     text-align: left;
     top: 30px;
-    right: 18%;
+    right: 28%;
     z-index: 80;
     background: white;
-    padding-left: 5%;
-    padding-top: 5%;
-    padding-right: 5%;
-    padding-bottom: 5%;
+    padding-left: 80px;
+    padding-top: 20px;
+    padding-right: 80px;
+    padding-bottom: 20px;
     overflow: scroll;
     overflow-y: scroll;
     -webkit-box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 180px 120px rgba(0,0,0,0.75);
     color: #777777;
+    font-size: 12px;
 }
+
+.card-overlay h1 { font-size: 20px; }
+.card-overlay h2 { font-size: 18px; }
+.card-overlay h3 { font-size: 16px; }
 
 .close-overlay, #click {
     cursor:
@@ -307,7 +445,7 @@ h1, h2, h3, h4, h5, h6 {
 #button-container {
     position: fixed;
     top: 30px;
-    right: 18%;
+    right: 28%;
     z-index: 100;
     background-color: #D9EDF7;
     -webkit-box-shadow: 10px 0px 27px 0px rgba(0,0,0,0.15);
@@ -332,7 +470,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .gene-ontology-div {
     overflow-y: scroll;
-    height: 20%;
+    height: 40%;
 }
 
 .full-screen-card {
@@ -389,18 +527,16 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
     background-color: #D9EDF7;
     width: 100%;
-    height: 8%;
-    min-height: 65px;
+    height: 45px;
     display: table;
 }
 
 .card-subtitle {
     text-align: center;
-    background-color: #F7F7F7;
+    background-color: white;
     margin-left: 35%;
     width: 30%;
-    height: 6%;
-    min-height: 65px;
+    height: 45px;
     display: table;
 }
 
@@ -408,6 +544,10 @@ h1, h2, h3, h4, h5, h6 {
     color: #777777;
     font-style: normal;
 }
+
+.card-overlay .glyphicon-tag { font-size: 18px; color: #5bc0de }
+.card-overlay h2 { margin-top: 40px; }
+.h2-sep { border-color: #D9EDF7; border-width: 2px; margin-top: 0}
 
 .card-subtitle h3 {
     display: table-cell;
@@ -434,13 +574,14 @@ h1, h2, h3, h4, h5, h6 {
 .sequence-container {
     word-wrap: break-word;
     background-color: #F7F7F7;
-    padding: 5%;
+    padding: 20px;
     overflow-y: scroll;
-    max-height: 20%;
+    max-height: 100px;
+    max-width: 800px;
 }
 
 .download-fasta {
-    width: 50px;
+    width: 25px;
 }
 
 .download-fasta-wrapper:hover {
@@ -520,13 +661,15 @@ h1, h2, h3, h4, h5, h6 {
 /* END OF BACK TO TOP */
 
 
+
+
 /* DATA TABLE */
 .int-table-container {
     color: #777777;
     font-size: 12px;
     text-align: center;
-    width: 90%;
-    margin-left: 5%;
+    width: 95%;
+    margin-left: 2.5%;
     overflow-x: scroll;
 }
 
@@ -541,9 +684,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .int-table-class {
-    font-size: 12px;
+    font-size: 10px;
     color: #777777;
 }
+
+.int-table-class td { font-size: 12px; }
 
 .dataTables_filter label {
     color: #777777;
@@ -585,6 +730,15 @@ h1, h2, h3, h4, h5, h6 {
     height: 100%;
     width: 75%;
     float: left;
+}
+
+@media only screen and (max-width: 1220px) {
+    #cyt {
+        width: 60%;
+    }
+    #cyt-controls {
+        width: 40% !important;
+    }
 }
 
 #loading {
@@ -629,14 +783,17 @@ h1, h2, h3, h4, h5, h6 {
 
 #cyt-explorer-icon {
     display: inline-block;
-    margin-top: 10%;
+    margin-top: 15px;
 }
 
 #select-layout-container {
     display: block;
     text-align: left;
-    padding-left: 20%;
     position: relative;
+}
+
+#select-layout-container .row {
+    height: 40px;
 }
 
 #select-layout-container h3 {
@@ -661,6 +818,7 @@ h1, h2, h3, h4, h5, h6 {
     top: 1%;
     position: relative;
     display: block;
+    padding-left: 10%;
 }
 
 .netexplorer-form {
@@ -767,7 +925,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #add-node-container {
     width: 60%;
-    margin-top: 10%;
+    margin-top: 5px;
     margin-left: 20%;
 }
 
@@ -798,7 +956,7 @@ h1, h2, h3, h4, h5, h6 {
 #map-expression-dialog {
     display: none;
     margin: 5%;
-    width: 60%;
+    width: 50%;
     height: 80%;
     z-index: 1000000000;
     position: fixed;
@@ -816,7 +974,7 @@ h1, h2, h3, h4, h5, h6 {
 #map-expression-dialog-header {
     position: fixed;
     background-color: #E9E9E9;
-    width: 58%;
+    width: 49%;
     height: 40px;
     margin-left: 0.5%;
     margin-top: 0.5%;
@@ -836,12 +994,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #map-expression-dialog-send {
-    float: right;
     display: inline-block;
-    margin-top: 200px;
-    bottom: 0;
-    margin-right: 20px;
-    margin-bottom: 20px;
+    text-align: center;
+    position: fixed;
+    left: calc(55% - 360px);
+    width: 350px;
+    bottom: calc(5% + 80px);
+    height: 80px;
+    background-color: white;
+}
 }
 
 #exTab2 {
@@ -868,7 +1029,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .slider-handle {
     background-color: green !important;
-    background-image: linear-gradient(to bottom, #5CB85C, #2c682c) !important;
+    background-image: linear-gradient(to bottom, #5CB85C, #2c682c);
 }
 
 
@@ -883,7 +1044,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #cyt-controls-header {
     width: 100%;
-    height: 420px;
+    height: 320px;
 }
 
 
@@ -901,9 +1062,6 @@ input[type="file"] {
     width: 120%;
 }
 
-#upload-graph-form {
-    width: 52px;
-}
 
 #dialog-confirm {
     display: none;
@@ -930,26 +1088,23 @@ input[type="file"] {
 #show-homologs-container {
     display: inline-block;
     width: 100%;
-    height: 10%;
     position: relative;
 }
 
 #show-homologs-container-title {
-    height: 100%;
+    height: 50px;
 }
 
 .show-homologs-label {
     width: 60%;
-    height: 70% !important;
     vertical-align: middle;
     cursor: pointer;
-    margin-top: 15%;
 }
 
 #show-homologs-toggle {
     display: inline-block;
-    height: 100%;
-
+    height: 50px;
+    margin-top: 10px;
 }
 
 #layout-dropdown {
@@ -966,7 +1121,15 @@ input[type="file"] {
 
 #layout-toggle-btn {
     vertical-align: middle;
-    margin-top: 10%;
+    height: 100%;
+    line-height: 100%;
+    width: 60%;
+    display: block;
+}
+
+#cyt-controls hr { 
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .show-homologs-btn {
@@ -1113,7 +1276,7 @@ input[type="file"] {
 
 #img404 {
     margin-top: 5%;
-    width: 40%;
+    width: 20%;
 }
 
 /* ABOUT */
@@ -1127,7 +1290,7 @@ input[type="file"] {
 }
 
 .about-button-container {
-    top: 100px !important;
+    top: 30px !important;
 }
 
 .about-overlay-close {
@@ -1135,10 +1298,10 @@ input[type="file"] {
 }
 
 .about-overlay {
-    width: 1000px;
-    height: 800px;
-    top: 100px;
-    right: 18%;
+    height: 90%;
+    width: 54%;
+    top: 30px;
+    right: 28%;
 }
 
 .transcriptome-table-div {
@@ -1155,6 +1318,14 @@ input[type="file"] {
 }
 .transcriptome-row .col-sm-5 { /* transcriptome table column */
     text-align: center;
+}
+
+@media only screen and (max-width: 780px) {
+    .panel-transcriptome {
+        max-height: 600px;
+        padding-top: 50px;
+    }
+
 }
 
 .img-bigger {
@@ -1177,8 +1348,8 @@ input[type="file"] {
 
 .plot-img-png {
     position: relative;
-    height: 95%;
-    width: 40%;
+    height: 100%;
+    width: 100%;
 }
 
 .view-interactome-plots:hover {
@@ -1191,9 +1362,10 @@ input[type="file"] {
 }
 
 .plot-viewer {
+    display: inline-block;
     position: relative;
-    width: 100%;
-    height: 80%;
+    width: 320px;
+    height: 320px;
 }
 
 .transcriptome-row .col-sm-7 {
@@ -1214,6 +1386,7 @@ input[type="file"] {
 }
 .transcriptome-col {
     height: 400px !important;
+    text-align: center;
 }
 
 .transcriptome-row {
@@ -1334,6 +1507,10 @@ input[type="file"] {
     color: #777777;
 }
 
+.transcripts-table {
+    font-size: 12px;
+    color: #777777;
+}
 
 .pfam-line-table-td-scale {
     margin-right: 0 !important;
@@ -1609,8 +1786,8 @@ strong{
     padding: 8px;
     background-color: white;
     float: right;
-    margin-right: 15px;
-    margin-top: 15px;
+    margin-right: 5px;
+    margin-top: 5px;
     border-color: #cccccc;
     border-width: 1;
     border-style: solid;
@@ -1768,3 +1945,437 @@ kbd {
   background: #f0ad4e;
   color: #fff;
 }
+
+#search-netexplorer {
+  position: fixed;
+  background-color: white;
+  text-align: center;
+  color: #777777;
+  bottom: 10px;
+  left: 30%;
+  width: 30%;
+  height: 45px;
+  line-height: 45px;
+  z-index: 10;
+
+}
+
+#genename-graph {
+    height: 40px !important;
+}
+
+#search-netexplorer-btn {
+    height: 40px !important;
+    margin-top: -5px;
+}
+
+#removesearch {
+    height: 40px !important;
+    margin-top: -5px;
+}
+
+.user-in-controls {
+    padding-right: 5px;
+    text-align: right;
+    right: 5px;
+    margin-top: 5px;
+}
+
+
+.exp-name-gradient {
+    color:  #777777;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+.update-msg {
+    margin-top: -4%;
+    text-align: center;
+}
+
+.update-notes-ul li {
+    margin-top: 10px;
+}
+
+.idtextarea {
+    max-width: 600px;
+}
+
+
+/* PLANEXP */
+.planexp-h1 {
+    font-size: 22px;
+}
+
+.planexp-rule {
+    border-width: 4px;
+    border-color: #FDD4D4;
+    margin-top: 8px;
+}
+
+.planexp-card {
+    border: 4px solid #f4f4f4;
+    padding: 22px;
+}
+
+#planexp-summary { display: none; }
+#planexp-citation { width: 60%; min-height: 80px; margin-bottom: 10px; }
+#planexp-description { min-height: 80px; }
+#planexp-conditions  { min-height: 80px; }
+
+#planexp-experiment-type { 
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+    margin-left: 20px;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+}
+
+/*
+#RNA-Seq { display: none; }
+#Single-Cell { display: none; }
+*/
+
+.cond-type {
+    display: inline-block;
+    font-weight: bold;
+    background-color:  #f4f4f4;
+    width: auto;
+    padding: 4px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+.cond-name {
+    display: block;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+#planexp-dge-table           { display: none; }
+#planexp-dge-table-container { display: none; }
+
+.planexp-condition-selects { text-align: center; }
+
+#dge-table {
+    color: #777777;
+    font-size: 12px;
+}
+
+#select-dataset { display: none; }
+#planexp-gene-expression { display: none; }
+.gene-expression-search-container { width: 50%; }
+#plot-container { 
+    width: 100%; 
+    margin-top: 50px;
+    text-align: center; 
+}
+#expression-plot { 
+    display: inline-block; 
+    height: 500px; 
+    min-width: 700px; 
+    background-color: #f4f4f4; 
+}
+
+#tsne-plot {
+    display: inline-block; 
+    height: 500px; 
+    min-width: 700px; 
+    background-color: #f4f4f4; 
+}
+
+#volcano-plot {
+    display: inline-block; 
+    height: 500px; 
+    min-width: 700px; 
+    background-color: #f4f4f4; 
+}
+
+#plot-genenotfound { 
+    display: none; 
+    margin: auto;
+    font-size: 18px;
+    padding: 8px;
+    width: 700px; 
+    background-color: #FDD4D4;
+}
+
+#tsne-plot-genenotfound {
+    display: none; 
+    margin: auto;
+    font-size: 18px;
+    padding: 8px;
+    width: 700px; 
+    background-color: #FDD4D4;  
+}
+
+#dge-table-notfound {
+    display: none; 
+    margin: auto;
+    font-size: 18px;
+    padding: 8px;
+    width: 700px; 
+    background-color: #FDD4D4;  
+}
+
+#expression-plot-loading {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    left: calc(50% - 75px);
+    margin-top: 175px;
+}
+
+#tsne-plot-loading {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    left: calc(50% - 75px);
+    margin-top: 175px;
+}
+
+.planexp-loading-img {
+    width: 150px;
+}
+
+.input-grp-withlabel {
+    vertical-align: bottom !important;
+}
+
+#planexp-tsne { display: none; }
+
+
+#planexp-tsne input[type=range]::-moz-range-track { 
+    background: #E7E7E7;
+}
+
+#plot-tsne-btn    { width: 125px; }
+
+#planexp-toc {
+    padding: 8px;
+    background-color: white;
+    border: 4px solid #E7E7E7;
+    width: 12%;
+    min-width: 150px;
+    min-height: 400px;
+    z-index: 2;
+}
+
+#planexp-toc.affix-top {
+    width: 100%;
+}
+
+#planexp-toc-container {
+    z-index: 2;
+    width: 12%;
+    padding:0px;
+    margin-top: calc(9% + 245px);
+}
+
+#logo-container .col-sm-8 {
+    height: 195px;
+}
+
+#logo-container .col-sm-4 {
+    height: 195px;
+}
+
+#planexp-network     { display: none; }
+#planexp-network-toc { display: none; }
+#planexp-cyt { background-color: #f4f4f4; width: 100%; height: 720px;}
+
+#planexp-cyt-wrapper {
+    position: relative;
+}
+
+#planexp-cyt-controls {
+    position: absolute; 
+    top: 25px;
+    right: 25px;
+}
+
+.color-pick { display: inline-block; opacity: 0.5; margin-top: 10px; height: 60px; width: 30px; }
+.color-pick:hover { opacity: 1; cursor: pointer; }
+
+.gradient-blue {  background-image: linear-gradient(#1f77b4, white); }
+.gradient-red {  background-image: linear-gradient(#d62728, white); }
+.gradient-green {  background-image: linear-gradient(#2ca02c, white); }
+.gradient-blue-to-red { background-image: linear-gradient(#d62728, white, #1f77b4) }
+.gradient-yellow-to-blue { background-image: linear-gradient(#1f77b4, white, #e4a32d); }
+.gradient-red-to-green { background-image: linear-gradient(#2ca02c, white, #d62728); }
+
+
+.color-pick.active { border: solid 2px #777777; opacity: 1; }
+
+
+#one-sample { text-align: center; }
+#two-sample { text-align: center; }
+
+#planexp-cyt-controls .nav-tabs { width: 100%; }
+
+.planexp-cyt-btn { margin-right: 10px; width: 90px; }
+.planexp-cyt-btn .glyphicon { color: #777777; font-size: 16px; }
+
+#planexp-cyt-controls h3 { font-size: 16px; font-weight: bold; }
+#planexp-cyt-controls h4 { font-size: 14px; }
+#planexp-cyt-controls .btn { font-size: 12px; }
+
+.minExp-container { text-align: center; }
+#planexp-summary-toc { display: none; }
+#planexp-dge-table-container-toc { display: none; }
+#planexp-gene-expression-toc     { display: none; }
+#planexp-tsne-toc { display: none; }
+
+.planexp-toc-link {
+    width: 100% !important;
+}
+
+.human-select { background-color: #6785d0 !important; padding: 6px 6px !important; }
+.gene-select { background-color: #c45ca2 !important; padding: 6px 6px !important; }
+.human-color {color: #6785d0; }
+.jbrowser-subtitle { float:right; }
+
+.panel-genesearch { background-color: #d9edf7 !important ; font-size: 12px;}
+
+#kegg-funkyradio { margin-top: -10px; }
+
+.cyt-controls-subtitle { font-size: 24px; }
+
+summary:hover { cursor: pointer; opacity: 0.8; }
+
+#edit-graph-dialog {
+    display: none;
+    width: 90%;
+    height: 90%;
+    z-index: 1000000000;
+    position: fixed;
+    background-color: white;
+    border-color: #D4D4D4;
+    border-style: solid;
+    border-width: 2px;
+    top: 10;
+    left: 5%;
+}
+
+#edit-graph-dialog-header {
+    position: fixed;
+    background-color: #E9E9E9;
+    width: 89%;
+    height: 40px;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    margin-top: 0.5%;
+    margin-bottom: 40px;
+}
+
+#close-edit-graph {
+    float: right;
+    cursor: pointer;
+}
+
+#close-edit-graph .glyphicon-remove {
+    line-height: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.edit-graph-title {
+    line-height: 40px;
+    height: 40px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+#edit-graph-body {
+    display: grid;
+    height: 100%;
+    grid-column-gap: 5px;
+    grid-template-columns: 70% 30%;
+    grid-template-rows: 50px calc(100% - 50px);
+}
+
+#edit-graph-top-spacing {
+    grid-column: 1 / span 2;
+}
+
+#cytoscape-editor {
+    background-color: white;
+    border: solid 1px grey;
+}
+
+#cytoscape-editor-controls {
+    padding: 10px;
+    padding-top: 50px;
+}
+
+.vertical-sep {
+    display: inline-block;
+    width: 24px; 
+    height: 34px;
+    border-right: solid 1px #adadad;
+    margin-right: 24px;
+}
+
+#planexp-cyt-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.center-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#editor-add-node-btn {
+    display: block;
+    margin-top: 4px;
+    width: 150px;
+}
+
+.editor-interaction {
+    width: 250px;
+}
+
+.switch-candy.editor-interaction a {
+    background-color: #d9534f;
+}
+
+
+
+.editor-delete-node {
+    width: 250px;
+}
+
+.switch-candy.editor-delete-node a {
+    background-color: #d9534f;
+}
+
+.editor-delete-interaction {
+    width: 250px;
+}
+
+.switch-candy.editor-delete-interaction a {
+    background-color: #d9534f;
+}
+
+.editor-switch:hover {
+    cursor: pointer;
+}
+
+.edgehandleCanvas {
+    top: 50px !important;
+}
+
+#editor-done-btns {
+    position: absolute;
+    bottom: 25px;
+    width: 30%;
+}
+
+#editor-cancel, #editor-save { width: 100px; }
+.space { width: 20px; }
+
+summary { display: list-item !important; }

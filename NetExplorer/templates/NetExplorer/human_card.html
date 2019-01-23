@@ -1,0 +1,176 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/jquery-data-tables.css' %}">
+
+<html>
+
+<body>
+    
+    <div class="card-subtitle">
+        <h3>
+            <a target="_blank" title="Information about the dataset" href="{% url 'datasets' %}#{{ node.database }}">
+                <img class='legend-db' src="{% static 'Images/' %}legend-{{ node.database }}.png"/>
+                <span id="card-database">{{ node.database }}</span>
+            </a>
+        </h3>
+    </div>
+    <div class="card-title">
+        <h1>{{ node.symbol }}</h1>
+        
+    </div>
+    
+    {% if node.summary and node.summary != "NA" %}
+    <h2><span class="glyphicon glyphicon-tag"></span> Summary</h2>
+    <hr class="h2-sep">
+    <p>{{ node.summary }}</p>
+    <div class="pull-right"><i>{{ node.summary_source }}</i></div>
+    {% endif %}
+    
+    
+    <h2><span class="glyphicon glyphicon-tag"></span> External links</h2>
+    <hr class="h2-sep">
+    <ul>
+        <li>
+            <a target="_blank" title="Search on HGNC" href="http://www.genenames.org/cgi-bin/gene_search?search={{ node.symbol }}&submit=Submit">
+                Search on HGNC
+            </a>
+        </li>
+        
+        <li>
+            <a target="_blank" title="Search on Uniprot" href="http://www.uniprot.org/uniprot/?query=gene%3A{{ node.symbol }}+AND+organism%3Ahuman&sort=score">
+                Search on Uniprot
+            </a>
+        </li>
+    </ul>
+    
+    
+    <h2><span class="glyphicon glyphicon-tag"></span> Homologs</h2>
+    <hr class="h2-sep">
+    {% for dbhomologs  in homologs %}
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ dbhomologs.0 }} </div>
+        <div class="panel-body">
+            <table class="table table-hover hom-table">
+                {% if dbhomologs.1  %}
+                <thead>
+                    <th>Symbol</th>
+                    <th>EggNOG e-value</th>
+                    <th>EggNOG BRH</th>
+                    <th>BLAST e-value</th>
+                    <th>BLAST coverage</th>
+                    <th>BLAST BRH</th>
+                    <th>Pfam M.A. score</th>
+                    <th>Pfam M.A. BRH</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hom in dbhomologs.1 %}
+                    <tr>
+                        <td>
+                            <a
+                            class="card-link"
+                            current="{{ node.symbol|urlencode}}"
+                            currentDB="{{ node.database }}"
+                            target="{{ hom.prednode.symbol }}"
+                            targetDB="{{ hom.prednode.database }}">{{ hom.prednode.symbol }}
+                        </a>
+                    </td>
+                    <td>{{ hom.nog_eval }}</td>
+                    <td>{{ hom.nog_brh }}</td>
+                    <td>{{ hom.blast_eval }}</td>
+                    <td>{{ hom.blast_cov }}</td>
+                    <td>{{ hom.blast_brh }}</td>
+                    <td>{{ hom.pfam_sc }}</td>
+                    <td>{{ hom.pfam_brh }}</td>
+                </tr>
+                {% endfor %}
+            
+            {% else %}
+            <tr><td><h4>No Homologs</h4></td></tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+{% endfor %}
+
+</body>
+
+<script src="{% static 'js/root.js' %}"></script>
+<script src="{% static 'js/jquery-data-tables-min.js' %}"></script>
+<script>
+    $('.card-link').click(function() {
+        var card_data = {
+            div_id      : $(this).closest('.card-overlay').attr("id"),
+            current     : $(this).attr("current"),
+            currentDB   : $(this).attr("currentDB"),
+            target      : $(this).attr("target"),
+            targetDB    : $(this).attr("targetDB"),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+        var new_url = window.location.href;
+        history.pushState(card_data, null, new_url);
+        
+        // Load Get request html on current card-overlay
+        $.ajax({
+            type: "GET",
+            context: this, //this makes the this variable visible inside the success
+            url: "{% url 'get_card' %}",
+            cache: true,
+            data: {
+                'target'    : card_data['target'],
+                'current'   : card_data['current'],
+                'targetDB'  : card_data['targetDB'],
+                'currentDB' : card_data['currentDB'],
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success : function(data) {
+                $(this).closest('.card-overlay').html(data)
+                if (! $.fn.DataTable.isDataTable( '#int-table' )) {
+                    $(document).ready(function(){
+                        $('#int-table').DataTable({
+                            "order": [[ 1, "desc" ]]
+                        });
+                    });
+                }
+            }
+        });
+        
+        
+    });
+    
+    // This will check if the user is pressing the "back" button on his/her
+    // browser. If that's the case, it will update the content of the "visible"
+    // card-div.
+    window.onpopstate = function(event) {
+        if (event.state != null){
+            $.ajax({
+                type: "GET",
+                context: this, //this makes the this variable visible inside the success
+                url: "{% url 'get_card' %}",
+                cache: true,
+                data: {
+                    'target'    : event.state['target'],
+                    'targetDB'  : event.state['targetDB'],
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success : function(data) {
+                    if ( $(".card-overlay").is(':hidden')  ){
+                        $('[id="card-overlay"]').slideToggle(450);
+                        $('.close-overlay').slideToggle(450);
+                        $('.full-screen-card').slideToggle(450);
+                    }
+                    $('.card-overlay:visible').html(data)
+                }
+            });
+        } else {
+            $('.card-overlay').hide(250);
+            $('.close-overlay').hide();
+            $('.full-screen-card').hide();
+        }
+    };
+    
+</script>
+
+</html>

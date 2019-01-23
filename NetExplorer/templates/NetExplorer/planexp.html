@@ -1,0 +1,385 @@
+{% extends 'NetExplorer/base.html' %}
+{% load static %}
+{% load staticfiles %}
+
+{% block title %}- PlanExp{% endblock title %}
+
+
+{% block toc %}
+<nav id="planexp-toc-container" class="col-sm-2">
+    <ul id="planexp-toc" class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="420">
+        <li><a class="planexp-toc-link" id="select-experiment-div-toc" href="#select-experiment-div">Select Experiment</a></li>
+        <li><a class="planexp-toc-link" id="planexp-summary-toc" href="#planexp-summary">Summary</a></li>
+        <li><a class="planexp-toc-link" id="planexp-dge-table-container-toc" href="#planexp-dge-table-container">DGE table</a></li>
+        <li><a class="planexp-toc-link" id="planexp-gene-expression-toc" href="#planexp-gene-expression">Gene Expression Plot</a></li>
+        <li><a class="planexp-toc-link" id="planexp-tsne-toc" href="#planexp-tsne">t-SNE Plot</a></li>
+        <li><a class="planexp-toc-link" id="planexp-network-toc" href="#planexp-network">Network</a></li>
+        <hr>
+        <li id="back_home"><a href="{% url 'index_view' %}" ><span class="glyphicon glyphicon-triangle-left"></span>Go back Home</a></li>
+    </ul>
+</nav>
+{% endblock toc %}
+
+{% block content %}
+<!-- HIDDEN CARD OVERLAY -->
+    <div id="button-container">
+        <div class="close-overlay" style="display: none;" title="Close card">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </div>
+        <div class="full-screen-card" title="Open in new window">
+            <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div id="card-overlay" class="card-overlay">
+        <div class="card-title">
+
+        </div>
+   </div>
+    
+    
+
+
+    <div class="panel panel-planexp">
+        <div class="panel-heading">
+            <div class="row row-eq-height">
+                <div class="col-sm-1 blast-icon-container">
+                    <img class="blast-icon-inside" src="{% static 'Images/planexp-icon-transparent.png' %}"/>
+                </div>
+                <div class="col-sm-11 blast-title">
+                    <h1>PlanExp</h1>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <!-- Select experiment card -->
+            <div id="select-experiment-div" class="planexp-card">
+                <div class="planexp-h1">Select Experiment and Database:<hr class="planexp-rule"></div>
+                <form class= "form-inline" method="GET" action="#">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select id="select-experiment" name="experiment" class="selectpicker" title="Select Experiment">
+                            <option value="" disabled selected>Select experiment</option>
+                            {% for exp in experiments %}
+                            <option value="{{ exp.name }}">{{ exp.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <select id="select-dataset" name="dataset" class="selectpicker" title="Select dataset">
+                            <option value="" disabled selected>Select dataset</option>
+                        </select>
+                    </div>
+                </form>
+            </div><!-- Select experiment card -->
+            
+            <!-- Summary card -->
+            <div id="planexp-summary" class="planexp-card">
+                
+            </div>
+            
+            <!-- Differential expression table -->
+            <div id="planexp-dge-table-container" class="planexp-card">
+                <h2 id="planexp-title">Differentially expressed genes</h2>
+                <hr class="planexp-rule">
+                <div class="form-group planexp-condition-selects">
+                    <h4>Conditions:</h4>
+                    <select id="planexp-dge-ctype" name="planexp-dge-ctype" class="selectpicker ctype-select" title="Select Condition Type">
+                    </select>
+                    <hr>
+                    <h4>Select conditions to compare</h4>
+                    <select id="planexp-dge-c1" name="condition1" class="selectpicker condition-select dge-table-condition-selects" title="Select Condition">
+                        <option value="" disabled selected>Select condition</option>
+                    </select>
+                    <select id="planexp-dge-c2" name="condition2" class="selectpicker condition-select dge-table-condition-selects" title="Select Condition">
+                        <option value="" disabled selected>Select condition</option>
+                    </select>
+                    
+                </div>
+                <div id="dge-table-notfound">
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    Condition comparison not available.
+                </div>
+                <div id="planexp-dge-table">
+                </div>
+
+                <div id="plot-container">
+                    <div id="volcano-plot">
+                    </div>
+                </div>
+            </div> <!-- Differential expression table -->
+
+            <!-- Gene Expression Plot-->
+            <div id="planexp-gene-expression" class="planexp-card">
+                <h2 id="planexp-title">Gene Expression</h2>
+                <hr class="planexp-rule">
+                <div class="input-group gene-expression-search-container">
+                    <label for="genesymbol">Gene Symbol/s:</label>
+                    <input type="text" id="gene-expression-search" class="form-control" name="genesymbol" placeholder="Enter Gene Symbols">
+                    <span class="input-group-btn input-grp-withlabel">
+                        <button id="plot-expression-btn" type="submit" value=" Send" class="btn btn-danger" id="submit">Plot expression</button>
+                    </span>
+                </div>
+                <br>
+                <label for="gene-expression-ctype">Conditions:</label><br>
+                <select id="gene-expression-ctype" name="gene-expression-ctype" class="selectpicker ctype-select" title="Select Condition Type">
+                    <option value="Experimental" selected>Experimental</option>
+                </select>
+
+                <br>
+                <div id="plot-container">
+                    <div id="plot-genenotfound">
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        Gene/Symbol not found
+                    </div>
+                    <div id="expression-plot-loading">
+                            <img class="planexp-loading-img" src="{% static 'Images/loading-planexp.gif' %}"/>
+                    </div>
+                    <div id="expression-plot">
+                    </div>
+                </div>
+            </div> <!-- Gene Expression Plot -->
+
+
+            <!-- tSNE plot -->
+            <div id="planexp-tsne" class="planexp-card">
+                <h2 id="planexp-title">t-SNE plot</h2>
+                <hr class="planexp-rule">
+
+                <h4>Color By:</h4>
+                <!-- Condition-vs-GeneSymbol tab header -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tsne-conditions-tab">Conditions</a></li>
+                    <li><a data-toggle="tab" href="#tsne-gene-tab">Gene Symbol</a></li>
+                </ul>
+                  
+
+                <div class="tab-content">
+                    <!-- Condition tab -->
+                    <div id="tsne-conditions-tab" class="tab-pane fade in active">
+                        <label for="tsne-ctype">Conditions:</label><br>
+                        <select id="tsne-ctype" name="tsne-ctype" class="selectpicker ctype-select" title="Select Condition Type">
+                            <option value="Experimental" selected>Experimental</option>
+                        </select>
+                    </div>
+
+                    <!-- Gene Symbol tab -->
+                    <div id="tsne-gene-tab" class="tab-pane fade">
+                        <div class="input-group gene-expression-search-container">
+                            <label for="genesymbol">Gene Symbol/s:</label>
+                            <input type="text" id="tsne-search" class="form-control" name="genesymbol" placeholder="Enter Gene Symbols">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <span class="input-group-btn input-grp-withlabel">
+                    <button id="plot-tsne-btn" type="submit" value=" Send" class="btn btn-danger" id="submit">Plot tSNE</button>
+                </span>
+
+                
+                <br>
+                <div id="plot-container">
+                    <div id="tsne-plot-genenotfound">
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        Gene/Symbol not found
+                    </div>
+                    <div id="tsne-plot-loading">
+                        <img class="planexp-loading-img" src="{% static 'Images/loading-planexp.gif' %}"/>
+                    </div>
+                    <div id="tsne-plot">
+                    </div>
+                </div>
+
+            </div> <!-- tSNE plot-->
+            
+            <div id="dialog-confirm" title="Delete Graph?">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+                    The graph will be permanently removed, are you sure you want to delete the graph?
+                </p>
+            </div>
+
+            <div id="planexp-network" class="planexp-card">
+                <h2 id="planexp-title">Network</h2>
+                <hr class="planexp-rule">
+
+                <!-- PLANEXP CYTOSCAPE BUTTONS -->
+                <div id="planexp-cyt-buttons">
+                        <div id="planexp-cyt-center" class="btn btn-default planexp-cyt-btn"><span class="glyphicon glyphicon-fullscreen"></span> Center</div>
+                        <select id="planexp-cyt-layout" name="planexp-cyt-layout" class="selectpicker" title="Layout" >
+                                <option value="Grid">Grid</option>
+                                <option value="Cola">Cola</option>
+                                <option value="Circle">Circle</option>
+                                <option value="Dagre">Dagre</option>
+                                <option value="Random">Random</option>
+                        </select>
+                        
+                        <div class="vertical-sep"></div>
+
+                        <div id="planexp-cyt-edit" class="btn btn-default planexp-cyt-btn"><span class="glyphicon glyphicon-pencil"></span> Edit</div>
+                        <label class="btn btn-default planexp-cyt-btn">
+                            <span class="glyphicon glyphicon-open"></span>
+                            Import <input type="file" id="import-json" name="files[]" style="display:none;"/>
+                        </label>
+                        <div id="planexp-cyt-export" class="btn btn-default planexp-cyt-btn"><span class="glyphicon glyphicon-save"></span> Export</div>
+                        <a href="#" id="save-image-link" download="graph-export-img">
+                            <div id="planexp-cyt-save" class="btn btn-default planexp-cyt-btn"><span class="glyphicon glyphicon-picture"></span> Save</div>
+                        </a>
+                        <div id="planexp-cyt-delete" class="btn btn-default planexp-cyt-btn"><span class="glyphicon glyphicon-trash"></span> Delete</div>
+                </div>
+                <br>
+
+                <div id="planexp-cyt-wrapper">
+                    <div id="planexp-cyt"> </div>
+                    <div id="planexp-cyt-controls">
+                        <h3>Color Genes:</h3>
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#one-sample">One Sample</a></li>
+                            <li><a data-toggle="tab" href="#two-sample">Two Samples</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="one-sample" class="tab-pane fade in active">
+                                <!-- ONE SAMPLE -->
+                                <select id="network-color-conditions" name="network-color-conditions" class="selectpicker condition-select network-color-condition-selects" title="Select Condition">
+                                    <option value="" disabled selected>Select condition</option>
+                                </select>
+                                <br>
+
+                                <div id="gradient-red" class="color-pick gradient-red active"></div>
+                                <div id="gradient-blue" class="color-pick gradient-blue"></div>
+                                <div id="gradient-green" class="color-pick gradient-green"></div>
+
+                            </div>
+                            <div id="two-sample" class="tab-pane fade in">
+                                <!-- TWO SAMPLES -->
+                                <select id="network-color-condition1" name="network-color-condition1" class="selectpicker condition-select network-color-condition-selects" title="Select Condition">
+                                    <option value="" disabled selected>Select condition</option>
+                                </select>
+                                <br>
+                                <select id="network-color-condition2" name="network-color-condition2" class="selectpicker condition-select network-color-condition-selects" title="Select Condition">
+                                    <option value="" disabled selected>Select condition</option>
+                                </select>
+                                <br>
+
+                                <div id="gradient-blue-to-red" class="color-pick gradient-blue-to-red active"></div>
+                                <div id="gradient-yellow-to-blue" class="color-pick gradient-yellow-to-blue"></div>
+                                <div id="gradient-red-to-green" class="color-pick gradient-red-to-green"></div>
+                            </div>
+                        </div>
+
+                        
+                        <hr>
+                        <h3>Filter Genes:</h3>
+                        <h4>Select Condition Type:</h4>
+                        <select id="network-ctype" name="network-ctype" class="selectpicker ctype-select" title="Select Condition Type">
+                        </select>
+                        <br><br>
+                        <h4>Select Conditions:</h4>
+                        <select id="network-conditions" name="network-condition" class="selectpicker condition-select network-condition-selects" title="Select Condition" multiple>
+                            <option value="" disabled selected>Select condition</option>
+                        </select>
+                        <br><br>
+                        <h4>Select Threshold (<i class="units">normcounts</i>):</h4>
+                        <input type="range" name="minExp" id="minExp" value="2.5" min="0.25" max="5" step="0.25" oninput="minExpOutput.value = minExp.value"/>
+                        <div class="minExp-container">
+                            <output name="minExpOutput" id="minExpOutput">2.5</output>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div> <!-- Planexp network-->
+
+
+        </div> <!-- Planexp panel body div -->
+        
+    </div><!-- Planexp panel div -->
+
+
+    <div id="edit-graph-dialog">
+        <div id="edit-graph-dialog-header">
+            <span class="edit-graph-title">EDIT NETWORK</span>
+            <div id="close-edit-graph" title="Close">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </div>
+        </div>
+        <div id="edit-graph-body">
+            <div id="edit-graph-top-spacing"></div>
+
+            <div id="cytoscape-editor"></div>
+            <div id="cytoscape-editor-controls">
+                <h4>Add node:</h4>
+                <input type="text" id="editor-add-node-text" name="editor-add-node-text" placeholder="Enter gene symbol">
+                <input type="text" id="editor-add-node-homolog" name="editor-add-node-homolog" placeholder="Enter homolog symbol">
+                <div class="center-btn">
+                    <div id="editor-add-node-btn" class="btn btn-danger">Add +</div>
+                </div>
+
+                <hr>
+
+                <h4>Delete node:</h4>
+                <div class="center-btn">
+                    <fieldset>
+                        <div class="switch-toggle switch-candy editor-delete-node editor-switch">
+                            <form action="" id="editor-delete-node-form">
+                                <input id="radio-delete-node-off" name="editor-delete-node" type="radio" value="off" checked>
+                                <label class="editor-delete-node-btn" for="radio-delete-node-off" onclick="">OFF</label>
+                                <input id="radio-delete-node-on" value="on" name="editor-delete-node" type="radio">
+                                <label class="editor-delete-node-btn" for="radio-delete-node-on" onclick="">ON</label>
+                                <a></a>
+                            </form>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <hr>
+                <h4>Delete interaction:</h4>
+                <div class="center-btn">
+                    <fieldset>
+                        <div class="switch-toggle switch-candy editor-delete-interaction editor-switch">
+                            <form action="" id="editor-delete-interaction-form">
+                                <input id="radio-delete-interaction-off" name="editor-delete-interaction" type="radio" value="off" checked>
+                                <label class="editor-delete-interaction-btn" for="radio-delete-interaction-off" onclick="">OFF</label>
+                                <input id="radio-delete-interaction-on" value="on" name="editor-delete-interaction" type="radio">
+                                <label class="editor-delete-interaction-btn" for="radio-delete-interaction-on" onclick="">ON</label>
+                                <a></a>
+                            </form>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+                <hr>
+                <div id="editor-done-btns" class="center-btn">
+                    <div id="editor-cancel" class="btn btn-default"> Cancel </div>
+                    <div class="space"></div>
+                    <div id="editor-save" class="btn btn-danger">Save</div>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+
+
+    
+    {% endblock content %}
+    
+    
+    
+    {% block scripts %}
+    <script src="https://unpkg.com/lodash@4.17.4"></script>
+    <script src="{% static 'js/cytoscape-edgehandles.js' %}"></script>
+    <script src="https://cdn.plot.ly/plotly-1.32.0.min.js"></script>
+    <script src="{% static 'js/scrollTo.js' %}"></script>
+    <script src="{% static 'js/FileSaver.js' %}"></script>
+    <script src="{% static 'js/dagre.js' %}"></script>
+    <script src="{% static 'js/cytoscape-dagre.js' %}"></script>
+    <script src="{% static 'js/cytoscape-cola-min.js' %}"></script>
+    <script src="{% static 'js/cy-editor.js' %}"></script>
+    <script src="{% static 'js/planexp.js' %}"></script>
+    <script src="{% static 'js/planexp-cytoscape-definition.js' %}"></script>
+    {% endblock scripts%}
+    
+
+    

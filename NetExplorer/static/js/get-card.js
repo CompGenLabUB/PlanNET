@@ -7,7 +7,7 @@ function getCard(card_data) {
     elementID = "card-overlay";
     $.ajax({
         type: "GET",
-        url: "/info_card",
+        url: window.ROOT + "/info_card",
         data: {
             'target'    : card_data.target,
             'targetDB'  : card_data.targetDB,
@@ -15,20 +15,15 @@ function getCard(card_data) {
         },
         success : function(data) {
             // Add history entry!
-            history.pushState(card_data, null, "/PlanNET/gene_card/" + card_data.targetDB + "/" + card_data.target);
+            history.pushState(card_data, null, window.location.href);
 
             // Get the HTML data
             $('[id="' + elementID + '"]').html(data);
 
             // Show the hidden div
-            $('[id="card-overlay"]').slideToggle(450);
-            $('.close-overlay').slideToggle(450);
-            $('.full-screen-card').slideToggle(450);
-
-            // Activate DataTable
-            $('#int-table').DataTable({
-                "order": [[ 1, "desc" ]]
-            });
+            $('[id="card-overlay"]').show(450);
+            $('.close-overlay').show(450);
+            $('.full-screen-card').show(450);
 
         }
     });
@@ -38,7 +33,7 @@ function getCard(card_data) {
 // Function that opens gene card when clicking on small-searchpanel
 
 $(function() {
-    $('.card-trigger').click(function() {
+    $(document.body).on('click', '.card-trigger', function() {
         var card_data = {
             target  : $(this).attr("target"),
             targetDB: $(this).attr("targetDB"),
@@ -48,6 +43,5 @@ $(function() {
         // Do AJAX request and load the html data
         getCard(card_data);
     });
-
 
 });

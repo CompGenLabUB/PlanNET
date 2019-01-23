@@ -4,108 +4,137 @@
 
 
 {% block content %}
-            <!--
-            <div class="panel panel-info" id="gf-container">
-                <div class="panel-heading">Gene Finder</div>
-                <a class="btn btn-info app-button" href="#">Search</a>
-                <div class="panel-body app-panel" >
-                    <p>Text-based search of genes.</p>
-                    <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
-                </div>
-            </div>
+<!--
+    <div class="panel panel-info" id="gf-container">
+        <div class="panel-heading">Gene Finder</div>
+        <a class="btn btn-info app-button" href="#">Search</a>
+        <div class="panel-body app-panel" >
+            <p>Text-based search of genes.</p>
+            <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
+        </div>
+    </div>
+    
+-->
 
-        -->
+<div class="update-msg">
+    <span class="glyphicon glyphicon-bullhorn"></span>&nbsp&nbsp&nbsp PlanNET has been updated to version 1.2. See <a href="{% url 'about' %}#update-notes" title="Update notes">update notes</a>.
+</div>
+<hr>
+<div class="row row-app">
 
-        <div class="row row-app">
-            <div class="col-sm-6">
-                <div class="panel panel-info app-container" >
-                    <div class="panel-heading">
-                        Gene Search
-                        <a href="{% url tutorial %}#genesearch" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
-                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                        </a>
-                    </div>
-                    <div class="panel-body app-panel" >
+    <!-- Gene Explorer -->
+    <div class="col-sm-6">
+        <div class="panel panel-info app-container" >
+            <div class="panel-body app-panel" >
+                <a title="Go to Gene Search" href="{% url 'gene_search' %}">
+                    <div class="app-btn">
                         <img class="app-icon" src="{% static 'Images/gene-finder-icon.png' %}"/>
-                        <a class="btn btn-info app-button" href="{% url gene_search %}">Search</a>
-                        <p>Search for genes and contigs using identifiers.</p>
                     </div>
+                </a>
+                <p>Search for genes and contigs using identifiers.</p>
+                <a href="{% url 'tutorial' %}#genesearch" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Net Explorer-->
+    <div class="col-sm-6">
+            <div class="panel panel-success app-container" >
+                <div class="panel-body app-panel">
+                    <a title="Go to Net Explorer" href="{% url 'net_explorer' %}">
+                        <div class="app-btn">
+                            <img class="app-icon" src="{% static 'Images/network-icon.png' %}"/>
+                        </div>
+                    </a>
+                    <p>Explore the predicted protein-protein interactions network.</p>
+                    <a href="{% url 'tutorial' %}#netexplorer" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    </a>
                 </div>
             </div>
+        </div>
+    
+    
 
-            <div class="col-sm-6">
+</div>
 
-                <div class="panel panel-blast app-container" >
-                    <div class="panel-heading">
-                        BLAST
-                        <a href="{% url tutorial %}#blast" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
-                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                        </a>
-                    </div>
-                    <div class="panel-body app-panel">
+<div class="row row-app">
+
+    {% if not user.is_authenticated %}
+        <div class="col-sm-2"> </div>
+    {% endif %}
+    <!-- BLAST -->
+    <div class="col-sm-4">
+        <div class="panel panel-blast app-container" >
+            <div class="panel-body app-panel">
+                <a title="Go to BLAST" href="{% url 'blast' %}">
+                    <div class="app-btn">
                         <img class="app-icon" src="{% static 'Images/blast-icon.png' %}"/>
-                        <a class="btn btn-blast app-button" href="{% url blast %}">Blast</a>
-                        <p>BLAST the different planarian transcriptomes.</p>
                     </div>
+                </a>
+                <p>BLAST the different planarian transcriptomes.</p>
+                <a href="{% url 'tutorial' %}#blast" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                   <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PATHWAY FINDER -->
+    <div class="col-sm-4">
+        
+            <div class="panel panel-warning app-container" >
+                <div class="panel-body app-panel">
+                    <a title="Go to Pathway Finder" href="{% url 'path_finder' %}">
+                        <div class="app-btn">
+                            <img class="app-icon" src="{% static 'Images/pathway-icon.png' %}"/>
+                        </div>
+                    </a>
+                    <p>Look for pathways in the different interaction networks.</p>
+                    <a href="{% url 'tutorial' %}#pathwayfinder" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    </a>
                 </div>
-
-
             </div>
         </div>
 
-        <div class="row row-app">
-            <div class="col-sm-6">
-
-                <div class="panel panel-success app-container" >
-                    <div class="panel-heading">
-                        Net Explorer
-                        <a href="{% url tutorial %}#netexplorer" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
-                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                        </a>
-                    </div>
-                    <div class="panel-body app-panel">
-                        <img class="app-icon" src="{% static 'Images/network-icon.png' %}"/>
-                        <a class="btn btn-success app-button" href="{% url net_explorer %}">Explore</a>
-                        <p>Explore the predicted protein-protein interactions network.</p>
-                    </div>
+    <!-- PlanEXP -->
+    {% if user.is_authenticated %}
+        <div class="col-sm-4">
+            <div class="panel panel-planexp app-container" >
+                <div class="panel-body app-panel">
+                    <a title="Go to PlanExp"  href="{% url 'planexp' %}">
+                        <div class="app-btn">
+                            <img class="app-icon" src="{% static 'Images/planexp-icon.png' %}"/>
+                        </div>
+                    </a>
+                    <p>Explore RNA-seq and SingleCell expression experiments.</p>
+                    <a href="{% url 'tutorial' %}#planexp" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    </a>
                 </div>
-
-
-
-            </div>
-            <div class="col-sm-6">
-
-                <div class="panel panel-warning app-container" >
-                    <div class="panel-heading">
-                        Pathway Finder
-                        <a href="{% url tutorial %}#pathwayfinder" data-toggle="tooltip" data-placement="top" title="Go to Tutorial">
-                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                        </a>
-                    </div>
-
-                    <div class="panel-body app-panel">
-                        <img class="app-icon" src="{% static 'Images/pathway-icon.png' %}"/>
-                        <a class="btn btn-warning app-button" href="{% url path_finder %}">Find</a>
-                        <p>Look for pathways in the different interaction networks.</p>
-                    </div>
-                </div>
-
-
             </div>
         </div>
+    {% else %}
+        <div class="col-sm-2"> </div>
+    {% endif %}
+
+</div>
 
 
 <!--
-            <div class="row row-app">
-                <div class="col-sm-6">
-
-                </div>
-
-                <div class="col-sm-6">
-
-                </div>
-
-            </div>
+    <div class="row row-app">
+        <div class="col-sm-6">
+            
+        </div>
+        
+        <div class="col-sm-6">
+            
+        </div>
+        
+    </div>
 -->
 
 {% endblock content %}
@@ -114,9 +143,9 @@
 
 
 {% block scripts %}
-    <!-- CHANGE ACTIVE NAVBAR BUTTON -->
-    <script>
-        $(".navbar-element").toggleClass('active inactive');
-        $("#navbar-home").toggleClass('inactive active')
-    </script>
+<!-- CHANGE ACTIVE NAVBAR BUTTON -->
+<script>
+    $(".navbar-element").toggleClass('active inactive');
+    $("#navbar-home").toggleClass('inactive active')
+</script>
 {% endblock scripts%}

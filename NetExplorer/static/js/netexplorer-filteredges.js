@@ -4,6 +4,9 @@
 function filterByConfidence(confvalue, cyobj, plenval) {
     var to_show_selector = "";
     var to_hide_selector = "";
+    if (! confvalue) {
+        confvalue = defaultSliderValue;
+    }
     if (plenval == "hide") {
         to_show_selector = "edge[pathlength=1][probability>=" + confvalue + "]";
         to_hide_selector = "edge[probability<" + confvalue + "]";

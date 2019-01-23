@@ -37,7 +37,7 @@
 
     <div class="panel-body">
 
-        <form id="blast_form" method="post" enctype="multipart/form-data" action="{% url blast %}">
+        <form id="blast_form" method="post" enctype="multipart/form-data" action="{% url 'blast' %}">
             {% csrf_token %}
 
             <h2>Query</h2>
@@ -53,9 +53,10 @@
             <hr>
             <h2>Database</h2>
             <select id="database-selection" name="database" class="selectpicker" title="Select Database">
-                <option value="Human">Human</option>
+                <option data-content="<span class='badge badge-success human-select'>Human</span>" value="Human">Human</option>
+                <option data-divider="true"></option>
                 {% for db in databases %}
-                    <option value="{{ db }}">{{ db }}</option>
+                    <option data-content="<img class='legend-db' src='{% static 'Images/' %}legend-{{ db.name }}.png'>{{ db.name }}" value="{{ db.name }}">{{ db.name }}</option>
                 {% endfor %}
             </select>
             <br><br>

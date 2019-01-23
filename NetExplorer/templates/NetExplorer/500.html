@@ -1,1 +1,19 @@
-500 error
+{% load static %}
+<head>
+    <link rel="shortcut icon" href="{% static 'Images/mini-logo.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>PlaNet - 404 Page not found</title>
+</head>
+
+<body>
+    <div id="body-wrapper">
+        <div id="error404">
+            <img src="{% static 'Images/500.png' %}" id="img404">
+            <h1>Got lost?<h1>
+            <h2>Go back to <a href="/PlanNET">PlanNET</a></h2>
+        </div>
+    </div>
+</body>
+
+
+<script src="{% static 'js/root.js' %}"></script>

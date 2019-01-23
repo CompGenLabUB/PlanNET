@@ -18,6 +18,16 @@
         <link rel="stylesheet" href="{% static 'css/jquery-ui-all.theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
         <link rel="shortcut icon" href="{% static 'Images/mini-logo.ico' %}">
+        <script>
+                function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          
+              ga('create', 'UA-67292161-1', 'auto');  // Replace with your property ID.
+              ga('send', 'pageview');
+        </script>
+
         <title>PlanNET - Net Explorer</title>
         <script>
             var graphelements = "";
@@ -47,6 +57,20 @@
         </div>
         {% endif %}
 
+        <!-- SEARCH BAR -->
+        <div id="search-netexplorer">
+          <div class="input-group">
+             <input type="text" id="genename-graph" class="form-control" placeholder="Search Gene" name="search">
+            <div class="input-group-btn">
+              <a class="info-tooltip" title="Search and highlight gene on graph">
+                  <button id="search-netexplorer-btn" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+              </a>
+              <a class="info-tooltip" title="Remove highlight">
+                  <button id="removesearch" class="btn btn-default"> <span class="glyphicon glyphicon-remove"></span></button>
+              </a>
+            </div>
+          </div>
+        </div>
 
         <!-- CYTOSCAPE DIV -->
         <div id="cyt">
@@ -59,7 +83,7 @@
                     <a class="info-tooltip legend-tooltip" title="
                     <h4>Legend<hr></h4>
                     <img class='legend-db' src='{% static 'Images/legend-Human.png' %}'/> Human<br>
-                    {% for db in databases %}<img class='legend-db' src='{% static 'Images/legend-' %}{{ db }}.png'/>{{ db }}<br>
+                    {% for db in databases %}<img class='legend-db' src='{% static 'Images/legend-' %}{{ db.name }}.png'/>{{ db.name }}<br>
                     {% endfor %}
                     <hr>
                     <img class='legend-db' src='{% static 'Images/legend-size.png' %}'/> Degree (No. of interactions)<br>
@@ -241,6 +265,7 @@
                             </div>
                     </div>
                 </div>
+                <div style="height:100px"> </div>
                 <div id="map-expression-dialog-send">
                     <div id="map-expression-error" class="panel panel-danger">
                         <div class="panel-heading">
@@ -267,29 +292,31 @@
 
         <!-- CYTOSCAPE CONTROLS -->
         <div id="cyt-controls">
+            <div class="user-in-controls">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'account' %}"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a>
+                {% endif %}
+            </div>
             <div id="cyt-controls-header">
-
-
                 <div class="back-div">
-                    <a href="{% url index_view %}" class="info-tooltip"
+                    <a href="{% url 'index_view' %}" class="info-tooltip"
                     title="Back to PlanNET"><span class="glyphicon glyphicon-home"></span></a>
                     <hr>
-                    <a target="_blank" href="{% url tutorial %}#netexplorer" class="info-tooltip"
+                    <a target="_blank" href="{% url 'tutorial' %}#netexplorer" class="info-tooltip"
                     title="Go to Tutorial"><span class="glyphicon glyphicon-question-sign"></span></a>
                 </div>
                 <img class="app-icon-inside" id="cyt-explorer-icon" src="{% static 'Images/network-icon.png' %}"/>
-                <div class="app-title"><h2 id="netexplorer-title">Net Explorer</h2></div>
 
                 <!-- Add Node Form-->
                 <div id="add-node-container">
-                    <form id="add_node" class= "form" method="GET" action="{% url net_explorer %}">
+                    <form id="add_node" class= "form" method="GET" action="{% url 'net_explorer' %}">
                         {% csrf_token %}
                         <div class="form-group">
                             <input type="text" class="form-control netexplorer-form" name="genesymbol" placeholder="Enter Symbol">
                             <select name="database" class="selectpicker" data-width="100%">
                                 <option value="" selected disabled>Select Database</option>
                                 {% for db in databases %}
-                                    <option value="{{ db }}">{{ db }}</option>
+                                    <option data-content="<img class='legend-db' src='{% static 'Images/' %}legend-{{ db.name }}.png'>{{ db.name }}" value="{{ db.name }}">{{ db.name }}</option>
                                 {% endfor %}
                             </select>
                             <br>
@@ -314,35 +341,40 @@
                                     <div class="funkyradio-success">
                                         <input  id="nodes-type" type="radio" class="netexplorer-form-type" name="type" value="node" checked/>
                                         <label for="nodes-type">Nodes</label>
+                                        <span class="glyphicon glyphicon-info-sign" style="color:#F8F8F8"></span>
                                     </div>
                                 </a>
                                 <a class="info-tooltip" title="
                                     Search KEGG pathways using KEGG pathway identifiers, eg.: hsa04930.
                                 ">
-                                    <div class="funkyradio-success">
+                                    <div id="kegg-funkyradio" class="funkyradio-success">
 
                                         <input id="pathway-type" type="radio" class="netexplorer-form-type" name="type" value="pathway"/>
-                                        <label for="pathway-type">Pahtway</label>
+                                        <label for="pathway-type">Pahtway</label> 
+                                        <a class="info-tooltip" href="https://www.kegg.jp/kegg-bin/search_pathway_text?map=hsa&keyword=&mode=1&viewImage=true" target="_blank" title="See all Kegg Pathways">
+                                            <span class="glyphicon glyphicon-info-sign"></span>
+                                        </a>
                                     </div>
                                 </a>
 
                             </div>
-                            <br>
                             <button type="submit" value=" Send" class="btn btn-success" id="submit_add_node" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div id="node-not-found"><div class="panel panel-danger"><div class="panel-heading node-not-found-err"> </div></div></div>
+            <div id="node-not-found" style="display: none;"><div class="panel panel-danger"><div class="panel-heading node-not-found-err"> </div></div></div>
             <hr>
+        
+            
         <div id="layout-homologs-container">
             <!-- Layout Selection-->
             <div class="dropdown" id="select-layout-container">
                 <div class="row control-row">
-                    <div class="col-sm-6" id="layout-title">
-                        <h3>Layout</h3>
+                    <div class="col-sm-4" id="layout-title">
+                        <span class="cyt-controls-subtitle">Layout</span>
                     </div>
-                    <div class="col-sm-6" id="layout-dropdown">
+                    <div class="col-sm-8" id="layout-dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" id="layout-toggle-btn">Cose
                             <span class="caret"></span>
                         </button>
@@ -361,10 +393,10 @@
 
             <!-- SHOW HOMOLOGS -->
             <div class="row control-row">
-                <div class="col-sm-6" id="show-homologs-container-title">
-                    <h3>Homologs</h3>
+                <div class="col-sm-4" id="show-homologs-container-title">
+                    <span class="cyt-controls-subtitle">Homologs</span>
                 </div>
-                <div class="col-sm-6" id="show-homologs-toggle">
+                <div class="col-sm-8" id="show-homologs-toggle">
                     <label class="switch-light switch-candy show-homologs-label" onclick="">
                         <input type="checkbox" id="show-homologs">
                         <span class="show-homolog-btn">
@@ -377,6 +409,45 @@
             </div>
             <hr>
         </div>
+
+        <!--- "On click" Behaviour -->
+        <div id="on-click-container">
+                <h3>On Click <a  class="info-tooltip"
+                title="
+                    This option will determine what happens when you click on a node.
+                    <ul>
+                        <li>Card: An information card for the node will appear.</li>
+                        <li>Expand: All the elements interacting with the node will be added to the graph.</li>
+                        <li>Delete: The node and all its interactions will be removed from the graph.</li>
+                    </ul>
+                "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a></h3>
+
+                <fieldset>
+                    <div class="switch-toggle switch-candy behaviour-div">
+                        <form action="" id="behaviour-form">
+                            <input id="radio-card" name="behaviour" type="radio" value="card" checked>
+                            <label class="behaviour-btn" for="radio-card" onclick="">Card</label>
+                            <input id="radio-expand" value="expand" name="behaviour" type="radio">
+                            <label class="behaviour-btn" for="radio-expand" onclick="">Expand</label>
+                            <input id="radio-delete" value="delete" name="behaviour" type="radio">
+                            <label class="behaviour-btn" for="radio-delete" onclick="">Delete</label>
+                            <a></a>
+                        </form>
+                    </div>
+                </fieldset>
+
+                <!--<input
+                    class="click-behaviour"
+                    checked type="checkbox"
+                    data-toggle="toggle"
+                    data-on="Show card"
+                    data-off="Expand"
+                    data-onstyle="info"
+                    data-offstyle="success"
+                > -->
+                <hr>
+            </div>
+            <br>
 
         <!-- SHOW CONNECTIONS -->
         <div id="showconnections-container">
@@ -424,7 +495,7 @@
             </div>
             <div class="slider-symbol-plus">+</div>
 
-            <br>
+            <br><hr>
             <div class="plen-container">
                 <h3>Non-Human interactions</h3>
                 <fieldset id="show-plen">
@@ -448,46 +519,33 @@
             -->
             </div>
             <hr>
+
+            <div class="plen-container">
+                <h3>Node Labels</h3>
+                <fieldset id="change-labels">
+                    <div class="switch-toggle switch-candy show-plen-label">
+                        <input id="h-label" name="changeLabels" type="radio" value="human">
+                        <label class="show-plen-label" for="h-label" onclick="">Human</label>
+                        <input id="pl-label" name="changeLabels" type="radio" value="planarian" checked>
+                        <label class="show-plen-label" for="pl-label" onclick="">Planarian</label>
+                        <a></a>
+                    </div>
+                </fieldset>
+                <!--
+                <div class="switch-light switch-candy show-plen-label" onclick="">
+                    <input id="hide-plen" name="show-plen" type="radio">
+                    <label for="hide-plen" onclick="">Hide</label>
+                    <input id="show-plen" name="show-plen" type="radio">
+                    <label for="show-plen" onclick="">Show</label>
+                    <a></a>
+                </div>
+            -->
+            </div>
+            <hr>
         </div>
 
 
-            <!--- "On click" Behaviour -->
-            <div id="on-click-container">
-                <h3>On Click <a  class="info-tooltip"
-                title="
-                    This option will determine what happens when you click on a node.
-                    <ul>
-                        <li>Card: An information card for the node will appear.</li>
-                        <li>Expand: All the elements interacting with the node will be added to the graph.</li>
-                        <li>Delete: The node and all its interactions will be removed from the graph.</li>
-                    </ul>
-                "><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a></h3>
-
-                <fieldset>
-                    <div class="switch-toggle switch-candy behaviour-div">
-                        <form action="" id="behaviour-form">
-                            <input id="radio-card" name="behaviour" type="radio" value="card" checked>
-                            <label class="behaviour-btn" for="radio-card" onclick="">Card</label>
-                            <input id="radio-expand" value="expand" name="behaviour" type="radio">
-                            <label class="behaviour-btn" for="radio-expand" onclick="">Expand</label>
-                            <input id="radio-delete" value="delete" name="behaviour" type="radio">
-                            <label class="behaviour-btn" for="radio-delete" onclick="">Delete</label>
-                            <a></a>
-                        </form>
-                    </div>
-                </fieldset>
-
-                <!--<input
-                    class="click-behaviour"
-                    checked type="checkbox"
-                    data-toggle="toggle"
-                    data-on="Show card"
-                    data-off="Expand"
-                    data-onstyle="info"
-                    data-offstyle="success"
-                > -->
-                <hr>
-            </div>
+            
 
             <div id="expression-container">
                 <h3>Show Expression Data <a class="info-tooltip" title="
@@ -564,7 +622,7 @@
                         </div>
 
                         <div id="upload-graph-container" class="col-md-3 cyto-button-ind">
-                            <form enctype="multipart/form-data" method="post" id="upload-graph-form" action="{% url net_explorer %}">
+                            <form enctype="multipart/form-data" method="post" id="upload-graph-form" action="{% url 'net_explorer' %}">
                                 {% csrf_token %}
                                 <label for="myfile" class="btn btn-default"><span class="glyphicon glyphicon-open" aria-hidden="true"></span></label>
                                 <input type="file" onchange="this.form.submit()" name="myfile" id="myfile" class="upload" style="box-sizing:border-box;">
@@ -612,11 +670,11 @@
 
         <!-- Get info Card on click -->
         <!-- Gene Card -->
-        <div id="button-container">
-            <div class="close-overlay" title="Close card">
+        <div id="button-container" >
+            <div class="close-overlay" title="Close card" style="display: none;">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </div>
-            <div class="full-screen-card" title="Open in new window">
+            <div class="full-screen-card" title="Open in new window" style="display: none;">
                 <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
             </div>
         </div>
@@ -631,6 +689,7 @@
 
 
         <!-- SCRIPTS -->
+        <script src="{% static 'js/root.js' %}"></script>
         <script src="{% static 'js/jquery-min.js' %}"></script>
         <script src="{% static 'js/cytoscape.js' %}"></script>
         <script src="{% static 'js/netexplorer-cytoscape-definition.js' %}"></script>
@@ -638,9 +697,11 @@
         <script src="{% static 'js/netexplorer-showhomologs.js' %}"></script>
         <script src="{% static 'js/netexplorer-filteredges.js' %}"></script>
         <script src="{% static 'js/get-card.js' %}"></script>
+        <script src="{% static 'js/netexplorer-change-labels.js' %}"></script>
         <script src="{% static 'js/netexplorer-addnode.js' %}"></script>
         <script src="{% static 'js/netexplorer-cytoscape.js' %}"></script>
         <script src="{% static 'js/netexplorer-showconnections.js' %}"></script>
+        <script src="{% static 'js/search-node.js' %}"></script>
         <script src="{% static 'js/jquery_cookie.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/jquery-ui-all.min.js' %}"></script>
@@ -651,7 +712,6 @@
         <script src="{% static 'js/bootstrap-slider.js' %}"></script>
         <script src="{% static 'js/dagre.js' %}"></script>
         <script src="{% static 'js/cytoscape-dagre.js' %}"></script>
-        <script src="{% static 'js/cytoscape-cola.js' %}"></script>
         <script src="{% static 'js/cytoscape-cola-min.js' %}"></script>
         <script src="{% static 'js/FileSaver.js' %}"></script>
         <script src="{% static 'js/bootstrap-switch.min.js' %}"></script>

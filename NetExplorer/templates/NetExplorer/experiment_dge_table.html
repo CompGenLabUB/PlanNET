@@ -1,0 +1,53 @@
+{% load staticfiles %} 
+
+{% if expressions %}
+    <table id="dge-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Gene Symbol</th>
+                <th>Condition 1</th>
+                <th>Condition 2</th>
+                <th>Fold Change</th>
+                <th>P-Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exp in expressions %}
+                <tr>
+                        
+                    <td>
+                        <a class="card-trigger"
+                            title="Click to view info card"
+                            target="{{ exp.gene_symbol }}"
+                            targetDB="{{ database.name }}">
+                            {{ exp.gene_symbol }}
+                        </a>
+                    </td>
+                    <td>{{ exp.condition1.name }}</td>
+                    <td>{{ exp.condition2.name }}</td>
+                    <td>{{ exp.fold_change }}</td>
+                    <td>{{ exp.pvalue }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
+    <script src="{% static 'js/root.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $("#dge-table").DataTable({
+                "order": [[ 3, "desc" ]],
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv'
+                ]
+            });
+        });
+    </script>
+    <script src="{% static 'js/get-card.js' %}"></script>
+
+{% else %}
+   
+{% endif %}

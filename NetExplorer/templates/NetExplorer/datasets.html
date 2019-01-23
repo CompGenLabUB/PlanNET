@@ -29,15 +29,15 @@
 
     <!-- TRANSCRIPTOMES DIVS -->
     {% for db in databases %}
-        <div class="panel panel-default">
+        <div class="panel panel-default panel-transcriptome">
             <div class="panel-heading">
-                <a class="about-title" name="{{ db }}">
-                    <h4><img class='legend-db' src="{% static 'Images/legend-' %}{{ db }}.png"/>{{ db }}</h4>
+                <a class="about-title" name="{{ db.name }}">
+                    <h4><img class='legend-db' src="{% static 'Images/legend-' %}{{ db.name }}.png"/>{{ db.name }}</h4>
                 </a>
             </div>
             <div class="panel-body transcriptome-panel">
                 <div class="row row-eq-height transcriptome-row">
-                    <div class="col-sm-5 transcriptome-col">
+                    <div class="col-sm-6 col-xs-12 transcriptome-col">
                         <div class="transcriptome-table-div">
                             <table class="table table-hover transcriptome-table">
                                 <thead>
@@ -46,99 +46,96 @@
                                 <thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-right"><strong>Year</strong></td> <td>-</td>
+                                        <td class="text-right"><strong>Publication</strong></td> 
+                                        <td> <a href="{{ db.url }}" target="_blank"> {{ db.citation|safe }} </a> </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-right"><strong>Publication</strong></td> <td>-</td>
+                                        <td class="text-right"><strong>Year</strong></td> <td>{{ db.year }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-right"><strong>Number of contigs</strong></td> <td>-</td>
+                                        <td class="text-right"><strong>Number of contigs</strong></td> <td>{{ db.n_contigs }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-right"><strong>Average contig length</strong></td> <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-right"><strong>Number of predicted interactions</strong></td> <td>-</td>
+                                        <td class="text-right"><strong>Number of predicted interactions</strong></td> <td>{{ db.n_ints }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-                    <div class="col-sm-7 transcriptome-col">
+                    <div class="col-sm-6 col-xs-12 transcriptome-col">
                         <div class="row plot-btns">
-                            <div class="col-sm-6 btn btn-default" data-id="{{ db }}"  name="prev">Prev</div>
-                            <div class="col-sm-6 btn btn-default" data-id="{{ db }}" name="next">Next</div>
+                            <div class="col-sm-6 btn btn-default" data-id="{{ db.name }}"  name="prev">Prev</div>
+                            <div class="col-sm-6 btn btn-default" data-id="{{ db.name }}" name="next">Next</div>
                         </div>
                         <br>
-                        <h4><span class="{{ db }} plot-title">Sequence Length</span></h4>
-                        <div class="{{ db }} plot-viewer" data-id="{{ db }}">
-                            <div class="{{ db }} plot-img" data-id="{{ db }}"  data-title="Sequence Length">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/sequence-length.png"/>
+                        <h4><span class="{{ db.name }} plot-title">Sequence Length</span></h4>
+                        <div class="{{ db.name }} plot-viewer" data-id="{{ db.name }}">
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}"  data-title="Sequence Length">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/sequence-length.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="Longest ORFs">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/longest-orfs.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="Longest ORFs">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/longest-orfs.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="Transcriptome BRHs">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/transcriptome-brh-venn.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="Transcriptome BRHs">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/transcriptome-brh-venn.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="Human BRHs">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/subject-brh-venn.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="Human BRHs">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/subject-brh-venn.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="BLAST BRHs coverage">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/blast-brh-coverage.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="BLAST BRHs coverage">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/blast-brh-coverage.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="EggNOGs BRH coverage">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/nogs-brh-coverage.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="EggNOGs BRH coverage">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/nogs-brh-coverage.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="Predictions Path length">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-path-length.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="Predictions Path length">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/predictions-path-length.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="Predictions Domain Interaction score">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-domain-int-score.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="Predictions Domain Interaction score">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/predictions-domain-int-score.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="Predictions Cellular component NTO">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-cellcom-nto.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="Predictions Cellular component NTO">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/predictions-cellcom-nto.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="Predictions Molecular function NTO">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-molfun-nto.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="Predictions Molecular function NTO">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/predictions-molfun-nto.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
 
                             </div>
-                            <div class="{{ db }} plot-img" data-id="{{ db }}" data-title="Predictions Biological process NTO">
-                                <a class="plot-bigger" title="Click to view" data-id="{{ db }}">
-                                    <img class="plot-img-png {{ db }}" src="{% static 'Images' %}/{{ db }}/predictions-bioproc-nto.png"/>
+                            <div class="{{ db.name }} plot-img" data-id="{{ db.name }}" data-title="Predictions Biological process NTO">
+                                <a class="plot-bigger" title="Click to view" data-id="{{ db.name }}">
+                                    <img class="plot-img-png {{ db.name }}" src="{% static 'Images' %}/{{ db.name }}/predictions-bioproc-nto.png"/>
                                 </a>
-                                <br><span class="{{ db }} image-counter">1</span>/11
+                                <br><span class="{{ db.name }} image-counter">1</span>/11
                             </div>
 
                         </div>

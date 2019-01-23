@@ -19,7 +19,7 @@ from django.conf import settings
 
 handler500 = "NetExplorer.views.handler500"
 handler404 = "NetExplorer.views.handler404"
-
+admin.autodiscover()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('NetExplorer.urls')),

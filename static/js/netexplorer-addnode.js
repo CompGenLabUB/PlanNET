@@ -17,12 +17,17 @@ function loadJsonGraph(data, cyobj) {
 
     // Show only edges above slider threshold
     var value = $('#sl1').val();
+    if (! value) {
+        value = defaultSliderValue;
+    }
     var to_show_selector = "edge[probability>=" + value + "]";
     var to_hide_selector = "edge[probability<" + value + "]";
     cyobj.elements(to_show_selector).show();
     cyobj.elements(to_hide_selector).hide();
+    // Show or hide edges depending on plen
     checkPlen($('input[name=show-plen]:checked').val(), cyobj);
     countNodes(cyobj);
+    changeLabels(cyobj);
 }
 
 function addNode(symbol, database, type, cyobj) {
@@ -31,7 +36,7 @@ function addNode(symbol, database, type, cyobj) {
     // neighbours as a JSON object.
     $.ajax({
         type: "GET",
-        url: "/PlanNET/net_explorer",
+        url: window.ROOT + "/net_explorer",
         cache: true,
         data: {
             'genesymbol': symbol,

@@ -6,6 +6,54 @@
 
 
 {% block content %}
+    
+    <h2>Data downloader</h2>
+    <p>Download PlanNET sequences and annotations in bulk</p>
+
+    <form id="download-seqs" method="POST" action="{% url 'downloader' %}">
+        {% csrf_token %}
+        <label for="comment">Contig identifiers (separated by commas):</label>
+        <textarea class="form-control idtextarea" name="identifiers" cols="5" rows="5" id="identifiers"></textarea>
+        <br>
+        <select id="download-data" name="database" class="selectpicker" title="Database">
+            {% for db in databases %}
+                <option data-content="<img class='legend-db' src='{% static 'Images/' %}legend-{{ db.name }}.png'>{{ db.name }}" value="{{ db.name }}">{{ db.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <select id="download-data" name="data" class="selectpicker" title="What to download">
+                <option value="contig">Contig Sequences (FASTA)</option>
+                <option value="orf">Open Reading Frames (FASTA)</option>
+                <option value="interactions">Interactions (CSV)</option>
+                <option value="homology">Human homologs (CSV)</option>
+                <option value="pfam">PFAM domains (CSV)</option>
+                <option value="go">Gene Ontologies (CSV)</option>
+        </select>
+        <br><br>
+        <input type="submit" class="btn btn-info" value="Download">
+    </form>
+    <br>
+    {% if error %}
+        <div class="panel panel-danger error-downloader">
+            <div class="panel-heading">
+                Download Error
+            </div>
+            <div class="panel-body">
+                {% if error == "identifiers" %}
+                    Please, input contig or gene identifiers.
+                {% elif error == "data" %}
+                    Please, select what to download on the form.
+                {% elif error == "database" %}
+                    Please, select database.
+                {% else %}
+                    Something went wrong. Please, try again later.
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    <hr>
+    <br>
     <h2>Software</h2>
     <p>Download the software to predict the protein-protein interactions <a target="_blank" href="https://github.com/scastlara/PlanNET-software">here</a></p>
     <br>

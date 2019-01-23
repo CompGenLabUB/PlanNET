@@ -22,7 +22,7 @@ $("#show_connections").on("click", function(){
 
     $.ajax({
         type: "POST",
-        url: "/show_connections",
+        url: window.ROOT + "/show_connections",
         cache: true,
         data: {
             'nodes': elements.node_ids,

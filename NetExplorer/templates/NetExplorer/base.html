@@ -1,28 +1,45 @@
 <html>
-    <meta charset="utf-8">
-    <meta name="description" content="Schmidtea mediterranea protein-protein interaction networks.">
     {% load staticfiles %}
-
+    
     <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Schmidtea mediterranea protein-protein interaction networks.">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+        <link rel="stylesheet" href="{% static 'css/toggle-switch.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-min.css' %}">
         <link rel="stylesheet" href="{% static 'css/jquery-data-tables.css' %}">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
         <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
         <link rel="stylesheet" href="{% static 'css/jquery-ui.structure-all.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/jquery-ui-all.theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-switch.min.css' %}">
         <link rel="shortcut icon" href="{% static 'Images/mini-logo.ico' %}">
+        <script>
+                function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          
+              ga('create', 'UA-67292161-1', 'auto');  // Replace with your property ID.
+              ga('send', 'pageview');
+        </script>
+
         <title>PlanNET {% block title %} {% endblock title %}</title>
     </head>
 
     <body>
+        
+        {% block toc %}
+        {% endblock toc %}
         <div id="page-container">
+
             <div id="content">
                 <div id="logo-container">
                     <div class="row row-eq-height">
                         <div class="col-sm-8">
-                            <a href="{% url index_view %}"> <img id="logoheader" src="{% static 'Images/logo-new-version2.png' %}"/> </a>
+                            <a href="{% url 'index_view' %}"> <img id="logoheader" src="{% static 'Images/logo-new-version2.png' %}"/> </a>
                         </div>
                         <div class="col-sm-4 company-logo-container-parent">
                             <div class="company-logo-container">
@@ -33,36 +50,40 @@
                     </div>
                 </div>
 
-                <nav class="navbar navbar-default">
+                <nav class="navbar navbar-plannet">
                     <div class="container-fluid">
                         <ul class="nav navbar-nav">
-                            <li id="navbar-home"><a href="{% url index_view %}">Home</a></li>
-                            <li id="navbar-tutorial"><a href="{% url tutorial %}">Tutorial</a></li>
+                            <li id="navbar-home"><a href="{% url 'index_view' %}">Home</a></li>
+                            <li id="navbar-tutorial"><a href="{% url 'tutorial' %}">Tutorial</a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{% url gene_search %}">Gene Search</a></li>
-                                    <li><a href="{% url blast %}">Blast</a></li>
-                                    <li><a href="{% url net_explorer %}">Net Explorer</a></li>
-                                    <li><a href="{% url path_finder %}">Pathway Finder</a></li>
+                                    <li><a href="{% url 'gene_search' %}">Gene Search</a></li>
+                                    <li><a href="{% url 'blast' %}">Blast</a></li>
+                                    <li><a href="{% url 'net_explorer' %}">Net Explorer</a></li>
+                                    <li><a href="{% url 'path_finder' %}">Pathway Finder</a></li>
+                                    {% if user.is_authenticated %}
+                                    <li><a href="{% url 'planexp' %}">PlanExp</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
-                            <li id="navbar-datasets"><a href="{% url datasets %}">Datasets</a></li>
-                            <li id="navbar-downloads"><a href="{% url downloads %}">Downloads</a></li>
-                            <li id="navbar-about"><a href="{% url about %}">About</a></li>
+                            <li id="navbar-datasets"><a href="{% url 'datasets' %}">Datasets</a></li>
+                            <li id="navbar-downloads"><a href="{% url 'downloads' %}">Downloads</a></li>
+                            <li id="navbar-about"><a href="{% url 'about' %}">About</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             {% if user.is_authenticated %}
-                                <li id="navbar-login"><a href="{% url account %}"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
-                                <li id="navbar-logout"><a href="{% url logout %}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                                <li id="navbar-login"><a href="{% url 'account' %}"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
+                                <li id="navbar-logout"><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                             {% else %}
-                                <li id="navbar-login"><a href="{% url login %}"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+                                <li id="navbar-login"><a href="{% url 'login' %}"><span class="glyphicon glyphicon-user"></span> Login</a></li>
                             {% endif %}
                     </div>
                 </nav>
 
+                
 
                 <div id="body-wrapper">
                     {% block content %}
@@ -104,14 +125,20 @@
 
     </div>
 
+        <script src="{% static 'js/root.js' %}"></script>
         <script src="{% static 'js/jquery-min.js' %}"></script>
+        <script src="{% static 'js/cytoscape.js' %}"></script>
         <script src="{% static 'js/jquery-data-tables-min.js' %}"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
         <script src="{% static 'js/bootstrap-min.js' %}"></script>
         <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap-switch.min.js' %}"></script>
         <script src="{% static 'js/back-to-top.js' %}"></script>
         <script src="{% static 'js/card-overlay.js' %}"></script>
         <script>$('[data-toggle="tooltip"]').tooltip({container:'body'});</script>
         <script src="{% static 'js/jquery-ui-all.min.js' %}"></script>
+
 
 
         <!-- This function registers a "click event" on a small-searchpanel and

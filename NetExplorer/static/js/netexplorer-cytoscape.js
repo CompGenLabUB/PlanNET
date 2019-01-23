@@ -4,6 +4,11 @@
 
 $(document).ready(function(){
 
+// set initial value of slider
+    defaultSliderValue = 0.7;
+    $('#sl1').slider('setValue', defaultSliderValue);
+
+
 
 // UPLOADING A JSON
     if (upload_json) {
@@ -18,10 +23,10 @@ $(document).ready(function(){
                 padding: 40
             });
         }
+        filterByConfidence(defaultSliderValue, cy, $('input[name=show-plen]:checked').val());
     }
 
-// set initial value of slider
-$('#sl1').slider('setValue', 0.6);
+
 
 // --------------------------
 // CHANGE LAYOUT CONTROLS
@@ -47,10 +52,16 @@ $('#sl1').slider('setValue', 0.6);
     $('#show-plen input').change(function() {
         var confvalue = $('#sl1').val();
         if (! confvalue) {
-            confvalue = 0.6
+            confvalue = defaultSliderValue
         }
         checkPlen($('input[name=show-plen]:checked').val(), cy, confvalue);
     });
+
+
+// --------------------------
+// CHANGE LABELS TOGGLE
+
+$('#change-labels input').change(function() { changeLabels(cy) });
 
 
 // --------------------------
@@ -62,7 +73,6 @@ $('#sl1').slider('setValue', 0.6);
         $(dataArray).each(function(i, field){
             dataObj[field.name] = field.value;
         });
-        console.log(dataObj);
         addNode(dataObj.genesymbol, dataObj.database, dataObj.type , cy);
         e.preventDefault(); // avoid to execute the actual submit of the form.
     });
@@ -85,7 +95,7 @@ $('#sl1').slider('setValue', 0.6);
             getCard(card_data);
         } else if (behaviour == "expand" && node.data("database") != "Human") {
             $("#expand-node-degree").html(node.data("degree"));
-                node.data("colorNODE", '#449D44');
+                node.addClass('important');
                 addNode(card_data.target, card_data.targetDB, "node", cy);
         } else if (behaviour == "delete") {
             $( "#dialog-delete-node" ).dialog({
@@ -123,10 +133,15 @@ $('#sl1').slider('setValue', 0.6);
 
     $('#sl1').slider().on('slideStop', function(ev){
         // Show only edges above slider threshold
-        var value = $('#sl1').val();
+        var value =ev.value;
+        $('#sl1').slider('setValue', value);
+        if (value < 0.7) {
+            $(".slider-handle").css('background-image', 'linear-gradient(to bottom, #E65353FF, #960A0AFF');
+        } else {
+            $(".slider-handle").css('background-image', 'linear-gradient(to bottom, #5CB85C, #2c682c)');
+        }
         filterByConfidence(value, cy, $('input[name=show-plen]:checked').val());
     });
-
 
 
 // --------------------------
@@ -232,7 +247,7 @@ $('#sl1').slider('setValue', 0.6);
                 "Delete nodes": function() {
                     var slider_value = $('#sl1').val();
                     if (! slider_value) {
-                        slider_value = 0.6;
+                        slider_value = defaultSliderValue;
                     }
                     $( this ).dialog( "close" );
                     cy.filter(function(i, element){

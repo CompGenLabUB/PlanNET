@@ -1,0 +1,43 @@
+{% load staticfiles %} 
+<h2 id="planexp-title">Summary - {{ experiment.name }}</h2>
+<hr class="planexp-rule">
+
+<div class="row">
+    <div class="col-sm-12">
+        <span id="planexp-experiment-type"> 
+            {% if experiment.exp_type.exp_type == "RNA-Seq" %}
+                <img id="RNA-Seq"     src="{% static 'Images/rna-seq_type.png' %}">
+            {% else %}
+                <img id="Single-Cell" src="{% static 'Images/sc_type.png' %}">
+            {% endif %}
+            {{ experiment.exp_type.exp_type }}
+        </span>
+    </div>
+    <div class="col-sm-12"><br></div>
+    <div class="col-sm-12">
+        <h4>Citation</h4>
+        <div id="planexp-citation">
+            <a href="{{ experiment.url|safe }}" target="_blank">{{ experiment.citation|safe }}</a>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h4>Description</h4>
+        <div id="planexp-description">
+            {{ experiment.description }}
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h4>Conditions:</h4>
+        <div id="planexp-conditions">
+            {% for cond_type, condition_list in conditions.items %}
+                <div class='cond-type'>{{ cond_type }}</div>
+                {% for condition in condition_list %}
+                    <div class='cond-name'><b>{{ condition.name }}</b> - {{ condition.description }}</div>
+                {% endfor %}
+            {% endfor %}
+            <!-- Conditions here -->
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/root.js' %}"></script>

@@ -1,0 +1,293 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/jquery-data-tables.css' %}">
+
+<html>
+
+<body>
+    
+    <div class="card-subtitle">
+        <h3>
+            <a target="_blank" title="Information about the dataset" href="{% url 'datasets' %}#{{ node.database }}">
+                <img class='legend-db' src="{% static 'Images/' %}legend-{{ node.database }}.png"/>
+                <span id="card-database">SmesGene</span>
+            </a>
+        </h3>
+    </div>
+    <div class="card-title">
+        <h1>{{ node.symbol }}</h1>
+        
+    </div>
+    {% if node.name %}
+        <h3><span class="bg-official">Gene Name:  <b>{{node.name}}</b></span></h3>
+    {% endif %}
+
+    {% if best_transcript.homolog.human.summary and best_transcript.homolog.human.summary != "NA" %}
+        <h2><span class="glyphicon glyphicon-tag"></span> Summary</h2>
+        <hr class="h2-sep">
+        <p>{{ best_transcript.homolog.human.summary }}</p>
+        <div class="pull-right">
+            <i>Summary for 
+                
+                    <a
+                    class="card-link"
+                    current="{{ node.symbol|urlencode}}"
+                    currentDB="{{ node.database }}"
+                    target="{{ best_transcript.homolog.human.symbol }}"
+                    targetDB="{{ best_transcript.homolog.human.database }}">
+                        <span class="human-color">
+                            Human {{ best_transcript.homolog.human.symbol }}
+                        </span> 
+                    </a>
+                    
+                {{ best_transcript.homolog.human.summary_source }}
+            </i>
+        </div>
+    {% endif %}
+
+    <h2><span class="glyphicon glyphicon-tag"></span> Genomic region sequence</h2>
+    <hr class="h2-sep">
+    <a href="{% url 'get_fasta' %}?genesymbol={{ node.symbol|urlencode }}&database={{ node.database }}&type=sequence">
+        <div class="download-fasta-wrapper" title="Download FASTA file">
+            <img class="download-fasta" src="{% static 'Images/download-icon.png' %}">
+            Download FASTA
+        </div>
+    </a>
+    <div class="sequence-container">
+        <p>>{{ node.symbol}}</p>
+        <p>{{ node.sequence }}</p>
+    </div>
+
+    <h2><span class="glyphicon glyphicon-tag"></span> Gene location</h2>
+    <hr class="h2-sep">
+    <iframe id="jbrowser" width="100%" height="400px" src="https://compgen.bio.ub.edu/jbrowse/index.html?data=dd_Smes_g4&loc={{ node.chromosome }}%3A{{ node.start }}..{{ node.end }}&tracks=refseq%2Cgenes&overview=1&highlight=&tracklist=0&highres=2"></iframe> 
+
+    <h2><span class="glyphicon glyphicon-tag"></span> Transcripts</h2>
+    <hr class="h2-sep">
+    
+        <table id="transcripts-table" class="table table-hover transcripts-table">
+            <thead>
+                <tr>
+                    <th>Database</th>
+                    <th>Transcript symbol</th>
+                    <th>Length</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transcript in transcripts %}
+                
+                    <tr>
+                        <td>
+                            <a href="{% url 'datasets' %}#{{ transcript.database }}" target="_blank">{{ transcript.database }}</a>
+                        </td>
+                        <td>
+                            <a
+                                class="card-link"
+                                current="{{ node.symbol|urlencode}}"
+                                currentDB="{{ node.database }}"
+                                target="{{ transcript.symbol }}"
+                                targetDB="{{ transcript.database }}">{{ transcript.symbol }}
+                            </a>
+                        </td>
+                        <td>{{ transcript.length }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+        <h2><span class="glyphicon glyphicon-tag"></span> Gene Ontologies</h2>
+        <hr class="h2-sep">
+            Predicted from longest associated transcript: <a
+            class="card-link"
+            current="{{ node.symbol|urlencode}}"
+            currentDB="{{ node.database }}"
+            target="{{ best_transcript.symbol }}"
+            targetDB="{{ best_transcript.database }}">{{ best_transcript.symbol }}
+            </a> 
+            <br>
+            <hr>
+
+        {% if not best_transcript.gene_ontologies %}
+            No Gene Ontologies
+        {% else %}
+            <div class="gene-ontology-div">
+                <table class="table table-hover homology-table">
+                {% for go in best_transcript.gene_ontologies %}
+                    <tr>
+                        <td><span class="{{ go.domain }}">{{ go.domain }}</span></td>   
+                        <td>
+                            <a href="http://amigo.geneontology.org/amigo/term/{{ go.accession }}" target="_blank">{{ go.accession }}
+                            </a>
+                        </td>
+                        <td>{{ go.name|title }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+
+    <div class="row row-eq-height interactions-title">
+        <div class="col-sm-10">
+            <h2><span class="glyphicon glyphicon-tag"></span> Interactions</h2>
+            <hr class="h2-sep">
+        </div>
+        <div class="col-sm-2">
+            <a href="#" class="view-on-netexplorer" data-toggle="tooltip" data-placement="top" title="View on NetExplorer">
+                <form class="view-on-netexplorer" method="POST" action="{% url 'net_explorer' %}" target="_blank"> {% csrf_token %}
+                    <input type="hidden" name="json_text" value='{{ json_graph|safe }}' />
+                    <button id="netexplorer-mini" class="btn btn-default netexplorer-view view-on-netexplorer-btn" type="submit">
+                        <img src="{% static 'Images/netexplorer-mini.png' %}" class="netexplorer-mini"/>
+                    </button>
+                </form>
+            </a>
+        </div>
+    </div>
+
+    Predicted from longest associated transcript: <a
+        class="card-link"
+        current="{{ node.symbol|urlencode}}"
+        currentDB="{{ node.database }}"
+        target="{{ best_transcript.symbol }}"
+        targetDB="{{ best_transcript.database }}">{{ best_transcript.symbol }}
+    </a>
+    <br>
+    <hr>
+
+
+    <div class="int-table-container">
+            <table id="int-table" class="table table-hover int-table-class">
+                <thead>
+                    <tr>
+                    <th>Symbol</th>
+                    <th>Confidence</th>
+                    <th>Homolog</th>
+                    <th>Path Length</th>
+                    <th>Cellular Component NTO</th>
+                    <th>Molecular Function NTO</th>
+                    <th>Biological Process NTO</th>
+                    <th>Domain Interaction Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for int in best_transcript.neighbours %}
+                <tr>
+                    <td><a
+                        class="card-link"
+                        current="{{ best_transcript.symbol|urlencode}}"
+                        currentDB="{{ best_transcript.database }}"
+                        target="{{ int.target.symbol }}"
+                        targetDB="{{ int.target.database }}">{{ int.target.symbol }}</a>
+                    </td>
+                    <td>{{ int.parameters.int_prob }}</td>
+                    <td><a
+                        class="card-link"
+                        current="{{ best_transcript.symbol|urlencode}}"
+                        currentDB="{{ best_transcript.database }}"
+                        target="{{ int.target.homolog.human.symbol }}"
+                        targetDB="Human">{{ int.target.homolog.human.symbol }}
+                        </a>
+                    </td>
+                    <td>{{ int.parameters.path_length }}</td>
+                    <td>{{ int.parameters.cellcom_nto }}</td>
+                    <td>{{ int.parameters.molfun_nto }}</td>
+                    <td>{{ int.parameters.bioproc_nto }}</td>
+                    <td>{{ int.parameters.dom_int_sc }}</td>
+                </tr>
+
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    <h2><span class="glyphicon glyphicon-tag"></span> External links</h2>
+    <hr class="h2-sep">
+    <ul>
+        <li>Search on <a href="http://planmine.mpi-cbg.de/planmine/keywordSearchResults.do?searchTerm={{ node.symbol }}&searchSubmit=GO" target="_blank">PlanMine</a>.</li>
+    </ul>
+
+    <br>
+    <br>
+    <br>
+</body>
+
+<script src="{% static 'js/root.js' %}"></script>
+<script src="{% static 'js/jquery-data-tables-min.js' %}"></script>
+<script>
+    $('.card-link').click(function() {
+        var card_data = {
+            div_id      : $(this).closest('.card-overlay').attr("id"),
+            current     : $(this).attr("current"),
+            currentDB   : $(this).attr("currentDB"),
+            target      : $(this).attr("target"),
+            targetDB    : $(this).attr("targetDB"),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+
+        var new_url = window.location.href;
+        history.pushState(card_data, null, new_url);
+        
+        // Load Get request html on current card-overlay
+        $.ajax({
+            type: "GET",
+            context: this, //this makes the this variable visible inside the success
+            url: "{% url 'get_card' %}",
+            cache: true,
+            data: {
+                'target'    : card_data['target'],
+                'current'   : card_data['current'],
+                'targetDB'  : card_data['targetDB'],
+                'currentDB' : card_data['currentDB'],
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success : function(data) {
+                $(this).closest('.card-overlay').html(data)
+            }
+        });
+        
+        
+    });
+    
+    // This will check if the user is pressing the "back" button on his/her
+    // browser. If that's the case, it will update the content of the "visible"
+    // card-div.
+    window.onpopstate = function(event) {
+        if (event.state != null){
+            $.ajax({
+                type: "GET",
+                context: this, //this makes the this variable visible inside the success
+                url: "{% url 'get_card' %}",
+                cache: true,
+                data: {
+                    'target'    : event.state['target'],
+                    'targetDB'  : event.state['targetDB'],
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success : function(data) {
+                    if ( $(".card-overlay").is(':hidden')  ){
+                        $('[id="card-overlay"]').slideToggle(450);
+                        $('.close-overlay').slideToggle(450);
+                        $('.full-screen-card').slideToggle(450);
+                    }
+                    $('.card-overlay:visible').html(data)
+                }
+            });
+        } else {
+            $('.card-overlay').hide(250);
+            $('.close-overlay').hide();
+            $('.full-screen-card').hide();
+        }
+    };
+    
+</script>
+
+<script>
+    $(document).ready(function(){
+            $.fn.dataTable.ext.errMode = 'throw';
+            $('#int-table').DataTable({
+                "order": [[ 1, "desc" ]]
+            });
+
+            $("#transcripts-table").DataTable();
+        });
+</script>
+
+</html>

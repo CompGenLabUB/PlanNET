@@ -1,15 +1,13 @@
-# PlanNET
-
-<img src="https://github.com/scastlara/PlaNet/blob/master/NetExplorer/static/Images/logo-new-version2.png" width="500">
+<a href="https://compgen.bio.ub.edu/PlanNET" target="_blank"><img src="project-logo.png"></a>
 
 
 # Version
-v0.1.0
+v1.1.0
 
 # Description
 Application to explore the different Schmidtea mediterranea predicted interactomes. Available at [compgen.bio.ub.edu/PlanNET](https://compgen.bio.ub.edu/PlanNET).
 
-At the [Computational Genomics Lab](https://compgen.bio.ub.edu) we have trained a Random Forest classifier to predict planarian protein-protein interactions by using homology inferences (see [link to the published paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btx738/4657068)).
+At the [Computational Genomics Lab](https://compgen.bio.ub.edu) we have trained a Random Forest classifier to predict planarian protein-protein interactions by using homology inferences (see [link to the published paper](https://academic.oup.com/bioinformatics/article/34/6/1016/4657068)).
 
 To see the code used to predict the planarian networks, go to this [repository](https://github.com/scastlara/PlanNET-software).
 
@@ -17,10 +15,12 @@ To see the code used to predict the planarian networks, go to this [repository](
 
 # Cite
 ```
-S Castillo-Lara, J F Abril
+S. Castillo-Lara, J.F. Abril
 PlanNET: homology-based predicted interactome for multiple planarian transcriptomes
-Bioinformatics, AOP Nov 24th, 2017, 10.1093/bioinformatics/btx738
+Bioinformatics, Volume 34, Issue 6, 15 March 2018, Pages 1016–1023, btx738
 ```
+* [link to the published paper](https://academic.oup.com/bioinformatics/article/34/6/1016/4657068)
+
 # Copyright
 ```
 PlanNET web application to explore the interactomes of Schmidtea mediterranea.

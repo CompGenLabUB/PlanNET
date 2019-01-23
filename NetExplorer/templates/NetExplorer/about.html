@@ -10,22 +10,78 @@
     <hr>
     <p>
         <strong>PlanNET</strong> is a web application that stores predicted <i>Schmidtea mediterranea</i> protein-protein interactions (ppi) projected over a Human ppi network.
-         Currently, PlanNET holds 460,663 human ppi, and 510,996 <i>Schmidtea mediterranea</i> interactions (predicted for 10 different transcriptomes).
+         Currently, PlanNET holds 273,203 human ppi, and 729,043 <i>Schmidtea mediterranea</i> interactions (predicted for 9 different transcriptomes).
     </p>
 
     <p>
         PlanNET has been developed by the <a href="https://compgen.bio.ub.edu" target="_blank">Computational Genomics Lab</a>, at the University of Barcelona.
     </p>
 
-    <h3>Citing PlanNET</h3>
-
+    <br>
+    <br>
+    <h2>Citing PlanNET</h2>
+    <hr>
     <blockquote>
       <p>
-        S Castillo-Lara, J F Abril<br />
-        <b>PlanNET</b>: homology-based predicted interactome for multiple planarian transcriptomes<br />
-        Bioinformatics, AOP Nov 24th, 2017, <a href="https://doi.org/10.1093/bioinformatics/btx738">btx738</a><br />
+        <a href="https://academic.oup.com/bioinformatics/article/34/6/1016/4657068" target="_blank"><b>PlanNET</b>: homology-based predicted interactome for multiple planarian transcriptomes</a>
+        <br/>
+        S. Castillo-Lara, J.F. Abril<br />
+        <i>Bioinformatics</i>, Volume 34, Issue 6, 15 March 2018, Pages 1016–1023, <a href="https://doi.org/10.1093/bioinformatics/btx738" target="_blank">btx738</a><br />
       </p>
-    </blockquote>
+      <details>
+          <summary>BibTex</summary>
+          <pre>
+    @article{Castillo-Lara2018,
+      author = {Castillo-Lara, S and Abril, J F},
+      title = {"PlanNET: homology-based predicted interactome for multiple planarian transcriptomes"},
+      journal = {Bioinformatics},
+      volume = {34},
+      number = {6},
+      pages = {1016--1023},
+      year = {2018},
+      doi = {10.1093/bioinformatics/btx738},
+      URL = {http://dx.doi.org/10.1093/bioinformatics/btx738},
+      eprint = {/oup/backfile/content_public/journal/bioinformatics/34/6/10.1093_bioinformatics_btx738/2/btx738.pdf}
+    }
+        </pre>
+    </details>
+</blockquote>
+
+    <br>
+    <br>
+    <h2 id="update-notes">Update Notes</h2>
+    <hr>
+    
+    <h3>v1.2: January 23rd 2019</h3>
+    <ul class="update-notes-ul">
+        <li>Schmidtea mediterranea predicted genes (see: <a href="https://academic.oup.com/nar/article/47/D1/D812/5212006" target="_blank">A. Rozanski et al.</a>) as well as their associated transcripts have been included in PlanNET as SmesGene and Smest respectively.</li>
+        <li>Smest gene associated transcripts are now available in the <a href="{% url 'blast' %}">BLAST</a> application.</li>
+        <li>A new gene card for Smesgenes has been implemented, with information regarding the associated transcripts across different transcriptomes, the genomic location, gene ontologies and predicted protein-protein interactions.</li>
+        <li>Several genomic features (such as mapped transcripts over <a href="https://www.nature.com/articles/nature25473" target="_blank">the newly assembled S.med genome</a>) can now be visualized using our new <a href="https://compgen.bio.ub.edu/jbrowse" target="_blank">JBrowse plugin</a>.</li>
+        <li><a href="{% url 'planexp' %}">PlanExp</a>, a PlanNET plugin for exploring RNA-seq experiments is available for registered users to test.</li>
+        <li>Databases are now identified by node border color instead of shape.</li>
+        <li>Node shape in NetExplorer and PathwayFinder now refers to the technology used for sequencing, with triangles reserved for "legacy" technologies such as Sanger and 454, and circles for high-throughput RNA-seq.</li>
+        <li>General improvements to design and readability of the application.</li>
+    </ul>
+
+    <br>
+    <br>
+
+    <h3>v1.1: August 7th 2018</h3>
+    PlanNET has been updated from version 1.0 (published version at <a href="https://academic.oup.com/bioinformatics/article/34/6/1016/4657068" target="_blank">Bioinformatics</a>) to version 1.1.
+
+    These are the most important changes:
+
+    <ul class="update-notes-ul">
+        <li>In order to look for homologous proteins for each planarian transcript, we prioritized BLAST instead of EggNOG alignments.</li>
+        <li>The RandomForest classifier was refined by filtering the training dataset further, removing interactions not annotated as physical from BioGRID.</li>
+        <li>We selected a score cut-off of 0.7 for interactions, instead of the previously used 0.6 cut-off. The Filter Interactions slider in NetExplorer was updated: now it only shows interactions with a score higher than 0.7 by default, but the user can still select other cut-off values</li>
+        <li>PlanNET now holds 729,043 Schmidtea mediterranea interactions (up from 510,996).</li>
+        <li>The Smed454 dataset and Newmark dataset were temporarily removed because of disk size limitations. These will be uploaded in due time.</li>
+        <li>A manually curated list of identifiers for planarian transcripts was uploaded to PlanNET. Now users can search for these identifiers, which follow the form: "Smed_XXX". If a particular transcripts has a manually curated identifier, the identifier will appear in pink both in Gene Search and in the corresponding Gene Card.</li>
+        <li>New Data Downloader allows users to download sequences and sequence annotations in bulk. Available at <a href="{% url 'downloads' %}" title="Downloads">downloads page</a>.</li>
+        <li>Many quality of life improvements to the overall design of the website, including a search bar in NetExplorer.</li>
+    </ul>
 
 {% endblock content %}
 

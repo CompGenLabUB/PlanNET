@@ -1,2 +1,7 @@
 *.pyc
 NetExplorer/*.pyc
+NetExplorer/views/*.pyc
+db/
+plannet.db.dump
+neo4j-*
+pruebas/

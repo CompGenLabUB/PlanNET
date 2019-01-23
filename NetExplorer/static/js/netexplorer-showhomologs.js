@@ -24,6 +24,11 @@ function displayHomologs(cyobj) {
                 var selector_2 = 'node[id = "' + element.data("target") + '"]';
                 var source = cy.filter(selector_1);
                 var target = cy.filter(selector_2);
+                console.log("SOURCE");
+                console.log(source.data());
+                console.log("TARGET");
+                console.log(target.data());
+                console.log("\n-----\n");
                 if (element.data("pathlength") == 1) {
                     var homologIntEdge   = { "data" : { id: source.data("homolog") + "-" + target.data("homolog"), type: "homologyInt", probability: 1, source: source.data("homolog"), target: target.data("homolog") , colorEDGE: "#6785d0"} };
                     elementsToAdd.edges.push(homologIntEdge);
